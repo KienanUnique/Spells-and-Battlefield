@@ -5,26 +5,20 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMovement))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement _playerMovement = new PlayerMovement();
     [SerializeField] private PlayerLook _playerLook = new PlayerLook();
     private PlayerInputManager _playerInputManager;
-    private List<IModelMonoBehaviour> monoBehaviourModels;
+    private PlayerMovement _playerMovement;
 
     private void Awake()
     {
         _playerInputManager = GetComponent<PlayerInputManager>();
-        monoBehaviourModels = new List<IModelMonoBehaviour>();
-        monoBehaviourModels.Add(_playerMovement);
+        _playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-    }
-    
-    private void FixedUpdate() {
-        monoBehaviourModels.ForEach(model => model.FixedUpdate());
     }
 
     private void OnEnable()
