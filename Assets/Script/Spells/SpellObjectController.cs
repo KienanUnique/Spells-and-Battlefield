@@ -35,6 +35,7 @@ public class SpellObjectController : MonoBehaviour
                 HandleSpellEffect();
                 break;
             case SpellTriggerCheckStatusEnum.Finish:
+                HandleSpellEffect();
                 HandleFinishSpell();
                 break;
         }

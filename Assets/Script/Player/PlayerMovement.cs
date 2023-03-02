@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Vector3 CurrentPosition =>  _rigidbody.position;
+    public Quaternion CurrentRotation =>  _rigidbody.rotation;
     [SerializeField] private float _moveVelocity;
     [SerializeField] private float _jumpVelocity;
     [SerializeField] private float _gravityVelocity;

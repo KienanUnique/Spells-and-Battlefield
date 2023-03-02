@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerInputManager : MonoBehaviour
 {
     public Action JumpEvent;
+    public Action UseSpellEvent;
     public Action<Vector2> MoveInputEvent;
     public Action StopMoveEvent;
     public Action<Vector2> MouseLookEvent;
@@ -21,12 +22,14 @@ public class PlayerInputManager : MonoBehaviour
     {
         _mainControls.Enable();
         _mainControls.PlayerActions.Jump.performed += OnJumpPerformed;
+        _mainControls.PlayerActions.UseSpell.performed += OnUseSpellPerformed;
     }
 
     private void OnDisable()
     {
         _mainControls.Disable();
         _mainControls.PlayerActions.Jump.performed -= OnJumpPerformed;
+        _mainControls.PlayerActions.UseSpell.performed -= OnUseSpellPerformed;
     }
 
     private void Update()
@@ -43,8 +46,6 @@ public class PlayerInputManager : MonoBehaviour
         MouseLookEvent?.Invoke(_mainControls.PlayerActions.Look.ReadValue<Vector2>());
     }
 
-    private void OnJumpPerformed(InputAction.CallbackContext obj)
-    {
-        JumpEvent?.Invoke();
-    }
+    private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpEvent?.Invoke();
+    private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellEvent?.Invoke();
 }
