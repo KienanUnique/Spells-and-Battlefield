@@ -141,7 +141,6 @@ GameObject:
   - component: {fileID: 1698083445434375742}
   - component: {fileID: 1809322364992030679}
   - component: {fileID: 1429199914850347932}
-  - component: {fileID: 6121561518250540764}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -196,6 +195,15 @@ MonoBehaviour:
     _xSensitivity: 5
     _ySensitivity: 5
   _playerVisual: {fileID: 309214169}
+  _playerSpellsManager:
+    _currentSpells:
+    - {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
+    - {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    _spellSpawnObject: {fileID: 7897183116630784952}
 --- !u!136 &1698083445434375742
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -243,24 +251,6 @@ MonoBehaviour:
   _gravityVelocity: 15
   _rigidbody: {fileID: 1809322364992030679}
   _groundChecker: {fileID: 7524277153600398822}
---- !u!114 &6121561518250540764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 846477161179582522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25e9b97d38605c94aa0b3cf9518c90d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _currentSpells:
-  - {fileID: 11400000, guid: cfeb265f723532145a732d68a0c4b043, type: 2}
-  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-  - {fileID: 11400000, guid: cfeb265f723532145a732d68a0c4b043, type: 2}
-  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-  _spellSpawnObject: {fileID: 6453015060841550293}
 --- !u!1 &1076441895077765681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1616,6 +1606,36 @@ Transform:
   m_Father: {fileID: 1003356082525433753}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7119761574945446207
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7897183116630784952}
+  m_Layer: 0
+  m_Name: Spell Cast Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7897183116630784952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7119761574945446207}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2902898579730701063}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7216745457246765086
 GameObject:
   m_ObjectHideFlags: 0
@@ -1802,6 +1822,7 @@ Transform:
   - {fileID: 2792066009951195359}
   - {fileID: 1084342766568991303}
   - {fileID: 4467160614191513522}
+  - {fileID: 7897183116630784952}
   m_Father: {fileID: 3947268873442469563}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 14.13, y: -101.801, z: -29.766}

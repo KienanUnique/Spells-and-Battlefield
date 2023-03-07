@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class PlayerSpellsManager : MonoBehaviour
+[Serializable]
+public class PlayerSpellsManager
 {
-    public bool IsSpellSelected => _currentSpells.Count > 0;
-    public AnimatorOverrideController SelectedSpellHandsAnimatorController => _currentSpells[0].HandsAnimatorController;
+    [HideInInspector] public bool IsSpellSelected => _currentSpells.Count > 0;
+    [HideInInspector] public AnimatorOverrideController SelectedSpellHandsAnimatorController => _currentSpells[0].HandsAnimatorController;
     [SerializeField] private List<Spell> _currentSpells;
     [SerializeField] private Transform _spellSpawnObject;
 

@@ -2,22 +2,19 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerInputManager))]
 [RequireComponent(typeof(PlayerMovement))]
-[RequireComponent(typeof(PlayerSpellsManager))]
 public class PlayerController : MonoBehaviour, ICharacter
 {
-    public CharacterTypeEnum CharacterType => CharacterTypeEnum.Player;
     [SerializeField] private PlayerLook _playerLook = new PlayerLook();
     [SerializeField] private PlayerCharacter _playerCharacter = new PlayerCharacter();
     [SerializeField] private ArmsVisual _playerVisual;
+    [SerializeField] private PlayerSpellsManager _playerSpellsManager = new PlayerSpellsManager();
     private PlayerInputManager _playerInputManager;
     private PlayerMovement _playerMovement;
-    private PlayerSpellsManager _playerSpellsManager;
 
     private void Awake()
     {
         _playerInputManager = GetComponent<PlayerInputManager>();
         _playerMovement = GetComponent<PlayerMovement>();
-        _playerSpellsManager = GetComponent<PlayerSpellsManager>();
     }
 
     private void Start()

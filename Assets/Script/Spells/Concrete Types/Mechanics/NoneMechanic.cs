@@ -5,6 +5,6 @@ public class NoneMechanic : SpellMechanicEffectScriptableObject
 {
     protected override void ApplyEffectToTarget(ICharacter target)
     {
-        
+
     }
 }
