@@ -11,7 +11,7 @@ public class Spell : ScriptableObject
     [SerializeField] private AnimatorOverrideController _useSpellHandsAnimatorController;
     [SerializeField] private TargetSelecterScriptableObject _targetSelecter;
     [SerializeField] private SpellTriggerScriptableObject _spellTrigger;
-    [SerializeField] private List<Spell> _nextSpellsOnFinish; // TODO: ContinuisSpell - Spell, Gameobject Position, (float)? DeltaAngle
+    [SerializeField] private List<Spell> _nextSpellsOnFinish;
 
     public void Cast(Vector3 spawnSpellPosition, Quaternion spawnSpellRotation, Transform casterTransform, ICharacter casterCharacter)
     {
