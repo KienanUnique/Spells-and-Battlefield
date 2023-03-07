@@ -4,31 +4,33 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class SpellObjectController : MonoBehaviour
 {
+    private float TimePassedFromInitialize => Time.time - _initializeTime;
     private SpellMechanicEffectScriptableObject _spellMechanicEffect;
     private Rigidbody _rigidbody;
     private SpellMovementScriptableObject _spellMovement;
     private TargetSelecterScriptableObject _targetSelecter;
     private SpellTriggerScriptableObject _spellTrigger;
+    private ICharacter _casterCharacter;
     private List<Spell> _nextSpellsOnFinish;
     private float _initializeTime;
     private bool _wasInitialised = false;
-    private float TimePassedFromInitialize => Time.time - _initializeTime;
 #nullable enable
-    private Transform? _fromCastObjectTransform;
+    private Transform? _casterTransform;
     private Transform? _thisTransform;
 #nullable disable
 
 #nullable enable
     public void Initialize(SpellMechanicEffectScriptableObject spellMechanicEffect, SpellMovementScriptableObject spellMovement,
     TargetSelecterScriptableObject targetSelecter, List<Spell> nextSpellsOnFinish, SpellTriggerScriptableObject spellTrigger,
-    Transform? fromCastObjectTransform)
+    Transform? casterTransform, ICharacter casterCharacter)
     {
         _spellMechanicEffect = spellMechanicEffect;
         _spellMovement = spellMovement;
         _targetSelecter = targetSelecter;
         _nextSpellsOnFinish = nextSpellsOnFinish;
         _spellTrigger = spellTrigger;
-        _fromCastObjectTransform = fromCastObjectTransform;
+        _casterTransform = casterTransform;
+        _casterCharacter = casterCharacter;
 
         _thisTransform = transform;
 
@@ -54,13 +56,13 @@ public class SpellObjectController : MonoBehaviour
 
     private void HandleSpellEffect()
     {
-        var selectedTargets = _targetSelecter.SelectTargets(_thisTransform.position);
+        var selectedTargets = _targetSelecter.SelectTargets(_thisTransform.position, _casterCharacter);
         _spellMechanicEffect.ApplyEffectToTargets(selectedTargets);
     }
 
     private void HandleFinishSpell()
     {
-        _nextSpellsOnFinish.ForEach(spell => spell.Cast(_thisTransform.position, _thisTransform.rotation, _thisTransform));
+        _nextSpellsOnFinish.ForEach(spell => spell.Cast(_thisTransform.position, _thisTransform.rotation, _thisTransform, _casterCharacter));
         Destroy(this.gameObject);
     }
 
@@ -73,7 +75,7 @@ public class SpellObjectController : MonoBehaviour
     {
         if (_wasInitialised)
         {
-            _spellMovement.Move(_rigidbody, _fromCastObjectTransform, TimePassedFromInitialize);
+            _spellMovement.Move(_rigidbody, _casterTransform, TimePassedFromInitialize);
             HandleSpellTriggerResponse(_spellTrigger.CheckTime(TimePassedFromInitialize));
         }
     }

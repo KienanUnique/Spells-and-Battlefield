@@ -13,9 +13,9 @@ public class Spell : ScriptableObject
     [SerializeField] private SpellTriggerScriptableObject _spellTrigger;
     [SerializeField] private List<Spell> _nextSpellsOnFinish; // TODO: ContinuisSpell - Spell, Gameobject Position, (float)? DeltaAngle
 
-    public void Cast(Vector3 spawnSpellPosition, Quaternion spawnSpellRotation, Transform fromCastObjectTransform)
+    public void Cast(Vector3 spawnSpellPosition, Quaternion spawnSpellRotation, Transform casterTransform, ICharacter casterCharacter)
     {
         var spellObjectController = Instantiate(_spellObjectPrefab.gameObject, spawnSpellPosition, spawnSpellRotation).GetComponent<SpellObjectController>();
-        spellObjectController.Initialize(_spellMechanicEffect, _spellObjectMovementController, _targetSelecter, _nextSpellsOnFinish, _spellTrigger, fromCastObjectTransform);
+        spellObjectController.Initialize(_spellMechanicEffect, _spellObjectMovementController, _targetSelecter, _nextSpellsOnFinish, _spellTrigger, casterTransform, casterCharacter);
     }
 }

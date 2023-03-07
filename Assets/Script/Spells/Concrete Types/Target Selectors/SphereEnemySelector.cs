@@ -5,7 +5,7 @@ using UnityEngine;
 public class SphereEnemySelector : TargetSelecterScriptableObject
 {
     [SerializeField] private float _sphereRadius;
-    public override List<ICharacter> SelectTargets(Vector3 spellPosition)
+    public override List<ICharacter> SelectTargets(Vector3 spellPosition, ICharacter casterCharacter)
     {
         var selectedTargets = new List<ICharacter>();
         Collider[] collidersInsideSphere = Physics.OverlapSphere(spellPosition, _sphereRadius);

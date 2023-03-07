@@ -3,5 +3,5 @@ using UnityEngine;
 
 public abstract class TargetSelecterScriptableObject : ScriptableObject
 {
-    public abstract List<ICharacter> SelectTargets(Vector3 spellPosition);
+    public abstract List<ICharacter> SelectTargets(Vector3 spellPosition, ICharacter casterCharacter);
 }

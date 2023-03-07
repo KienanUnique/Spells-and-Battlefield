@@ -10,9 +10,9 @@ public class PlayerSpellsManager
     [SerializeField] private List<Spell> _currentSpells;
     [SerializeField] private Transform _spellSpawnObject;
 
-    public void UseSelectedSpell(Quaternion direction)
+    public void UseSelectedSpell(ICharacter _playerCharacter, Transform playerTransform, Quaternion direction)
     {
-        _currentSpells[0].Cast(_spellSpawnObject.position, direction, _spellSpawnObject);
+        _currentSpells[0].Cast(_spellSpawnObject.position, direction, playerTransform, _playerCharacter);
         _currentSpells.RemoveAt(0);
     }
 }

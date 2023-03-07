@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour, ICharacter
     {
         if (_playerSpellsManager.IsSpellSelected)
         {
-            _playerSpellsManager.UseSelectedSpell(_playerLook.CameraRotation);
+            _playerSpellsManager.UseSelectedSpell(this, _playerMovement.LocalTransform, _playerLook.CameraRotation);
         }
     }
 
