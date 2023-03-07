@@ -13,19 +13,30 @@ public class SpellObjectController : MonoBehaviour
     private float _initializeTime;
     private bool _wasInitialised = false;
     private float TimePassedFromInitialize => Time.time - _initializeTime;
+#nullable enable
+    private Transform? _fromCastObjectTransform;
+    private Transform? _thisTransform;
+#nullable disable
+
+#nullable enable
     public void Initialize(SpellMechanicEffectScriptableObject spellMechanicEffect, SpellMovementScriptableObject spellMovement,
-    TargetSelecterScriptableObject targetSelecter, List<Spell> nextSpellsOnFinish, SpellTriggerScriptableObject spellTrigger)
+    TargetSelecterScriptableObject targetSelecter, List<Spell> nextSpellsOnFinish, SpellTriggerScriptableObject spellTrigger,
+    Transform? fromCastObjectTransform)
     {
         _spellMechanicEffect = spellMechanicEffect;
         _spellMovement = spellMovement;
         _targetSelecter = targetSelecter;
         _nextSpellsOnFinish = nextSpellsOnFinish;
         _spellTrigger = spellTrigger;
+        _fromCastObjectTransform = fromCastObjectTransform;
+
+        _thisTransform = transform;
 
         _initializeTime = Time.time;
 
         _wasInitialised = true;
     }
+#nullable disable
 
     private void HandleSpellTriggerResponse(SpellTriggerCheckStatusEnum response)
     {
@@ -43,13 +54,13 @@ public class SpellObjectController : MonoBehaviour
 
     private void HandleSpellEffect()
     {
-        var selectedTargets = _targetSelecter.SelectTargets(transform.position);
+        var selectedTargets = _targetSelecter.SelectTargets(_thisTransform.position);
         _spellMechanicEffect.ApplyEffectToTargets(selectedTargets);
     }
 
     private void HandleFinishSpell()
     {
-        _nextSpellsOnFinish.ForEach(spell => spell.Cast(transform.position, transform.rotation));
+        _nextSpellsOnFinish.ForEach(spell => spell.Cast(_thisTransform.position, _thisTransform.rotation, _thisTransform));
         Destroy(this.gameObject);
     }
 
@@ -62,16 +73,16 @@ public class SpellObjectController : MonoBehaviour
     {
         if (_wasInitialised)
         {
-            _spellMovement.Move(_rigidbody);
+            _spellMovement.Move(_rigidbody, _fromCastObjectTransform, TimePassedFromInitialize);
             HandleSpellTriggerResponse(_spellTrigger.CheckTime(TimePassedFromInitialize));
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         if (_wasInitialised)
         {
-            HandleSpellTriggerResponse(_spellTrigger.CheckCollisionEnter(other));
+            HandleSpellTriggerResponse(_spellTrigger.CheckContact(other));
         }
     }
 

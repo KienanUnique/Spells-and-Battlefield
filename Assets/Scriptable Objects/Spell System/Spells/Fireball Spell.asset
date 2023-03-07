@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b09fbca664f82924b957bc42d0058fa3, type: 3}
-  m_Name: Empty Fireball Spell
+  m_Name: Fireball Spell
   m_EditorClassIdentifier: 
-  _spellMechanicEffect: {fileID: 11400000, guid: 5e63f1a67276a7446bfa9b47e77e13ed, type: 2}
-  _spellObjectMovementController: {fileID: 11400000, guid: 615c21f91e294d64c8f18008b38db5e0, type: 2}
+  _spellMechanicEffect: {fileID: 11400000, guid: 665aa311f5213c5429a9ecf654d8c47c, type: 2}
+  _spellObjectMovementController: {fileID: 11400000, guid: f0c42f3d1555a414bad15108e760ef71, type: 2}
   _spellObjectPrefab: {fileID: 7329610058335965431, guid: 14d387ad6a00da24c8ba4a83becd5030, type: 3}
   _useSpellHandsAnimatorController: {fileID: 22100000, guid: 0ea7358706cb69d47b3c92dc21891dff, type: 2}
-  _targetSelecter: {fileID: 11400000, guid: cdf694b340a6e0349bff40f1dc848324, type: 2}
-  _spellTrigger: {fileID: 11400000, guid: 9489e5928a003224a8cdf9b0a76e6051, type: 2}
+  _targetSelecter: {fileID: 11400000, guid: e08fcd812fa7ddd4ca8f52fe50a18e3b, type: 2}
+  _spellTrigger: {fileID: 11400000, guid: 6e4167d6efc4a0649932a733d1797436, type: 2}
   _nextSpellsOnFinish: []

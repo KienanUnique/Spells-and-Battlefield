@@ -4,6 +4,7 @@ using UnityEngine;
 [Serializable]
 public class PlayerLook
 {
+    public Quaternion CameraRotation => _playerCamera.transform.rotation;
     [SerializeField] private Camera _playerCamera;
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private float _xSensitivity;

@@ -4,6 +4,6 @@ using UnityEngine;
 public class TimeFinishTrigger : SpellTriggerScriptableObject
 {
     [SerializeField] float _timeBeforeFinishTrigger;
-    public override SpellTriggerCheckStatusEnum CheckCollisionEnter(Collision other) => SpellTriggerCheckStatusEnum.Wait;
+    public override SpellTriggerCheckStatusEnum CheckContact(Collider other) => SpellTriggerCheckStatusEnum.Wait;
     public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize) => _timeBeforeFinishTrigger > timePassedFromInitialize ? SpellTriggerCheckStatusEnum.Wait : SpellTriggerCheckStatusEnum.Finish;
 }

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b09fbca664f82924b957bc42d0058fa3, type: 3}
-  m_Name: Empty Fireball Spell 1
+  m_Name: Heal Spell
   m_EditorClassIdentifier: 
-  _spellMechanicEffect: {fileID: 11400000, guid: 5e63f1a67276a7446bfa9b47e77e13ed, type: 2}
-  _spellObjectMovementController: {fileID: 11400000, guid: 615c21f91e294d64c8f18008b38db5e0, type: 2}
-  _spellObjectPrefab: {fileID: 7329610058335965431, guid: 14d387ad6a00da24c8ba4a83becd5030, type: 3}
+  _spellMechanicEffect: {fileID: 11400000, guid: 2eb61d60baf263141b2ad0cfeaeeb572, type: 2}
+  _spellObjectMovementController: {fileID: 11400000, guid: 275c97476797cfb44a6465cc6a7f7896, type: 2}
+  _spellObjectPrefab: {fileID: 7329610058335965431, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
   _useSpellHandsAnimatorController: {fileID: 22100000, guid: f65edf9f4c679da40a34dd7ad281c72f, type: 2}
-  _targetSelecter: {fileID: 11400000, guid: cdf694b340a6e0349bff40f1dc848324, type: 2}
+  _targetSelecter: {fileID: 11400000, guid: db0e101b7fccedb4086c6bce2fcd15e8, type: 2}
   _spellTrigger: {fileID: 11400000, guid: 9489e5928a003224a8cdf9b0a76e6051, type: 2}
   _nextSpellsOnFinish: []

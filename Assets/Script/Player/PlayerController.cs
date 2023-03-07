@@ -3,9 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputManager))]
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerSpellsManager))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ICharacter
 {
+    public CharacterTypeEnum CharacterType => CharacterTypeEnum.Player;
     [SerializeField] private PlayerLook _playerLook = new PlayerLook();
+    [SerializeField] private PlayerCharacter _playerCharacter = new PlayerCharacter();
     [SerializeField] private ArmsVisual _playerVisual;
     private PlayerInputManager _playerInputManager;
     private PlayerMovement _playerMovement;
@@ -54,7 +56,13 @@ public class PlayerController : MonoBehaviour
     {
         if (_playerSpellsManager.IsSpellSelected)
         {
-            _playerSpellsManager.UseSelectedSpell(_playerMovement.CurrentRotation);
+            _playerSpellsManager.UseSelectedSpell(_playerLook.CameraRotation);
         }
     }
+
+    public void HandleHeal(int countOfHealPoints) => _playerCharacter.HandleHeal(countOfHealPoints);
+
+    public void HandleDamage(int countOfHealPoints) => _playerCharacter.HandleDamage(countOfHealPoints);
+
+    public void HandleVelocityBoost() => Debug.Log($"Player -> HandleVelocityBoost");
 }

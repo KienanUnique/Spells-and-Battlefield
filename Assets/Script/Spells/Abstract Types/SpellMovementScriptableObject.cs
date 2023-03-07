@@ -2,5 +2,7 @@ using UnityEngine;
 
 public abstract class SpellMovementScriptableObject : ScriptableObject
 {
-    public abstract void Move(Rigidbody spellRigidbody);
+#nullable enable
+    public abstract void Move(Rigidbody spellRigidbody, Transform? fromCastObjectTransform, float timePassedFromInitialize);
+#nullable disable
 }
