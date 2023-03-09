@@ -1,23 +1,31 @@
-using System;
 using UnityEngine;
 
-[Serializable]
-public class PlayerLook
+public class PlayerLook : MonoBehaviour
 {
-    public Quaternion CameraRotation => _playerCamera.transform.rotation;
-    [SerializeField] private Camera _playerCamera;
+    public Quaternion CameraRotation => _camera.transform.rotation;
+    [SerializeField] private Camera _camera;
+    [SerializeField] private Transform _cameraRootTransform;
     [SerializeField] private PlayerController _playerController;
-    [SerializeField] private float _xSensitivity;
-    [SerializeField] private float _ySensitivity;
+    [SerializeField] private float _upperLimit = -40f;
+    [SerializeField] private float _bottomLimit = 70f;
+    [SerializeField] private float _mouseSensitivity = 21f;
     private float _xRotation = 0f;
-    private Transform PlayerCameraTransform => _playerCamera.transform;
-    private Transform PlayerTransform => _playerController.transform;
+    private Transform _cameraTransform;
+    private Transform _playerTransform;
+
+    private void Awake()
+    {
+        _playerTransform = _playerController.transform;
+        _cameraTransform = _camera.transform;
+    }
+
     public void LookWithMouse(Vector2 mouseLookDelta)
     {
-        _xRotation -= (mouseLookDelta.y * Time.deltaTime) * _ySensitivity;
-        _xRotation = Mathf.Clamp(_xRotation, -80f, 80f);
+        _cameraTransform.position = _cameraRootTransform.position;
+        _xRotation -= mouseLookDelta.y * _mouseSensitivity * Time.deltaTime;
+        _xRotation = Mathf.Clamp(_xRotation, _upperLimit, _bottomLimit);
 
-        PlayerCameraTransform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
-        PlayerTransform.Rotate(Vector3.up * (mouseLookDelta.x * Time.deltaTime) * _xSensitivity);
+        _cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
+        _playerTransform.Rotate(Vector3.up, mouseLookDelta.x * _mouseSensitivity * Time.deltaTime);
     }
 }

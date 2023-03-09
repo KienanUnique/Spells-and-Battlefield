@@ -2,19 +2,27 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerInputManager))]
 [RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerLook))]
 public class PlayerController : MonoBehaviour, ICharacter
 {
-    [SerializeField] private PlayerLook _playerLook = new PlayerLook();
     [SerializeField] private PlayerCharacter _playerCharacter = new PlayerCharacter();
-    [SerializeField] private ArmsVisual _playerVisual;
+    [SerializeField] private PlayerVisual _playerVisual;
     [SerializeField] private PlayerSpellsManager _playerSpellsManager = new PlayerSpellsManager();
     private PlayerInputManager _playerInputManager;
     private PlayerMovement _playerMovement;
+    private PlayerLook _playerLook;
+
+    public void HandleHeal(int countOfHealPoints) => _playerCharacter.HandleHeal(countOfHealPoints);
+
+    public void HandleDamage(int countOfHealPoints) => _playerCharacter.HandleDamage(countOfHealPoints);
+
+    public void HandleVelocityBoost() => Debug.Log($"Player -> HandleVelocityBoost");
 
     private void Awake()
     {
         _playerInputManager = GetComponent<PlayerInputManager>();
         _playerMovement = GetComponent<PlayerMovement>();
+        _playerLook = GetComponent<PlayerLook>();
     }
 
     private void Start()
@@ -30,6 +38,7 @@ public class PlayerController : MonoBehaviour, ICharacter
         _playerInputManager.MoveInputEvent += _playerMovement.Move;
         _playerInputManager.MouseLookEvent += _playerLook.LookWithMouse;
         _playerVisual.UseSpellAnimationMomentStart += UseSelectedSpell;
+        _playerMovement.MovingStatusChanged += _playerVisual.HandlePlayerMovingStatusChange;
     }
 
     private void OnDisable()
@@ -39,6 +48,7 @@ public class PlayerController : MonoBehaviour, ICharacter
         _playerInputManager.MoveInputEvent -= _playerMovement.Move;
         _playerInputManager.MouseLookEvent -= _playerLook.LookWithMouse;
         _playerVisual.UseSpellAnimationMomentStart -= UseSelectedSpell;
+        _playerMovement.MovingStatusChanged -= _playerVisual.HandlePlayerMovingStatusChange;
     }
 
     private void StartUseSelectedSpell()
@@ -56,10 +66,4 @@ public class PlayerController : MonoBehaviour, ICharacter
             _playerSpellsManager.UseSelectedSpell(this, _playerMovement.LocalTransform, _playerLook.CameraRotation);
         }
     }
-
-    public void HandleHeal(int countOfHealPoints) => _playerCharacter.HandleHeal(countOfHealPoints);
-
-    public void HandleDamage(int countOfHealPoints) => _playerCharacter.HandleDamage(countOfHealPoints);
-
-    public void HandleVelocityBoost() => Debug.Log($"Player -> HandleVelocityBoost");
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   _spellMechanicEffect: {fileID: 11400000, guid: 2eb61d60baf263141b2ad0cfeaeeb572, type: 2}
   _spellObjectMovementController: {fileID: 11400000, guid: da903162503c1b1418a8327a7a18e499, type: 2}
   _spellObjectPrefab: {fileID: 7329610058335965431, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
-  _useSpellHandsAnimatorController: {fileID: 22100000, guid: f65edf9f4c679da40a34dd7ad281c72f, type: 2}
+  _useSpellHandsAnimatorController: {fileID: 22100000, guid: fafa660b8bafd8443b7400437ff0c012, type: 2}
   _targetSelecter: {fileID: 11400000, guid: 670c334dd18e17249a4d3206c62fe401, type: 2}
   _spellTrigger: {fileID: 11400000, guid: 9489e5928a003224a8cdf9b0a76e6051, type: 2}
   _nextSpellsOnFinish: []
