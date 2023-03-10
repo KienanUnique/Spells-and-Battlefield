@@ -9,5 +9,5 @@ AnimatorOverrideController:
   m_Name: Player Pulsar Cast AOC
   m_Controller: {fileID: 9100000, guid: f424b5ab23370df4493276047485468d, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: d3b4e66ac3a84f040b43388f12ec665b, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 285c21aee7ac8cb4294f0cdc6661d98e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 166679ff92a4b7c48864e99cb3e32c74, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: fd65eb0bfef72c84a9c63c77b278597e, type: 2}

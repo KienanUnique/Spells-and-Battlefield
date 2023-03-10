@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Empty Spell
+  m_Name: Empty Use Spell Animation
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0

@@ -9,5 +9,5 @@ AnimatorOverrideController:
   m_Name: Player Buff Cast AOC 1
   m_Controller: {fileID: 9100000, guid: f424b5ab23370df4493276047485468d, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: d3b4e66ac3a84f040b43388f12ec665b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 166679ff92a4b7c48864e99cb3e32c74, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: c4de049e569339644b2de4b5f27bd68d, type: 2}
