@@ -18862,34 +18862,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _playerSpellsManager._currentSpells.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _playerSpellsManager._currentSpells.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _playerSpellsManager._currentSpells.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _playerSpellsManager._currentSpells.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _playerSpellsManager._currentSpells.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _playerSpellsManager._currentSpells.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _playerSpellsManager._currentSpells.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
     - target: {fileID: 974464277607573819, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -18900,7 +18872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 974464277607573819, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.4499998
+      value: 4.194
       objectReference: {fileID: 0}
     - target: {fileID: 974464277607573819, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
       propertyPath: m_LocalPosition.z

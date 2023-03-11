@@ -31,14 +31,23 @@ public class PlayerController : MonoBehaviour, ICharacter
         Cursor.visible = false;
     }
 
+    private void Update()
+    {
+        _playerVisual.UpdateMovingData(_playerMovement.NormalizedVelocityDirectionXY, _playerMovement.RatioOfCurrentVelocityToMaximumVelocity);
+    }
+
     private void OnEnable()
     {
         _playerInputManager.JumpEvent += _playerMovement.Jump;
         _playerInputManager.UseSpellEvent += StartUseSelectedSpell;
         _playerInputManager.MoveInputEvent += _playerMovement.Move;
         _playerInputManager.MouseLookEvent += _playerLook.LookWithMouse;
-        _playerVisual.UseSpellAnimationMomentStart += UseSelectedSpell;
-        _playerMovement.MovingStatusChanged += _playerVisual.HandlePlayerMovingStatusChange;
+        _playerInputManager.WalkStartEvent += _playerMovement.StartWalking;
+        _playerInputManager.WalkCancelEvent += _playerMovement.StartRunning;
+        _playerVisual.UseSpellAnimationMomentStartEvent += UseSelectedSpell;
+        _playerMovement.JumpEvent += _playerVisual.PlayJumpAnimation;
+        _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
+        _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
     }
 
     private void OnDisable()
@@ -47,8 +56,12 @@ public class PlayerController : MonoBehaviour, ICharacter
         _playerInputManager.UseSpellEvent -= StartUseSelectedSpell;
         _playerInputManager.MoveInputEvent -= _playerMovement.Move;
         _playerInputManager.MouseLookEvent -= _playerLook.LookWithMouse;
-        _playerVisual.UseSpellAnimationMomentStart -= UseSelectedSpell;
-        _playerMovement.MovingStatusChanged -= _playerVisual.HandlePlayerMovingStatusChange;
+        _playerInputManager.WalkStartEvent -= _playerMovement.StartWalking;
+        _playerInputManager.WalkCancelEvent -= _playerMovement.StartRunning;
+        _playerVisual.UseSpellAnimationMomentStartEvent -= UseSelectedSpell;
+        _playerMovement.JumpEvent -= _playerVisual.PlayJumpAnimation;
+        _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
+        _playerMovement.LandEvent -= _playerVisual.PlayLandAnimation;
     }
 
     private void StartUseSelectedSpell()

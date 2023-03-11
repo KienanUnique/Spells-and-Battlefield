@@ -345,8 +345,8 @@ Transform:
   m_LocalPosition: {x: 4.604, y: 2.4499998, z: -4.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4002195878650950191}
   - {fileID: 3951135657180910357}
+  - {fileID: 4002195878650950191}
   - {fileID: 3557836625193843546}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -377,8 +377,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerVisual: {fileID: 1405126219419474365}
   _playerSpellsManager:
-    _currentSpells: []
-    _spellSpawnObject: {fileID: 3413988243922428793}
+    _currentSpells:
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
+    - {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+    _spellSpawnObject: {fileID: 8284869644091791091}
 --- !u!136 &1698083445434375742
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -389,10 +402,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.18
+  m_Height: 1.8483686
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.93150234, z: 0}
 --- !u!54 &1809322364992030679
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -421,8 +434,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4a49af7cb0c7845afc59eb88fcbe8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveVelocity: 10
-  _jumpVelocity: 10
+  _runVelocity: 10
+  _walkVelocityMagnitude: 4
+  _jumpVelocity: 13
   _gravityVelocity: 15
   _rigidbody: {fileID: 1809322364992030679}
   _groundChecker: {fileID: 7524277153600398822}
@@ -630,6 +644,7 @@ Transform:
   - {fileID: 2762764768677352665}
   - {fileID: 5213257756895607741}
   - {fileID: 4895221231687485519}
+  - {fileID: 8284869644091791091}
   m_Father: {fileID: 1532945826527095065}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1039,6 +1054,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4002195878650950191}
   - component: {fileID: 7524277153600398822}
+  - component: {fileID: 960430615}
   m_Layer: 0
   m_Name: Ground Checker
   m_TagString: Untagged
@@ -1053,12 +1069,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2284558118937813315}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.002, z: 0}
+  m_LocalRotation: {x: -0.000000031138935, y: -0.000000003463128, z: -0.0000000027978173, w: 1}
+  m_LocalPosition: {x: 0, y: -0.012, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 974464277607573819}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7524277153600398822
 MonoBehaviour:
@@ -1072,10 +1088,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a6a7408d668f247b5d5228d31e4329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _checkSphereRadius: 0.1
+  _checkSphereRadius: 0.3
   _groundMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!135 &960430615
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2284558118937813315}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2383877656291126330
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,7 +1414,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 974464277607573819}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &3951135657180910355
 Camera:
@@ -1412,7 +1441,7 @@ Camera:
     height: 1
   near clip plane: 0.045
   far clip plane: 1000
-  field of view: 90
+  field of view: 100
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -1612,14 +1641,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-    'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
-    'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
-    'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform
-    'mixamorig:RightArm'\n\tand more ...\n\tFrom animation clip 'Standing 2H Magic
-    Area Attack 02'\n\tFrom animation clip 'Standing 1H Magic Attack 01'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -1696,6 +1718,36 @@ Transform:
   - {fileID: 7986410813826139069}
   m_Father: {fileID: 3413988243922428793}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5326334795623521007
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8284869644091791091}
+  m_Layer: 0
+  m_Name: Spell Spawn Object
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8284869644091791091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5326334795623521007}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0092, y: 0.1054, z: -0.0453}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3413988243922428793}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5374947432720351797
 GameObject:

@@ -15,4 +15,13 @@ public class ValueWithReactionOnChange<ValueType> where ValueType : IComparable
         }
     }
     private ValueType _value;
+
+    public ValueWithReactionOnChange()
+    {
+    }
+
+    public ValueWithReactionOnChange(ValueType startValue)
+    {
+        _value = startValue;
+    }
 }

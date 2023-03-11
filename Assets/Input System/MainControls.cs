@@ -62,6 +62,15 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Walk"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c477464-951b-40b5-b6ca-1e70e7e5514a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,17 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                     ""action"": ""Use Spell"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ab12695-dc5e-4215-8504-5bad27b4cd86"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Walk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -181,6 +201,7 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActions_Look = m_PlayerActions.FindAction("Look", throwIfNotFound: true);
         m_PlayerActions_UseSpell = m_PlayerActions.FindAction("Use Spell", throwIfNotFound: true);
+        m_PlayerActions_Walk = m_PlayerActions.FindAction("Walk", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -244,6 +265,7 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Jump;
     private readonly InputAction m_PlayerActions_Look;
     private readonly InputAction m_PlayerActions_UseSpell;
+    private readonly InputAction m_PlayerActions_Walk;
     public struct PlayerActionsActions
     {
         private @MainControls m_Wrapper;
@@ -252,6 +274,7 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_PlayerActions_Jump;
         public InputAction @Look => m_Wrapper.m_PlayerActions_Look;
         public InputAction @UseSpell => m_Wrapper.m_PlayerActions_UseSpell;
+        public InputAction @Walk => m_Wrapper.m_PlayerActions_Walk;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -273,6 +296,9 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                 @UseSpell.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnUseSpell;
                 @UseSpell.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnUseSpell;
                 @UseSpell.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnUseSpell;
+                @Walk.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWalk;
+                @Walk.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWalk;
+                @Walk.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWalk;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -289,6 +315,9 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                 @UseSpell.started += instance.OnUseSpell;
                 @UseSpell.performed += instance.OnUseSpell;
                 @UseSpell.canceled += instance.OnUseSpell;
+                @Walk.started += instance.OnWalk;
+                @Walk.performed += instance.OnWalk;
+                @Walk.canceled += instance.OnWalk;
             }
         }
     }
@@ -308,5 +337,6 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnUseSpell(InputAction.CallbackContext context);
+        void OnWalk(InputAction.CallbackContext context);
     }
 }

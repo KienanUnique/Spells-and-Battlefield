@@ -1,4 +1,5 @@
 public enum MovingStatusEnum{
     Idle,
-    Running
+    Walk,
+    Run
 }
