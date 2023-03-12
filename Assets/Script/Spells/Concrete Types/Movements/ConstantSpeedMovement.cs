@@ -4,10 +4,18 @@ using UnityEngine;
 public class ConstantSpeedMovement : SpellMovementScriptableObject
 {
     [SerializeField] private float _speed;
-#nullable enable
-    public override void Move(Rigidbody spellRigidbody, Transform? fromCastObjectTransform, float timePassedFromInitialize)
+    public override ISpellMovement GetImplementationObject() => new ConstantSpeedMovementImplementation(_speed);
+
+    private class ConstantSpeedMovementImplementation : SpellMovementImplementationBase
     {
-        spellRigidbody.MovePosition(spellRigidbody.transform.position + _speed * Time.deltaTime * spellRigidbody.transform.forward);
+        private float _speed;
+
+        public ConstantSpeedMovementImplementation(float speed) => _speed = speed;
+#nullable enable
+        public override void Move(Rigidbody spellRigidbody, Transform? fromCastObjectTransform, float timePassedFromInitialize)
+        {
+            spellRigidbody.MovePosition(spellRigidbody.transform.position + _speed * Time.deltaTime * spellRigidbody.transform.forward);
+        }
+#nullable disable       
     }
-#nullable disable
 }

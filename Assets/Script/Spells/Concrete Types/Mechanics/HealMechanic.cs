@@ -4,8 +4,18 @@ using UnityEngine;
 public class HealMechanic : SpellMechanicEffectScriptableObject
 {
     [SerializeField] private int _healPoints;
-    protected override void ApplyEffectToTarget(ICharacter target)
+
+    public override ISpellMechanicEffect GetImplementationObject() => new HealMechanicImplementation(_healPoints);
+
+    private class HealMechanicImplementation : SpellMechanicEffectImplementationBase
     {
-        target.HandleHeal(_healPoints);
+        private int _healPoints;
+
+        public HealMechanicImplementation(int healPoints) => _healPoints = healPoints;
+
+        protected override void ApplyEffectToTarget(ICharacter target)
+        {
+            target.HandleDamage(_healPoints);
+        }
     }
 }

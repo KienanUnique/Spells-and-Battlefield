@@ -4,8 +4,21 @@ using UnityEngine;
 public class DamageMechanic : SpellMechanicEffectScriptableObject
 {
     [SerializeField] private int _damage;
-    protected override void ApplyEffectToTarget(ICharacter target)
+
+    public override ISpellMechanicEffect GetImplementationObject()
     {
-        target.HandleDamage(_damage);
+        return new DamageMechanicImplementation(_damage);
+    }
+
+    private class DamageMechanicImplementation : SpellMechanicEffectImplementationBase
+    {
+        private int _damage;
+
+        public DamageMechanicImplementation(int damage) => _damage = damage;
+
+        protected override void ApplyEffectToTarget(ICharacter target)
+        {
+            target.HandleDamage(_damage);
+        }
     }
 }

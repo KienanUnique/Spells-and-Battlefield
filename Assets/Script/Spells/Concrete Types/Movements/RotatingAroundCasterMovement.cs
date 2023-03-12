@@ -5,24 +5,38 @@ public class RotatingAroundCasterMovement : SpellMovementScriptableObject
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
-#nullable enable
-    public override void Move(Rigidbody spellRigidbody, Transform? fromCastObjectTransform, float timePassedFromInitialize)
+
+    public override ISpellMovement GetImplementationObject() => new RotatingAroundCasterMovementImplementation(_speed, _radius);
+
+    private class RotatingAroundCasterMovementImplementation : SpellMovementImplementationBase
     {
-        if (fromCastObjectTransform == null)
-        {
-            return;
-        }
+        private float _speed;
+        private float _radius;
 
-        var fromCastObjectPosition = fromCastObjectTransform.position;
-        var spellRigidbodyTransform = spellRigidbody.transform;
-        if (!Mathf.Approximately(_radius, Vector3.Distance(fromCastObjectPosition, spellRigidbodyTransform.position)))
+        public RotatingAroundCasterMovementImplementation(float speed, float radius)
         {
-            var direction = (spellRigidbodyTransform.position - fromCastObjectPosition).normalized;
-            spellRigidbodyTransform.position = fromCastObjectPosition + direction * _radius;
-            spellRigidbodyTransform.position = new Vector3(spellRigidbodyTransform.position.x, fromCastObjectPosition.y, spellRigidbodyTransform.position.z);
+            _speed = speed;
+            _radius = radius;
         }
+#nullable enable
+        public override void Move(Rigidbody spellRigidbody, Transform? fromCastObjectTransform, float timePassedFromInitialize)
+        {
+            if (fromCastObjectTransform == null)
+            {
+                return;
+            }
 
-        spellRigidbodyTransform.RotateAround(fromCastObjectPosition, spellRigidbodyTransform.up, _speed * Time.fixedDeltaTime);
-    }
+            var fromCastObjectPosition = fromCastObjectTransform.position;
+            var spellRigidbodyTransform = spellRigidbody.transform;
+            if (!Mathf.Approximately(_radius, Vector3.Distance(fromCastObjectPosition, spellRigidbodyTransform.position)))
+            {
+                var direction = (spellRigidbodyTransform.position - fromCastObjectPosition).normalized;
+                spellRigidbodyTransform.position = fromCastObjectPosition + direction * _radius;
+                spellRigidbodyTransform.position = new Vector3(spellRigidbodyTransform.position.x, fromCastObjectPosition.y, spellRigidbodyTransform.position.z);
+            }
+
+            spellRigidbodyTransform.RotateAround(fromCastObjectPosition, spellRigidbodyTransform.up, _speed * Time.fixedDeltaTime);
+        }
 #nullable disable
+    }
 }

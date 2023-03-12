@@ -5,11 +5,11 @@ using UnityEngine;
 public class SpellObjectController : MonoBehaviour
 {
     private float TimePassedFromInitialize => Time.time - _initializeTime;
-    private SpellMechanicEffectScriptableObject _spellMechanicEffect;
+    private ISpellMechanicEffect _spellMechanicEffect;
     private Rigidbody _rigidbody;
-    private SpellMovementScriptableObject _spellMovement;
-    private TargetSelecterScriptableObject _targetSelecter;
-    private SpellTriggerScriptableObject _spellTrigger;
+    private ISpellMovement _spellMovement;
+    private ISpellTargetSelecter _targetSelecter;
+    private ISpellTrigger _spellTrigger;
     private ICharacter _casterCharacter;
     private List<Spell> _nextSpellsOnFinish;
     private float _initializeTime;
@@ -20,8 +20,8 @@ public class SpellObjectController : MonoBehaviour
 #nullable disable
 
 #nullable enable
-    public void Initialize(SpellMechanicEffectScriptableObject spellMechanicEffect, SpellMovementScriptableObject spellMovement,
-    TargetSelecterScriptableObject targetSelecter, List<Spell> nextSpellsOnFinish, SpellTriggerScriptableObject spellTrigger,
+    public void Initialize(ISpellMechanicEffect spellMechanicEffect, ISpellMovement spellMovement,
+    ISpellTargetSelecter targetSelecter, List<Spell> nextSpellsOnFinish, ISpellTrigger spellTrigger,
     Transform? casterTransform, ICharacter casterCharacter)
     {
         _spellMechanicEffect = spellMechanicEffect;

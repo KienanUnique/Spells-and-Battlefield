@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-public abstract class SpellMechanicEffectScriptableObject : ScriptableObject
+public abstract class SpellMechanicEffectImplementationBase : ISpellMechanicEffect
 {
     protected abstract void ApplyEffectToTarget(ICharacter target);
     public virtual void ApplyEffectToTargets(List<ICharacter> targets)
