@@ -7,7 +7,7 @@ public class NoneMovement : SpellMovementScriptableObject
 
     private class NoneMovementImplementation : ISpellMovement
     {
-        public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ICharacter casterCharacter) { }
+        public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ISpellInteractable casterCharacter) { }
 
         public void UpdatePosition()
         {

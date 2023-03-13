@@ -16,7 +16,7 @@ public class DamageMechanic : SpellMechanicEffectScriptableObject
 
         public DamageMechanicImplementation(int damage) => _damage = damage;
 
-        protected override void ApplyEffectToTarget(ICharacter target)
+        protected override void ApplyEffectToTarget(ISpellInteractable target)
         {
             target.HandleDamage(_damage);
         }

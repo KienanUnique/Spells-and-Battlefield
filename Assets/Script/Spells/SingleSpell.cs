@@ -18,9 +18,9 @@ public class SingleSpell : ScriptableObject
     private ISpellTargetSelecter TargetSelecter => _targetSelecter.GetImplementationObject();
     private ISpellTrigger SpellTrigger => _trigger.GetImplementationObject();
 
-    public void Cast(Vector3 spawnSpellPosition, Quaternion spawnSpellRotation, Transform castObjectTransform, ICharacter casterCharacter)
+    public void Cast(Vector3 spawnSpellPosition, Quaternion spawnSpellRotation, Transform casterTransform, ISpellInteractable casterCharacter)
     {
         var spellObjectController = Instantiate(_spellObjectPrefab.gameObject, spawnSpellPosition, spawnSpellRotation).GetComponent<SpellObjectController>();
-        spellObjectController.Initialize(SpellMechanicEffect, SpellObjectMovement, TargetSelecter, _nextSpellsOnFinish, SpellTrigger, castObjectTransform, casterCharacter);
+        spellObjectController.Initialize(SpellMechanicEffect, SpellObjectMovement, TargetSelecter, _nextSpellsOnFinish, SpellTrigger, casterTransform, casterCharacter);
     }
 }

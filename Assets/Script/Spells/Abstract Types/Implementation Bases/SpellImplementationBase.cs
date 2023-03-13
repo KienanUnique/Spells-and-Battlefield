@@ -3,12 +3,12 @@ using UnityEngine;
 public abstract class SpellImplementationBase : ISpellImplementation
 {
     protected Rigidbody _spellRigidbody;
-    protected Transform _fromCastObjectTransform;
-    protected ICharacter _casterCharacter;
-    public virtual void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ICharacter casterCharacter)
+    protected Transform _casterTransform;
+    protected ISpellInteractable _casterInterface;
+    public virtual void Initialize(Rigidbody spellRigidbody, Transform casterTransform, ISpellInteractable casterInterface)
     {
         _spellRigidbody = spellRigidbody;
-        _fromCastObjectTransform = fromCastObjectTransform;
-        _casterCharacter = casterCharacter;
+        _casterTransform = casterTransform;
+        _casterInterface = casterInterface;
     }
 }

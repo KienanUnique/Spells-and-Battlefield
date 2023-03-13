@@ -10,11 +10,11 @@ public class FollowCastObjectMovement : SpellMovementScriptableObject
 #nullable enable
         public override void UpdatePosition()
         {
-            if (_fromCastObjectTransform == null)
+            if (_casterTransform == null)
             {
                 return;
             }
-            _spellRigidbody.position = _fromCastObjectTransform.position;
+            _spellRigidbody.position = _casterTransform.position;
         }
 #nullable disable       
     }

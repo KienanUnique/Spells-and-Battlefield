@@ -21,12 +21,12 @@ public class RotatingAroundCasterMovement : SpellMovementScriptableObject
 #nullable enable
         public override void UpdatePosition()
         {
-            if (_fromCastObjectTransform == null)
+            if (_casterTransform == null)
             {
                 return;
             }
 
-            var fromCastObjectPosition = _fromCastObjectTransform.position;
+            var fromCastObjectPosition = _casterTransform.position;
             if (!Mathf.Approximately(_radius, Vector3.Distance(fromCastObjectPosition, _spellRigidbodyTransform.position)))
             {
                 var direction = (_spellRigidbodyTransform.position - fromCastObjectPosition).normalized;

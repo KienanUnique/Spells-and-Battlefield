@@ -327,6 +327,9 @@ GameObject:
   - component: {fileID: 1809322364992030679}
   - component: {fileID: 1429199914850347932}
   - component: {fileID: 7864329448273911007}
+  - component: {fileID: 6121561518250540764}
+  - component: {fileID: 5594681853249262957}
+  - component: {fileID: 9134790704205200508}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -376,22 +379,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerVisual: {fileID: 1405126219419474365}
-  _playerSpellsManager:
-    _currentSpells:
-    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
-    - {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
-    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
-    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-    _spellSpawnObject: {fileID: 8284869644091791091}
 --- !u!136 &1698083445434375742
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -458,6 +445,54 @@ MonoBehaviour:
   _upperLimit: -40
   _bottomLimit: 70
   _mouseSensitivity: 21
+--- !u!114 &6121561518250540764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846477161179582522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e9b97d38605c94aa0b3cf9518c90d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentSpells:
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  _spellSpawnObject: {fileID: 8284869644091791091}
+  _player: {fileID: 846477161179582523}
+  _playerSpellGameObjectInterface: {fileID: 9134790704205200508}
+--- !u!114 &5594681853249262957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846477161179582522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d99fc8b5461545448a9b5101830e941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9134790704205200508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846477161179582522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e15774dc84e81242b7a1c356a23f45a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &871607440877166104
 GameObject:
   m_ObjectHideFlags: 0

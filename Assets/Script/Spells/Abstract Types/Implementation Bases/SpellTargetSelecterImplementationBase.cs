@@ -3,5 +3,5 @@ using UnityEngine;
 
 public abstract class SpellTargetSelecterImplementationBase : SpellImplementationBase, ISpellTargetSelecter
 {
-    public abstract List<ICharacter> SelectTargets();
+    public abstract List<ISpellInteractable> SelectTargets();
 }

@@ -7,6 +7,6 @@ public class CasterSelector : SpellTargetSelecterScriptableObject
     public override ISpellTargetSelecter GetImplementationObject() => new CasterSelectorImplementation();
     private class CasterSelectorImplementation : SpellTargetSelecterImplementationBase
     {
-        public override List<ICharacter> SelectTargets() => new List<ICharacter>() { _casterCharacter };
+        public override List<ISpellInteractable> SelectTargets() => new List<ISpellInteractable>() { _casterInterface };
     }
 }

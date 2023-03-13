@@ -3,26 +3,25 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputManager))]
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerLook))]
-public class PlayerController : MonoBehaviour, ICharacter
+[RequireComponent(typeof(PlayerSpellsManager))]
+[RequireComponent(typeof(SpellGameObjectInterface))]
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerCharacter _playerCharacter = new PlayerCharacter();
     [SerializeField] private PlayerVisual _playerVisual;
-    [SerializeField] private PlayerSpellsManager _playerSpellsManager = new PlayerSpellsManager();
+    private PlayerSpellsManager _playerSpellsManager;
     private PlayerInputManager _playerInputManager;
     private PlayerMovement _playerMovement;
     private PlayerLook _playerLook;
-
-    public void HandleHeal(int countOfHealPoints) => _playerCharacter.HandleHeal(countOfHealPoints);
-
-    public void HandleDamage(int countOfHealPoints) => _playerCharacter.HandleDamage(countOfHealPoints);
-
-    public void HandleVelocityBoost() => Debug.Log($"Player -> HandleVelocityBoost");
+    private SpellGameObjectInterface _spellGameObjectInterface;
 
     private void Awake()
     {
+        _playerSpellsManager = GetComponent<PlayerSpellsManager>();
         _playerInputManager = GetComponent<PlayerInputManager>();
         _playerMovement = GetComponent<PlayerMovement>();
         _playerLook = GetComponent<PlayerLook>();
+        _spellGameObjectInterface = GetComponent<SpellGameObjectInterface>();
     }
 
     private void Start()
@@ -48,6 +47,8 @@ public class PlayerController : MonoBehaviour, ICharacter
         _playerMovement.JumpEvent += _playerVisual.PlayJumpAnimation;
         _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
         _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
+        _spellGameObjectInterface.HandleHealEvent += _playerCharacter.HandleHeal;
+        _spellGameObjectInterface.HandleDamageEvent += _playerCharacter.HandleDamage;
     }
 
     private void OnDisable()
@@ -62,6 +63,8 @@ public class PlayerController : MonoBehaviour, ICharacter
         _playerMovement.JumpEvent -= _playerVisual.PlayJumpAnimation;
         _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
         _playerMovement.LandEvent -= _playerVisual.PlayLandAnimation;
+        _spellGameObjectInterface.HandleHealEvent -= _playerCharacter.HandleHeal;
+        _spellGameObjectInterface.HandleDamageEvent -= _playerCharacter.HandleDamage;
     }
 
     private void StartUseSelectedSpell()
@@ -76,7 +79,7 @@ public class PlayerController : MonoBehaviour, ICharacter
     {
         if (_playerSpellsManager.IsSpellSelected)
         {
-            _playerSpellsManager.UseSelectedSpell(this, _playerMovement.LocalTransform, _playerLook.CameraRotation);
+            _playerSpellsManager.UseSelectedSpell(_playerLook.CameraRotation);
         }
     }
 }

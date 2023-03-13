@@ -10,24 +10,24 @@ public class SpellObjectController : MonoBehaviour
     private ISpellMovement _spellMovement;
     private ISpellTargetSelecter _targetSelecter;
     private ISpellTrigger _spellTrigger;
-    private ICharacter _casterCharacter;
+    private ISpellInteractable _casterCharacter;
     private List<SingleSpell> _nextSpellsOnFinish;
     private float _initializeTime;
     private bool _wasInitialised = false;
 #nullable enable
-    private Transform? _castObjectTransform;
+    private Transform? _casterTransform;
 #nullable disable
 
 #nullable enable
     public void Initialize(ISpellMechanicEffect spellMechanicEffect, ISpellMovement spellMovement,
     ISpellTargetSelecter targetSelecter, List<SingleSpell> nextSpellsOnFinish, ISpellTrigger spellTrigger,
-    Transform? castObjectTransform, ICharacter casterCharacter)
+    Transform? casterTransform, ISpellInteractable casterCharacter)
     {
         _spellMechanicEffect = spellMechanicEffect;
         _spellMovement = spellMovement;
         _targetSelecter = targetSelecter;
         _spellTrigger = spellTrigger;
-        _castObjectTransform = castObjectTransform;
+        _casterTransform = casterTransform;
         List<ISpellImplementation> _spellImplementations = new List<ISpellImplementation>()
         {
             _spellMechanicEffect,
@@ -36,7 +36,7 @@ public class SpellObjectController : MonoBehaviour
             _spellTrigger
         };
 
-        _spellImplementations.ForEach(_spellImplementation => _spellImplementation.Initialize(_rigidbody, castObjectTransform, casterCharacter));
+        _spellImplementations.ForEach(_spellImplementation => _spellImplementation.Initialize(_rigidbody, casterTransform, casterCharacter));
 
         _casterCharacter = casterCharacter;
         _nextSpellsOnFinish = nextSpellsOnFinish;

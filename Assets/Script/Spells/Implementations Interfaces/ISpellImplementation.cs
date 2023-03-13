@@ -3,6 +3,6 @@ using UnityEngine;
 public interface ISpellImplementation
 {
 #nullable enable
-    public void Initialize(Rigidbody spellRigidbody, Transform? castObjectTransform, ICharacter casterCharacter);
+    public void Initialize(Rigidbody spellRigidbody, Transform? casterTransform, ISpellInteractable casterCharacter);
 #nullable disable
 }

@@ -4,7 +4,7 @@ public abstract class SpellMovementImplementationBase : SpellImplementationBase,
 {
     protected Transform _spellRigidbodyTransform;
 
-    public override void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ICharacter casterCharacter)
+    public override void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ISpellInteractable casterCharacter)
     {
         base.Initialize(spellRigidbody, fromCastObjectTransform, casterCharacter);
         _spellRigidbodyTransform = _spellRigidbody.transform;

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public interface ISpellTargetSelecter : ISpellImplementation
 {
-    public List<ICharacter> SelectTargets();
+    public List<ISpellInteractable> SelectTargets();
 }

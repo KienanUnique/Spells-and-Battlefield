@@ -1,19 +1,25 @@
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour, ICharacter
+[RequireComponent(typeof(SpellGameObjectInterface))]
+public class EnemyController : MonoBehaviour
 {
-    public void HandleDamage(int countOfHealPoints)
+    private SpellGameObjectInterface _spellGameObjectInterface;
+    private Character _character;
+    private void Awake()
     {
-        Debug.Log($"Enemy -> HandleDamage: {countOfHealPoints}");
+        _spellGameObjectInterface = GetComponent<SpellGameObjectInterface>();
+        _character = new Character();
     }
 
-    public void HandleHeal(int countOfHealPoints)
+    private void OnEnable()
     {
-        Debug.Log($"Enemy -> HandleHeal: {countOfHealPoints}");
+        _spellGameObjectInterface.HandleHealEvent += _character.HandleHeal;
+        _spellGameObjectInterface.HandleDamageEvent += _character.HandleDamage;
     }
 
-    public void HandleVelocityBoost()
+    private void OnDisable()
     {
-        Debug.Log($"Enemy -> HandleVelocityBoost");
+        _spellGameObjectInterface.HandleHealEvent -= _character.HandleHeal;
+        _spellGameObjectInterface.HandleDamageEvent -= _character.HandleDamage;
     }
 }

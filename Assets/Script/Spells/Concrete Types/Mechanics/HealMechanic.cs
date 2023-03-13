@@ -13,9 +13,9 @@ public class HealMechanic : SpellMechanicEffectScriptableObject
 
         public HealMechanicImplementation(int healPoints) => _healPoints = healPoints;
 
-        protected override void ApplyEffectToTarget(ICharacter target)
+        protected override void ApplyEffectToTarget(ISpellInteractable target)
         {
-            target.HandleDamage(_healPoints);
+            target.HandleHeal(_healPoints);
         }
     }
 }
