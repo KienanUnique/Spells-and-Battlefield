@@ -5,13 +5,13 @@ using UnityEngine;
 public class SpellObjectController : MonoBehaviour
 {
     private float TimePassedFromInitialize => Time.time - _initializeTime;
-    private ISpellMechanicEffect _spellMechanicEffect;
+    private List<ISpellMechanicEffect> _spellMechanicEffects;
     private Rigidbody _rigidbody;
     private ISpellMovement _spellMovement;
     private ISpellTargetSelecter _targetSelecter;
     private ISpellTrigger _spellTrigger;
     private ISpellInteractable _casterCharacter;
-    private List<SingleSpell> _nextSpellsOnFinish;
+    private List<SpellBase> _nextSpellsOnFinish;
     private float _initializeTime;
     private bool _wasInitialised = false;
 #nullable enable
@@ -19,22 +19,22 @@ public class SpellObjectController : MonoBehaviour
 #nullable disable
 
 #nullable enable
-    public void Initialize(ISpellMechanicEffect spellMechanicEffect, ISpellMovement spellMovement,
-    ISpellTargetSelecter targetSelecter, List<SingleSpell> nextSpellsOnFinish, ISpellTrigger spellTrigger,
+    public void Initialize(List<ISpellMechanicEffect> spellMechanicEffects, ISpellMovement spellMovement,
+    ISpellTargetSelecter targetSelecter, List<SpellBase> nextSpellsOnFinish, ISpellTrigger spellTrigger,
     Transform? casterTransform, ISpellInteractable casterCharacter)
     {
-        _spellMechanicEffect = spellMechanicEffect;
+        _spellMechanicEffects = spellMechanicEffects;
         _spellMovement = spellMovement;
         _targetSelecter = targetSelecter;
         _spellTrigger = spellTrigger;
         _casterTransform = casterTransform;
         List<ISpellImplementation> _spellImplementations = new List<ISpellImplementation>()
         {
-            _spellMechanicEffect,
             _spellMovement,
             _targetSelecter,
             _spellTrigger
         };
+        _spellImplementations.AddRange(_spellMechanicEffects);
 
         _spellImplementations.ForEach(_spellImplementation => _spellImplementation.Initialize(_rigidbody, casterTransform, casterCharacter));
 
@@ -63,7 +63,7 @@ public class SpellObjectController : MonoBehaviour
     private void HandleSpellEffect()
     {
         var selectedTargets = _targetSelecter.SelectTargets();
-        _spellMechanicEffect.ApplyEffectToTargets(selectedTargets);
+        _spellMechanicEffects.ForEach(mechanicEffect => mechanicEffect.ApplyEffectToTargets(selectedTargets));
     }
 
     private void HandleFinishSpell()

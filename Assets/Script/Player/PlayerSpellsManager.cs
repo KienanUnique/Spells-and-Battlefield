@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerSpellsManager : MonoBehaviour
 {
     [HideInInspector] public bool IsSpellSelected => _currentSpells.Count > 0;
-    [HideInInspector] public AnimatorOverrideController SelectedSpellHandsAnimatorController => _currentSpells[0].HandsAnimatorController;
+    [HideInInspector] public AnimatorOverrideController SelectedSpellHandsAnimatorController => _currentSpells[0].CastAnimationAnimatorOverrideController;
     [SerializeField] private List<SingleSpell> _currentSpells;
     [SerializeField] private Transform _spellSpawnObject;
     [SerializeField] private PlayerController _player;
