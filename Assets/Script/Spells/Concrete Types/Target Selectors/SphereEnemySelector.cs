@@ -13,10 +13,10 @@ public class SphereEnemySelector : SpellTargetSelecterScriptableObject
 
         public SphereEnemySelectorImplementation(float sphereRadius) => _sphereRadius = sphereRadius;
 
-        public override List<ICharacter> SelectTargets(Vector3 spellPosition, ICharacter casterCharacter)
+        public override List<ICharacter> SelectTargets()
         {
             var selectedTargets = new List<ICharacter>();
-            Collider[] collidersInsideSphere = Physics.OverlapSphere(spellPosition, _sphereRadius);
+            Collider[] collidersInsideSphere = Physics.OverlapSphere(_spellRigidbody.position, _sphereRadius);
             foreach (var hitCollider in collidersInsideSphere)
             {
                 if (hitCollider.gameObject.TryGetComponent<EnemyController>(out EnemyController enemyController))

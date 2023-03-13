@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SpellTargetSelecterImplementationBase : ISpellTargetSelecter
+public abstract class SpellTargetSelecterImplementationBase : SpellImplementationBase, ISpellTargetSelecter
 {
-    public abstract List<ICharacter> SelectTargets(Vector3 spellPosition, ICharacter casterCharacter);
+    public abstract List<ICharacter> SelectTargets();
 }

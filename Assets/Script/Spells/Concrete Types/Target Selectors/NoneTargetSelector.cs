@@ -7,6 +7,8 @@ public class NoneTargetSelector : SpellTargetSelecterScriptableObject
     public override ISpellTargetSelecter GetImplementationObject() => new NoneSelectorImplementation();
     private class NoneSelectorImplementation : ISpellTargetSelecter
     {
-        public List<ICharacter> SelectTargets(Vector3 spellPosition, ICharacter casterCharacter) => new List<ICharacter>();
+        public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ICharacter casterCharacter) { }
+
+        public List<ICharacter> SelectTargets() => new List<ICharacter>();
     }
 }

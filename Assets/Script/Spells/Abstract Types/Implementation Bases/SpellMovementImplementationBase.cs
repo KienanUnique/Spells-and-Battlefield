@@ -1,8 +1,15 @@
 using UnityEngine;
 
-public abstract class SpellMovementImplementationBase : ISpellMovement
+public abstract class SpellMovementImplementationBase : SpellImplementationBase, ISpellMovement
 {
+    protected Transform _spellRigidbodyTransform;
+
+    public override void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ICharacter casterCharacter)
+    {
+        base.Initialize(spellRigidbody, fromCastObjectTransform, casterCharacter);
+        _spellRigidbodyTransform = _spellRigidbody.transform;
+    }
 #nullable enable
-    public abstract void Move(Rigidbody spellRigidbody, Transform? fromCastObjectTransform, float timePassedFromInitialize);
+    public abstract void UpdatePosition();
 #nullable disable
 }

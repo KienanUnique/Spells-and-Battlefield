@@ -9,5 +9,7 @@ public class NoneMechanic : SpellMechanicEffectScriptableObject
     private class NoneMechanicImplementation : ISpellMechanicEffect
     {
         public void ApplyEffectToTargets(List<ICharacter> targets) { }
+
+        public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ICharacter casterCharacter) { }
     }
 }

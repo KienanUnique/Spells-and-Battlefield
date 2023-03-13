@@ -9,12 +9,11 @@ public class ConstantSpeedMovement : SpellMovementScriptableObject
     private class ConstantSpeedMovementImplementation : SpellMovementImplementationBase
     {
         private float _speed;
-
         public ConstantSpeedMovementImplementation(float speed) => _speed = speed;
 #nullable enable
-        public override void Move(Rigidbody spellRigidbody, Transform? fromCastObjectTransform, float timePassedFromInitialize)
+        public override void UpdatePosition()
         {
-            spellRigidbody.MovePosition(spellRigidbody.transform.position + _speed * Time.deltaTime * spellRigidbody.transform.forward);
+            _spellRigidbody.MovePosition(_spellRigidbodyTransform.position + _speed * Time.deltaTime * _spellRigidbodyTransform.forward);
         }
 #nullable disable       
     }

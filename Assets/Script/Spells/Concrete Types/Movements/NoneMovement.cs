@@ -7,7 +7,9 @@ public class NoneMovement : SpellMovementScriptableObject
 
     private class NoneMovementImplementation : ISpellMovement
     {
-        public void Move(Rigidbody spellRigidbody, Transform fromCastObjectTransform, float timePassedFromInitialize)
+        public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ICharacter casterCharacter) { }
+
+        public void UpdatePosition()
         {
             throw new System.NotImplementedException();
         }

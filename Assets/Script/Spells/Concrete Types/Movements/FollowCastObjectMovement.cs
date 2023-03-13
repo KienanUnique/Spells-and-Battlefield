@@ -8,13 +8,13 @@ public class FollowCastObjectMovement : SpellMovementScriptableObject
     private class FollowCastObjectMovementImplementation : SpellMovementImplementationBase
     {
 #nullable enable
-        public override void Move(Rigidbody spellRigidbody, Transform? fromCastObjectTransform, float timePassedFromInitialize)
+        public override void UpdatePosition()
         {
-            if (fromCastObjectTransform == null)
+            if (_fromCastObjectTransform == null)
             {
                 return;
             }
-            spellRigidbody.position = fromCastObjectTransform.position;
+            _spellRigidbody.position = _fromCastObjectTransform.position;
         }
 #nullable disable       
     }

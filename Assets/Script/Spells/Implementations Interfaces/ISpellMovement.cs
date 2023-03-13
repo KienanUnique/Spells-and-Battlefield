@@ -1,8 +1,4 @@
-using UnityEngine;
-
-public interface ISpellMovement
+public interface ISpellMovement : ISpellImplementation
 {
-#nullable enable
-    public abstract void Move(Rigidbody spellRigidbody, Transform? fromCastObjectTransform, float timePassedFromInitialize);
-#nullable disable
+    public abstract void UpdatePosition();
 }
