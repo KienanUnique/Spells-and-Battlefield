@@ -5,13 +5,12 @@ using UnityEngine;
 public class SpellObjectController : MonoBehaviour
 {
     private float TimePassedFromInitialize => Time.time - _initializeTime;
-    private List<ISpellMechanicEffect> _spellMechanicEffects;
     private Rigidbody _rigidbody;
     private ISpellMovement _spellMovement;
-    private ISpellTargetSelecter _targetSelecter;
-    private ISpellTrigger _spellTrigger;
     private ISpellInteractable _casterCharacter;
     private List<SpellBase> _nextSpellsOnFinish;
+    private List<ISpellApplier> _spellAppliers;
+    private ISpellTriggerable _spellMainTrigger;
     private float _initializeTime;
     private bool _wasInitialised = false;
 #nullable enable
@@ -19,22 +18,19 @@ public class SpellObjectController : MonoBehaviour
 #nullable disable
 
 #nullable enable
-    public void Initialize(List<ISpellMechanicEffect> spellMechanicEffects, ISpellMovement spellMovement,
-    ISpellTargetSelecter targetSelecter, List<SpellBase> nextSpellsOnFinish, ISpellTrigger spellTrigger,
+    public void Initialize(ISpellMovement spellMovement, List<SpellBase> nextSpellsOnFinish, List<ISpellApplier> spellAppliers, ISpellTriggerable spellMainTrigger,
     Transform? casterTransform, ISpellInteractable casterCharacter)
     {
-        _spellMechanicEffects = spellMechanicEffects;
         _spellMovement = spellMovement;
-        _targetSelecter = targetSelecter;
-        _spellTrigger = spellTrigger;
+        _spellAppliers = spellAppliers;
+        _spellMainTrigger = spellMainTrigger;
         _casterTransform = casterTransform;
-        List<ISpellImplementation> _spellImplementations = new List<ISpellImplementation>()
-        {
+
+        List<ISpellImplementation> _spellImplementations = new List<ISpellImplementation>() {
             _spellMovement,
-            _targetSelecter,
-            _spellTrigger
+            _spellMainTrigger
         };
-        _spellImplementations.AddRange(_spellMechanicEffects);
+        _spellImplementations.AddRange(_spellAppliers);
 
         _spellImplementations.ForEach(_spellImplementation => _spellImplementation.Initialize(_rigidbody, casterTransform, casterCharacter));
 
@@ -48,24 +44,11 @@ public class SpellObjectController : MonoBehaviour
 
     private void HandleSpellTriggerResponse(SpellTriggerCheckStatusEnum response)
     {
-        switch (response)
+        if (response == SpellTriggerCheckStatusEnum.Finish)
         {
-            case SpellTriggerCheckStatusEnum.HandleEffect:
-                HandleSpellEffect();
-                break;
-            case SpellTriggerCheckStatusEnum.Finish:
-                HandleSpellEffect();
-                HandleFinishSpell();
-                break;
+            HandleFinishSpell();
         }
     }
-
-    private void HandleSpellEffect()
-    {
-        var selectedTargets = _targetSelecter.SelectTargets();
-        _spellMechanicEffects.ForEach(mechanicEffect => mechanicEffect.ApplyEffectToTargets(selectedTargets));
-    }
-
     private void HandleFinishSpell()
     {
         _nextSpellsOnFinish.ForEach(spell => spell.Cast(transform.position, transform.rotation, transform, _casterCharacter));
@@ -82,7 +65,10 @@ public class SpellObjectController : MonoBehaviour
         if (_wasInitialised)
         {
             _spellMovement.UpdatePosition();
-            HandleSpellTriggerResponse(_spellTrigger.CheckTime(TimePassedFromInitialize));
+
+            float commonTimePassedFromInitialize = TimePassedFromInitialize;
+            _spellAppliers.ForEach(spellApplier => spellApplier.CheckTime(commonTimePassedFromInitialize));
+            HandleSpellTriggerResponse(_spellMainTrigger.CheckTime(commonTimePassedFromInitialize));
         }
     }
 
@@ -90,7 +76,8 @@ public class SpellObjectController : MonoBehaviour
     {
         if (_wasInitialised)
         {
-            HandleSpellTriggerResponse(_spellTrigger.CheckContact(other));
+            _spellAppliers.ForEach(spellApplier => spellApplier.CheckContact(other));
+            HandleSpellTriggerResponse(_spellMainTrigger.CheckContact(other));
         }
     }
 

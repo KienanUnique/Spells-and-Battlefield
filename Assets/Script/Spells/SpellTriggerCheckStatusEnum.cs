@@ -1,6 +1,6 @@
 public enum SpellTriggerCheckStatusEnum
 {
-    Wait,
+    Ignore,
     HandleEffect,
     Finish
 }

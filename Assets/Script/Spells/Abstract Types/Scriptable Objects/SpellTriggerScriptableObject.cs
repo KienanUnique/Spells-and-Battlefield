@@ -2,5 +2,5 @@ using UnityEngine;
 
 public abstract class SpellTriggerScriptableObject : ScriptableObject
 {
-    public abstract ISpellTrigger GetImplementationObject();
+    public abstract ISpellTriggerable GetImplementationObject();
 }

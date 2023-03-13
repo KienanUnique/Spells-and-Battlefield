@@ -5,31 +5,29 @@ using UnityEngine;
 public class SingleSpell : ScriptableObject, ISpell
 {
     public AnimatorOverrideController CastAnimationAnimatorOverrideController => _castAnimationAnimatorOverrideController;
-    [SerializeField] private List<SpellMechanicEffectScriptableObject> _mechanicEffects;
     [SerializeField] private SpellMovementScriptableObject _movement;
+    [SerializeField] private List<SpellApplierScriptableObject> _appliers;
+    [SerializeField] private SpellTriggerScriptableObject _mainTrigger;
     [SerializeField] private SpellObjectController _spellObjectPrefab;
     [SerializeField] private AnimatorOverrideController _castAnimationAnimatorOverrideController;
-    [SerializeField] private SpellTargetSelecterScriptableObject _targetSelecter;
-    [SerializeField] private SpellTriggerScriptableObject _trigger;
     [SerializeField] private List<SpellBase> _nextSpellsOnFinish;
 
-    private List<ISpellMechanicEffect> SpellMechanicEffects
+    private List<ISpellApplier> SpellAppliers
     {
         get
         {
-            var iSpellMechanicsList = new List<ISpellMechanicEffect>();
-            _mechanicEffects.ForEach(mechanicEffect => iSpellMechanicsList.Add(mechanicEffect.GetImplementationObject()));
-            return iSpellMechanicsList;
+            var iSpellAppliersList = new List<ISpellApplier>();
+            _appliers.ForEach(spellApplier => iSpellAppliersList.Add(spellApplier.GetImplementationObject()));
+            return iSpellAppliersList;
         }
     }
 
     private ISpellMovement SpellObjectMovement => _movement.GetImplementationObject();
-    private ISpellTargetSelecter TargetSelecter => _targetSelecter.GetImplementationObject();
-    private ISpellTrigger SpellTrigger => _trigger.GetImplementationObject();
+    private ISpellTriggerable SpellTrigger => _mainTrigger.GetImplementationObject();
 
     public void Cast(Vector3 spawnSpellPosition, Quaternion spawnSpellRotation, Transform casterTransform, ISpellInteractable casterCharacter)
     {
         var spellObjectController = Instantiate(_spellObjectPrefab.gameObject, spawnSpellPosition, spawnSpellRotation).GetComponent<SpellObjectController>();
-        spellObjectController.Initialize(SpellMechanicEffects, SpellObjectMovement, TargetSelecter, _nextSpellsOnFinish, SpellTrigger, casterTransform, casterCharacter);
+        spellObjectController.Initialize(SpellObjectMovement, _nextSpellsOnFinish, SpellAppliers, SpellTrigger, casterTransform, casterCharacter);
     }
 }

@@ -5,7 +5,7 @@ public class CollisionEnterTrigger : SpellTriggerScriptableObject
 {
     [SerializeField] private float _timeBeforeFinishTrigger;
 
-    public override ISpellTrigger GetImplementationObject() => new CollisionEnterTriggerImplementation(_timeBeforeFinishTrigger);
+    public override ISpellTriggerable GetImplementationObject() => new CollisionEnterTriggerImplementation(_timeBeforeFinishTrigger);
 
     private class CollisionEnterTriggerImplementation : SpellTriggerImplementationBase
     {
@@ -14,6 +14,6 @@ public class CollisionEnterTrigger : SpellTriggerScriptableObject
         public CollisionEnterTriggerImplementation(float timeBeforeFinishTrigger) => _timeBeforeFinishTrigger = timeBeforeFinishTrigger;
 
         public override SpellTriggerCheckStatusEnum CheckContact(Collider other) => SpellTriggerCheckStatusEnum.Finish;
-        public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize) => _timeBeforeFinishTrigger > timePassedFromInitialize ? SpellTriggerCheckStatusEnum.Wait : SpellTriggerCheckStatusEnum.Finish;
+        public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize) => _timeBeforeFinishTrigger > timePassedFromInitialize ? SpellTriggerCheckStatusEnum.Ignore : SpellTriggerCheckStatusEnum.Finish;
     }
 }

@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cee8cb326b2072e4ea6a9ae7e6fa3025, type: 3}
   m_Name: Heal Spell
   m_EditorClassIdentifier: 
-  _mechanicEffects:
-  - {fileID: 11400000, guid: 2eb61d60baf263141b2ad0cfeaeeb572, type: 2}
   _movement: {fileID: 11400000, guid: da903162503c1b1418a8327a7a18e499, type: 2}
+  _appliers:
+  - {fileID: 11400000, guid: f2f8496c1a5c6fe49a21c7f81b369bc7, type: 2}
+  _mainTrigger: {fileID: 11400000, guid: 9489e5928a003224a8cdf9b0a76e6051, type: 2}
   _spellObjectPrefab: {fileID: 7329610058335965431, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
   _castAnimationAnimatorOverrideController: {fileID: 22100000, guid: fafa660b8bafd8443b7400437ff0c012, type: 2}
-  _targetSelecter: {fileID: 11400000, guid: 670c334dd18e17249a4d3206c62fe401, type: 2}
-  _trigger: {fileID: 11400000, guid: 9489e5928a003224a8cdf9b0a76e6051, type: 2}
   _nextSpellsOnFinish: []
