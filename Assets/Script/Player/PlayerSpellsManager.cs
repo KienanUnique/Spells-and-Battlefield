@@ -8,7 +8,6 @@ public class PlayerSpellsManager : MonoBehaviour
     [SerializeField] private List<SingleSpell> _currentSpells;
     [SerializeField] private Transform _spellSpawnObject;
     [SerializeField] private PlayerController _player;
-    [SerializeField] private SpellGameObjectInterface _playerSpellGameObjectInterface;
     private Transform _playerTransform;
 
     private void Awake()
@@ -18,7 +17,7 @@ public class PlayerSpellsManager : MonoBehaviour
 
     public void UseSelectedSpell(Quaternion direction)
     {
-        _currentSpells[0].Cast(_spellSpawnObject.position, direction, _playerTransform, _playerSpellGameObjectInterface);
+        _currentSpells[0].Cast(_spellSpawnObject.position, direction, _playerTransform, _player);
         _currentSpells.RemoveAt(0);
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class InteractableGameObjectInterface : MonoBehaviour, IInteractable
+public class IdHolder : MonoBehaviour, IInteractable
 {
     [HideInInspector] public int Id => _id;
     private int _id;

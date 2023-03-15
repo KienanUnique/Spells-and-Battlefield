@@ -25,9 +25,9 @@ public class SphereSelector : SpellTargetSelecterScriptableObject
             Collider[] collidersInsideSphere = Physics.OverlapSphere(_spellRigidbody.position, _sphereRadius);
             foreach (var hitCollider in collidersInsideSphere)
             {
-                if (hitCollider.gameObject.TryGetComponent<SpellGameObjectInterface>(out SpellGameObjectInterface spellGameObjectInterface) && !(_ignoreCasterCollisions && spellGameObjectInterface.Id == _casterInterface.Id))
+                if (hitCollider.gameObject.TryGetComponent<ISpellInteractable>(out ISpellInteractable iSpellInteractable) && !(_ignoreCasterCollisions && iSpellInteractable.Id == _casterInterface.Id))
                 {
-                    selectedTargets.Add(spellGameObjectInterface);
+                    selectedTargets.Add(iSpellInteractable);
                 }
             }
             return selectedTargets;

@@ -4,16 +4,18 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerLook))]
 [RequireComponent(typeof(PlayerSpellsManager))]
-[RequireComponent(typeof(SpellGameObjectInterface))]
-public class PlayerController : MonoBehaviour
+[RequireComponent(typeof(IdHolder))]
+public class PlayerController : MonoBehaviour, IPlayer
 {
+    public int Id => _idHolder.Id;
+
     [SerializeField] private PlayerCharacter _playerCharacter = new PlayerCharacter();
     [SerializeField] private PlayerVisual _playerVisual;
     private PlayerSpellsManager _playerSpellsManager;
     private PlayerInputManager _playerInputManager;
     private PlayerMovement _playerMovement;
     private PlayerLook _playerLook;
-    private SpellGameObjectInterface _spellGameObjectInterface;
+    private IdHolder _idHolder;
 
     private void Awake()
     {
@@ -21,7 +23,7 @@ public class PlayerController : MonoBehaviour
         _playerInputManager = GetComponent<PlayerInputManager>();
         _playerMovement = GetComponent<PlayerMovement>();
         _playerLook = GetComponent<PlayerLook>();
-        _spellGameObjectInterface = GetComponent<SpellGameObjectInterface>();
+        _idHolder = GetComponent<IdHolder>();
     }
 
     private void Start()
@@ -47,8 +49,6 @@ public class PlayerController : MonoBehaviour
         _playerMovement.JumpEvent += _playerVisual.PlayJumpAnimation;
         _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
         _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
-        _spellGameObjectInterface.HandleHealEvent += _playerCharacter.HandleHeal;
-        _spellGameObjectInterface.HandleDamageEvent += _playerCharacter.HandleDamage;
     }
 
     private void OnDisable()
@@ -63,8 +63,6 @@ public class PlayerController : MonoBehaviour
         _playerMovement.JumpEvent -= _playerVisual.PlayJumpAnimation;
         _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
         _playerMovement.LandEvent -= _playerVisual.PlayLandAnimation;
-        _spellGameObjectInterface.HandleHealEvent -= _playerCharacter.HandleHeal;
-        _spellGameObjectInterface.HandleDamageEvent -= _playerCharacter.HandleDamage;
     }
 
     private void StartUseSelectedSpell()
@@ -81,5 +79,15 @@ public class PlayerController : MonoBehaviour
         {
             _playerSpellsManager.UseSelectedSpell(_playerLook.CameraRotation);
         }
+    }
+
+    public void HandleHeal(int countOfHealthPoints)
+    {
+        _playerCharacter.HandleHeal(countOfHealthPoints);
+    }
+
+    public void HandleDamage(int countOfHealthPoints)
+    {
+        _playerCharacter.HandleDamage(countOfHealthPoints);
     }
 }
