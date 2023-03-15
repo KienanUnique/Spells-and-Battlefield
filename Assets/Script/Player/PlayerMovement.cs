@@ -51,20 +51,24 @@ public partial class PlayerMovement : MonoBehaviour
         _isGrounded = new ValueWithReactionOnChange<bool>(true);
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         _isGrounded.ValueChanged += OnGroundedStatusChanged;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         _isGrounded.ValueChanged -= OnGroundedStatusChanged;
     }
 
     private void OnGroundedStatusChanged(bool isGrounded)
     {
-        if(isGrounded){
+        if (isGrounded)
+        {
             LandEvent?.Invoke();
         }
-        else{
+        else
+        {
             FallEvent?.Invoke();
         }
     }
@@ -74,7 +78,6 @@ public partial class PlayerMovement : MonoBehaviour
         _isGrounded.Value = _groundChecker.IsGrounded;
 
         var localDirection = LocalTransform.TransformDirection(new Vector3(_inputedMoveDirection.x, 0, _inputedMoveDirection.y));
-
         float currentVelocityMagnitude = 0;
         switch (_inputMovingTypeRequiered)
         {
@@ -85,16 +88,14 @@ public partial class PlayerMovement : MonoBehaviour
                 currentVelocityMagnitude = _runVelocity;
                 break;
         }
-
-        var needVelocity = localDirection * currentVelocityMagnitude;
-
-        needVelocity.y = _rigidbody.velocity.y;
-        _rigidbody.velocity = needVelocity;
+        var needVelocity = localDirection * currentVelocityMagnitude - (new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z));
+        _rigidbody.AddForce(needVelocity, ForceMode.VelocityChange);
 
         _rigidbody.AddForce(_rigidbody.mass * _gravityVelocity * Vector3.down);
     }
 
-    private void Update() {
+    private void Update()
+    {
         RatioOfCurrentVelocityToMaximumVelocity = _rigidbody.velocity.magnitude / _runVelocity;
     }
 
