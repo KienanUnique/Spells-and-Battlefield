@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(EnemyPathfinder))]
+[RequireComponent(typeof(EnemyControllerBase))]
 public class MoveToTargetState : State
 {
-    private EnemyPathfinder _enemyPathfinder;
+    private EnemyControllerBase _enemyPathfinder;
 
     private void Awake()
     {
-        _enemyPathfinder = GetComponent<EnemyPathfinder>();
+        _enemyPathfinder = GetComponent<EnemyControllerBase>();
     }
 
     public override void Enter(IPlayer target)

@@ -329,6 +329,7 @@ GameObject:
   - component: {fileID: 7864329448273911007}
   - component: {fileID: 6121561518250540764}
   - component: {fileID: 5594681853249262957}
+  - component: {fileID: 6762542172580721736}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -457,13 +458,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentSpells:
-  - {fileID: 11400000, guid: 9098a81edd20bcf43adf1725cac809ab, type: 2}
-  - {fileID: 11400000, guid: 9098a81edd20bcf43adf1725cac809ab, type: 2}
-  - {fileID: 11400000, guid: 9098a81edd20bcf43adf1725cac809ab, type: 2}
   - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-  - {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
   - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-  - {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
   - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
   - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
   - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
@@ -481,6 +481,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d99fc8b5461545448a9b5101830e941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6762542172580721736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846477161179582522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e265b715d32591498e4462ab6370a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &871607440877166104
@@ -1079,7 +1091,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4002195878650950191}
   - component: {fileID: 7524277153600398822}
-  - component: {fileID: 960430615}
   m_Layer: 0
   m_Name: Ground Checker
   m_TagString: Untagged
@@ -1113,23 +1124,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a6a7408d668f247b5d5228d31e4329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _checkSphereRadius: 0.3
+  _checkSphereRadius: 0.05
   _groundMask:
     serializedVersion: 2
     m_Bits: 64
---- !u!135 &960430615
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2284558118937813315}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.05
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2383877656291126330
 GameObject:
   m_ObjectHideFlags: 0

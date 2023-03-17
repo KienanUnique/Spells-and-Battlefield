@@ -4,14 +4,15 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerLook))]
 [RequireComponent(typeof(PlayerSpellsManager))]
+[RequireComponent(typeof(PlayerCharacter))]
 [RequireComponent(typeof(IdHolder))]
 public class PlayerController : MonoBehaviour, IPlayer
 {
     public int Id => _idHolder.Id;
     public Transform MainTransform => _playerMovement.LocalTransform;
 
-    [SerializeField] private PlayerCharacter _playerCharacter = new PlayerCharacter();
     [SerializeField] private PlayerVisual _playerVisual;
+    private PlayerCharacter _playerCharacter;
     private PlayerSpellsManager _playerSpellsManager;
     private PlayerInputManager _playerInputManager;
     private PlayerMovement _playerMovement;
@@ -20,6 +21,7 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     private void Awake()
     {
+        _playerCharacter = GetComponent<PlayerCharacter>();
         _playerSpellsManager = GetComponent<PlayerSpellsManager>();
         _playerInputManager = GetComponent<PlayerInputManager>();
         _playerMovement = GetComponent<PlayerMovement>();

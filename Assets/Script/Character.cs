@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Character
+public abstract class Character : MonoBehaviour
 {
     public virtual void HandleHeal(int countOfHealPoints)
     {
