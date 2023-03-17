@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 105fcd5b17d36c84f8717f899305db5c
+guid: cf2c67a3967f7574eb1b13d1467ed4cb
 ModelImporter:
   serializedVersion: 20300
   internalIDToNameTable: []
@@ -32,18 +32,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: sword and shield strafe
+      name: sword and shield walk forward
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 39
+      lastFrame: 33
       wrapMode: 0
-      orientationOffsetY: 0
+      orientationOffsetY: -12.47
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1

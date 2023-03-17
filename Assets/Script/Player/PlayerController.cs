@@ -8,6 +8,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour, IPlayer
 {
     public int Id => _idHolder.Id;
+    public Transform MainTransform => _playerMovement.LocalTransform;
 
     [SerializeField] private PlayerCharacter _playerCharacter = new PlayerCharacter();
     [SerializeField] private PlayerVisual _playerVisual;
