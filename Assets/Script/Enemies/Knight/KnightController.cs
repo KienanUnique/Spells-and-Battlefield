@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(KnightCharacter))]
 [RequireComponent(typeof(KnightCharacter))]
@@ -29,7 +28,7 @@ public class KnightController : EnemyControllerBase
     public void StartSwordAttack(Transform _target)
     {
         _knightVisual.StartAttackWithSwordAnimation();
-        _enemyMovement.StartMovingToTarget(_target);
+        _enemyMovement.StartMovingWithRotatingTowardsTarget(_target);
     }
 
     public void StopSwordAttack()

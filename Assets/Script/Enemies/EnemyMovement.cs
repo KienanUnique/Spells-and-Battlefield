@@ -7,7 +7,6 @@ using UnityEngine.AI;
 public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] private float _updateDestinationCooldownSeconds;
-    [SerializeField] private float _rotationSpeed;
     private NavMeshAgent _navMeshAgent;
     private Coroutine _currentActionCoroutine = null;
 
@@ -21,6 +20,7 @@ public class EnemyMovement : MonoBehaviour
         if (_currentActionCoroutine == null)
         {
             _navMeshAgent.isStopped = false;
+            _navMeshAgent.updateRotation = true;
             _currentActionCoroutine = StartCoroutine(UpdateDestinationWithCooldown(target));
         }
         else
@@ -29,13 +29,13 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public void StartRotatingTowardsTarget(Transform target)
+    public void StartMovingWithRotatingTowardsTarget(Transform target)
     {
         if (_currentActionCoroutine == null)
         {
-            _navMeshAgent.velocity = Vector3.zero;
-            _navMeshAgent.isStopped = true;
-            _currentActionCoroutine = StartCoroutine(RotatingTowardsTarget(target));
+            _navMeshAgent.isStopped = false;
+            _navMeshAgent.updateRotation = false;
+            _currentActionCoroutine = StartCoroutine(MovingWithRotatingTowardsTarget(target));
         }
         else
         {
@@ -51,6 +51,7 @@ public class EnemyMovement : MonoBehaviour
             _currentActionCoroutine = null;
             _navMeshAgent.velocity = Vector3.zero;
             _navMeshAgent.isStopped = true;
+            _navMeshAgent.updateRotation = false;
         }
         else
         {
@@ -67,11 +68,16 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator RotatingTowardsTarget(Transform target)
+    private IEnumerator MovingWithRotatingTowardsTarget(Transform target)
     {
         while (true)
         {
-            transform.LookAt(target);
+            _navMeshAgent.SetDestination(target.position);
+
+            var direction = (target.position - transform.position).normalized;
+            var lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = lookRotation;
+
             yield return null;
         }
     }

@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class GroundChecker : MonoBehaviour
 {
     public bool IsGrounded { private set; get; } = false;
@@ -8,18 +10,41 @@ public class GroundChecker : MonoBehaviour
     public Action Fall;
     [SerializeField] private float _checkSphereRadius;
     [SerializeField] private LayerMask _groundMask;
+    private List<Collider> _groundColliders;
 
-    private void Update()
+    private void Awake()
     {
-        var lastGroundedStatus = IsGrounded;
-        IsGrounded = Physics.OverlapSphere(transform.position, _checkSphereRadius, _groundMask).Length > 0;
-        if (lastGroundedStatus == false && IsGrounded == true)
+        _groundColliders = new List<Collider>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (IsGroundCollider(other))
         {
-            Land?.Invoke();
+            _groundColliders.Add(other);
+            if (!IsGrounded)
+            {
+                Land?.Invoke();
+                IsGrounded = true;
+            }
         }
-        else if (lastGroundedStatus == true && IsGrounded == false)
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (IsGroundCollider(other))
         {
-            Fall?.Invoke();
+            _groundColliders.Remove(other);
+            if (_groundColliders.Count == 0 && IsGrounded)
+            {
+                Fall?.Invoke();
+                IsGrounded = false;
+            }
         }
+    }
+
+    private bool IsGroundCollider(Collider colliderToCheck)
+    {
+        return (_groundMask.value & (1 << colliderToCheck.gameObject.layer)) > 0;
     }
 }
