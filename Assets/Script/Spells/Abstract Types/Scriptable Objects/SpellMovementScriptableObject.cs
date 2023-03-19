@@ -1,6 +1,10 @@
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-public abstract class SpellMovementScriptableObject : ScriptableObject
+namespace Spells.Abstract_Types.Scriptable_Objects
 {
-    public abstract ISpellMovement GetImplementationObject();
+    public abstract class SpellMovementScriptableObject : ScriptableObject
+    {
+        public abstract ISpellMovement GetImplementationObject();
+    }
 }

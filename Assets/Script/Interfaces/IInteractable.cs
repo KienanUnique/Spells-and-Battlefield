@@ -1,4 +1,7 @@
-public interface IInteractable
+namespace Interfaces
 {
-    public int Id { get; }
+    public interface IInteractable
+    {
+        public int Id { get; }
+    }
 }

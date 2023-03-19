@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using Enemies.Knight;
+using Enemies.State_Machine;
+using Interfaces;
+using UnityEngine;
 
 [RequireComponent(typeof(KnightController))]
 public class KnightAttackState : State

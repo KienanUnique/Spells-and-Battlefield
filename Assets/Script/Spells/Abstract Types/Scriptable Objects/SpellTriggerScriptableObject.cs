@@ -1,6 +1,10 @@
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-public abstract class SpellTriggerScriptableObject : ScriptableObject
+namespace Spells.Abstract_Types.Scriptable_Objects
 {
-    public abstract ISpellTriggerable GetImplementationObject();
+    public abstract class SpellTriggerScriptableObject : ScriptableObject
+    {
+        public abstract ISpellTrigger GetImplementationObject();
+    }
 }

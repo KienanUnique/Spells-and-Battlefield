@@ -1,14 +1,25 @@
 using System.Collections.Generic;
+using Interfaces;
+using Spells.Abstract_Types.Scriptable_Objects;
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "None Target Selector", menuName = "Spells and Battlefield/Spell System/Target Selector/None Target Selector", order = 0)]
-public class NoneTargetSelector : SpellTargetSelecterScriptableObject
+namespace Spells.Concrete_Types.Target_Selectors
 {
-    public override ISpellTargetSelecter GetImplementationObject() => new NoneSelectorImplementation();
-    private class NoneSelectorImplementation : ISpellTargetSelecter
+    [CreateAssetMenu(fileName = "None Target Selector",
+        menuName = "Spells and Battlefield/Spell System/Target Selector/None Target Selector", order = 0)]
+    public class NoneTargetSelector : SpellTargetSelecterScriptableObject
     {
-        public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ISpellInteractable casterCharacter) { }
+        public override ISpellTargetSelector GetImplementationObject() => new NoneSelectorImplementation();
 
-        public List<ISpellInteractable> SelectTargets() => new List<ISpellInteractable>();
+        private class NoneSelectorImplementation : ISpellTargetSelector
+        {
+            public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform,
+                ISpellInteractable casterCharacter)
+            {
+            }
+
+            public List<ISpellInteractable> SelectTargets() => new List<ISpellInteractable>();
+        }
     }
 }

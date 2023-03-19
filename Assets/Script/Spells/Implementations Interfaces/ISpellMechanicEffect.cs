@@ -1,6 +1,10 @@
 using System.Collections.Generic;
+using Interfaces;
 
-public interface ISpellMechanicEffect : ISpellImplementation
+namespace Spells.Implementations_Interfaces
 {
-    public void ApplyEffectToTargets(List<ISpellInteractable> targets);
+    public interface ISpellMechanicEffect : ISpellImplementation
+    {
+        public void ApplyEffectToTargets(List<ISpellInteractable> targets);
+    }
 }

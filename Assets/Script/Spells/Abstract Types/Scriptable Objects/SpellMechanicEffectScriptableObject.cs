@@ -1,6 +1,10 @@
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-public abstract class SpellMechanicEffectScriptableObject : ScriptableObject
+namespace Spells.Abstract_Types.Scriptable_Objects
 {
-    public abstract ISpellMechanicEffect GetImplementationObject();
+    public abstract class SpellMechanicEffectScriptableObject : ScriptableObject
+    {
+        public abstract ISpellMechanicEffect GetImplementationObject();
+    }
 }

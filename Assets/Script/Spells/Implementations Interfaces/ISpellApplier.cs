@@ -1,4 +1,6 @@
-public interface ISpellApplier : ISpellTriggerable
+namespace Spells.Implementations_Interfaces
 {
-
+    public interface ISpellApplier : ISpellTrigger
+    {
+    }
 }

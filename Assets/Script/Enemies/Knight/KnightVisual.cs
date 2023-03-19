@@ -1,19 +1,22 @@
 ﻿using System;
 using UnityEngine;
 
-public class KnightVisual : EnemyVisualBase
+namespace Enemies.Knight
 {
-    public Action AttackWithSwordAnimationMomentStartEvent;
-    public void InvokeAttackWithSwordAnimationMomentStart() => AttackWithSwordAnimationMomentStartEvent?.Invoke();
-    private static readonly int _isAttackingBoolHash = Animator.StringToHash("Is Attacking");
-
-    public void StartAttackWithSwordAnimation()
+    public class KnightVisual : EnemyVisualBase
     {
-        _characterAnimator.SetBool(_isAttackingBoolHash, true);
-    }
+        public Action AttackWithSwordAnimationMomentStartEvent;
+        public void InvokeAttackWithSwordAnimationMomentStart() => AttackWithSwordAnimationMomentStartEvent?.Invoke();
+        private static readonly int IsAttackingBoolHash = Animator.StringToHash("Is Attacking");
 
-    public void StopAttackWithSwordAnimation()
-    {
-        _characterAnimator.SetBool(_isAttackingBoolHash, false);
+        public void StartAttackWithSwordAnimation()
+        {
+            _characterAnimator.SetBool(IsAttackingBoolHash, true);
+        }
+
+        public void StopAttackWithSwordAnimation()
+        {
+            _characterAnimator.SetBool(IsAttackingBoolHash, false);
+        }
     }
 }

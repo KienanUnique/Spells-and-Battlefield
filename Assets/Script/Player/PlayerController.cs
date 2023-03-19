@@ -1,96 +1,101 @@
+using Interfaces;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInputManager))]
-[RequireComponent(typeof(PlayerMovement))]
-[RequireComponent(typeof(PlayerLook))]
-[RequireComponent(typeof(PlayerSpellsManager))]
-[RequireComponent(typeof(PlayerCharacter))]
-[RequireComponent(typeof(IdHolder))]
-public class PlayerController : MonoBehaviour, IPlayer
+namespace Player
 {
-    public int Id => _idHolder.Id;
-    public Transform MainTransform => _playerMovement.LocalTransform;
-
-    [SerializeField] private PlayerVisual _playerVisual;
-    private PlayerCharacter _playerCharacter;
-    private PlayerSpellsManager _playerSpellsManager;
-    private PlayerInputManager _playerInputManager;
-    private PlayerMovement _playerMovement;
-    private PlayerLook _playerLook;
-    private IdHolder _idHolder;
-
-    private void Awake()
+    [RequireComponent(typeof(PlayerInputManager))]
+    [RequireComponent(typeof(PlayerMovement))]
+    [RequireComponent(typeof(PlayerLook))]
+    [RequireComponent(typeof(PlayerSpellsManager))]
+    [RequireComponent(typeof(PlayerCharacter))]
+    [RequireComponent(typeof(IdHolder))]
+    public class PlayerController : MonoBehaviour, IPlayer
     {
-        _playerCharacter = GetComponent<PlayerCharacter>();
-        _playerSpellsManager = GetComponent<PlayerSpellsManager>();
-        _playerInputManager = GetComponent<PlayerInputManager>();
-        _playerMovement = GetComponent<PlayerMovement>();
-        _playerLook = GetComponent<PlayerLook>();
-        _idHolder = GetComponent<IdHolder>();
-    }
+        public int Id => _idHolder.Id;
+        public Transform MainTransform => _playerMovement.LocalTransform;
 
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+        [SerializeField] private PlayerVisual _playerVisual;
+        private PlayerCharacter _playerCharacter;
+        private PlayerSpellsManager _playerSpellsManager;
+        private PlayerInputManager _playerInputManager;
+        private PlayerMovement _playerMovement;
+        private PlayerLook _playerLook;
+        private IdHolder _idHolder;
 
-    private void Update()
-    {
-        _playerVisual.UpdateMovingData(_playerMovement.NormalizedVelocityDirectionXY, _playerMovement.RatioOfCurrentVelocityToMaximumVelocity);
-    }
-
-    private void OnEnable()
-    {
-        _playerInputManager.JumpEvent += _playerMovement.Jump;
-        _playerInputManager.UseSpellEvent += StartUseSelectedSpell;
-        _playerInputManager.MoveInputEvent += _playerMovement.Move;
-        _playerInputManager.MouseLookEvent += _playerLook.LookWithMouse;
-        _playerInputManager.WalkStartEvent += _playerMovement.StartWalking;
-        _playerInputManager.WalkCancelEvent += _playerMovement.StartRunning;
-        _playerVisual.UseSpellAnimationMomentStartEvent += UseSelectedSpell;
-        _playerMovement.JumpEvent += _playerVisual.PlayJumpAnimation;
-        _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
-        _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
-    }
-
-    private void OnDisable()
-    {
-        _playerInputManager.JumpEvent -= _playerMovement.Jump;
-        _playerInputManager.UseSpellEvent -= StartUseSelectedSpell;
-        _playerInputManager.MoveInputEvent -= _playerMovement.Move;
-        _playerInputManager.MouseLookEvent -= _playerLook.LookWithMouse;
-        _playerInputManager.WalkStartEvent -= _playerMovement.StartWalking;
-        _playerInputManager.WalkCancelEvent -= _playerMovement.StartRunning;
-        _playerVisual.UseSpellAnimationMomentStartEvent -= UseSelectedSpell;
-        _playerMovement.JumpEvent -= _playerVisual.PlayJumpAnimation;
-        _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
-        _playerMovement.LandEvent -= _playerVisual.PlayLandAnimation;
-    }
-
-    private void StartUseSelectedSpell()
-    {
-        if (_playerSpellsManager.IsSpellSelected)
+        private void Awake()
         {
-            _playerVisual.PlayUseSpellAnimation(_playerSpellsManager.SelectedSpellHandsAnimatorController);
+            _playerCharacter = GetComponent<PlayerCharacter>();
+            _playerSpellsManager = GetComponent<PlayerSpellsManager>();
+            _playerInputManager = GetComponent<PlayerInputManager>();
+            _playerMovement = GetComponent<PlayerMovement>();
+            _playerLook = GetComponent<PlayerLook>();
+            _idHolder = GetComponent<IdHolder>();
         }
-    }
 
-    private void UseSelectedSpell()
-    {
-        if (_playerSpellsManager.IsSpellSelected)
+        private void Start()
         {
-            _playerSpellsManager.UseSelectedSpell(_playerLook.CameraRotation);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
-    }
 
-    public void HandleHeal(int countOfHealthPoints)
-    {
-        _playerCharacter.HandleHeal(countOfHealthPoints);
-    }
+        private void Update()
+        {
+            _playerVisual.UpdateMovingData(_playerMovement.NormalizedVelocityDirectionXY,
+                _playerMovement.RatioOfCurrentVelocityToMaximumVelocity);
+        }
 
-    public void HandleDamage(int countOfHealthPoints)
-    {
-        _playerCharacter.HandleDamage(countOfHealthPoints);
+        private void OnEnable()
+        {
+            _playerInputManager.JumpEvent += _playerMovement.Jump;
+            _playerInputManager.UseSpellEvent += StartUseSelectedSpell;
+            _playerInputManager.MoveInputEvent += _playerMovement.Move;
+            _playerInputManager.MouseLookEvent += _playerLook.LookWithMouse;
+            _playerInputManager.WalkStartEvent += _playerMovement.StartWalking;
+            _playerInputManager.WalkCancelEvent += _playerMovement.StartRunning;
+            _playerVisual.UseSpellAnimationMomentStartEvent += UseSelectedSpell;
+            _playerMovement.JumpEvent += _playerVisual.PlayJumpAnimation;
+            _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
+            _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
+        }
+
+        private void OnDisable()
+        {
+            _playerInputManager.JumpEvent -= _playerMovement.Jump;
+            _playerInputManager.UseSpellEvent -= StartUseSelectedSpell;
+            _playerInputManager.MoveInputEvent -= _playerMovement.Move;
+            _playerInputManager.MouseLookEvent -= _playerLook.LookWithMouse;
+            _playerInputManager.WalkStartEvent -= _playerMovement.StartWalking;
+            _playerInputManager.WalkCancelEvent -= _playerMovement.StartRunning;
+            _playerVisual.UseSpellAnimationMomentStartEvent -= UseSelectedSpell;
+            _playerMovement.JumpEvent -= _playerVisual.PlayJumpAnimation;
+            _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
+            _playerMovement.LandEvent -= _playerVisual.PlayLandAnimation;
+        }
+
+        private void StartUseSelectedSpell()
+        {
+            if (_playerSpellsManager.IsSpellSelected)
+            {
+                _playerVisual.PlayUseSpellAnimation(_playerSpellsManager.SelectedSpellHandsAnimatorController);
+            }
+        }
+
+        private void UseSelectedSpell()
+        {
+            if (_playerSpellsManager.IsSpellSelected)
+            {
+                _playerSpellsManager.UseSelectedSpell(_playerLook.CameraRotation);
+            }
+        }
+
+        public void HandleHeal(int countOfHealthPoints)
+        {
+            _playerCharacter.HandleHeal(countOfHealthPoints);
+        }
+
+        public void HandleDamage(int countOfHealthPoints)
+        {
+            _playerCharacter.HandleDamage(countOfHealthPoints);
+        }
     }
 }

@@ -1,6 +1,10 @@
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-public abstract class SpellApplierScriptableObject : ScriptableObject
+namespace Spells.Abstract_Types.Scriptable_Objects
 {
-    public abstract ISpellApplier GetImplementationObject();
+    public abstract class SpellApplierScriptableObject : ScriptableObject
+    {
+        public abstract ISpellApplier GetImplementationObject();
+    }
 }

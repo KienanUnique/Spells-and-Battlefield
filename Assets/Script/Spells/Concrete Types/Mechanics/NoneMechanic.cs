@@ -1,15 +1,27 @@
 using System.Collections.Generic;
+using Interfaces;
+using Spells.Abstract_Types.Scriptable_Objects;
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "None Mechanic", menuName = "Spells and Battlefield/Spell System/Mechanic/None Mechanic", order = 0)]
-public class NoneMechanic : SpellMechanicEffectScriptableObject
+namespace Spells.Concrete_Types.Mechanics
 {
-    public override ISpellMechanicEffect GetImplementationObject() => new NoneMechanicImplementation();
-
-    private class NoneMechanicImplementation : ISpellMechanicEffect
+    [CreateAssetMenu(fileName = "None Mechanic",
+        menuName = "Spells and Battlefield/Spell System/Mechanic/None Mechanic", order = 0)]
+    public class NoneMechanic : SpellMechanicEffectScriptableObject
     {
-        public void ApplyEffectToTargets(List<ISpellInteractable> targets) { }
+        public override ISpellMechanicEffect GetImplementationObject() => new NoneMechanicImplementation();
 
-        public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ISpellInteractable casterCharacter) { }
+        private class NoneMechanicImplementation : ISpellMechanicEffect
+        {
+            public void ApplyEffectToTargets(List<ISpellInteractable> targets)
+            {
+            }
+
+            public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform,
+                ISpellInteractable casterCharacter)
+            {
+            }
+        }
     }
 }

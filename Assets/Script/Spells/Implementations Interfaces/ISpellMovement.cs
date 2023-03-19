@@ -1,4 +1,7 @@
-public interface ISpellMovement : ISpellImplementation
+namespace Spells.Implementations_Interfaces
 {
-    public abstract void UpdatePosition();
+    public interface ISpellMovement : ISpellImplementation
+    {
+        public abstract void UpdatePosition();
+    }
 }

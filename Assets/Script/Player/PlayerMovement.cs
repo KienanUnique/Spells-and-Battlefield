@@ -1,107 +1,110 @@
 using System;
 using UnityEngine;
 
-public partial class PlayerMovement : MonoBehaviour
+namespace Player
 {
-    public Action LandEvent;
-    public Action JumpEvent;
-    public Action FallEvent;
-    public Transform LocalTransform { private set; get; }
-    public Vector2 NormalizedVelocityDirectionXY { private set; get; }
-    public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
-    [SerializeField] private float _runVelocity;
-    [SerializeField] private float _walkVelocityMagnitude;
-    [SerializeField] private float _jumpVelocity;
-    [SerializeField] private float _gravityVelocity;
-    [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private GroundChecker _groundChecker;
-    private Vector2 _inputedMoveDirection = Vector2.zero;
-    private InputMovingEnum _inputMovingTypeRequiered;
-    private ValueWithReactionOnChange<bool> _isGrounded;
-
-    public void Jump()
+    public class PlayerMovement : MonoBehaviour
     {
-        if (_isGrounded.Value)
+        public Action LandEvent;
+        public Action JumpEvent;
+        public Action FallEvent;
+        public Transform LocalTransform { private set; get; }
+        public Vector2 NormalizedVelocityDirectionXY { private set; get; }
+        public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
+        [SerializeField] private float _runVelocity;
+        [SerializeField] private float _walkVelocityMagnitude;
+        [SerializeField] private float _jumpVelocity;
+        [SerializeField] private float _gravityVelocity;
+        [SerializeField] private Rigidbody _rigidbody;
+        [SerializeField] private GroundChecker _groundChecker;
+        private Vector2 _inputMoveDirection = Vector2.zero;
+        private InputMovingEnum _inputMovingTypeRequired;
+        private ValueWithReactionOnChange<bool> _isGrounded;
+
+        public void Jump()
         {
-            _rigidbody.velocity += _jumpVelocity * Vector3.up;
-            JumpEvent?.Invoke();
+            if (_isGrounded.Value)
+            {
+                _rigidbody.velocity += _jumpVelocity * Vector3.up;
+                JumpEvent?.Invoke();
+            }
         }
-    }
 
-    public void Move(Vector2 direction2d)
-    {
-        NormalizedVelocityDirectionXY = direction2d;
-        _inputedMoveDirection = direction2d;
-    }
-
-    public void StartWalking()
-    {
-        _inputMovingTypeRequiered = InputMovingEnum.Walk;
-    }
-
-    public void StartRunning()
-    {
-        _inputMovingTypeRequiered = InputMovingEnum.Run;
-    }
-
-    private void Awake()
-    {
-        LocalTransform = _rigidbody.transform;
-        _inputMovingTypeRequiered = InputMovingEnum.Run;
-        _isGrounded = new ValueWithReactionOnChange<bool>(true);
-    }
-
-    private void OnEnable()
-    {
-        _isGrounded.ValueChanged += OnGroundedStatusChanged;
-    }
-
-    private void OnDisable()
-    {
-        _isGrounded.ValueChanged -= OnGroundedStatusChanged;
-    }
-
-    private void OnGroundedStatusChanged(bool isGrounded)
-    {
-        if (isGrounded)
+        public void Move(Vector2 direction2d)
         {
-            LandEvent?.Invoke();
+            NormalizedVelocityDirectionXY = direction2d;
+            _inputMoveDirection = direction2d;
         }
-        else
+
+        public void StartWalking()
         {
-            FallEvent?.Invoke();
+            _inputMovingTypeRequired = InputMovingEnum.Walk;
         }
-    }
 
-    private void FixedUpdate()
-    {
-        _isGrounded.Value = _groundChecker.IsGrounded;
-
-        var localDirection = LocalTransform.TransformDirection(new Vector3(_inputedMoveDirection.x, 0, _inputedMoveDirection.y));
-        float currentVelocityMagnitude = 0;
-        switch (_inputMovingTypeRequiered)
+        public void StartRunning()
         {
-            case InputMovingEnum.Walk:
-                currentVelocityMagnitude = _walkVelocityMagnitude;
-                break;
-            case InputMovingEnum.Run:
-                currentVelocityMagnitude = _runVelocity;
-                break;
+            _inputMovingTypeRequired = InputMovingEnum.Run;
         }
-        var needVelocity = localDirection * currentVelocityMagnitude - (new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z));
-        _rigidbody.AddForce(needVelocity, ForceMode.VelocityChange);
 
-        _rigidbody.AddForce(_rigidbody.mass * _gravityVelocity * Vector3.down);
-    }
+        private void Awake()
+        {
+            LocalTransform = _rigidbody.transform;
+            _inputMovingTypeRequired = InputMovingEnum.Run;
+            _isGrounded = new ValueWithReactionOnChange<bool>(true);
+        }
 
-    private void Update()
-    {
-        RatioOfCurrentVelocityToMaximumVelocity = _rigidbody.velocity.magnitude / _runVelocity;
-    }
+        private void OnEnable()
+        {
+            _isGrounded.ValueChanged += OnGroundedStatusChanged;
+        }
 
-    private enum InputMovingEnum
-    {
-        Walk,
-        Run
+        private void OnDisable()
+        {
+            _isGrounded.ValueChanged -= OnGroundedStatusChanged;
+        }
+
+        private void OnGroundedStatusChanged(bool isGrounded)
+        {
+            if (isGrounded)
+            {
+                LandEvent?.Invoke();
+            }
+            else
+            {
+                FallEvent?.Invoke();
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            _isGrounded.Value = _groundChecker.IsGrounded;
+
+            var localDirection =
+                LocalTransform.TransformDirection(new Vector3(_inputMoveDirection.x, 0, _inputMoveDirection.y));
+            var currentVelocityMagnitude = _inputMovingTypeRequired switch
+            {
+                InputMovingEnum.Walk => _walkVelocityMagnitude,
+                InputMovingEnum.Run => _runVelocity,
+                _ => 0
+            };
+
+            var currentVelocity = _rigidbody.velocity;
+            var needVelocity = localDirection * currentVelocityMagnitude -
+                               (new Vector3(currentVelocity.x, 0, currentVelocity.z));
+            _rigidbody.AddForce(needVelocity, ForceMode.VelocityChange);
+
+            _rigidbody.AddForce(_rigidbody.mass * _gravityVelocity * Vector3.down);
+        }
+
+        private void Update()
+        {
+            RatioOfCurrentVelocityToMaximumVelocity = _rigidbody.velocity.magnitude / _runVelocity;
+        }
+
+        private enum InputMovingEnum
+        {
+            Walk,
+            Run
+        }
     }
 }

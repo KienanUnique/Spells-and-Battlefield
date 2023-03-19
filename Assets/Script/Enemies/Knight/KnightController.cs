@@ -1,46 +1,49 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(KnightCharacter))]
-[RequireComponent(typeof(KnightCharacter))]
-public class KnightController : EnemyControllerBase
+namespace Enemies.Knight
 {
-    [SerializeField] private KnightVisual _knightVisual;
-    [SerializeField] private BoxColliderTargetSelector _swordTargetSelector;
-    protected override EnemyVisualBase EnemyVisual => _knightVisual;
-    private KnightCharacter _knightCharacter;
-
-    protected override void Awake()
+    [RequireComponent(typeof(KnightCharacter))]
+    [RequireComponent(typeof(KnightCharacter))]
+    public class KnightController : EnemyControllerBase
     {
-        base.Awake();
-        _knightCharacter = GetComponent<KnightCharacter>();
-    }
+        [SerializeField] private KnightVisual _knightVisual;
+        [SerializeField] private BoxColliderTargetSelector _swordTargetSelector;
+        protected override EnemyVisualBase EnemyVisual => _knightVisual;
+        private KnightCharacter _knightCharacter;
 
-    private void OnEnable()
-    {
-        _knightVisual.AttackWithSwordAnimationMomentStartEvent += OnAttackWithSwordAnimationMomentStartEvent;
-    }
+        protected override void Awake()
+        {
+            base.Awake();
+            _knightCharacter = GetComponent<KnightCharacter>();
+        }
 
-    private void OnDisable()
-    {
-        _knightVisual.AttackWithSwordAnimationMomentStartEvent -= OnAttackWithSwordAnimationMomentStartEvent;
-    }
+        private void OnEnable()
+        {
+            _knightVisual.AttackWithSwordAnimationMomentStartEvent += OnAttackWithSwordAnimationMomentStartEvent;
+        }
 
-    public void StartSwordAttack(Transform _target)
-    {
-        _knightVisual.StartAttackWithSwordAnimation();
-        _enemyMovement.StartMovingWithRotatingTowardsTarget(_target);
-    }
+        private void OnDisable()
+        {
+            _knightVisual.AttackWithSwordAnimationMomentStartEvent -= OnAttackWithSwordAnimationMomentStartEvent;
+        }
 
-    public void StopSwordAttack()
-    {
-        _knightVisual.StopAttackWithSwordAnimation();
-        _enemyMovement.StopCurrentAction();
-    }
+        private void OnAttackWithSwordAnimationMomentStartEvent()
+        {
+            var targets = _swordTargetSelector.GetTargetsInCollider();
+            targets.RemoveAll(target => target.Id == Id);
+            _knightCharacter.DamageTargetsWithSwordAttack(targets);
+        }
 
-    public void OnAttackWithSwordAnimationMomentStartEvent()
-    {
-        var targets = _swordTargetSelector.GetTargetsInCollider();
-        targets.RemoveAll(target => target.Id == Id);
-        _knightCharacter.DamageTargetsWithSwordAttack(targets);
+        public void StartSwordAttack(Transform target)
+        {
+            _knightVisual.StartAttackWithSwordAnimation();
+            _enemyMovement.StartMovingWithRotatingTowardsTarget(target);
+        }
+
+        public void StopSwordAttack()
+        {
+            _knightVisual.StopAttackWithSwordAnimation();
+            _enemyMovement.StopCurrentAction();
+        }
     }
 }

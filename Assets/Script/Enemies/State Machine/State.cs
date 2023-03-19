@@ -1,67 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Interfaces;
 using UnityEngine;
 
-public abstract class State : MonoBehaviour
+namespace Enemies.State_Machine
 {
-    [SerializeField] private List<Transition> _transitions;
-    private bool IsAlreadyActivated = false;
-    protected IPlayer _target { get; set; }
-
-    public virtual void Enter(IPlayer target)
+    public abstract class State : MonoBehaviour
     {
-        if (IsAlreadyActivated)
+        [SerializeField] private List<Transition> _transitions;
+        private bool _isAlreadyActivated = false;
+        protected IPlayer Target { get; private set; }
+
+        public virtual void Enter(IPlayer target)
         {
-            throw new StateIsAlreadyActivatedException();
+            if (_isAlreadyActivated)
+            {
+                throw new StateIsAlreadyActivatedException();
+            }
+
+            Target = target;
+            _isAlreadyActivated = true;
+            foreach (var transition in _transitions)
+            {
+                transition.StartCheckingConditions(Target);
+            }
         }
 
-        _target = target;
-        IsAlreadyActivated = true;
-        foreach (var transition in _transitions)
+        public virtual void Exit()
         {
-            transition.StartCheckingConditions(_target);
-        }
-    }
+            if (!_isAlreadyActivated)
+            {
+                throw new TryingDeactivateNotActivatedStateException();
+            }
 
-    public virtual void Exit()
-    {
-        if (!IsAlreadyActivated)
-        {
-            throw new DisactivateNotActivatedStateException();
+            foreach (var transition in _transitions)
+            {
+                transition.StopCheckingConditions();
+            }
+
+            _isAlreadyActivated = false;
         }
 
-        foreach (var transition in _transitions)
+        public bool NeedToSwitchToNextState(out State nextState)
         {
-            transition.StopCheckingConditions();
-        }
-        IsAlreadyActivated = false;
-    }
-
-    public bool NeedToSwitchToNextState(out State nextState)
-    {
-        foreach (var transition in _transitions)
-        {
-            if (transition.NeedTransit)
+            foreach (var transition in _transitions.Where(transition => transition.NeedTransit))
             {
                 nextState = transition.TargetState;
                 return true;
             }
-        }
-        nextState = null;
-        return false;
-    }
 
-    private class StateIsAlreadyActivatedException : Exception
-    {
-        public StateIsAlreadyActivatedException() : base("State is already activated")
-        {
+            nextState = null;
+            return false;
         }
-    }
 
-    private class DisactivateNotActivatedStateException : Exception
-    {
-        public DisactivateNotActivatedStateException() : base("Can't disactivate not active state")
+        private class StateIsAlreadyActivatedException : Exception
         {
+            public StateIsAlreadyActivatedException() : base("State is already activated")
+            {
+            }
+        }
+
+        private class TryingDeactivateNotActivatedStateException : Exception
+        {
+            public TryingDeactivateNotActivatedStateException() : base("Can't deactivate not active state")
+            {
+            }
         }
     }
 }

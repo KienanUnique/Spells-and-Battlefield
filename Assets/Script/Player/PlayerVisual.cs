@@ -1,54 +1,64 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
-public class PlayerVisual : MonoBehaviour
+namespace Player
 {
-    public Action UseSpellAnimationMomentStartEvent;
-    private Animator _characterAnimator;
-    private static readonly int _attackTriggerHash = Animator.StringToHash("Attack");
-    private static readonly int _movingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
-    private static readonly int _movingDirectionYFloatHash = Animator.StringToHash("Moving Direction Y");
-    private static readonly int _ratioOfCurrentVelocityToMaximumVelocityFloatHash = Animator.StringToHash("Ratio Of Current Velocity To Maximum Velocity");
-    private static readonly int _jumpTriggerHash = Animator.StringToHash("Jump");
-    private static readonly int _fallTriggerHash = Animator.StringToHash("Fall");
-    private static readonly int _landTriggerHash = Animator.StringToHash("Land");
-
-    public void InvokeUseSpellAnimationMomentStart() => UseSpellAnimationMomentStartEvent?.Invoke();
-
-    public void PlayUseSpellAnimation(AnimatorOverrideController _useSpellHandsAnimatorController)
+    [RequireComponent(typeof(Animator))]
+    public class PlayerVisual : MonoBehaviour
     {
-        _characterAnimator.runtimeAnimatorController = _useSpellHandsAnimatorController;
-        _characterAnimator.SetTrigger(_attackTriggerHash);
-    }
+        public Action UseSpellAnimationMomentStartEvent;
+        private Animator _characterAnimator;
+        private static readonly int AttackTriggerHash = Animator.StringToHash("Attack");
+        private static readonly int MovingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
+        private static readonly int MovingDirectionYFloatHash = Animator.StringToHash("Moving Direction Y");
 
-    public void PlayJumpAnimation(){
-        _characterAnimator.SetTrigger(_jumpTriggerHash);
-        _characterAnimator.ResetTrigger(_fallTriggerHash);
-        _characterAnimator.ResetTrigger(_landTriggerHash);
-    }
+        private static readonly int RatioOfCurrentVelocityToMaximumVelocityFloatHash =
+            Animator.StringToHash("Ratio Of Current Velocity To Maximum Velocity");
 
-    public void PlayFallAnimation(){
-        _characterAnimator.ResetTrigger(_jumpTriggerHash);
-        _characterAnimator.SetTrigger(_fallTriggerHash);
-        _characterAnimator.ResetTrigger(_landTriggerHash);
-    }
+        private static readonly int JumpTriggerHash = Animator.StringToHash("Jump");
+        private static readonly int FallTriggerHash = Animator.StringToHash("Fall");
+        private static readonly int LandTriggerHash = Animator.StringToHash("Land");
 
-    public void PlayLandAnimation(){
-        _characterAnimator.ResetTrigger(_jumpTriggerHash);
-        _characterAnimator.ResetTrigger(_fallTriggerHash);
-        _characterAnimator.SetTrigger(_landTriggerHash);
-    }
+        public void InvokeUseSpellAnimationMomentStart() => UseSpellAnimationMomentStartEvent?.Invoke();
 
-    public void UpdateMovingData(Vector2 movingDirectionNormalized, float ratioOfCurrentVelocityToMaximumVelocity)
-    {
-        _characterAnimator.SetFloat(_movingDirectionXFloatHash, movingDirectionNormalized.x);
-        _characterAnimator.SetFloat(_movingDirectionYFloatHash, movingDirectionNormalized.y);
-        _characterAnimator.SetFloat(_ratioOfCurrentVelocityToMaximumVelocityFloatHash, ratioOfCurrentVelocityToMaximumVelocity);
-    }
+        public void PlayUseSpellAnimation(AnimatorOverrideController useSpellHandsAnimatorController)
+        {
+            _characterAnimator.runtimeAnimatorController = useSpellHandsAnimatorController;
+            _characterAnimator.SetTrigger(AttackTriggerHash);
+        }
 
-    private void Awake()
-    {
-        _characterAnimator = GetComponent<Animator>();
+        public void PlayJumpAnimation()
+        {
+            _characterAnimator.SetTrigger(JumpTriggerHash);
+            _characterAnimator.ResetTrigger(FallTriggerHash);
+            _characterAnimator.ResetTrigger(LandTriggerHash);
+        }
+
+        public void PlayFallAnimation()
+        {
+            _characterAnimator.ResetTrigger(JumpTriggerHash);
+            _characterAnimator.SetTrigger(FallTriggerHash);
+            _characterAnimator.ResetTrigger(LandTriggerHash);
+        }
+
+        public void PlayLandAnimation()
+        {
+            _characterAnimator.ResetTrigger(JumpTriggerHash);
+            _characterAnimator.ResetTrigger(FallTriggerHash);
+            _characterAnimator.SetTrigger(LandTriggerHash);
+        }
+
+        public void UpdateMovingData(Vector2 movingDirectionNormalized, float ratioOfCurrentVelocityToMaximumVelocity)
+        {
+            _characterAnimator.SetFloat(MovingDirectionXFloatHash, movingDirectionNormalized.x);
+            _characterAnimator.SetFloat(MovingDirectionYFloatHash, movingDirectionNormalized.y);
+            _characterAnimator.SetFloat(RatioOfCurrentVelocityToMaximumVelocityFloatHash,
+                ratioOfCurrentVelocityToMaximumVelocity);
+        }
+
+        private void Awake()
+        {
+            _characterAnimator = GetComponent<Animator>();
+        }
     }
 }

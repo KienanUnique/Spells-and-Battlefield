@@ -1,8 +1,13 @@
+using Interfaces;
 using UnityEngine;
 
-public interface ISpellImplementation
+namespace Spells.Implementations_Interfaces
 {
+    public interface ISpellImplementation
+    {
 #nullable enable
-    public void Initialize(Rigidbody spellRigidbody, Transform? casterTransform, ISpellInteractable casterCharacter);
+        public void Initialize(Rigidbody spellRigidbody, Transform? casterTransform,
+            ISpellInteractable casterCharacter);
 #nullable disable
+    }
 }

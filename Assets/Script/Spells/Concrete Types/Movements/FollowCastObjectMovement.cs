@@ -1,21 +1,29 @@
+using Spells.Abstract_Types.Implementation_Bases;
+using Spells.Abstract_Types.Scriptable_Objects;
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Follow Cast Object Movement", menuName = "Spells and Battlefield/Spell System/Movement/Follow Cast Object Movement", order = 0)]
-public class FollowCastObjectMovement : SpellMovementScriptableObject
+namespace Spells.Concrete_Types.Movements
 {
-    public override ISpellMovement GetImplementationObject() => new FollowCastObjectMovementImplementation();
-
-    private class FollowCastObjectMovementImplementation : SpellMovementImplementationBase
+    [CreateAssetMenu(fileName = "Follow Cast Object Movement",
+        menuName = "Spells and Battlefield/Spell System/Movement/Follow Cast Object Movement", order = 0)]
+    public class FollowCastObjectMovement : SpellMovementScriptableObject
     {
-#nullable enable
-        public override void UpdatePosition()
+        public override ISpellMovement GetImplementationObject() => new FollowCastObjectMovementImplementation();
+
+        private class FollowCastObjectMovementImplementation : SpellMovementImplementationBase
         {
-            if (_casterTransform == null)
+#nullable enable
+            public override void UpdatePosition()
             {
-                return;
+                if (_casterTransform == null)
+                {
+                    return;
+                }
+
+                _spellRigidbody.position = _casterTransform.position;
             }
-            _spellRigidbody.position = _casterTransform.position;
+#nullable disable
         }
-#nullable disable       
     }
 }

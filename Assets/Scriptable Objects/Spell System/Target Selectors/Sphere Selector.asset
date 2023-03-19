@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f493fea845ab11343aa52ac5bd9ef862, type: 3}
   m_Name: Sphere Selector
   m_EditorClassIdentifier: 
-  _sphereRadius: 3
+  _sphereRadius: 0.7
   _ignoreCaster: 1

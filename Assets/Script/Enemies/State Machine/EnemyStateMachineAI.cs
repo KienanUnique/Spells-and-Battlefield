@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Enemies.State_Machine;
+using Interfaces;
 using UnityEngine;
 
 public class EnemyStateMachineAI : MonoBehaviour

@@ -1,28 +1,35 @@
+using Spells.Abstract_Types.Implementation_Bases;
+using Spells.Abstract_Types.Scriptable_Objects;
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Immediate Trigger", menuName = "Spells and Battlefield/Spell System/Trigger/Immediate Trigger", order = 0)]
-public class ImmediateTrigger : SpellTriggerScriptableObject
+namespace Spells.Concrete_Types.Triggers
 {
-    public override ISpellTriggerable GetImplementationObject() => new ImmediateTriggerImplementation();
-
-    private class ImmediateTriggerImplementation : SpellTriggerImplementationBase
+    [CreateAssetMenu(fileName = "Immediate Trigger",
+        menuName = "Spells and Battlefield/Spell System/Trigger/Immediate Trigger", order = 0)]
+    public class ImmediateTrigger : SpellTriggerScriptableObject
     {
-        private bool _wasTriggered = false;
-        public override SpellTriggerCheckStatusEnum CheckContact(Collider other) => TriggerStatus;
-        public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize) => TriggerStatus;
+        public override ISpellTrigger GetImplementationObject() => new ImmediateTriggerImplementation();
 
-        private SpellTriggerCheckStatusEnum TriggerStatus
+        private class ImmediateTriggerImplementation : SpellTriggerImplementationBase
         {
-            get
+            private bool _wasTriggered = false;
+            public override SpellTriggerCheckStatusEnum CheckContact(Collider other) => TriggerStatus;
+            public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize) => TriggerStatus;
+
+            private SpellTriggerCheckStatusEnum TriggerStatus
             {
-                if (!_wasTriggered)
+                get
                 {
-                    _wasTriggered = true;
-                    return SpellTriggerCheckStatusEnum.Finish;
-                }
-                else
-                {
-                    return SpellTriggerCheckStatusEnum.Ignore;
+                    if (!_wasTriggered)
+                    {
+                        _wasTriggered = true;
+                        return SpellTriggerCheckStatusEnum.Finish;
+                    }
+                    else
+                    {
+                        return SpellTriggerCheckStatusEnum.Ignore;
+                    }
                 }
             }
         }

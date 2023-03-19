@@ -1,15 +1,21 @@
+using Interfaces;
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-public abstract class SpellMovementImplementationBase : SpellImplementationBase, ISpellMovement
+namespace Spells.Abstract_Types.Implementation_Bases
 {
-    protected Transform _spellRigidbodyTransform;
-
-    public override void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform, ISpellInteractable casterCharacter)
+    public abstract class SpellMovementImplementationBase : SpellImplementationBase, ISpellMovement
     {
-        base.Initialize(spellRigidbody, fromCastObjectTransform, casterCharacter);
-        _spellRigidbodyTransform = _spellRigidbody.transform;
-    }
+        protected Transform _spellRigidbodyTransform;
+
+        public override void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform,
+            ISpellInteractable casterCharacter)
+        {
+            base.Initialize(spellRigidbody, fromCastObjectTransform, casterCharacter);
+            _spellRigidbodyTransform = _spellRigidbody.transform;
+        }
 #nullable enable
-    public abstract void UpdatePosition();
+        public abstract void UpdatePosition();
 #nullable disable
+    }
 }

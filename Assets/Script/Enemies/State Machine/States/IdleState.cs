@@ -1,3 +1,6 @@
-﻿public class IdleState : State
+﻿namespace Enemies.State_Machine.States
 {
+    public class IdleState : State
+    {
+    }
 }

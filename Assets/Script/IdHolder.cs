@@ -1,17 +1,18 @@
+using Game_Managers;
+using Interfaces;
 using UnityEngine;
 
 public class IdHolder : MonoBehaviour, IInteractable
 {
-    [HideInInspector] public int Id => _id;
-    private int _id;
+    public int Id { get; private set; }
 
     private void Start()
     {
-        _id = InteractableGameObjectsBankOfIds.Instance.GetId();
+        Id = InteractableGameObjectsBankOfIds.Instance.GetId();
     }
 
     private void OnDestroy()
     {
-        InteractableGameObjectsBankOfIds.Instance.ReturnId(_id);
+        InteractableGameObjectsBankOfIds.Instance.ReturnId(Id);
     }
 }

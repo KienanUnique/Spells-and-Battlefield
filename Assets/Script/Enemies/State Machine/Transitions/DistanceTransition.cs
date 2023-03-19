@@ -1,38 +1,47 @@
-﻿using UnityEngine;
-public class DistanceTransition : Transition
+﻿using System;
+using UnityEngine;
+
+namespace Enemies.State_Machine.Transitions
 {
-    [SerializeField] private float _transitionDistance;
-    [SerializeField] private TypeOfComparison _typeOfComparison;
-    private Transform _localTransform;
-
-    protected override void CheckConditions()
+    public class DistanceTransition : Transition
     {
-        var calculatedDistance = Vector3.Distance(_localTransform.position, Target.MainTransform.position);
-        switch (_typeOfComparison)
+        [SerializeField] private float _transitionDistance;
+        [SerializeField] private TypeOfComparison _typeOfComparison;
+        private Transform _localTransform;
+
+        protected override void CheckConditions()
         {
-            case TypeOfComparison.isMore:
-                if (calculatedDistance > _transitionDistance)
-                {
-                    NeedTransit = true;
-                }
-                break;
-            case TypeOfComparison.isLess:
-                if (calculatedDistance < _transitionDistance)
-                {
-                    NeedTransit = true;
-                }
-                break;
+            var calculatedDistance = Vector3.Distance(_localTransform.position, Target.MainTransform.position);
+            switch (_typeOfComparison)
+            {
+                case TypeOfComparison.IsMore:
+                    if (calculatedDistance > _transitionDistance)
+                    {
+                        NeedTransit = true;
+                    }
+
+                    break;
+                case TypeOfComparison.IsLess:
+                    if (calculatedDistance < _transitionDistance)
+                    {
+                        NeedTransit = true;
+                    }
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
-    }
 
-    private void Awake()
-    {
-        _localTransform = transform;
-    }
+        private void Awake()
+        {
+            _localTransform = transform;
+        }
 
-    private enum TypeOfComparison
-    {
-        isMore,
-        isLess
+        private enum TypeOfComparison
+        {
+            IsMore,
+            IsLess
+        }
     }
 }

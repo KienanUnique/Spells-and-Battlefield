@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public interface IPlayer : ISpellInteractable, ICharacter, IInteractable
+namespace Interfaces
 {
-    public Transform MainTransform { get; }
+    public interface IPlayer : ISpellInteractable, ICharacter, IInteractable
+    {
+        public Transform MainTransform { get; }
+    }
 }

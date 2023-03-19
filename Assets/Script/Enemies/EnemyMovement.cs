@@ -3,96 +3,93 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
-public class EnemyMovement : MonoBehaviour
+namespace Enemies
 {
-    [SerializeField] private float _updateDestinationCooldownSeconds;
-    private NavMeshAgent _navMeshAgent;
-    private Coroutine _currentActionCoroutine = null;
-
-    private void Awake()
+    [RequireComponent(typeof(NavMeshAgent))]
+    public class EnemyMovement : MonoBehaviour
     {
-        _navMeshAgent = GetComponent<NavMeshAgent>();
-    }
+        [SerializeField] private float _updateDestinationCooldownSeconds;
+        private NavMeshAgent _navMeshAgent;
+        private Coroutine _currentActionCoroutine = null;
 
-    public void StartMovingToTarget(Transform target)
-    {
-        if (_currentActionCoroutine == null)
+        private void Awake()
         {
-            _navMeshAgent.isStopped = false;
-            _navMeshAgent.updateRotation = true;
-            _currentActionCoroutine = StartCoroutine(UpdateDestinationWithCooldown(target));
+            _navMeshAgent = GetComponent<NavMeshAgent>();
         }
-        else
-        {
-            StopCurrentAction();
-        }
-    }
 
-    public void StartMovingWithRotatingTowardsTarget(Transform target)
-    {
-        if (_currentActionCoroutine == null)
+        public void StartMovingToTarget(Transform target)
         {
-            _navMeshAgent.isStopped = false;
-            _navMeshAgent.updateRotation = false;
-            _currentActionCoroutine = StartCoroutine(MovingWithRotatingTowardsTarget(target));
+            if (_currentActionCoroutine == null)
+            {
+                _navMeshAgent.isStopped = false;
+                _navMeshAgent.updateRotation = true;
+                _currentActionCoroutine = StartCoroutine(UpdateDestinationWithCooldown(target));
+            }
+            else
+            {
+                StopCurrentAction();
+            }
         }
-        else
+
+        public void StartMovingWithRotatingTowardsTarget(Transform target)
         {
-            StopCurrentAction();
+            if (_currentActionCoroutine == null)
+            {
+                _navMeshAgent.isStopped = false;
+                _navMeshAgent.updateRotation = false;
+                _currentActionCoroutine = StartCoroutine(MovingWithRotatingTowardsTarget(target));
+            }
+            else
+            {
+                StopCurrentAction();
+            }
         }
-    }
 
-    public void StopCurrentAction()
-    {
-        if (_currentActionCoroutine != null)
+        public void StopCurrentAction()
         {
-            StopCoroutine(_currentActionCoroutine);
-            _currentActionCoroutine = null;
-            _navMeshAgent.velocity = Vector3.zero;
-            _navMeshAgent.isStopped = true;
-            _navMeshAgent.updateRotation = false;
+            if (_currentActionCoroutine != null)
+            {
+                StopCoroutine(_currentActionCoroutine);
+                _currentActionCoroutine = null;
+                _navMeshAgent.velocity = Vector3.zero;
+                _navMeshAgent.isStopped = true;
+                _navMeshAgent.updateRotation = false;
+            }
+            else
+            {
+                throw new CanNotStopNullMovementActionException();
+            }
         }
-        else
+
+        private IEnumerator UpdateDestinationWithCooldown(Transform target)
         {
-            throw new CanNotStopNullMovementActionException();
+            while (true)
+            {
+                _navMeshAgent.SetDestination(target.position);
+                yield return new WaitForSecondsRealtime(_updateDestinationCooldownSeconds);
+            }
         }
-    }
 
-    private IEnumerator UpdateDestinationWithCooldown(Transform target)
-    {
-        while (true)
+        private IEnumerator MovingWithRotatingTowardsTarget(Transform target)
         {
-            _navMeshAgent.SetDestination(target.position);
-            yield return new WaitForSecondsRealtime(_updateDestinationCooldownSeconds);
+            while (true)
+            {
+                var targetPosition = target.position;
+                _navMeshAgent.SetDestination(targetPosition);
+
+                var direction = (targetPosition - transform.position).normalized;
+                var lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+                transform.rotation = lookRotation;
+
+                yield return null;
+            }
         }
-    }
 
-    private IEnumerator MovingWithRotatingTowardsTarget(Transform target)
-    {
-        while (true)
+        private class CanNotStopNullMovementActionException : Exception
         {
-            _navMeshAgent.SetDestination(target.position);
-
-            var direction = (target.position - transform.position).normalized;
-            var lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.rotation = lookRotation;
-
-            yield return null;
-        }
-    }
-
-    private class SomeMovementActionIsAlreadyRunningException : Exception
-    {
-        public SomeMovementActionIsAlreadyRunningException() : base("Some movement action is already running")
-        {
-        }
-    }
-
-    private class CanNotStopNullMovementActionException : Exception
-    {
-        public CanNotStopNullMovementActionException() : base("Can't stop null movement action")
-        {
+            public CanNotStopNullMovementActionException() : base("Can't stop null movement action")
+            {
+            }
         }
     }
 }

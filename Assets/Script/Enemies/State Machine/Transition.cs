@@ -1,57 +1,64 @@
 ﻿using System;
 using System.Collections;
+using Interfaces;
 using UnityEngine;
 
-public abstract class Transition : MonoBehaviour
+namespace Enemies.State_Machine
 {
-    public bool NeedTransit { get; protected set; }
-    public State TargetState => _targetState;
-    [SerializeField] private State _targetState;
-    protected IPlayer Target { get; private set; }
-    protected Coroutine _currentCheckConditionsCoroutine = null;
-    public void StartCheckingConditions(IPlayer target)
+    public abstract class Transition : MonoBehaviour
     {
-        if (_currentCheckConditionsCoroutine != null)
+        public bool NeedTransit { get; protected set; }
+        public State TargetState => _targetState;
+        [SerializeField] private State _targetState;
+        protected IPlayer Target { get; private set; }
+        protected Coroutine _currentCheckConditionsCoroutine = null;
+
+        public void StartCheckingConditions(IPlayer target)
         {
-            throw new TransitionIsAlreadyActivatedException();
+            if (_currentCheckConditionsCoroutine != null)
+            {
+                throw new TransitionIsAlreadyActivatedException();
+            }
+
+            Target = target;
+            NeedTransit = false;
+            _currentCheckConditionsCoroutine = StartCoroutine(CheckConditionsCoroutine());
         }
-        Target = target;
-        NeedTransit = false;
-        _currentCheckConditionsCoroutine = StartCoroutine(CheckConditionsCoroutine());
-    }
 
-    public void StopCheckingConditions()
-    {
-        if (_currentCheckConditionsCoroutine == null)
+        public void StopCheckingConditions()
         {
-            throw new DisactivateNotActivatedTransitionException();
+            if (_currentCheckConditionsCoroutine == null)
+            {
+                throw new TryingDeactivateNotActivatedTransitionException();
+            }
+
+            StopCoroutine(_currentCheckConditionsCoroutine);
+            _currentCheckConditionsCoroutine = null;
         }
-        StopCoroutine(_currentCheckConditionsCoroutine);
-        _currentCheckConditionsCoroutine = null;
-    }
 
-    protected abstract void CheckConditions();
+        protected abstract void CheckConditions();
 
-    protected virtual IEnumerator CheckConditionsCoroutine()
-    {
-        while (true)
+        protected virtual IEnumerator CheckConditionsCoroutine()
         {
-            CheckConditions();
-            yield return null;
+            while (true)
+            {
+                CheckConditions();
+                yield return null;
+            }
         }
-    }
 
-    private class TransitionIsAlreadyActivatedException : Exception
-    {
-        public TransitionIsAlreadyActivatedException() : base("Transition is already activated")
+        private class TransitionIsAlreadyActivatedException : Exception
         {
+            public TransitionIsAlreadyActivatedException() : base("Transition is already activated")
+            {
+            }
         }
-    }
 
-    private class DisactivateNotActivatedTransitionException : Exception
-    {
-        public DisactivateNotActivatedTransitionException() : base("Can't disactivate not active transition")
+        private class TryingDeactivateNotActivatedTransitionException : Exception
         {
+            public TryingDeactivateNotActivatedTransitionException() : base("Can't deactivate not active transition")
+            {
+            }
         }
     }
 }

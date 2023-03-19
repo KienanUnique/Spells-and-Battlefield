@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spellMechanicEffects:
   - {fileID: 11400000, guid: 2eb61d60baf263141b2ad0cfeaeeb572, type: 2}
-  _targetSelecter: {fileID: 11400000, guid: 670c334dd18e17249a4d3206c62fe401, type: 2}
+  _targetSelector: {fileID: 11400000, guid: 670c334dd18e17249a4d3206c62fe401, type: 2}
   _spellTrigger: {fileID: 11400000, guid: a25e908f0a9f12a47bed9bf06c88bd27, type: 2}

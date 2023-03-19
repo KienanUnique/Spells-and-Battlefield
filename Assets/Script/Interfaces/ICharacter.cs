@@ -1,5 +1,8 @@
-public interface ICharacter : IInteractable
+namespace Interfaces
 {
-    public void HandleHeal(int countOfHealthPoints);
-    public void HandleDamage(int countOfHealthPoints);
+    public interface ICharacter : IInteractable
+    {
+        public void HandleHeal(int countOfHealthPoints);
+        public void HandleDamage(int countOfHealthPoints);
+    }
 }

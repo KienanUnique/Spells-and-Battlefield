@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public class PlayerCharacter : Character
+namespace Player
 {
-    public override void HandleHeal(int countOfHealPoints)
+    public class PlayerCharacter : Character
     {
-        Debug.Log($"Player -> HandleHeal: {countOfHealPoints}");
-    }
+        public override void HandleHeal(int countOfHealPoints)
+        {
+            Debug.Log($"Player -> HandleHeal: {countOfHealPoints}");
+        }
 
-    public override void HandleDamage(int countOfHealPoints)
-    {
-        Debug.Log($"Player -> HandleDamage: {countOfHealPoints}");
+        public override void HandleDamage(int countOfHealPoints)
+        {
+            Debug.Log($"Player -> HandleDamage: {countOfHealPoints}");
+        }
     }
 }

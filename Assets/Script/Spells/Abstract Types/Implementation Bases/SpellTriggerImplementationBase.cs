@@ -1,7 +1,11 @@
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-public abstract class SpellTriggerImplementationBase : SpellImplementationBase, ISpellTriggerable
+namespace Spells.Abstract_Types.Implementation_Bases
 {
-    public abstract SpellTriggerCheckStatusEnum CheckContact(Collider other);
-    public abstract SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize);
+    public abstract class SpellTriggerImplementationBase : SpellImplementationBase, ISpellTrigger
+    {
+        public abstract SpellTriggerCheckStatusEnum CheckContact(Collider other);
+        public abstract SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize);
+    }
 }

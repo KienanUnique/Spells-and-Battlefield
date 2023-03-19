@@ -1,30 +1,34 @@
 ﻿using System.Collections.Generic;
+using Interfaces;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
-public class BoxColliderTargetSelector : MonoBehaviour
+namespace Enemies
 {
-    private List<ICharacter> _charactersInside;
-    public List<ICharacter> GetTargetsInCollider() => _charactersInside;
-
-    private void Awake()
+    [RequireComponent(typeof(BoxCollider))]
+    public class BoxColliderTargetSelector : MonoBehaviour
     {
-        _charactersInside = new List<ICharacter>();
-    }
+        private List<ICharacter> _charactersInside;
+        public List<ICharacter> GetTargetsInCollider() => _charactersInside;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out ICharacter character))
+        private void Awake()
         {
-            _charactersInside.Add(character);
+            _charactersInside = new List<ICharacter>();
         }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent(out ICharacter character) && _charactersInside.Contains(character))
+        private void OnTriggerEnter(Collider other)
         {
-            _charactersInside.Remove(character);
+            if (other.TryGetComponent(out ICharacter character))
+            {
+                _charactersInside.Add(character);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetComponent(out ICharacter character) && _charactersInside.Contains(character))
+            {
+                _charactersInside.Remove(character);
+            }
         }
     }
 }

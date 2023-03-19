@@ -1,10 +1,16 @@
 using System.Collections.Generic;
+using Interfaces;
+using Spells.Implementations_Interfaces;
 
-public abstract class SpellMechanicEffectImplementationBase : SpellImplementationBase, ISpellMechanicEffect
+namespace Spells.Abstract_Types.Implementation_Bases
 {
-    protected abstract void ApplyEffectToTarget(ISpellInteractable target);
-    public virtual void ApplyEffectToTargets(List<ISpellInteractable> targets)
+    public abstract class SpellMechanicEffectImplementationBase : SpellImplementationBase, ISpellMechanicEffect
     {
-        targets.ForEach(target => ApplyEffectToTarget(target));
+        protected abstract void ApplyEffectToTarget(ISpellInteractable target);
+
+        public virtual void ApplyEffectToTargets(List<ISpellInteractable> targets)
+        {
+            targets.ForEach(target => ApplyEffectToTarget(target));
+        }
     }
 }

@@ -1,8 +1,10 @@
 using System;
-public class ValueWithReactionOnChange<ValueType> where ValueType : IComparable
+
+public class ValueWithReactionOnChange<T> where T : IComparable
 {
-    public Action<ValueType> ValueChanged;
-    public ValueType Value
+    public Action<T> ValueChanged;
+
+    public T Value
     {
         get => _value;
         set
@@ -14,13 +16,14 @@ public class ValueWithReactionOnChange<ValueType> where ValueType : IComparable
             }
         }
     }
-    private ValueType _value;
+
+    private T _value;
 
     public ValueWithReactionOnChange()
     {
     }
 
-    public ValueWithReactionOnChange(ValueType startValue)
+    public ValueWithReactionOnChange(T startValue)
     {
         _value = startValue;
     }

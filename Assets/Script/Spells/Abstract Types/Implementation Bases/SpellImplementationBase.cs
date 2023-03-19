@@ -1,14 +1,21 @@
+using Interfaces;
+using Spells.Implementations_Interfaces;
 using UnityEngine;
 
-public abstract class SpellImplementationBase : ISpellImplementation
+namespace Spells.Abstract_Types.Implementation_Bases
 {
-    protected Rigidbody _spellRigidbody;
-    protected Transform _casterTransform;
-    protected ISpellInteractable _casterInterface;
-    public virtual void Initialize(Rigidbody spellRigidbody, Transform casterTransform, ISpellInteractable casterInterface)
+    public abstract class SpellImplementationBase : ISpellImplementation
     {
-        _spellRigidbody = spellRigidbody;
-        _casterTransform = casterTransform;
-        _casterInterface = casterInterface;
+        protected Rigidbody _spellRigidbody;
+        protected Transform _casterTransform;
+        protected ISpellInteractable _casterInterface;
+
+        public virtual void Initialize(Rigidbody spellRigidbody, Transform casterTransform,
+            ISpellInteractable casterInterface)
+        {
+            _spellRigidbody = spellRigidbody;
+            _casterTransform = casterTransform;
+            _casterInterface = casterInterface;
+        }
     }
 }

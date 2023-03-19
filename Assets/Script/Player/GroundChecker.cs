@@ -1,50 +1,46 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
-public class GroundChecker : MonoBehaviour
+namespace Player
 {
-    public bool IsGrounded { private set; get; } = false;
-    public Action Land;
-    public Action Fall;
-    [SerializeField] private float _checkSphereRadius;
-    [SerializeField] private LayerMask _groundMask;
-    private List<Collider> _groundColliders;
-
-    private void Awake()
+    [RequireComponent(typeof(BoxCollider))]
+    public class GroundChecker : MonoBehaviour
     {
-        _groundColliders = new List<Collider>();
-    }
+        public bool IsGrounded { private set; get; }
+        [SerializeField] private LayerMask _groundMask;
+        private List<Collider> _groundColliders;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (IsGroundCollider(other))
+        private void Awake()
         {
-            _groundColliders.Add(other);
-            if (!IsGrounded)
+            _groundColliders = new List<Collider>();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (IsGroundCollider(other))
             {
-                Land?.Invoke();
-                IsGrounded = true;
+                _groundColliders.Add(other);
+                if (!IsGrounded)
+                {
+                    IsGrounded = true;
+                }
             }
         }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (IsGroundCollider(other))
+        private void OnTriggerExit(Collider other)
         {
+            if (!IsGroundCollider(other)) return;
+
             _groundColliders.Remove(other);
             if (_groundColliders.Count == 0 && IsGrounded)
             {
-                Fall?.Invoke();
                 IsGrounded = false;
             }
         }
-    }
 
-    private bool IsGroundCollider(Collider colliderToCheck)
-    {
-        return (_groundMask.value & (1 << colliderToCheck.gameObject.layer)) > 0;
+        private bool IsGroundCollider(Collider colliderToCheck)
+        {
+            return (_groundMask.value & (1 << colliderToCheck.gameObject.layer)) > 0;
+        }
     }
 }
