@@ -1667,6 +1667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d4b5ec528f63c64aa0c44245df35c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maximumCountOfHitPoints: 30
   _attackSwordDamage: 7
 --- !u!195 &4773416566425850603
 NavMeshAgent:

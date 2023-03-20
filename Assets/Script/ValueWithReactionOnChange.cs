@@ -19,10 +19,6 @@ public class ValueWithReactionOnChange<T> where T : IComparable
 
     private T _value;
 
-    public ValueWithReactionOnChange()
-    {
-    }
-
     public ValueWithReactionOnChange(T startValue)
     {
         _value = startValue;

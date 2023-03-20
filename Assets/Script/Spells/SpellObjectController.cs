@@ -16,10 +16,7 @@ namespace Spells
         private List<ISpellApplier> _spellAppliers;
         private ISpellTrigger _spellMainTrigger;
         private float _initializeTime;
-        private bool _wasInitialised = false;
-#nullable enable
-        private Transform? _casterTransform;
-#nullable disable
+        private SpellControllerStatus _controllerStatus = SpellControllerStatus.NonInitialized;
 
 #nullable enable
         public void Initialize(ISpellMovement spellMovement, List<SpellBase> nextSpellsOnFinish,
@@ -29,7 +26,6 @@ namespace Spells
             _spellMovement = spellMovement;
             _spellAppliers = spellAppliers;
             _spellMainTrigger = spellMainTrigger;
-            _casterTransform = casterTransform;
 
             var spellImplementations = new List<ISpellImplementation>()
             {
@@ -45,7 +41,7 @@ namespace Spells
             _nextSpellsOnFinish = nextSpellsOnFinish;
 
             _initializeTime = Time.time;
-            _wasInitialised = true;
+            _controllerStatus = SpellControllerStatus.Active;
         }
 #nullable disable
 
@@ -59,6 +55,7 @@ namespace Spells
 
         private void HandleFinishSpell()
         {
+            _controllerStatus = SpellControllerStatus.Finished;
             _nextSpellsOnFinish.ForEach(spell =>
             {
                 var spellTransform = transform;
@@ -74,7 +71,7 @@ namespace Spells
 
         private void FixedUpdate()
         {
-            if (_wasInitialised)
+            if (_controllerStatus == SpellControllerStatus.Active)
             {
                 _spellMovement.UpdatePosition();
 
@@ -86,11 +83,18 @@ namespace Spells
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_wasInitialised)
+            if (_controllerStatus == SpellControllerStatus.Active)
             {
                 _spellAppliers.ForEach(spellApplier => spellApplier.CheckContact(other));
                 HandleSpellTriggerResponse(_spellMainTrigger.CheckContact(other));
             }
+        }
+
+        private enum SpellControllerStatus
+        {
+            NonInitialized,
+            Active,
+            Finished
         }
     }
 }

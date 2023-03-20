@@ -495,6 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e265b715d32591498e4462ab6370a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maximumCountOfHitPoints: 50
 --- !u!1 &871607440877166104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,7 +1126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a6a7408d668f247b5d5228d31e4329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _checkSphereRadius: 0.05
   _groundMask:
     serializedVersion: 2
     m_Bits: 64

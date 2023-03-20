@@ -19,7 +19,7 @@ namespace Spells.Concrete_Types.Mechanics
 
         private class DamageMechanicImplementation : SpellMechanicEffectImplementationBase
         {
-            private int _damage;
+            private readonly int _damage;
 
             public DamageMechanicImplementation(int damage) => _damage = damage;
 

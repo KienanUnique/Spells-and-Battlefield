@@ -11,29 +11,6 @@ namespace Enemies.Knight
         protected override EnemyVisualBase EnemyVisual => _knightVisual;
         private KnightCharacter _knightCharacter;
 
-        protected override void Awake()
-        {
-            base.Awake();
-            _knightCharacter = GetComponent<KnightCharacter>();
-        }
-
-        private void OnEnable()
-        {
-            _knightVisual.AttackWithSwordAnimationMomentStartEvent += OnAttackWithSwordAnimationMomentStartEvent;
-        }
-
-        private void OnDisable()
-        {
-            _knightVisual.AttackWithSwordAnimationMomentStartEvent -= OnAttackWithSwordAnimationMomentStartEvent;
-        }
-
-        private void OnAttackWithSwordAnimationMomentStartEvent()
-        {
-            var targets = _swordTargetSelector.GetTargetsInCollider();
-            targets.RemoveAll(target => target.Id == Id);
-            _knightCharacter.DamageTargetsWithSwordAttack(targets);
-        }
-
         public void StartSwordAttack(Transform target)
         {
             _knightVisual.StartAttackWithSwordAnimation();
@@ -44,6 +21,40 @@ namespace Enemies.Knight
         {
             _knightVisual.StopAttackWithSwordAnimation();
             _enemyMovement.StopCurrentAction();
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _knightCharacter = GetComponent<KnightCharacter>();
+        }
+
+        private void OnEnable()
+        {
+            _knightVisual.AttackWithSwordAnimationMomentStartEvent += HandleAttackWithSwordAnimationMomentStartEvent;
+            _knightCharacter.CharacterStateChanged += HandleCharacterStateChangedEvent;
+        }
+
+        private void OnDisable()
+        {
+            _knightVisual.AttackWithSwordAnimationMomentStartEvent -= HandleAttackWithSwordAnimationMomentStartEvent;
+            _knightCharacter.CharacterStateChanged -= HandleCharacterStateChangedEvent;
+        }
+
+        private void HandleCharacterStateChangedEvent(CharacterState newState)
+        {
+            if (newState == CharacterState.Dead)
+            {
+                _enemyStateMachineAI.StopStateMachine();
+                _enemyMovement.StopCurrentAction();
+            }
+        }
+
+        private void HandleAttackWithSwordAnimationMomentStartEvent()
+        {
+            var targets = _swordTargetSelector.GetTargetsInCollider();
+            targets.RemoveAll(target => target.Id == Id);
+            _knightCharacter.DamageTargetsWithSwordAttack(targets);
         }
     }
 }

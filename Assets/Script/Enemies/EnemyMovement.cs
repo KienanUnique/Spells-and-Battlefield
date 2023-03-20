@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -55,10 +54,6 @@ namespace Enemies
                 _navMeshAgent.isStopped = true;
                 _navMeshAgent.updateRotation = false;
             }
-            else
-            {
-                throw new CanNotStopNullMovementActionException();
-            }
         }
 
         private IEnumerator UpdateDestinationWithCooldown(Transform target)
@@ -82,13 +77,6 @@ namespace Enemies
                 transform.rotation = lookRotation;
 
                 yield return null;
-            }
-        }
-
-        private class CanNotStopNullMovementActionException : Exception
-        {
-            public CanNotStopNullMovementActionException() : base("Can't stop null movement action")
-            {
             }
         }
     }
