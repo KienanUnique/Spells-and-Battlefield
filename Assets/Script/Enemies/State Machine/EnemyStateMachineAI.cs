@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine
@@ -8,12 +7,12 @@ namespace Enemies.State_Machine
     {
         [SerializeField] private State _firstState;
         private State CurrentState { set; get; }
-        private IPlayer _target;
+        private IEnemyStateMachineControllable _stateMachineControllable;
         private Coroutine _currentUpdateCoroutine = null;
 
-        public void StartStateMachine(IPlayer target)
+        public void StartStateMachine(IEnemyStateMachineControllable stateMachineControllable)
         {
-            _target = target;
+            _stateMachineControllable = stateMachineControllable;
             if (_currentUpdateCoroutine == null)
             {
                 TransitToState(_firstState);
@@ -35,7 +34,7 @@ namespace Enemies.State_Machine
         {
             while (true)
             {
-                if (CurrentState != null && CurrentState.NeedToSwitchToNextState(out State nextState))
+                if (CurrentState != null && CurrentState.NeedToSwitchToNextState(out var nextState))
                 {
                     TransitToState(nextState);
                 }
@@ -55,7 +54,7 @@ namespace Enemies.State_Machine
 
             if (CurrentState != null)
             {
-                CurrentState.Enter(_target);
+                CurrentState.Enter(_stateMachineControllable);
             }
         }
     }

@@ -22,6 +22,21 @@ namespace Player
         private PlayerLook _playerLook;
         private IdHolder _idHolder;
 
+        public void HandleHeal(int countOfHealthPoints)
+        {
+            _playerCharacter.HandleHeal(countOfHealthPoints);
+        }
+
+        public void HandleDamage(int countOfHealthPoints)
+        {
+            _playerCharacter.HandleDamage(countOfHealthPoints);
+        }
+
+        public int CompareTo(object obj)
+        {
+            return _idHolder.CompareTo(obj);
+        }
+
         private void Awake()
         {
             _playerCharacter = GetComponent<PlayerCharacter>();
@@ -86,16 +101,6 @@ namespace Player
             {
                 _playerSpellsManager.UseSelectedSpell(_playerLook.CameraRotation);
             }
-        }
-
-        public void HandleHeal(int countOfHealthPoints)
-        {
-            _playerCharacter.HandleHeal(countOfHealthPoints);
-        }
-
-        public void HandleDamage(int countOfHealthPoints)
-        {
-            _playerCharacter.HandleDamage(countOfHealthPoints);
         }
     }
 }

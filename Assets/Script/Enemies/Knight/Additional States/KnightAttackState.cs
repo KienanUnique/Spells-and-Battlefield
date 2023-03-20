@@ -1,27 +1,27 @@
-﻿using Enemies.Knight;
+﻿using System;
 using Enemies.State_Machine;
-using Interfaces;
-using UnityEngine;
 
-[RequireComponent(typeof(KnightController))]
-public class KnightAttackState : State
+namespace Enemies.Knight.Additional_States
 {
-    private KnightController _knightController;
-
-    private void Awake()
+    public class KnightAttackState : State
     {
-        _knightController = GetComponent<KnightController>();
-    }
+        private KnightController _knightController;
 
-    public override void Enter(IPlayer target)
-    {
-        base.Enter(target);
-        _knightController.StartSwordAttack(target.MainTransform);
-    }
+        protected override void SpecialEnterAction()
+        {
+            if (!(StateMachineControllable is KnightController controller))
+            {
+                throw new InvalidCastException();
+            }
 
-    public override void Exit()
-    {
-        base.Exit();
-        _knightController.StopSwordAttack();
+            _knightController = controller;
+
+            _knightController.StartSwordAttack(StateMachineControllable.Target.MainTransform);
+        }
+
+        protected override void SpecialExitAction()
+        {
+            _knightController.StopSwordAttack();
+        }
     }
 }

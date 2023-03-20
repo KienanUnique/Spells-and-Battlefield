@@ -10,24 +10,27 @@ namespace Enemies.State_Machine
     {
         [SerializeField] private List<Transition> _transitions;
         private bool _isAlreadyActivated = false;
-        protected IPlayer Target { get; private set; }
+        protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
 
-        public virtual void Enter(IPlayer target)
+        public void Enter(IEnemyStateMachineControllable stateMachineControllable)
         {
             if (_isAlreadyActivated)
             {
                 throw new StateIsAlreadyActivatedException();
             }
 
-            Target = target;
+            StateMachineControllable = stateMachineControllable;
             _isAlreadyActivated = true;
+
+            SpecialEnterAction();
+
             foreach (var transition in _transitions)
             {
-                transition.StartCheckingConditions(Target);
+                transition.StartCheckingConditions(StateMachineControllable);
             }
         }
 
-        public virtual void Exit()
+        public void Exit()
         {
             if (!_isAlreadyActivated)
             {
@@ -38,6 +41,8 @@ namespace Enemies.State_Machine
             {
                 transition.StopCheckingConditions();
             }
+
+            SpecialExitAction();
 
             _isAlreadyActivated = false;
         }
@@ -53,6 +58,9 @@ namespace Enemies.State_Machine
             nextState = null;
             return false;
         }
+
+        protected abstract void SpecialEnterAction();
+        protected abstract void SpecialExitAction();
 
         private class StateIsAlreadyActivatedException : Exception
         {

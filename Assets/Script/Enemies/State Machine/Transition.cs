@@ -10,17 +10,17 @@ namespace Enemies.State_Machine
         public bool NeedTransit { get; protected set; }
         public State TargetState => _targetState;
         [SerializeField] private State _targetState;
-        protected IPlayer Target { get; private set; }
+        protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
         protected Coroutine _currentCheckConditionsCoroutine = null;
 
-        public void StartCheckingConditions(IPlayer target)
+        public void StartCheckingConditions(IEnemyStateMachineControllable stateMachineControllable)
         {
             if (_currentCheckConditionsCoroutine != null)
             {
                 throw new TransitionIsAlreadyActivatedException();
             }
 
-            Target = target;
+            StateMachineControllable = stateMachineControllable;
             NeedTransit = false;
             _currentCheckConditionsCoroutine = StartCoroutine(CheckConditionsCoroutine());
         }
@@ -38,7 +38,7 @@ namespace Enemies.State_Machine
 
         protected abstract void CheckConditions();
 
-        protected virtual IEnumerator CheckConditionsCoroutine()
+        private IEnumerator CheckConditionsCoroutine()
         {
             while (true)
             {

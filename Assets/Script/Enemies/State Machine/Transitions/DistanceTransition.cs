@@ -11,7 +11,8 @@ namespace Enemies.State_Machine.Transitions
 
         protected override void CheckConditions()
         {
-            var calculatedDistance = Vector3.Distance(_localTransform.position, Target.MainTransform.position);
+            var calculatedDistance = Vector3.Distance(_localTransform.position,
+                StateMachineControllable.Target.MainTransform.position);
             switch (_typeOfComparison)
             {
                 case TypeOfComparison.IsMore:

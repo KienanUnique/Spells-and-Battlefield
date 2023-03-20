@@ -973,6 +973,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 483579229}
     m_Modifications:
+    - target: {fileID: 1780380385, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+      propertyPath: _transitions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3852422692244049268, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+      propertyPath: Target
+      value: 
+      objectReference: {fileID: 6981951305006364029}
+    - target: {fileID: 3852422692244049268, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 6981951305006364029}
     - target: {fileID: 3852422692244049268, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
       propertyPath: _target
       value: 

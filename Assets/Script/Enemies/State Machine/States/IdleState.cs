@@ -2,5 +2,12 @@
 {
     public class IdleState : State
     {
+        protected override void SpecialEnterAction()
+        {
+        }
+
+        protected override void SpecialExitAction()
+        {
+        }
     }
 }

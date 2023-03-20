@@ -1,28 +1,15 @@
-﻿using Interfaces;
-using UnityEngine;
-
-namespace Enemies.State_Machine.States
+﻿namespace Enemies.State_Machine.States
 {
-    [RequireComponent(typeof(EnemyControllerBase))]
     public class MoveToTargetState : State
     {
-        private EnemyControllerBase _enemyPathfinder;
-
-        private void Awake()
+        protected override void SpecialEnterAction()
         {
-            _enemyPathfinder = GetComponent<EnemyControllerBase>();
+            StateMachineControllable.StartMovingToTarget(StateMachineControllable.Target.MainTransform);
         }
 
-        public override void Enter(IPlayer target)
+        protected override void SpecialExitAction()
         {
-            base.Enter(target);
-            _enemyPathfinder.StartMovingToTarget(Target.MainTransform);
-        }
-
-        public override void Exit()
-        {
-            base.Exit();
-            _enemyPathfinder.StopMovingToTarget();
+            StateMachineControllable.StopMovingToTarget();
         }
     }
 }

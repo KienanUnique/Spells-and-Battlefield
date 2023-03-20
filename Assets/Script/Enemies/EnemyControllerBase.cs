@@ -8,21 +8,27 @@ namespace Enemies
 {
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(EnemyStateMachineAI))]
     [RequireComponent(typeof(EnemyMovement))]
     [RequireComponent(typeof(Character))]
-    public abstract class EnemyControllerBase : MonoBehaviour, IEnemy
+    public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable
     {
         public int Id => _idHolder.Id;
 
-        protected abstract EnemyVisualBase EnemyVisual { get; }
+        public IEnemyTarget Target { get; set; }
 
-        [SerializeField] protected PlayerController _target;
+        protected abstract EnemyVisualBase EnemyVisual { get; }
         protected IdHolder _idHolder;
         protected Character _character;
         protected NavMeshAgent _navMeshAgent;
         protected EnemyMovement _enemyMovement;
-        protected EnemyStateMachineAI _enemyStateMachineAI;
+        [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
+
+        [SerializeField] private PlayerController _player;
+
+        public int CompareTo(object obj)
+        {
+            return _idHolder.CompareTo(obj);
+        }
 
         public virtual void HandleHeal(int countOfHealthPoints)
         {
@@ -43,13 +49,13 @@ namespace Enemies
             _idHolder = GetComponent<IdHolder>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _enemyMovement = GetComponent<EnemyMovement>();
-            _enemyStateMachineAI = GetComponent<EnemyStateMachineAI>();
             _character = GetComponent<Character>();
+            Target = _player;
         }
 
         protected virtual void Start()
         {
-            _enemyStateMachineAI.StartStateMachine(_target);
+            _enemyStateMachineAI.StartStateMachine(this);
         }
 
         protected virtual void Update()
