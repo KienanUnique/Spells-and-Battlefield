@@ -1,4 +1,5 @@
 using Interfaces;
+using Spells;
 using UnityEngine;
 
 namespace Player
@@ -30,6 +31,11 @@ namespace Player
         public void HandleDamage(int countOfHealthPoints)
         {
             _playerCharacter.HandleDamage(countOfHealthPoints);
+        }
+
+        public void AddSpell(ISpell newSpell)
+        {
+            _playerSpellsManager.AddSpell(newSpell);
         }
 
         public int CompareTo(object obj)

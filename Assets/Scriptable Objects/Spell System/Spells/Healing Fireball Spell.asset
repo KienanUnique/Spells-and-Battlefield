@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cee8cb326b2072e4ea6a9ae7e6fa3025, type: 3}
   m_Name: Healing Fireball Spell
   m_EditorClassIdentifier: 
+  _icon: {fileID: 21300000, guid: 8b03ad0628d8cec43a17e35fbc3086e4, type: 3}
+  _title: Heal Fireball
   _movement: {fileID: 11400000, guid: f0c42f3d1555a414bad15108e760ef71, type: 2}
   _appliers:
   - {fileID: 11400000, guid: f2f8496c1a5c6fe49a21c7f81b369bc7, type: 2}

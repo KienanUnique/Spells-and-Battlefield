@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cee8cb326b2072e4ea6a9ae7e6fa3025, type: 3}
   m_Name: Fireball Spell
   m_EditorClassIdentifier: 
+  _icon: {fileID: 21300000, guid: 2d0997ac1b1fd664e98202450e7ea2d7, type: 3}
+  _title: Fireball
   _movement: {fileID: 11400000, guid: f0c42f3d1555a414bad15108e760ef71, type: 2}
   _appliers:
   - {fileID: 11400000, guid: 7625cdd303a1b204c9c18ee576a62adc, type: 2}

@@ -457,14 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e9b97d38605c94aa0b3cf9518c90d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentSpells:
-  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
-  - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
+  _startTestSpells:
   - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
   - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}
   - {fileID: 11400000, guid: 05282b8564fc5154f9b9d89c01de4558, type: 2}

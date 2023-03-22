@@ -8,9 +8,9 @@ namespace Spells
 {
     [CreateAssetMenu(fileName = "Single Spell", menuName = "Spells and Battlefield/Spell System/Single Spell",
         order = 0)]
-    public class SingleSpell : ScriptableObject, ISpell
+    public class SingleSpell : SpellBase
     {
-        public AnimatorOverrideController CastAnimationAnimatorOverrideController =>
+        public override AnimatorOverrideController CastAnimationAnimatorOverrideController =>
             _castAnimationAnimatorOverrideController;
 
         [SerializeField] private SpellMovementScriptableObject _movement;
@@ -33,7 +33,7 @@ namespace Spells
         private ISpellMovement SpellObjectMovement => _movement.GetImplementationObject();
         private ISpellTrigger SpellTrigger => _mainTrigger.GetImplementationObject();
 
-        public void Cast(Vector3 spawnSpellPosition, Quaternion spawnSpellRotation, Transform casterTransform,
+        public override void Cast(Vector3 spawnSpellPosition, Quaternion spawnSpellRotation, Transform casterTransform,
             ISpellInteractable casterCharacter)
         {
             var spellObjectController =

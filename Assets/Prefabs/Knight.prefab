@@ -1755,6 +1755,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyStateMachineAI: {fileID: 6049343359790611563}
+  _pickableSpellPrefab: {fileID: 4960876760894594233, guid: e5081c11df2aa0745a2264b49c70b283, type: 3}
+  _spellToDrop: {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
   _player: {fileID: 0}
   _knightVisual: {fileID: 3080045603991402992}
   _swordTargetSelector: {fileID: 6699638415409780918}
@@ -1770,7 +1772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d4b5ec528f63c64aa0c44245df35c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maximumCountOfHitPoints: 30
+  _maximumCountOfHitPoints: 15
   _attackSwordDamage: 7
 --- !u!195 &4773416566425850603
 NavMeshAgent:

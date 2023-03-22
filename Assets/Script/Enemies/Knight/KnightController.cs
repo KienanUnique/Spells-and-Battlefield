@@ -29,26 +29,18 @@ namespace Enemies.Knight
             _knightCharacter = GetComponent<KnightCharacter>();
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             _knightVisual.AttackWithSwordAnimationMomentStartEvent += HandleAttackWithSwordAnimationMomentStartEvent;
-            _knightCharacter.CharacterStateChanged += HandleCharacterStateChangedEvent;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             _knightVisual.AttackWithSwordAnimationMomentStartEvent -= HandleAttackWithSwordAnimationMomentStartEvent;
-            _knightCharacter.CharacterStateChanged -= HandleCharacterStateChangedEvent;
         }
 
-        private void HandleCharacterStateChangedEvent(CharacterState newState)
-        {
-            if (newState == CharacterState.Dead)
-            {
-                _enemyStateMachineAI.StopStateMachine();
-                _enemyMovement.StopCurrentAction();
-            }
-        }
 
         private void HandleAttackWithSwordAnimationMomentStartEvent()
         {
