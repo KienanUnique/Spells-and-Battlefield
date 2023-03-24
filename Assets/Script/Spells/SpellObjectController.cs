@@ -83,7 +83,7 @@ namespace Spells
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_controllerStatus == SpellControllerStatus.Active)
+            if (!other.isTrigger && _controllerStatus == SpellControllerStatus.Active)
             {
                 _spellAppliers.ForEach(spellApplier => spellApplier.CheckContact(other));
                 HandleSpellTriggerResponse(_spellMainTrigger.CheckContact(other));

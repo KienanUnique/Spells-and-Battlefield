@@ -21,6 +21,7 @@ namespace Spells.Concrete_Types.Target_Selectors
         {
             private readonly float _sphereRadius;
             private readonly bool _ignoreCasterCollisions;
+            private const int LayerMask = Physics.AllLayers;
 
             public SphereEnemySelectorImplementation(float sphereRadius, bool ignoreCasterCollisions)
             {
@@ -31,7 +32,8 @@ namespace Spells.Concrete_Types.Target_Selectors
             public override List<ISpellInteractable> SelectTargets()
             {
                 var selectedTargets = new List<ISpellInteractable>();
-                var collidersInsideSphere = Physics.OverlapSphere(_spellRigidbody.position, _sphereRadius);
+                var collidersInsideSphere = Physics.OverlapSphere(_spellRigidbody.position, _sphereRadius, LayerMask,
+                    QueryTriggerInteraction.Ignore);
                 foreach (var hitCollider in collidersInsideSphere)
                 {
                     if (hitCollider.gameObject.TryGetComponent<ISpellInteractable>(out var target) &&
