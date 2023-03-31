@@ -33,6 +33,11 @@ namespace Player
             _playerCharacter.HandleDamage(countOfHealthPoints);
         }
 
+        public void ApplyContinuousEffect(IContinuousEffect effect)
+        {
+            _playerCharacter.ApplyContinuousEffect(effect);
+        }
+
         public void AddSpell(ISpell newSpell)
         {
             _playerSpellsManager.AddSpell(newSpell);

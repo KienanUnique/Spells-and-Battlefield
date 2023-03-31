@@ -18,6 +18,10 @@ namespace Spells.Concrete_Types.Mechanics
             {
             }
 
+            public void ApplyEffectToTarget(ISpellInteractable target)
+            {
+            }
+
             public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform,
                 ISpellInteractable casterCharacter)
             {

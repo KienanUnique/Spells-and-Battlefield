@@ -1,3 +1,5 @@
+using Spells;
+
 namespace Player
 {
     public class PlayerCharacter : Character

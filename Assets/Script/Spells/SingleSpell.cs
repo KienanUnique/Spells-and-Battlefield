@@ -36,9 +36,7 @@ namespace Spells
         public override void Cast(Vector3 spawnSpellPosition, Quaternion spawnSpellRotation, Transform casterTransform,
             ISpellInteractable casterCharacter)
         {
-            var spellObjectController =
-                Instantiate(_spellObjectPrefab.gameObject, spawnSpellPosition, spawnSpellRotation)
-                    .GetComponent<SpellObjectController>();
+            var spellObjectController = Instantiate(_spellObjectPrefab, spawnSpellPosition, spawnSpellRotation);
             spellObjectController.Initialize(SpellObjectMovement, _nextSpellsOnFinish, SpellAppliers, SpellTrigger,
                 casterTransform, casterCharacter);
         }

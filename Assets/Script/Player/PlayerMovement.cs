@@ -11,10 +11,10 @@ namespace Player
         public Transform LocalTransform { private set; get; }
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
-        [SerializeField] private float _runVelocity;
-        [SerializeField] private float _walkVelocityMagnitude;
-        [SerializeField] private float _jumpVelocity;
-        [SerializeField] private float _gravityVelocity;
+        [SerializeField] private float _runVelocity = 10f;
+        [SerializeField] private float _walkVelocityMagnitude = 4;
+        [SerializeField] private float _jumpVelocity = 13;
+        [SerializeField] private float _gravityVelocity = 15;
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private GroundChecker _groundChecker;
         private Vector2 _inputMoveDirection = Vector2.zero;

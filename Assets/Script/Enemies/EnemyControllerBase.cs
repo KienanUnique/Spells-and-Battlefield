@@ -44,6 +44,11 @@ namespace Enemies
             _character.HandleDamage(countOfHealthPoints);
         }
 
+        public void ApplyContinuousEffect(IContinuousEffect effect)
+        {
+            _character.ApplyContinuousEffect(effect);
+        }
+
         public void StartMovingToTarget(Transform target) => _enemyMovement.StartMovingToTarget(target);
 
         public void StopMovingToTarget() => _enemyMovement.StopCurrentAction();

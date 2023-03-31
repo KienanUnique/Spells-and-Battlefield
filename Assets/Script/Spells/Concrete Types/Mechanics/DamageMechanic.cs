@@ -14,16 +14,16 @@ namespace Spells.Concrete_Types.Mechanics
 
         public override ISpellMechanicEffect GetImplementationObject()
         {
-            return new DamageMechanicImplementation(_damage);
+            return new DamageInstantMechanicImplementation(_damage);
         }
 
-        private class DamageMechanicImplementation : SpellMechanicEffectImplementationBase
+        private class DamageInstantMechanicImplementation : SpellInstantMechanicEffectImplementationBase
         {
             private readonly int _damage;
 
-            public DamageMechanicImplementation(int damage) => _damage = damage;
+            public DamageInstantMechanicImplementation(int damage) => _damage = damage;
 
-            protected override void ApplyEffectToTarget(ISpellInteractable target)
+            public override void ApplyEffectToTarget(ISpellInteractable target)
             {
                 target.HandleDamage(_damage);
             }
