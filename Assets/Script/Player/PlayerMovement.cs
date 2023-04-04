@@ -11,6 +11,8 @@ namespace Player
         public Transform LocalTransform { private set; get; }
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
+        public Vector3 CurrentPosition => _rigidbody.position;
+
         [SerializeField] private float _runVelocity = 10f;
         [SerializeField] private float _walkVelocityMagnitude = 4;
         [SerializeField] private float _jumpVelocity = 13;
@@ -105,6 +107,11 @@ namespace Player
         {
             Walk,
             Run
+        }
+
+        public void AddForce(Vector3 force, ForceMode mode)
+        {
+            _rigidbody.AddForce(force, mode);
         }
     }
 }

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d78856738e1ac9848b248fabbfcfc0d3, type: 3}
+  m_Name: Push Touch
+  m_EditorClassIdentifier: 
+  _spellMechanicEffects:
+  - {fileID: 11400000, guid: f7be64ebcdc910e4487f9d49377f8f0f, type: 2}
+  _targetSelector: {fileID: 11400000, guid: e08fcd812fa7ddd4ca8f52fe50a18e3b, type: 2}
+  _spellTrigger: {fileID: 11400000, guid: 6e4167d6efc4a0649932a733d1797436, type: 2}

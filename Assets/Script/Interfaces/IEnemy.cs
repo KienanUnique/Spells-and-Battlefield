@@ -1,6 +1,6 @@
 ﻿namespace Interfaces
 {
-    public interface IEnemy : ISpellInteractable, ICharacter, IInteractable
+    public interface IEnemy : ISpellInteractable, ICharacter, IInteractable, IPhysicsInteractable
     {
     }
 }

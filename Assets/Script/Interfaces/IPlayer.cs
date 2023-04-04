@@ -2,7 +2,8 @@
 
 namespace Interfaces
 {
-    public interface IPlayer : ISpellInteractable, ICharacter, IInteractable, IEnemyTarget, IDroppedItemsPicker
+    public interface IPlayer : ISpellInteractable, ICharacter, IInteractable, IEnemyTarget, IDroppedItemsPicker,
+        IPhysicsInteractable
     {
     }
 }

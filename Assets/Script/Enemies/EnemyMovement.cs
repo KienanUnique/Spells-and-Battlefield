@@ -5,16 +5,15 @@ using UnityEngine.AI;
 namespace Enemies
 {
     [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(Rigidbody))]
     public class EnemyMovement : MonoBehaviour
     {
         [SerializeField] private float _updateDestinationCooldownSeconds;
+        // TODO: disable moving with navmesh, use it only to rotate and calculate desiredVelocity
         private NavMeshAgent _navMeshAgent;
+        private Rigidbody _rigidbody;
         private Coroutine _currentActionCoroutine = null;
-
-        private void Awake()
-        {
-            _navMeshAgent = GetComponent<NavMeshAgent>();
-        }
+        public Vector3 CurrentPosition => _rigidbody.position;
 
         public void StartMovingToTarget(Transform target)
         {
@@ -22,7 +21,7 @@ namespace Enemies
             {
                 _navMeshAgent.isStopped = false;
                 _navMeshAgent.updateRotation = true;
-                _currentActionCoroutine = StartCoroutine(UpdateDestinationWithCooldown(target));
+                _currentActionCoroutine = StartCoroutine(MoveTowardsTarget(target));
             }
             else
             {
@@ -55,13 +54,26 @@ namespace Enemies
                 _navMeshAgent.updateRotation = false;
             }
         }
+        
+        public void AddForce(Vector3 force, ForceMode mode)
+        {
+            _navMeshAgent.enabled = false;
+            _rigidbody.AddForce(force, mode);
+            _navMeshAgent.enabled = true;
+        }
+        
+        private void Awake()
+        {
+            _navMeshAgent = GetComponent<NavMeshAgent>();
+            _rigidbody = GetComponent<Rigidbody>();
+        }
 
-        private IEnumerator UpdateDestinationWithCooldown(Transform target)
+        private IEnumerator MoveTowardsTarget(Transform target)
         {
             while (true)
             {
                 _navMeshAgent.SetDestination(target.position);
-                yield return new WaitForSecondsRealtime(_updateDestinationCooldownSeconds);
+                yield return new WaitForFixedUpdate();
             }
         }
 

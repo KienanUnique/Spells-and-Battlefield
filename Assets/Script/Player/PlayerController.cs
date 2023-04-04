@@ -14,7 +14,7 @@ namespace Player
     {
         public int Id => _idHolder.Id;
         public Transform MainTransform => _playerMovement.LocalTransform;
-
+        public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         [SerializeField] private PlayerVisual _playerVisual;
         private PlayerCharacter _playerCharacter;
         private PlayerSpellsManager _playerSpellsManager;
@@ -46,6 +46,11 @@ namespace Player
         public int CompareTo(object obj)
         {
             return _idHolder.CompareTo(obj);
+        }
+        
+        public void AddForce(Vector3 force, ForceMode mode)
+        {
+            _playerMovement.AddForce(force, mode);
         }
 
         private void Awake()

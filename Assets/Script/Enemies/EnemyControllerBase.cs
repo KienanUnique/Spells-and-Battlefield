@@ -15,6 +15,7 @@ namespace Enemies
     public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable
     {
         public int Id => _idHolder.Id;
+        public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
         public IEnemyTarget Target { get; set; }
 
         protected abstract EnemyVisualBase EnemyVisual { get; }
@@ -25,13 +26,18 @@ namespace Enemies
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected PickableSpellController _pickableSpellPrefab;
         [SerializeField] protected SpellBase _spellToDrop;
-
         [SerializeField] private PlayerController _player;
+        
         private readonly Vector3 _spawnSpellOffset = new Vector3(0, 3f, 0);
 
         public int CompareTo(object obj)
         {
             return _idHolder.CompareTo(obj);
+        }
+
+        public void AddForce(Vector3 force, ForceMode mode)
+        {
+            _enemyMovement.AddForce(force, mode);
         }
 
         public virtual void HandleHeal(int countOfHealthPoints)
