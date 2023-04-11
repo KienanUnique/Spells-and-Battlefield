@@ -5,9 +5,11 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    public Action<CharacterState> CharacterStateChanged;
+    public event Action<CharacterState> StateChanged;
+    public event Action<float> HitPointsCountChanged;
+    public float HitPointCountRatio => _currentCountCountOfHitPoints.Value / _maximumCountOfHitPoints;
     [SerializeField] protected float _maximumCountOfHitPoints;
-    protected float _currentCountCountOfHitPoints;
+    protected ValueWithReactionOnChange<float> _currentCountCountOfHitPoints;
     protected List<IContinuousEffect> _currentEffects;
     protected ValueWithReactionOnChange<CharacterState> CurrentState { get; private set; }
     protected abstract string NamePrefix { get; }
@@ -15,23 +17,23 @@ public abstract class Character : MonoBehaviour
     public void HandleHeal(int countOfHitPoints)
     {
         if (CurrentState.Value == CharacterState.Dead) return;
-        _currentCountCountOfHitPoints += countOfHitPoints;
+        _currentCountCountOfHitPoints.Value += countOfHitPoints;
         Debug.Log(
-            $"{NamePrefix}: Handle_Heal<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints}>, Current_State<{CurrentState.Value.ToString()}>");
+            $"{NamePrefix}: Handle_Heal<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints.Value}>, Current_State<{CurrentState.Value.ToString()}>");
     }
 
     public void HandleDamage(int countOfHitPoints)
     {
         if (CurrentState.Value == CharacterState.Dead) return;
-        _currentCountCountOfHitPoints -= countOfHitPoints;
-        if (_currentCountCountOfHitPoints <= 0)
+        _currentCountCountOfHitPoints.Value -= countOfHitPoints;
+        if (_currentCountCountOfHitPoints.Value <= 0)
         {
             CurrentState.Value = CharacterState.Dead;
-            _currentCountCountOfHitPoints = 0;
+            _currentCountCountOfHitPoints.Value = 0;
         }
 
         Debug.Log(
-            $"{NamePrefix}: Handle_Damage<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints}>, Current_State<{CurrentState.Value.ToString()}>");
+            $"{NamePrefix}: Handle_Damage<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints.Value}>, Current_State<{CurrentState.Value.ToString()}>");
     }
 
     public void ApplyContinuousEffect(IContinuousEffect effect)
@@ -61,25 +63,29 @@ public abstract class Character : MonoBehaviour
             _currentEffects.Clear();
         }
 
-        CharacterStateChanged?.Invoke(newState);
+        StateChanged?.Invoke(newState);
     }
+
+    private void OnHitPointsCountChanged(float newHitPointsCount) => HitPointsCountChanged?.Invoke(newHitPointsCount);
 
     private void Awake()
     {
-        _currentCountCountOfHitPoints = _maximumCountOfHitPoints;
         CurrentState = new ValueWithReactionOnChange<CharacterState>(CharacterState.Alive);
+        _currentCountCountOfHitPoints = new ValueWithReactionOnChange<float>(_maximumCountOfHitPoints);
         _currentEffects = new List<IContinuousEffect>();
     }
 
     private void OnEnable()
     {
         CurrentState.ValueChanged += OnCharacterStateChanged;
+        _currentCountCountOfHitPoints.ValueChanged += OnHitPointsCountChanged;
         _currentEffects.ForEach(effect => effect.EffectEnded += OnEffectEnded);
     }
 
     private void OnDisable()
     {
         CurrentState.ValueChanged -= OnCharacterStateChanged;
+        _currentCountCountOfHitPoints.ValueChanged -= OnHitPointsCountChanged;
         _currentEffects.ForEach(effect => effect.EffectEnded -= OnEffectEnded);
     }
 }

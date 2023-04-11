@@ -1,5 +1,6 @@
 using Interfaces;
 using Spells;
+using UI.Bar;
 using UnityEngine;
 
 namespace Player
@@ -16,6 +17,7 @@ namespace Player
         public Transform MainTransform => _playerMovement.LocalTransform;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         [SerializeField] private PlayerVisual _playerVisual;
+        [SerializeField] private BarController _hpBar;
         private PlayerCharacter _playerCharacter;
         private PlayerSpellsManager _playerSpellsManager;
         private PlayerInputManager _playerInputManager;
@@ -47,7 +49,7 @@ namespace Player
         {
             return _idHolder.CompareTo(obj);
         }
-        
+
         public void AddForce(Vector3 force, ForceMode mode)
         {
             _playerMovement.AddForce(force, mode);
@@ -87,6 +89,7 @@ namespace Player
             _playerMovement.JumpEvent += _playerVisual.PlayJumpAnimation;
             _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
             _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
+            _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
         }
 
         private void OnDisable()
@@ -101,6 +104,12 @@ namespace Player
             _playerMovement.JumpEvent -= _playerVisual.PlayJumpAnimation;
             _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
             _playerMovement.LandEvent -= _playerVisual.PlayLandAnimation;
+            _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
+        }
+
+        private void OnHitPointsCountChanged(float newHitPointsCount)
+        {
+            _hpBar.UpdateValue(_playerCharacter.HitPointCountRatio);
         }
 
         private void StartUseSelectedSpell()

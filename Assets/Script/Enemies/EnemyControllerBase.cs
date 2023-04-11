@@ -56,7 +56,7 @@ namespace Enemies
 
         public void StopMovingToTarget() => _enemyMovement.StopCurrentAction();
 
-        protected virtual void HandleCharacterStateChangedEvent(CharacterState newState)
+        protected virtual void HandleStateChangedEvent(CharacterState newState)
         {
             if (newState == CharacterState.Dead)
             {
@@ -68,13 +68,13 @@ namespace Enemies
 
         protected virtual void OnEnable()
         {
-            _character.CharacterStateChanged += HandleCharacterStateChangedEvent;
+            _character.StateChanged += HandleStateChangedEvent;
             _enemyMovement.IsMovingStateChanged += EnemyVisual.UpdateMovingData;
         }
 
         protected virtual void OnDisable()
         {
-            _character.CharacterStateChanged -= HandleCharacterStateChangedEvent;
+            _character.StateChanged -= HandleStateChangedEvent;
             _enemyMovement.IsMovingStateChanged -= EnemyVisual.UpdateMovingData;
         }
 
