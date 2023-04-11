@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3abd21d1c1584ff08db6fd72255cd68d, type: 3}
   m_Name: Push Mechanic
   m_EditorClassIdentifier: 
-  _forceValue: 1000
+  _forceValue: 100

@@ -1,46 +1,31 @@
+using System;
 using System.Collections;
+using Pathfinding;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Enemies
 {
-    [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Seeker))]
+    [RequireComponent(typeof(TargetPathfinder))]
     public class EnemyMovement : MonoBehaviour
     {
-        [SerializeField] private float _updateDestinationCooldownSeconds;
-        // TODO: disable moving with navmesh, use it only to rotate and calculate desiredVelocity
-        private NavMeshAgent _navMeshAgent;
-        private Rigidbody _rigidbody;
-        private Coroutine _currentActionCoroutine = null;
         public Vector3 CurrentPosition => _rigidbody.position;
+        public event Action<bool> IsMovingStateChanged;
+        [SerializeField] private float _runVelocity;
+        private ValueWithReactionOnChange<bool> _isMoving;
+        private Rigidbody _rigidbody;
+        private TargetPathfinder _targetPathfinder;
+        private Coroutine _currentActionCoroutine = null;
 
         public void StartMovingToTarget(Transform target)
         {
-            if (_currentActionCoroutine == null)
-            {
-                _navMeshAgent.isStopped = false;
-                _navMeshAgent.updateRotation = true;
-                _currentActionCoroutine = StartCoroutine(MoveTowardsTarget(target));
-            }
-            else
+            if (_currentActionCoroutine != null)
             {
                 StopCurrentAction();
             }
-        }
 
-        public void StartMovingWithRotatingTowardsTarget(Transform target)
-        {
-            if (_currentActionCoroutine == null)
-            {
-                _navMeshAgent.isStopped = false;
-                _navMeshAgent.updateRotation = false;
-                _currentActionCoroutine = StartCoroutine(MovingWithRotatingTowardsTarget(target));
-            }
-            else
-            {
-                StopCurrentAction();
-            }
+            _currentActionCoroutine = StartCoroutine(FollowPath(target));
         }
 
         public void StopCurrentAction()
@@ -49,47 +34,75 @@ namespace Enemies
             {
                 StopCoroutine(_currentActionCoroutine);
                 _currentActionCoroutine = null;
-                _navMeshAgent.velocity = Vector3.zero;
-                _navMeshAgent.isStopped = true;
-                _navMeshAgent.updateRotation = false;
             }
         }
-        
+
         public void AddForce(Vector3 force, ForceMode mode)
         {
-            _navMeshAgent.enabled = false;
             _rigidbody.AddForce(force, mode);
-            _navMeshAgent.enabled = true;
         }
-        
+
         private void Awake()
         {
-            _navMeshAgent = GetComponent<NavMeshAgent>();
             _rigidbody = GetComponent<Rigidbody>();
+            _targetPathfinder = GetComponent<TargetPathfinder>();
+            _isMoving = new ValueWithReactionOnChange<bool>(false);
         }
 
-        private IEnumerator MoveTowardsTarget(Transform target)
+        private void OnEnable()
         {
+            _isMoving.ValueChanged += b => IsMovingStateChanged?.Invoke(b);
+        }
+
+        private void OnDisable()
+        {
+            _isMoving.ValueChanged -= b => IsMovingStateChanged?.Invoke(b);
+        }
+
+        private IEnumerator FollowPath(Transform target)
+        {
+            var waitForFixedUpdate = new WaitForFixedUpdate();
+            _targetPathfinder.UpdatePathForTarget(target);
+            var direction = Vector3.zero;
+            var currentHorizontalVelocity = Vector3.zero;
+            Vector3 currentHorizontalVelocityNormalized, needVelocity;
             while (true)
             {
-                _navMeshAgent.SetDestination(target.position);
-                yield return new WaitForFixedUpdate();
+                _isMoving.Value = _targetPathfinder.TryGetNextWaypoint(out var waypointPosition);
+                if (_isMoving.Value)
+                {
+                    SetDirectionTowardsPoint(waypointPosition, ref direction);
+                    needVelocity = direction * _runVelocity;
+                    currentHorizontalVelocity.x = _rigidbody.velocity.x;
+                    currentHorizontalVelocity.z = _rigidbody.velocity.z;
+                    currentHorizontalVelocityNormalized = currentHorizontalVelocity.normalized;
+
+                    if (direction.magnitude >= (direction - currentHorizontalVelocityNormalized).magnitude)
+                    {
+                        needVelocity -= currentHorizontalVelocity;
+                    }
+
+                    _rigidbody.AddForce(needVelocity, ForceMode.VelocityChange);
+                }
+                else
+                {
+                    SetDirectionTowardsPoint(target.position, ref direction);
+                }
+
+                if (direction != Vector3.zero)
+                {
+                    _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
+                }
+
+                yield return waitForFixedUpdate;
             }
         }
 
-        private IEnumerator MovingWithRotatingTowardsTarget(Transform target)
+        private void SetDirectionTowardsPoint(Vector3 needPoint, ref Vector3 direction)
         {
-            while (true)
-            {
-                var targetPosition = target.position;
-                _navMeshAgent.SetDestination(targetPosition);
-
-                var direction = (targetPosition - transform.position).normalized;
-                var lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-                transform.rotation = lookRotation;
-
-                yield return null;
-            }
+            direction = needPoint - _rigidbody.position;
+            direction.y = 0;
+            direction = direction.normalized;
         }
     }
 }

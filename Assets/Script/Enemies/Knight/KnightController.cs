@@ -14,13 +14,12 @@ namespace Enemies.Knight
         public void StartSwordAttack(Transform target)
         {
             _knightVisual.StartAttackWithSwordAnimation();
-            _enemyMovement.StartMovingWithRotatingTowardsTarget(target);
+            _enemyMovement.StartMovingToTarget(Target.MainTransform);
         }
 
         public void StopSwordAttack()
         {
             _knightVisual.StopAttackWithSwordAnimation();
-            _enemyMovement.StopCurrentAction();
         }
 
         protected override void Awake()

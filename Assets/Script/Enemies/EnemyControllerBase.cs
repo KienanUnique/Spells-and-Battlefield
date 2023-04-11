@@ -4,30 +4,27 @@ using Pickable_Items;
 using Player;
 using Spells;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Enemies
 {
     [RequireComponent(typeof(IdHolder))]
-    [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(EnemyMovement))]
     [RequireComponent(typeof(Character))]
     public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable
     {
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
-        public IEnemyTarget Target { get; set; }
+        public IEnemyTarget Target { get; private set; }
 
         protected abstract EnemyVisualBase EnemyVisual { get; }
         protected IdHolder _idHolder;
         protected Character _character;
-        protected NavMeshAgent _navMeshAgent;
         protected EnemyMovement _enemyMovement;
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected PickableSpellController _pickableSpellPrefab;
         [SerializeField] protected SpellBase _spellToDrop;
         [SerializeField] private PlayerController _player;
-        
+
         private readonly Vector3 _spawnSpellOffset = new Vector3(0, 3f, 0);
 
         public int CompareTo(object obj)
@@ -72,17 +69,18 @@ namespace Enemies
         protected virtual void OnEnable()
         {
             _character.CharacterStateChanged += HandleCharacterStateChangedEvent;
+            _enemyMovement.IsMovingStateChanged += EnemyVisual.UpdateMovingData;
         }
 
         protected virtual void OnDisable()
         {
             _character.CharacterStateChanged -= HandleCharacterStateChangedEvent;
+            _enemyMovement.IsMovingStateChanged -= EnemyVisual.UpdateMovingData;
         }
 
         protected virtual void Awake()
         {
             _idHolder = GetComponent<IdHolder>();
-            _navMeshAgent = GetComponent<NavMeshAgent>();
             _enemyMovement = GetComponent<EnemyMovement>();
             _character = GetComponent<Character>();
             Target = _player;
@@ -92,12 +90,7 @@ namespace Enemies
         {
             _enemyStateMachineAI.StartStateMachine(this);
         }
-
-        protected virtual void Update()
-        {
-            EnemyVisual.UpdateMovingData(!_navMeshAgent.isStopped);
-        }
-
+        
         private void DropSpell()
         {
             var localTransform = transform;

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5114666860549474120}
   - component: {fileID: 5525611228295602839}
   - component: {fileID: 5512664240668974580}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Test Obtsacle A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
