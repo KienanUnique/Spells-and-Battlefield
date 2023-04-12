@@ -25,6 +25,7 @@ namespace Enemies
                 StopCurrentAction();
             }
 
+            _isMoving.Value = true;
             _currentActionCoroutine = StartCoroutine(FollowPath(target));
         }
 
@@ -34,6 +35,7 @@ namespace Enemies
             {
                 StopCoroutine(_currentActionCoroutine);
                 _currentActionCoroutine = null;
+                _isMoving.Value = false;
             }
         }
 
@@ -68,8 +70,7 @@ namespace Enemies
             Vector3 currentHorizontalVelocityNormalized, needVelocity;
             while (true)
             {
-                _isMoving.Value = _targetPathfinder.TryGetNextWaypoint(out var waypointPosition);
-                if (_isMoving.Value)
+                if (_targetPathfinder.TryGetNextWaypoint(out var waypointPosition))
                 {
                     SetDirectionTowardsPoint(waypointPosition, ref direction);
                     needVelocity = direction * _runVelocity;

@@ -18,6 +18,10 @@ public abstract class Character : MonoBehaviour
     {
         if (CurrentState.Value == CharacterState.Dead) return;
         _currentCountCountOfHitPoints.Value += countOfHitPoints;
+        if (_currentCountCountOfHitPoints.Value > _maximumCountOfHitPoints)
+        {
+            _currentCountCountOfHitPoints.Value = _maximumCountOfHitPoints;
+        }
         Debug.Log(
             $"{NamePrefix}: Handle_Heal<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints.Value}>, Current_State<{CurrentState.Value.ToString()}>");
     }

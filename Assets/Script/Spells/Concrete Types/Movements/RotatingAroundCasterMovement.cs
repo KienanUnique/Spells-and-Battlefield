@@ -38,9 +38,9 @@ namespace Spells.Concrete_Types.Movements
                         Vector3.Distance(fromCastObjectPosition, _spellRigidbodyTransform.position)))
                 {
                     var direction = (_spellRigidbodyTransform.position - fromCastObjectPosition).normalized;
-                    _spellRigidbodyTransform.position = fromCastObjectPosition + direction * _radius;
-                    _spellRigidbodyTransform.position = new Vector3(_spellRigidbodyTransform.position.x,
-                        fromCastObjectPosition.y, _spellRigidbodyTransform.position.z);
+                    var needPosition = fromCastObjectPosition + direction * _radius;
+                    needPosition.y = fromCastObjectPosition.y;
+                    _spellRigidbodyTransform.position = needPosition;
                 }
 
                 _spellRigidbodyTransform.RotateAround(fromCastObjectPosition, _spellRigidbodyTransform.up,
