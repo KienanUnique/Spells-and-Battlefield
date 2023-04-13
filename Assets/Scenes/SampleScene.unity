@@ -1404,6 +1404,10 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 1109136848}
+    - target: {fileID: 3852422692244049268, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+      propertyPath: _delayInSecondsBeforeDestroy
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4773416566356749363, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
       propertyPath: m_RootOrder
       value: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using Enemies.State_Machine;
 using Interfaces;
 using Pickable_Items;
@@ -24,6 +25,7 @@ namespace Enemies
         [SerializeField] protected PickableSpellController _pickableSpellPrefab;
         [SerializeField] protected SpellBase _spellToDrop;
         [SerializeField] private PlayerController _player;
+        [Range(1, 20f)] [SerializeField] private float _delayInSecondsBeforeDestroy = 1f;
 
         private readonly Vector3 _spawnSpellOffset = new Vector3(0, 3f, 0);
 
@@ -62,7 +64,9 @@ namespace Enemies
             {
                 _enemyStateMachineAI.StopStateMachine();
                 _enemyMovement.StopCurrentAction();
+                EnemyVisual.PlayDieAnimation();
                 DropSpell();
+                StartCoroutine(DestroyAfterDelay());
             }
         }
 
@@ -90,7 +94,7 @@ namespace Enemies
         {
             _enemyStateMachineAI.StartStateMachine(this);
         }
-        
+
         private void DropSpell()
         {
             var localTransform = transform;
@@ -102,6 +106,12 @@ namespace Enemies
                 Instantiate(_pickableSpellPrefab.gameObject, spawnPosition, Quaternion.identity)
                     .GetComponent<PickableSpellController>();
             pickableSpellController.DropItem(_spellToDrop, dropDirection);
+        }
+
+        private IEnumerator DestroyAfterDelay()
+        {
+            yield return new WaitForSeconds(_delayInSecondsBeforeDestroy);
+            Destroy(this.gameObject);
         }
     }
 }
