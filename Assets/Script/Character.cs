@@ -8,6 +8,7 @@ public abstract class Character : MonoBehaviour
     public event Action<CharacterState> StateChanged;
     public event Action<float> HitPointsCountChanged;
     public float HitPointCountRatio => _currentCountCountOfHitPoints.Value / _maximumCountOfHitPoints;
+    public CharacterState CurrentCharacterState => CurrentState.Value;
     [SerializeField] protected float _maximumCountOfHitPoints;
     protected ValueWithReactionOnChange<float> _currentCountCountOfHitPoints;
     protected List<IContinuousEffect> _currentEffects;

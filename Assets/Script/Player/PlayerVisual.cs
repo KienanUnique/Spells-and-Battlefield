@@ -19,6 +19,8 @@ namespace Player
         private static readonly int FallTriggerHash = Animator.StringToHash("Fall");
         private static readonly int LandTriggerHash = Animator.StringToHash("Land");
 
+        private static readonly int DieTriggerHash = Animator.StringToHash("Die");
+
         public void InvokeUseSpellAnimationMomentStart() => UseSpellAnimationMomentStartEvent?.Invoke();
 
         public void PlayUseSpellAnimation(AnimatorOverrideController useSpellHandsAnimatorController)
@@ -46,6 +48,14 @@ namespace Player
             _characterAnimator.ResetTrigger(JumpTriggerHash);
             _characterAnimator.ResetTrigger(FallTriggerHash);
             _characterAnimator.SetTrigger(LandTriggerHash);
+        }
+
+        public void PlayDieAnimation()
+        {
+            _characterAnimator.ResetTrigger(JumpTriggerHash);
+            _characterAnimator.ResetTrigger(FallTriggerHash);
+            _characterAnimator.ResetTrigger(LandTriggerHash);
+            _characterAnimator.SetTrigger(DieTriggerHash);
         }
 
         public void UpdateMovingData(Vector2 movingDirectionNormalized, float ratioOfCurrentVelocityToMaximumVelocity)

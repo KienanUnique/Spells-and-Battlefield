@@ -15,6 +15,7 @@ namespace Enemies
     {
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
+        public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public IEnemyTarget Target { get; private set; }
 
         protected abstract EnemyVisualBase EnemyVisual { get; }
@@ -25,7 +26,7 @@ namespace Enemies
         [SerializeField] protected PickableSpellController _pickableSpellPrefab;
         [SerializeField] protected SpellBase _spellToDrop;
         [SerializeField] private PlayerController _player;
-        [Range(1, 20f)] [SerializeField] private float _delayInSecondsBeforeDestroy = 1f;
+        [Min(1f)] [SerializeField] private float _delayInSecondsBeforeDestroy = 1f;
 
         private readonly Vector3 _spawnSpellOffset = new Vector3(0, 3f, 0);
 

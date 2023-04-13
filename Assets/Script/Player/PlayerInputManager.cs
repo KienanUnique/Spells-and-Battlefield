@@ -24,32 +24,48 @@ namespace Player
         private void OnEnable()
         {
             _mainControls.Enable();
-            _mainControls.PlayerActions.Jump.performed += OnJumpPerformed;
-            _mainControls.PlayerActions.UseSpell.performed += OnUseSpellPerformed;
-            _mainControls.PlayerActions.Walk.started += OnWalkStarted;
-            _mainControls.PlayerActions.Walk.canceled += OnWalkCanceled;
+            _mainControls.Character.Jump.performed += OnJumpPerformed;
+            _mainControls.Character.UseSpell.performed += OnUseSpellPerformed;
+            _mainControls.Character.Walk.started += OnWalkStarted;
+            _mainControls.Character.Walk.canceled += OnWalkCanceled;
         }
 
         private void OnDisable()
         {
             _mainControls.Disable();
-            _mainControls.PlayerActions.Jump.performed -= OnJumpPerformed;
-            _mainControls.PlayerActions.UseSpell.performed -= OnUseSpellPerformed;
-            _mainControls.PlayerActions.Walk.started -= OnWalkStarted;
-            _mainControls.PlayerActions.Walk.canceled -= OnWalkCanceled;
+            _mainControls.Character.Jump.performed -= OnJumpPerformed;
+            _mainControls.Character.UseSpell.performed -= OnUseSpellPerformed;
+            _mainControls.Character.Walk.started -= OnWalkStarted;
+            _mainControls.Character.Walk.canceled -= OnWalkCanceled;
         }
 
         private void Update()
         {
-            var readDirection = _mainControls.PlayerActions.Move.ReadValue<Vector2>().normalized;
+            var readDirection = _mainControls.Character.Move.ReadValue<Vector2>().normalized;
             MoveInputEvent?.Invoke(readDirection.magnitude > MinimalInputMagnitude ? readDirection : Vector2.zero);
 
-            MouseLookEvent?.Invoke(_mainControls.PlayerActions.Look.ReadValue<Vector2>());
+            MouseLookEvent?.Invoke(_mainControls.Character.Look.ReadValue<Vector2>());
         }
 
         private void OnWalkStarted(InputAction.CallbackContext obj) => WalkStartEvent?.Invoke();
         private void OnWalkCanceled(InputAction.CallbackContext obj) => WalkCancelEvent?.Invoke();
         private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpEvent?.Invoke();
         private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellEvent?.Invoke();
+
+        public void SwitchToUIInput()
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            _mainControls.Character.Disable();
+            _mainControls.UI.Enable();
+        }
+
+        public void SwitchToGameInput()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            _mainControls.Character.Enable();
+            _mainControls.UI.Disable();
+        }
     }
 }

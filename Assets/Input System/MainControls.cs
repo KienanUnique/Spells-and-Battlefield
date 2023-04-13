@@ -24,7 +24,7 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
     ""name"": ""MainControls"",
     ""maps"": [
         {
-            ""name"": ""Player Actions"",
+            ""name"": ""Character"",
             ""id"": ""2b0c3fbc-cda2-4834-97f1-d71db150bafe"",
             ""actions"": [
                 {
@@ -174,6 +174,12 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""351c0220-d939-40f0-b092-2e6a19aee6eb"",
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": [
@@ -195,13 +201,15 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Player Actions
-        m_PlayerActions = asset.FindActionMap("Player Actions", throwIfNotFound: true);
-        m_PlayerActions_Move = m_PlayerActions.FindAction("Move", throwIfNotFound: true);
-        m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
-        m_PlayerActions_Look = m_PlayerActions.FindAction("Look", throwIfNotFound: true);
-        m_PlayerActions_UseSpell = m_PlayerActions.FindAction("Use Spell", throwIfNotFound: true);
-        m_PlayerActions_Walk = m_PlayerActions.FindAction("Walk", throwIfNotFound: true);
+        // Character
+        m_Character = asset.FindActionMap("Character", throwIfNotFound: true);
+        m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
+        m_Character_Jump = m_Character.FindAction("Jump", throwIfNotFound: true);
+        m_Character_Look = m_Character.FindAction("Look", throwIfNotFound: true);
+        m_Character_UseSpell = m_Character.FindAction("Use Spell", throwIfNotFound: true);
+        m_Character_Walk = m_Character.FindAction("Walk", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -258,49 +266,49 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Player Actions
-    private readonly InputActionMap m_PlayerActions;
-    private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
-    private readonly InputAction m_PlayerActions_Move;
-    private readonly InputAction m_PlayerActions_Jump;
-    private readonly InputAction m_PlayerActions_Look;
-    private readonly InputAction m_PlayerActions_UseSpell;
-    private readonly InputAction m_PlayerActions_Walk;
-    public struct PlayerActionsActions
+    // Character
+    private readonly InputActionMap m_Character;
+    private ICharacterActions m_CharacterActionsCallbackInterface;
+    private readonly InputAction m_Character_Move;
+    private readonly InputAction m_Character_Jump;
+    private readonly InputAction m_Character_Look;
+    private readonly InputAction m_Character_UseSpell;
+    private readonly InputAction m_Character_Walk;
+    public struct CharacterActions
     {
         private @MainControls m_Wrapper;
-        public PlayerActionsActions(@MainControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_PlayerActions_Move;
-        public InputAction @Jump => m_Wrapper.m_PlayerActions_Jump;
-        public InputAction @Look => m_Wrapper.m_PlayerActions_Look;
-        public InputAction @UseSpell => m_Wrapper.m_PlayerActions_UseSpell;
-        public InputAction @Walk => m_Wrapper.m_PlayerActions_Walk;
-        public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
+        public CharacterActions(@MainControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Character_Move;
+        public InputAction @Jump => m_Wrapper.m_Character_Jump;
+        public InputAction @Look => m_Wrapper.m_Character_Look;
+        public InputAction @UseSpell => m_Wrapper.m_Character_UseSpell;
+        public InputAction @Walk => m_Wrapper.m_Character_Walk;
+        public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActionsActions set) { return set.Get(); }
-        public void SetCallbacks(IPlayerActionsActions instance)
+        public static implicit operator InputActionMap(CharacterActions set) { return set.Get(); }
+        public void SetCallbacks(ICharacterActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsActionsCallbackInterface != null)
+            if (m_Wrapper.m_CharacterActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMove;
-                @Jump.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
-                @Jump.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
-                @Jump.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
-                @Look.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLook;
-                @Look.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLook;
-                @Look.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLook;
-                @UseSpell.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnUseSpell;
-                @UseSpell.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnUseSpell;
-                @UseSpell.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnUseSpell;
-                @Walk.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWalk;
-                @Walk.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWalk;
-                @Walk.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWalk;
+                @Move.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnMove;
+                @Jump.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
+                @Look.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLook;
+                @UseSpell.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnUseSpell;
+                @UseSpell.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnUseSpell;
+                @UseSpell.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnUseSpell;
+                @Walk.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnWalk;
+                @Walk.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnWalk;
+                @Walk.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnWalk;
             }
-            m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
+            m_Wrapper.m_CharacterActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Move.started += instance.OnMove;
@@ -321,7 +329,32 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
             }
         }
     }
-    public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
+    public CharacterActions @Character => new CharacterActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    public struct UIActions
+    {
+        private @MainControls m_Wrapper;
+        public UIActions(@MainControls wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+            }
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     private int m_MouseandKeyboardSchemeIndex = -1;
     public InputControlScheme MouseandKeyboardScheme
     {
@@ -331,12 +364,15 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_MouseandKeyboardSchemeIndex];
         }
     }
-    public interface IPlayerActionsActions
+    public interface ICharacterActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnUseSpell(InputAction.CallbackContext context);
         void OnWalk(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
     }
 }

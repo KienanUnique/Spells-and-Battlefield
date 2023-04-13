@@ -4,5 +4,6 @@ namespace Interfaces
     {
         public void HandleHeal(int countOfHealthPoints);
         public void HandleDamage(int countOfHealthPoints);
+        public CharacterState CurrentCharacterState { get; }
     }
 }

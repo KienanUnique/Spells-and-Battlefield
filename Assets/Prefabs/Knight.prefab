@@ -916,6 +916,8 @@ GameObject:
   - component: {fileID: 1444693098799265098}
   - component: {fileID: 4546137287824208936}
   - component: {fileID: 4182069047947455970}
+  - component: {fileID: 1147730887}
+  - component: {fileID: 1147730886}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -964,6 +966,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transitions:
   - {fileID: 1444693098799265098}
+  - {fileID: 1147730886}
 --- !u!114 &1444693098799265098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -993,6 +996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transitions:
   - {fileID: 4182069047947455970}
+  - {fileID: 1147730886}
 --- !u!114 &4182069047947455970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1008,6 +1012,33 @@ MonoBehaviour:
   _targetState: {fileID: 2243583179496549633}
   _transitionDistance: 2
   _typeOfComparison: 0
+--- !u!114 &1147730887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939621951735458862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 085f88a4b51c28540b4739662a54682a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transitions: []
+--- !u!114 &1147730886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939621951735458862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63c4a590c58d4673bb6943db3eb2ee5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetState: {fileID: 1147730887}
+  _needState: 1
 --- !u!1 &3230479117297305822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1726,11 +1757,11 @@ Rigidbody:
   m_GameObject: {fileID: 4773416566356749373}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 10
+  m_Drag: 0.01
+  m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
+  m_IsKinematic: 0
+  m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &4465156568623437304
@@ -1761,6 +1792,7 @@ MonoBehaviour:
   _pickableSpellPrefab: {fileID: 4960876760894594233, guid: e5081c11df2aa0745a2264b49c70b283, type: 3}
   _spellToDrop: {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
   _player: {fileID: 0}
+  _delayInSecondsBeforeDestroy: 5
   _knightVisual: {fileID: 3080045603991402992}
   _swordTargetSelector: {fileID: 7758560344049107641}
 --- !u!114 &217853341345618375
@@ -1830,8 +1862,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7697b0ef8f4651906868066aca5491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _updateDestinationCooldownSeconds: 1
-  _nextWaypointDistance: 0.5
+  _updateDestinationCooldownSeconds: 0.5
+  _nextWaypointDistance: 0.8
 --- !u!114 &901543202
 MonoBehaviour:
   m_ObjectHideFlags: 0

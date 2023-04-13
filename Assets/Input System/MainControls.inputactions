@@ -2,7 +2,7 @@
     "name": "MainControls",
     "maps": [
         {
-            "name": "Player Actions",
+            "name": "Character",
             "id": "2b0c3fbc-cda2-4834-97f1-d71db150bafe",
             "actions": [
                 {
@@ -152,6 +152,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI",
+            "id": "351c0220-d939-40f0-b092-2e6a19aee6eb",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": [

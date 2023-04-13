@@ -4,6 +4,7 @@
     {
         protected override void SpecialEnterAction()
         {
+            StateMachineControllable.StopMovingToTarget();
         }
 
         protected override void SpecialExitAction()

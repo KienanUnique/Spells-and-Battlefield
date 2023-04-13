@@ -16,6 +16,7 @@ namespace Player
         public int Id => _idHolder.Id;
         public Transform MainTransform => _playerMovement.LocalTransform;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
+        public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
         [SerializeField] private PlayerVisual _playerVisual;
         [SerializeField] private BarController _hpBar;
         private PlayerCharacter _playerCharacter;
@@ -67,8 +68,7 @@ namespace Player
 
         private void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            _playerInputManager.SwitchToGameInput();
         }
 
         private void Update()
@@ -90,6 +90,7 @@ namespace Player
             _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
             _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
             _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
+            _playerCharacter.StateChanged += OnCharacterStateChanged;
         }
 
         private void OnDisable()
@@ -105,11 +106,19 @@ namespace Player
             _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
             _playerMovement.LandEvent -= _playerVisual.PlayLandAnimation;
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
+            _playerCharacter.StateChanged -= OnCharacterStateChanged;
         }
 
         private void OnHitPointsCountChanged(float newHitPointsCount)
         {
             _hpBar.UpdateValue(_playerCharacter.HitPointCountRatio);
+            
+        }
+        
+        private void OnCharacterStateChanged(CharacterState newState)
+        {
+            _playerInputManager.SwitchToUIInput();
+            _playerVisual.PlayDieAnimation();
         }
 
         private void StartUseSelectedSpell()

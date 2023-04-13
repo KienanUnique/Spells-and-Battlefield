@@ -681,7 +681,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1610
+  m_Name: pb_Mesh-1696
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1388,26 +1388,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 483579229}
     m_Modifications:
-    - target: {fileID: 700351198359705668, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
-      propertyPath: _runAcceleration
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 730085658377649740, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
-      propertyPath: _nextWaypointDistance
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 730085658377649740, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
-      propertyPath: _updateDestinationCooldownSeconds
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 3852422692244049268, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
       propertyPath: _player
       value: 
       objectReference: {fileID: 1109136848}
-    - target: {fileID: 3852422692244049268, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
-      propertyPath: _delayInSecondsBeforeDestroy
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 4773416566356749363, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1455,26 +1439,6 @@ PrefabInstance:
     - target: {fileID: 4773416566356749373, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
       propertyPath: m_Name
       value: Knight
-      objectReference: {fileID: 0}
-    - target: {fileID: 4773416566356749375, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
-      propertyPath: m_Drag
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 4773416566356749375, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 4773416566356749375, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 4773416566356749375, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
-      propertyPath: m_Interpolate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4773416566356749375, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
