@@ -1,6 +1,6 @@
 ﻿namespace Enemies.State_Machine.States
 {
-    public class MoveToTargetState : State
+    public class MoveToTargetStateEnemyAI : StateEnemyAI
     {
         protected override void SpecialEnterAction()
         {

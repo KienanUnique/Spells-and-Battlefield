@@ -951,7 +951,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 033e4a504a4bbf44f9b4337cbba85021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _firstState: {fileID: 2243583179496549633}
+  _firstStateEnemyAI: {fileID: 2243583179496549633}
 --- !u!114 &2243583179496549633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -979,7 +979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c71710120cd2ae41b89511fdb41b175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetState: {fileID: 4546137287824208936}
+  _targetStateEnemyAI: {fileID: 4546137287824208936}
   _transitionDistance: 1
   _typeOfComparison: 1
 --- !u!114 &4546137287824208936
@@ -1009,7 +1009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c71710120cd2ae41b89511fdb41b175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetState: {fileID: 2243583179496549633}
+  _targetStateEnemyAI: {fileID: 2243583179496549633}
   _transitionDistance: 2
   _typeOfComparison: 0
 --- !u!114 &1147730887
@@ -1037,7 +1037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63c4a590c58d4673bb6943db3eb2ee5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetState: {fileID: 1147730887}
+  _targetStateEnemyAI: {fileID: 1147730887}
   _needState: 1
 --- !u!1 &3230479117297305822
 GameObject:

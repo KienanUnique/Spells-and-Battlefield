@@ -3,7 +3,7 @@ using Enemies.State_Machine;
 
 namespace Enemies.Knight.Additional_States
 {
-    public class KnightAttackState : State
+    public class KnightAttackStateEnemyAI : StateEnemyAI
     {
         private KnightController _knightController;
 

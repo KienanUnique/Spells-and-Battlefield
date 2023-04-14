@@ -1,28 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine
 {
-    public abstract class State : MonoBehaviour
+    public abstract class StateEnemyAI : MonoBehaviour
     {
-        [SerializeField] private List<Transition> _transitions;
-        private bool _isAlreadyActivated = false;
+        public event Action<StateEnemyAI> NeedToSwitchToNextState;
+        [SerializeField] private List<TransitionEnemyAI> _transitions;
+        private bool _isActivated = false;
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
 
         public void Enter(IEnemyStateMachineControllable stateMachineControllable)
         {
-            if (_isAlreadyActivated)
+            if (_isActivated)
             {
                 throw new StateIsAlreadyActivatedException();
             }
 
             StateMachineControllable = stateMachineControllable;
-            _isAlreadyActivated = true;
+            _isActivated = true;
 
             SpecialEnterAction();
+
+            SubscribeOnTransitionEvents();
 
             foreach (var transition in _transitions)
             {
@@ -32,7 +33,7 @@ namespace Enemies.State_Machine
 
         public void Exit()
         {
-            if (!_isAlreadyActivated)
+            if (!_isActivated)
             {
                 throw new TryingDeactivateNotActivatedStateException();
             }
@@ -44,23 +45,49 @@ namespace Enemies.State_Machine
 
             SpecialExitAction();
 
-            _isAlreadyActivated = false;
-        }
-
-        public bool NeedToSwitchToNextState(out State nextState)
-        {
-            foreach (var transition in _transitions.Where(transition => transition.NeedTransit))
-            {
-                nextState = transition.TargetState;
-                return true;
-            }
-
-            nextState = null;
-            return false;
+            _isActivated = false;
         }
 
         protected abstract void SpecialEnterAction();
         protected abstract void SpecialExitAction();
+
+        private void SubscribeOnTransitionEvents()
+        {
+            foreach (var transition in _transitions)
+            {
+                transition.NeedTransit += OnNeedTransit;
+            }
+        }
+
+        private void UnsubscribeFromTransitionEvents()
+        {
+            foreach (var transition in _transitions)
+            {
+                transition.NeedTransit -= OnNeedTransit;
+            }
+        }
+
+        private void OnNeedTransit(StateEnemyAI nextState)
+        {
+            UnsubscribeFromTransitionEvents();
+            NeedToSwitchToNextState?.Invoke(nextState);
+        }
+
+        private void OnEnable()
+        {
+            if (_isActivated)
+            {
+                SubscribeOnTransitionEvents();
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_isActivated)
+            {
+                UnsubscribeFromTransitionEvents();
+            }
+        }
 
         private class StateIsAlreadyActivatedException : Exception
         {

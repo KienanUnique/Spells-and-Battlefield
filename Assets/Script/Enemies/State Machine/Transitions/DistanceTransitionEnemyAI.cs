@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Enemies.State_Machine.Transitions
 {
-    public class DistanceTransition : Transition
+    public class DistanceTransitionEnemyAI : TransitionEnemyAI
     {
         [SerializeField] private float _transitionDistance;
         [SerializeField] private TypeOfComparison _typeOfComparison;
@@ -18,14 +18,14 @@ namespace Enemies.State_Machine.Transitions
                 case TypeOfComparison.IsMore:
                     if (calculatedDistance > _transitionDistance)
                     {
-                        NeedTransit = true;
+                        InvokeTransitionEvent();
                     }
 
                     break;
                 case TypeOfComparison.IsLess:
                     if (calculatedDistance < _transitionDistance)
                     {
-                        NeedTransit = true;
+                        InvokeTransitionEvent();
                     }
 
                     break;

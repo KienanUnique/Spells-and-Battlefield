@@ -1,60 +1,92 @@
-﻿using System.Collections;
+﻿using System;
 using UnityEngine;
 
 namespace Enemies.State_Machine
 {
     public class EnemyStateMachineAI : MonoBehaviour
     {
-        [SerializeField] private State _firstState;
-        private State CurrentState { set; get; }
+        [SerializeField] private StateEnemyAI _firstStateEnemyAI;
+        private StateEnemyAI CurrentStateEnemyAI { set; get; }
         private IEnemyStateMachineControllable _stateMachineControllable;
-        private Coroutine _currentUpdateCoroutine = null;
+        private bool _isActive = false;
 
         public void StartStateMachine(IEnemyStateMachineControllable stateMachineControllable)
         {
-            _stateMachineControllable = stateMachineControllable;
-            if (_currentUpdateCoroutine == null)
+            if (_isActive)
             {
-                TransitToState(_firstState);
-                _currentUpdateCoroutine = StartCoroutine(UpdateStateMachine());
+                throw new StateMachineAlreadyStartedException();
             }
+
+            _stateMachineControllable = stateMachineControllable;
+            TransitToState(_firstStateEnemyAI);
+            _isActive = true;
         }
 
         public void StopStateMachine()
         {
-            if (_currentUpdateCoroutine != null)
+            if (!_isActive)
             {
-                StopCoroutine(_currentUpdateCoroutine);
-                TransitToState(null);
-                _currentUpdateCoroutine = null;
+                throw new StateMachineAlreadyStoppedException();
+            }
+
+            TransitToState(null);
+            _isActive = false;
+        }
+
+        private void TransitToState(StateEnemyAI nextStateEnemyAI)
+        {
+            if (CurrentStateEnemyAI != null)
+            {
+                UnsubscribeFromCurrentStateEvents();
+                CurrentStateEnemyAI.Exit();
+            }
+
+            CurrentStateEnemyAI = nextStateEnemyAI;
+
+            if (CurrentStateEnemyAI != null)
+            {
+                SubscribeOnCurrentStateEvents();
+                CurrentStateEnemyAI.Enter(_stateMachineControllable);
             }
         }
 
-        private IEnumerator UpdateStateMachine()
+        private void OnEnable()
         {
-            while (true)
+            if (_isActive)
             {
-                if (CurrentState != null && CurrentState.NeedToSwitchToNextState(out var nextState))
-                {
-                    TransitToState(nextState);
-                }
-
-                yield return null;
+                SubscribeOnCurrentStateEvents();
             }
         }
 
-        private void TransitToState(State nextState)
+        private void OnDisable()
         {
-            if (CurrentState != null)
+            if (_isActive)
             {
-                CurrentState.Exit();
+                UnsubscribeFromCurrentStateEvents();
             }
+        }
 
-            CurrentState = nextState;
+        private void SubscribeOnCurrentStateEvents()
+        {
+            CurrentStateEnemyAI.NeedToSwitchToNextState += TransitToState;
+        }
 
-            if (CurrentState != null)
+        private void UnsubscribeFromCurrentStateEvents()
+        {
+            CurrentStateEnemyAI.NeedToSwitchToNextState -= TransitToState;
+        }
+
+        private class StateMachineAlreadyStartedException : Exception
+        {
+            public StateMachineAlreadyStartedException() : base("State machine already started")
             {
-                CurrentState.Enter(_stateMachineControllable);
+            }
+        }
+
+        private class StateMachineAlreadyStoppedException : Exception
+        {
+            public StateMachineAlreadyStoppedException() : base("State machine already stopped")
+            {
             }
         }
     }

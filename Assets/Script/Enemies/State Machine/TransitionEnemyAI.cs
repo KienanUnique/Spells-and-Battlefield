@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine
 {
-    public abstract class Transition : MonoBehaviour
+    public abstract class TransitionEnemyAI : MonoBehaviour
     {
-        public bool NeedTransit { get; protected set; }
-        public State TargetState => _targetState;
-        [SerializeField] private State _targetState;
+        public event Action<StateEnemyAI> NeedTransit;
+        public StateEnemyAI TargetStateEnemyAI => _targetStateEnemyAI;
+        [SerializeField] private StateEnemyAI _targetStateEnemyAI;
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
         protected Coroutine _currentCheckConditionsCoroutine = null;
 
@@ -21,7 +20,6 @@ namespace Enemies.State_Machine
             }
 
             StateMachineControllable = stateMachineControllable;
-            NeedTransit = false;
             _currentCheckConditionsCoroutine = StartCoroutine(CheckConditionsCoroutine());
         }
 
@@ -36,7 +34,16 @@ namespace Enemies.State_Machine
             _currentCheckConditionsCoroutine = null;
         }
 
+        protected virtual void SpecialActionOnStartChecking()
+        {
+        }
+
         protected abstract void CheckConditions();
+
+        protected void InvokeTransitionEvent()
+        {
+            NeedTransit?.Invoke(TargetStateEnemyAI);
+        }
 
         private IEnumerator CheckConditionsCoroutine()
         {
