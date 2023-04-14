@@ -386,7 +386,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &483579229
 Transform:
   m_ObjectHideFlags: 0
@@ -1125,6 +1125,22 @@ PrefabInstance:
     - target: {fileID: 974464277607573819, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1429199914850347932, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
+      propertyPath: _runForce
+      value: 4500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1429199914850347932, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
+      propertyPath: _jumpForce
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 1429199914850347932, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
+      propertyPath: _runVelocity
+      value: 4500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1429199914850347932, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
+      propertyPath: _maximumSpeed
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3951135657180910355, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
       propertyPath: m_OcclusionCulling
