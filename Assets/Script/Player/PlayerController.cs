@@ -79,14 +79,12 @@ namespace Player
 
         private void OnEnable()
         {
-            _playerInputManager.JumpEvent += _playerMovement.Jump;
+            _playerInputManager.JumpEvent += _playerMovement.TryJump;
             _playerInputManager.UseSpellEvent += StartUseSelectedSpell;
             _playerInputManager.MoveInputEvent += _playerMovement.Move;
             _playerInputManager.MouseLookEvent += _playerLook.LookWithMouse;
-            _playerInputManager.WalkStartEvent += _playerMovement.StartWalking;
-            _playerInputManager.WalkCancelEvent += _playerMovement.StartRunning;
             _playerVisual.UseSpellAnimationMomentStartEvent += UseSelectedSpell;
-            _playerMovement.JumpEvent += _playerVisual.PlayJumpAnimation;
+            _playerMovement.GroundJumpEvent += _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
             _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
             _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
@@ -95,14 +93,12 @@ namespace Player
 
         private void OnDisable()
         {
-            _playerInputManager.JumpEvent -= _playerMovement.Jump;
+            _playerInputManager.JumpEvent -= _playerMovement.TryJump;
             _playerInputManager.UseSpellEvent -= StartUseSelectedSpell;
             _playerInputManager.MoveInputEvent -= _playerMovement.Move;
             _playerInputManager.MouseLookEvent -= _playerLook.LookWithMouse;
-            _playerInputManager.WalkStartEvent -= _playerMovement.StartWalking;
-            _playerInputManager.WalkCancelEvent -= _playerMovement.StartRunning;
             _playerVisual.UseSpellAnimationMomentStartEvent -= UseSelectedSpell;
-            _playerMovement.JumpEvent -= _playerVisual.PlayJumpAnimation;
+            _playerMovement.GroundJumpEvent -= _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
             _playerMovement.LandEvent -= _playerVisual.PlayLandAnimation;
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;

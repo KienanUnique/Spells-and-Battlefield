@@ -7,8 +7,6 @@ namespace Player
     public class PlayerInputManager : MonoBehaviour
     {
         public Action JumpEvent;
-        public Action WalkStartEvent;
-        public Action WalkCancelEvent;
         public Action UseSpellEvent;
         public Action<Vector2> MoveInputEvent;
         public Action<Vector2> MouseLookEvent;
@@ -26,8 +24,6 @@ namespace Player
             _mainControls.Enable();
             _mainControls.Character.Jump.performed += OnJumpPerformed;
             _mainControls.Character.UseSpell.performed += OnUseSpellPerformed;
-            _mainControls.Character.Walk.started += OnWalkStarted;
-            _mainControls.Character.Walk.canceled += OnWalkCanceled;
         }
 
         private void OnDisable()
@@ -35,8 +31,6 @@ namespace Player
             _mainControls.Disable();
             _mainControls.Character.Jump.performed -= OnJumpPerformed;
             _mainControls.Character.UseSpell.performed -= OnUseSpellPerformed;
-            _mainControls.Character.Walk.started -= OnWalkStarted;
-            _mainControls.Character.Walk.canceled -= OnWalkCanceled;
         }
 
         private void Update()
@@ -47,8 +41,6 @@ namespace Player
             MouseLookEvent?.Invoke(_mainControls.Character.Look.ReadValue<Vector2>());
         }
 
-        private void OnWalkStarted(InputAction.CallbackContext obj) => WalkStartEvent?.Invoke();
-        private void OnWalkCanceled(InputAction.CallbackContext obj) => WalkCancelEvent?.Invoke();
         private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpEvent?.Invoke();
         private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellEvent?.Invoke();
 

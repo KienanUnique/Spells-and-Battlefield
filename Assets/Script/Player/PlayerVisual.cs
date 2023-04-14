@@ -29,7 +29,7 @@ namespace Player
             _characterAnimator.SetTrigger(AttackTriggerHash);
         }
 
-        public void PlayJumpAnimation()
+        public void PlayGroundJumpAnimation()
         {
             _characterAnimator.SetTrigger(JumpTriggerHash);
             _characterAnimator.ResetTrigger(FallTriggerHash);
