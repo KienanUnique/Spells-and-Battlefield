@@ -1,4 +1,5 @@
 ﻿using Interfaces;
+using Interfaces.Pickers;
 using Spells;
 using TMPro;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Pickable_Items
         [SerializeField] private Image _icon;
         [SerializeField] private SpellBase _startStoredSpell;
 
-        protected override void SpecialStartAction()
+        protected override void Initialize()
         {
             if (_startStoredSpell != null)
             {
@@ -26,9 +27,14 @@ namespace Pickable_Items
             _icon.sprite = StoredObject.Icon;
         }
 
+        protected override bool CanBePickedUpByThisPeeker(IDroppedItemsPicker picker)
+        {
+            return picker is IDroppedSpellPicker;
+        }
+
         protected override void SpecialPickUpAction(IDroppedItemsPicker picker)
         {
-            picker.AddSpell(StoredObject);
+            (picker as IDroppedSpellPicker)?.AddSpell(StoredObject);
         }
     }
 }

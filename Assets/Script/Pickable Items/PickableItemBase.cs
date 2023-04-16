@@ -2,6 +2,7 @@
 using Checkers;
 using DG.Tweening;
 using Interfaces;
+using Interfaces.Pickers;
 using Triggers;
 using UnityEngine;
 
@@ -46,9 +47,10 @@ namespace Pickable_Items
             _rigidbody.AddForce(_dropForce * direction, ForceMode.Impulse);
         }
 
-        protected abstract void SpecialPickUpAction(IDroppedItemsPicker component);
+        protected abstract void Initialize();
+        protected abstract void SpecialPickUpAction(IDroppedItemsPicker picker);
         protected abstract void SpecialAppearAction();
-        protected abstract void SpecialStartAction();
+        protected abstract bool CanBePickedUpByThisPeeker(IDroppedItemsPicker picker);
 
         private void Awake()
         {
@@ -68,7 +70,7 @@ namespace Pickable_Items
 
         private void Start()
         {
-            SpecialStartAction();
+            Initialize();
             _visualObjectTransform.localScale = Vector3.zero;
         }
 
@@ -127,12 +129,15 @@ namespace Pickable_Items
 
         private void OnPickerDetected(IDroppedItemsPicker picker)
         {
-            SpecialPickUpAction(picker);
-            _visualObjectTransform.DOScale(Vector3.zero, _disappearScaleAnimationDuration)
-                .OnComplete(OnPickupAnimationFinished);
-            if (_currentState != ItemStates.Idle)
+            if (CanBePickedUpByThisPeeker(picker))
             {
-                _currentState = ItemStates.StartIdle;
+                SpecialPickUpAction(picker);
+                _visualObjectTransform.DOScale(Vector3.zero, _disappearScaleAnimationDuration)
+                    .OnComplete(OnPickupAnimationFinished);
+                if (_currentState != ItemStates.Idle)
+                {
+                    _currentState = ItemStates.StartIdle;
+                }
             }
         }
 
