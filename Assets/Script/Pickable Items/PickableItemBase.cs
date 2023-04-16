@@ -1,4 +1,5 @@
 ﻿using System;
+using Checkers;
 using DG.Tweening;
 using Interfaces;
 using Triggers;
@@ -79,7 +80,7 @@ namespace Pickable_Items
                 _currentState = ItemStates.Falling;
             }
 
-            if (_currentState == ItemStates.Falling && _groundChecker.IsGrounded)
+            if (_currentState == ItemStates.Falling && _groundChecker.IsColliding)
             {
                 _currentState = ItemStates.StartIdle;
             }

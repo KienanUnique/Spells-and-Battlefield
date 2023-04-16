@@ -18,6 +18,7 @@ namespace Player
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
         [SerializeField] private PlayerVisual _playerVisual;
+        [SerializeField] private PlayerCameraEffects _playerCameraEffects;
         [SerializeField] private BarController _hpBar;
         private PlayerCharacter _playerCharacter;
         private PlayerSpellsManager _playerSpellsManager;
@@ -87,6 +88,8 @@ namespace Player
             _playerMovement.GroundJumpEvent += _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
             _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
+            _playerMovement.StartWallRunningEvent += OnStartWallRunningEvent;
+            _playerMovement.EndWallRunningEvent += OnEndWallRunningEvent;
             _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
             _playerCharacter.StateChanged += OnCharacterStateChanged;
         }
@@ -101,14 +104,27 @@ namespace Player
             _playerMovement.GroundJumpEvent -= _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
             _playerMovement.LandEvent -= _playerVisual.PlayLandAnimation;
+            _playerMovement.StartWallRunningEvent -= OnStartWallRunningEvent;
+            _playerMovement.EndWallRunningEvent -= OnEndWallRunningEvent;
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
             _playerCharacter.StateChanged -= OnCharacterStateChanged;
+        }
+        
+        private void OnStartWallRunningEvent(WallDirection direction)
+        {
+            _playerCameraEffects.Rotate(direction);
+            _playerVisual.PlayLandAnimation();
+        }
+        
+        private void OnEndWallRunningEvent()
+        {
+            _playerCameraEffects.ResetRotation();
+            _playerVisual.PlayFallAnimation();
         }
 
         private void OnHitPointsCountChanged(float newHitPointsCount)
         {
             _hpBar.UpdateValue(_playerCharacter.HitPointCountRatio);
-            
         }
         
         private void OnCharacterStateChanged(CharacterState newState)

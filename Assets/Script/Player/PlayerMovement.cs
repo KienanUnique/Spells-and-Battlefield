@@ -1,15 +1,18 @@
 using System;
 using System.Collections;
+using Checkers;
 using UnityEngine;
 
 namespace Player
 {
     public class PlayerMovement : MonoBehaviour
     {
-        public Action LandEvent;
-        public Action GroundJumpEvent;
-        public Action AirJumpEvent;
-        public Action FallEvent;
+        public event Action LandEvent;
+        public event Action GroundJumpEvent;
+        public event Action AirJumpEvent;
+        public event Action FallEvent;
+        public event Action<WallDirection> StartWallRunningEvent;
+        public event Action EndWallRunningEvent;
         public Transform LocalTransform { private set; get; }
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
@@ -17,35 +20,42 @@ namespace Player
 
         [SerializeField] private float _runForce = 4500f;
         [SerializeField] private float _jumpForce = 800f;
-        [SerializeField] private float _gravityForce = 15;
+        [SerializeField] private float _normalGravityForce = 15;
+        [SerializeField] private float _wallRunningGravityForce = 2;
         [Range(0, 1f)] [SerializeField] private float _groundFriction = 0.175f;
         [SerializeField] private float _maximumSpeed = 15f;
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private GroundChecker _groundChecker;
+        [SerializeField] private WallChecker _wallChecker;
+        private bool IsGrounded => _groundChecker.IsColliding;
+        private bool IsInContactWithWall => _wallChecker.IsColliding;
         private const int MaxCountOfAirJumps = 1;
         private const float AirPlayerInputForceMultiplier = 0.5f;
-        private const float GroundPlayerInputForceMultiplier = 1;
+        private const float NormalPlayerInputForceMultiplier = 1;
+        private const float WallRunningPlayerInputForceMultiplier = 1.5f;
         private Vector2 _inputMoveDirection = Vector2.zero;
         private ValueWithReactionOnChange<MovingState> _currentMovingState;
         private int _currentCountOfAirJumps = 0;
         private Coroutine _frictionCoroutine;
         private float _currentPlayerInputForceMultiplier;
+        private float _currentGravityForce;
 
         public void TryJump()
         {
-            if (_currentMovingState.Value == MovingState.OnGround || (_currentMovingState.Value == MovingState.InAir &&
-                                                                      _currentCountOfAirJumps < MaxCountOfAirJumps))
+            if (_currentMovingState.Value == MovingState.OnGround ||
+                _currentMovingState.Value == MovingState.WallRunning ||
+                (_currentMovingState.Value == MovingState.InAir && _currentCountOfAirJumps < MaxCountOfAirJumps))
             {
                 _rigidbody.AddForce(_jumpForce * Vector3.up);
-                switch (_currentMovingState.Value)
+                if (_currentMovingState.Value == MovingState.InAir ||
+                    _currentMovingState.Value == MovingState.WallRunning)
                 {
-                    case MovingState.InAir:
-                        _currentCountOfAirJumps++;
-                        AirJumpEvent?.Invoke();
-                        break;
-                    case MovingState.OnGround:
-                        GroundJumpEvent?.Invoke();
-                        break;
+                    _currentCountOfAirJumps++;
+                    AirJumpEvent?.Invoke();
+                }
+                else if (_currentMovingState.Value == MovingState.OnGround)
+                {
+                    GroundJumpEvent?.Invoke();
                 }
             }
         }
@@ -69,14 +79,16 @@ namespace Player
 
         private void OnEnable()
         {
-            _groundChecker.GroundStateChanged += OnGroundedStatusChanged;
+            _groundChecker.ContactStateChanged += OnGroundedStatusChanged;
+            _wallChecker.ContactStateChanged += OnWallContactStatusChanged;
             _currentMovingState.BeforeValueChanged += OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged += OnAfterMovingStateChanged;
         }
 
         private void OnDisable()
         {
-            _groundChecker.GroundStateChanged -= OnGroundedStatusChanged;
+            _groundChecker.ContactStateChanged -= OnGroundedStatusChanged;
+            _wallChecker.ContactStateChanged -= OnWallContactStatusChanged;
             _currentMovingState.BeforeValueChanged -= OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged -= OnAfterMovingStateChanged;
         }
@@ -84,27 +96,37 @@ namespace Player
         private void Start()
         {
             _currentMovingState.Value = MovingState.OnGround;
-            _currentPlayerInputForceMultiplier = GroundPlayerInputForceMultiplier;
+            _currentPlayerInputForceMultiplier = NormalPlayerInputForceMultiplier;
+            _currentGravityForce = _normalGravityForce;
         }
 
         private void OnGroundedStatusChanged(bool isGrounded)
         {
             if (isGrounded)
             {
-                _currentCountOfAirJumps = 0;
                 _currentMovingState.Value = MovingState.OnGround;
-                LandEvent?.Invoke();
             }
             else
             {
-                _currentMovingState.Value = MovingState.InAir;
-                FallEvent?.Invoke();
+                _currentMovingState.Value = IsInContactWithWall ? MovingState.WallRunning : MovingState.InAir;
+            }
+        }
+
+        private void OnWallContactStatusChanged(bool isContactedWithWall)
+        {
+            if (isContactedWithWall && _currentMovingState.Value == MovingState.InAir)
+            {
+                _currentMovingState.Value = MovingState.WallRunning;
+            }
+            else if (!isContactedWithWall && _currentMovingState.Value == MovingState.WallRunning)
+            {
+                _currentMovingState.Value = IsGrounded ? MovingState.OnGround : MovingState.InAir;
             }
         }
 
         private void FixedUpdate()
         {
-            _rigidbody.AddForce(_gravityForce * Vector3.down);
+            _rigidbody.AddForce(_currentGravityForce * Vector3.down);
 
             _rigidbody.AddForce(_inputMoveDirection.x * _runForce * Time.deltaTime *
                                 _currentPlayerInputForceMultiplier * _rigidbody.transform.right);
@@ -155,6 +177,9 @@ namespace Player
                     StopCoroutine(_frictionCoroutine);
                     _frictionCoroutine = null;
                     break;
+                case MovingState.WallRunning:
+                    EndWallRunningEvent?.Invoke();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(movingState), movingState, null);
             }
@@ -165,11 +190,24 @@ namespace Player
             switch (movingState)
             {
                 case MovingState.OnGround:
-                    _currentPlayerInputForceMultiplier = GroundPlayerInputForceMultiplier;
+                    _currentCountOfAirJumps = 0;
+                    _currentPlayerInputForceMultiplier = NormalPlayerInputForceMultiplier;
+                    _currentGravityForce = _normalGravityForce;
+                    LandEvent?.Invoke();
                     break;
                 case MovingState.InAir:
                     _currentPlayerInputForceMultiplier = AirPlayerInputForceMultiplier;
+                    _currentGravityForce = _normalGravityForce;
                     _frictionCoroutine ??= StartCoroutine(ApplyFriction());
+                    FallEvent?.Invoke();
+                    break;
+                case MovingState.WallRunning:
+                    _currentCountOfAirJumps = 0;
+                    _currentPlayerInputForceMultiplier = WallRunningPlayerInputForceMultiplier;
+                    _currentGravityForce = _wallRunningGravityForce;
+                    var closestPoint = _wallChecker.Colliders[0].ClosestPoint(CurrentPosition);
+                    var dot = Vector3.Dot(LocalTransform.right, closestPoint - CurrentPosition);
+                    StartWallRunningEvent?.Invoke(dot < 0 ? WallDirection.Left : WallDirection.Right);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(movingState), movingState, null);
@@ -179,7 +217,8 @@ namespace Player
         private enum MovingState
         {
             OnGround,
-            InAir
+            InAir,
+            WallRunning
         }
     }
 }
