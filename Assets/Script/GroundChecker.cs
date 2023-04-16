@@ -1,16 +1,35 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
 public class GroundChecker : MonoBehaviour
 {
-    public bool IsGrounded { private set; get; }
+    public event Action<bool> GroundStateChanged;
+    public bool IsGrounded => _isGroundedWithReaction.Value;
+    private ValueWithReactionOnChange<bool> _isGroundedWithReaction;
     [SerializeField] private LayerMask _groundMask;
     private List<Collider> _groundColliders;
 
     private void Awake()
     {
         _groundColliders = new List<Collider>();
+        _isGroundedWithReaction = new ValueWithReactionOnChange<bool>(false);
+    }
+
+    private void OnEnable()
+    {
+        _isGroundedWithReaction.AfterValueChanged += OnAfterGroundedStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        _isGroundedWithReaction.AfterValueChanged -= OnAfterGroundedStateChanged;
+    }
+
+    private void OnAfterGroundedStateChanged(bool newIsGrounded)
+    {
+        GroundStateChanged?.Invoke(newIsGrounded);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -20,7 +39,7 @@ public class GroundChecker : MonoBehaviour
             _groundColliders.Add(other);
             if (!IsGrounded)
             {
-                IsGrounded = true;
+                _isGroundedWithReaction.Value = true;
             }
         }
     }
@@ -32,7 +51,7 @@ public class GroundChecker : MonoBehaviour
         _groundColliders.Remove(other);
         if (_groundColliders.Count == 0 && IsGrounded)
         {
-            IsGrounded = false;
+            _isGroundedWithReaction.Value = false;
         }
     }
 

@@ -26,7 +26,6 @@ namespace Player
         private const float AirPlayerInputForceMultiplier = 0.5f;
         private const float GroundPlayerInputForceMultiplier = 1;
         private Vector2 _inputMoveDirection = Vector2.zero;
-        private ValueWithReactionOnChange<bool> _isGrounded;
         private ValueWithReactionOnChange<MovingState> _currentMovingState;
         private int _currentCountOfAirJumps = 0;
         private Coroutine _frictionCoroutine;
@@ -65,20 +64,19 @@ namespace Player
         private void Awake()
         {
             LocalTransform = _rigidbody.transform;
-            _isGrounded = new ValueWithReactionOnChange<bool>(true);
             _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.OnGround);
         }
 
         private void OnEnable()
         {
-            _isGrounded.AfterValueChanged += OnGroundedStatusChanged;
+            _groundChecker.GroundStateChanged += OnGroundedStatusChanged;
             _currentMovingState.BeforeValueChanged += OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged += OnAfterMovingStateChanged;
         }
 
         private void OnDisable()
         {
-            _isGrounded.AfterValueChanged -= OnGroundedStatusChanged;
+            _groundChecker.GroundStateChanged -= OnGroundedStatusChanged;
             _currentMovingState.BeforeValueChanged -= OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged -= OnAfterMovingStateChanged;
         }
@@ -106,7 +104,6 @@ namespace Player
 
         private void FixedUpdate()
         {
-            _isGrounded.Value = _groundChecker.IsGrounded;
             _rigidbody.AddForce(_gravityForce * Vector3.down);
 
             _rigidbody.AddForce(_inputMoveDirection.x * _runForce * Time.deltaTime *
@@ -130,7 +127,7 @@ namespace Player
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
             {
-                Vector3 inverseVelocity = -_rigidbody.transform.InverseTransformDirection(_rigidbody.velocity);
+                var inverseVelocity = -_rigidbody.transform.InverseTransformDirection(_rigidbody.velocity);
 
                 if (_inputMoveDirection.x == 0)
                 {
