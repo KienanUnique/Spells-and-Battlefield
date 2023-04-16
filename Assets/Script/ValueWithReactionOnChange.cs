@@ -2,7 +2,8 @@ using System;
 
 public class ValueWithReactionOnChange<T> where T : IComparable
 {
-    public Action<T> ValueChanged;
+    public Action<T> AfterValueChanged;
+    public Action<T> BeforeValueChanged;
 
     public T Value
     {
@@ -11,8 +12,9 @@ public class ValueWithReactionOnChange<T> where T : IComparable
         {
             if (value.CompareTo(_value) != 0)
             {
+                BeforeValueChanged?.Invoke(_value);
                 _value = value;
-                ValueChanged?.Invoke(_value);
+                AfterValueChanged?.Invoke(_value);
             }
         }
     }

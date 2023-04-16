@@ -82,15 +82,15 @@ public abstract class Character : MonoBehaviour
 
     private void OnEnable()
     {
-        CurrentState.ValueChanged += OnCharacterStateChanged;
-        _currentCountCountOfHitPoints.ValueChanged += OnHitPointsCountChanged;
+        CurrentState.AfterValueChanged += OnCharacterStateChanged;
+        _currentCountCountOfHitPoints.AfterValueChanged += OnHitPointsCountChanged;
         _currentEffects.ForEach(effect => effect.EffectEnded += OnEffectEnded);
     }
 
     private void OnDisable()
     {
-        CurrentState.ValueChanged -= OnCharacterStateChanged;
-        _currentCountCountOfHitPoints.ValueChanged -= OnHitPointsCountChanged;
+        CurrentState.AfterValueChanged -= OnCharacterStateChanged;
+        _currentCountCountOfHitPoints.AfterValueChanged -= OnHitPointsCountChanged;
         _currentEffects.ForEach(effect => effect.EffectEnded -= OnEffectEnded);
     }
 }

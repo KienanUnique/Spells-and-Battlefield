@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Player
@@ -21,19 +22,23 @@ namespace Player
         [SerializeField] private float _maximumSpeed = 15f;
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private GroundChecker _groundChecker;
+        private const int MaxCountOfAirJumps = 1;
+        private const float AirPlayerInputForceMultiplier = 0.5f;
+        private const float GroundPlayerInputForceMultiplier = 1;
         private Vector2 _inputMoveDirection = Vector2.zero;
         private ValueWithReactionOnChange<bool> _isGrounded;
-        private MovingState _currentMovingState;
-        private const int MaxCountOfAirJumps = 1;
+        private ValueWithReactionOnChange<MovingState> _currentMovingState;
         private int _currentCountOfAirJumps = 0;
+        private Coroutine _frictionCoroutine;
+        private float _currentPlayerInputForceMultiplier;
 
         public void TryJump()
         {
-            if (_currentMovingState == MovingState.OnGround || (_currentMovingState == MovingState.InAir &&
-                                                                _currentCountOfAirJumps < MaxCountOfAirJumps))
+            if (_currentMovingState.Value == MovingState.OnGround || (_currentMovingState.Value == MovingState.InAir &&
+                                                                      _currentCountOfAirJumps < MaxCountOfAirJumps))
             {
                 _rigidbody.AddForce(_jumpForce * Vector3.up);
-                switch (_currentMovingState)
+                switch (_currentMovingState.Value)
                 {
                     case MovingState.InAir:
                         _currentCountOfAirJumps++;
@@ -61,21 +66,27 @@ namespace Player
         {
             LocalTransform = _rigidbody.transform;
             _isGrounded = new ValueWithReactionOnChange<bool>(true);
+            _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.OnGround);
         }
 
         private void OnEnable()
         {
-            _isGrounded.ValueChanged += OnGroundedStatusChanged;
+            _isGrounded.AfterValueChanged += OnGroundedStatusChanged;
+            _currentMovingState.BeforeValueChanged += OnBeforeMovingStateChanged;
+            _currentMovingState.AfterValueChanged += OnAfterMovingStateChanged;
         }
 
         private void OnDisable()
         {
-            _isGrounded.ValueChanged -= OnGroundedStatusChanged;
+            _isGrounded.AfterValueChanged -= OnGroundedStatusChanged;
+            _currentMovingState.BeforeValueChanged -= OnBeforeMovingStateChanged;
+            _currentMovingState.AfterValueChanged -= OnAfterMovingStateChanged;
         }
 
         private void Start()
         {
-            _currentMovingState = MovingState.OnGround;
+            _currentMovingState.Value = MovingState.OnGround;
+            _currentPlayerInputForceMultiplier = GroundPlayerInputForceMultiplier;
         }
 
         private void OnGroundedStatusChanged(bool isGrounded)
@@ -83,12 +94,12 @@ namespace Player
             if (isGrounded)
             {
                 _currentCountOfAirJumps = 0;
-                _currentMovingState = MovingState.OnGround;
+                _currentMovingState.Value = MovingState.OnGround;
                 LandEvent?.Invoke();
             }
             else
             {
-                _currentMovingState = MovingState.InAir;
+                _currentMovingState.Value = MovingState.InAir;
                 FallEvent?.Invoke();
             }
         }
@@ -98,12 +109,10 @@ namespace Player
             _isGrounded.Value = _groundChecker.IsGrounded;
             _rigidbody.AddForce(_gravityForce * Vector3.down);
 
-            ApplyFriction();
-
-            var multiplier = _currentMovingState == MovingState.InAir ? 0.5f : 1f;
-            _rigidbody.AddForce(_inputMoveDirection.x * _runForce * Time.deltaTime * multiplier *
-                                _rigidbody.transform.right);
-            _rigidbody.AddForce(_inputMoveDirection.y * _runForce * Time.deltaTime * multiplier * multiplier *
+            _rigidbody.AddForce(_inputMoveDirection.x * _runForce * Time.deltaTime *
+                                _currentPlayerInputForceMultiplier * _rigidbody.transform.right);
+            _rigidbody.AddForce(_inputMoveDirection.y * _runForce * Time.deltaTime *
+                                _currentPlayerInputForceMultiplier * _currentPlayerInputForceMultiplier *
                                 _rigidbody.transform.forward);
             if (_rigidbody.velocity.magnitude > _maximumSpeed)
             {
@@ -116,25 +125,59 @@ namespace Player
             RatioOfCurrentVelocityToMaximumVelocity = _rigidbody.velocity.magnitude / _maximumSpeed;
         }
 
-        private void ApplyFriction()
+        private IEnumerator ApplyFriction()
         {
-            if (_currentMovingState == MovingState.InAir) return;
-
-            Vector3 inverseVelocity = -_rigidbody.transform.InverseTransformDirection(_rigidbody.velocity);
-
-            if (_inputMoveDirection.x == 0)
+            var waitForFixedUpdate = new WaitForFixedUpdate();
+            while (true)
             {
-                _rigidbody.AddForce(inverseVelocity.x * _rigidbody.transform.right * _runForce * _groundFriction *
-                                    Time.deltaTime);
-            }
+                Vector3 inverseVelocity = -_rigidbody.transform.InverseTransformDirection(_rigidbody.velocity);
 
-            if (_inputMoveDirection.y == 0)
-            {
-                _rigidbody.AddForce(inverseVelocity.z * _rigidbody.transform.forward * _runForce * _groundFriction *
-                                    Time.deltaTime);
+                if (_inputMoveDirection.x == 0)
+                {
+                    _rigidbody.AddForce(inverseVelocity.x * _rigidbody.transform.right * _runForce * _groundFriction *
+                                        Time.deltaTime);
+                }
+
+                if (_inputMoveDirection.y == 0)
+                {
+                    _rigidbody.AddForce(inverseVelocity.z * _rigidbody.transform.forward * _runForce * _groundFriction *
+                                        Time.deltaTime);
+                }
+
+                yield return waitForFixedUpdate;
             }
         }
 
+        private void OnBeforeMovingStateChanged(MovingState movingState)
+        {
+            switch (movingState)
+            {
+                case MovingState.OnGround:
+                    break;
+                case MovingState.InAir when _frictionCoroutine != null:
+                    StopCoroutine(_frictionCoroutine);
+                    _frictionCoroutine = null;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(movingState), movingState, null);
+            }
+        }
+
+        private void OnAfterMovingStateChanged(MovingState movingState)
+        {
+            switch (movingState)
+            {
+                case MovingState.OnGround:
+                    _currentPlayerInputForceMultiplier = GroundPlayerInputForceMultiplier;
+                    break;
+                case MovingState.InAir:
+                    _currentPlayerInputForceMultiplier = AirPlayerInputForceMultiplier;
+                    _frictionCoroutine ??= StartCoroutine(ApplyFriction());
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(movingState), movingState, null);
+            }
+        }
 
         private enum MovingState
         {

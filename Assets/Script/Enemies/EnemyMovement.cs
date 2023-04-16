@@ -53,12 +53,12 @@ namespace Enemies
 
         private void OnEnable()
         {
-            _isMoving.ValueChanged += b => IsMovingStateChanged?.Invoke(b);
+            _isMoving.AfterValueChanged += b => IsMovingStateChanged?.Invoke(b);
         }
 
         private void OnDisable()
         {
-            _isMoving.ValueChanged -= b => IsMovingStateChanged?.Invoke(b);
+            _isMoving.AfterValueChanged -= b => IsMovingStateChanged?.Invoke(b);
         }
 
         private IEnumerator FollowPath(Transform target)
