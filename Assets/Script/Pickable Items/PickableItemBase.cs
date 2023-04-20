@@ -108,9 +108,11 @@ namespace Pickable_Items
 
                 visualObjectSequence.AppendCallback(() => _visualObjectTransform
                     .DOMoveY(localTransform.position.y + _animationMaximumHeight, _yAnimationDuration)
-                    .SetLoops(-1, LoopType.Yoyo));
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetEase(Ease.InOutCubic));
                 _visualObjectTransform
                     .DORotate(new Vector3(0, 360, 0), _rotateAnimationDuration, RotateMode.FastBeyond360)
+                    .SetEase(Ease.Linear)
                     .SetLoops(-1, LoopType.Restart);
                 _currentState = ItemStates.Idle;
             }
