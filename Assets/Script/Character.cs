@@ -5,13 +5,13 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
+    [SerializeField] protected float _maximumCountOfHitPoints;
+    protected ValueWithReactionOnChange<float> _currentCountCountOfHitPoints;
+    protected List<IContinuousEffect> _currentEffects;
     public event Action<CharacterState> StateChanged;
     public event Action<float> HitPointsCountChanged;
     public float HitPointCountRatio => _currentCountCountOfHitPoints.Value / _maximumCountOfHitPoints;
     public CharacterState CurrentCharacterState => CurrentState.Value;
-    [SerializeField] protected float _maximumCountOfHitPoints;
-    protected ValueWithReactionOnChange<float> _currentCountCountOfHitPoints;
-    protected List<IContinuousEffect> _currentEffects;
     protected ValueWithReactionOnChange<CharacterState> CurrentState { get; private set; }
     protected abstract string NamePrefix { get; }
 
@@ -23,6 +23,7 @@ public abstract class Character : MonoBehaviour
         {
             _currentCountCountOfHitPoints.Value = _maximumCountOfHitPoints;
         }
+
         Debug.Log(
             $"{NamePrefix}: Handle_Heal<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints.Value}>, Current_State<{CurrentState.Value.ToString()}>");
     }
@@ -49,6 +50,27 @@ public abstract class Character : MonoBehaviour
         effect.Start(this);
     }
 
+    private void Awake()
+    {
+        CurrentState = new ValueWithReactionOnChange<CharacterState>(CharacterState.Alive);
+        _currentCountCountOfHitPoints = new ValueWithReactionOnChange<float>(_maximumCountOfHitPoints);
+        _currentEffects = new List<IContinuousEffect>();
+    }
+
+    private void OnEnable()
+    {
+        CurrentState.AfterValueChanged += OnCharacterStateChanged;
+        _currentCountCountOfHitPoints.AfterValueChanged += OnHitPointsCountChanged;
+        _currentEffects.ForEach(effect => effect.EffectEnded += OnEffectEnded);
+    }
+
+    private void OnDisable()
+    {
+        CurrentState.AfterValueChanged -= OnCharacterStateChanged;
+        _currentCountCountOfHitPoints.AfterValueChanged -= OnHitPointsCountChanged;
+        _currentEffects.ForEach(effect => effect.EffectEnded -= OnEffectEnded);
+    }
+
     private void OnEffectEnded(IContinuousEffect obj)
     {
         obj.EffectEnded -= OnEffectEnded;
@@ -72,25 +94,4 @@ public abstract class Character : MonoBehaviour
     }
 
     private void OnHitPointsCountChanged(float newHitPointsCount) => HitPointsCountChanged?.Invoke(newHitPointsCount);
-
-    private void Awake()
-    {
-        CurrentState = new ValueWithReactionOnChange<CharacterState>(CharacterState.Alive);
-        _currentCountCountOfHitPoints = new ValueWithReactionOnChange<float>(_maximumCountOfHitPoints);
-        _currentEffects = new List<IContinuousEffect>();
-    }
-
-    private void OnEnable()
-    {
-        CurrentState.AfterValueChanged += OnCharacterStateChanged;
-        _currentCountCountOfHitPoints.AfterValueChanged += OnHitPointsCountChanged;
-        _currentEffects.ForEach(effect => effect.EffectEnded += OnEffectEnded);
-    }
-
-    private void OnDisable()
-    {
-        CurrentState.AfterValueChanged -= OnCharacterStateChanged;
-        _currentCountCountOfHitPoints.AfterValueChanged -= OnHitPointsCountChanged;
-        _currentEffects.ForEach(effect => effect.EffectEnded -= OnEffectEnded);
-    }
 }

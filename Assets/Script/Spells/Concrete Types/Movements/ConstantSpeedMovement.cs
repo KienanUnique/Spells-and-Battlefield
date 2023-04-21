@@ -14,7 +14,7 @@ namespace Spells.Concrete_Types.Movements
 
         private class ConstantSpeedMovementImplementation : SpellMovementImplementationBase
         {
-            private float _speed;
+            private readonly float _speed;
             public ConstantSpeedMovementImplementation(float speed) => _speed = speed;
 #nullable enable
             public override void UpdatePosition()

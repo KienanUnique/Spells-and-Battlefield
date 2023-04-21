@@ -13,10 +13,6 @@ namespace Player
     [RequireComponent(typeof(IdHolder))]
     public class PlayerController : MonoBehaviour, IPlayer
     {
-        public int Id => _idHolder.Id;
-        public Transform MainTransform => _playerMovement.LocalTransform;
-        public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
-        public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
         [SerializeField] private PlayerVisual _playerVisual;
         [SerializeField] private PlayerCameraEffects _playerCameraEffects;
         [SerializeField] private BarController _hpBar;
@@ -26,6 +22,11 @@ namespace Player
         private PlayerMovement _playerMovement;
         private PlayerLook _playerLook;
         private IdHolder _idHolder;
+        
+        public int Id => _idHolder.Id;
+        public Transform MainTransform => _playerMovement.MainTransform;
+        public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
+        public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
 
         public void HandleHeal(int countOfHealthPoints)
         {

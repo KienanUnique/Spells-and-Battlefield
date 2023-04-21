@@ -4,7 +4,6 @@ namespace Player
 {
     public class PlayerLook : MonoBehaviour
     {
-        public Quaternion CameraRotation => _camera.transform.rotation;
         [SerializeField] private Camera _camera;
         [SerializeField] private Transform _cameraRootTransform;
         [SerializeField] private PlayerController _playerController;
@@ -14,6 +13,8 @@ namespace Player
         private float _xRotation = 0f;
         private Transform _cameraTransform;
         private Transform _playerTransform;
+
+        public Quaternion CameraRotation => _camera.transform.rotation;
 
         private void Awake()
         {

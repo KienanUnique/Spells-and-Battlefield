@@ -5,23 +5,10 @@ namespace Game_Managers
 {
     public class InteractableGameObjectsBankOfIds : MonoBehaviour
     {
-        public static InteractableGameObjectsBankOfIds Instance { get; private set; }
         private const int FirstId = 0;
+
         private List<int> _usedIds;
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-            }
-            else
-            {
-                Instance = this;
-            }
-
-            _usedIds = new List<int>();
-        }
+        public static InteractableGameObjectsBankOfIds Instance { get; private set; }
 
         public int GetId()
         {
@@ -38,6 +25,20 @@ namespace Game_Managers
         public void ReturnId(int returnedId)
         {
             _usedIds.Remove(returnedId);
+        }
+
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                Instance = this;
+            }
+
+            _usedIds = new List<int>();
         }
     }
 }

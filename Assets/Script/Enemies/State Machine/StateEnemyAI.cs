@@ -6,9 +6,11 @@ namespace Enemies.State_Machine
 {
     public abstract class StateEnemyAI : MonoBehaviour
     {
-        public event Action<StateEnemyAI> NeedToSwitchToNextState;
         [SerializeField] private List<TransitionEnemyAI> _transitions;
         private bool _isActivated = false;
+
+        public event Action<StateEnemyAI> NeedToSwitchToNextState;
+
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
 
         public void Enter(IEnemyStateMachineControllable stateMachineControllable)
@@ -51,6 +53,22 @@ namespace Enemies.State_Machine
         protected abstract void SpecialEnterAction();
         protected abstract void SpecialExitAction();
 
+        private void OnEnable()
+        {
+            if (_isActivated)
+            {
+                SubscribeOnTransitionEvents();
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_isActivated)
+            {
+                UnsubscribeFromTransitionEvents();
+            }
+        }
+
         private void SubscribeOnTransitionEvents()
         {
             foreach (var transition in _transitions)
@@ -71,22 +89,6 @@ namespace Enemies.State_Machine
         {
             UnsubscribeFromTransitionEvents();
             NeedToSwitchToNextState?.Invoke(nextState);
-        }
-
-        private void OnEnable()
-        {
-            if (_isActivated)
-            {
-                SubscribeOnTransitionEvents();
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (_isActivated)
-            {
-                UnsubscribeFromTransitionEvents();
-            }
         }
 
         private class StateIsAlreadyActivatedException : Exception

@@ -13,12 +13,6 @@ namespace Enemies
     [RequireComponent(typeof(Character))]
     public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable
     {
-        public int Id => _idHolder.Id;
-        public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
-        public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
-        public IEnemyTarget Target { get; private set; }
-
-        protected abstract EnemyVisualBase EnemyVisual { get; }
         protected IdHolder _idHolder;
         protected Character _character;
         protected EnemyMovement _enemyMovement;
@@ -27,8 +21,13 @@ namespace Enemies
         [SerializeField] protected SpellBase _spellToDrop;
         [SerializeField] private PlayerController _player;
         [Min(1f)] [SerializeField] private float _delayInSecondsBeforeDestroy = 1f;
-
         private readonly Vector3 _spawnSpellOffset = new Vector3(0, 3f, 0);
+
+        public int Id => _idHolder.Id;
+        public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
+        public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
+        public IEnemyTarget Target { get; private set; }
+        protected abstract EnemyVisualBase EnemyVisual { get; }
 
         public int CompareTo(object obj)
         {
@@ -57,14 +56,14 @@ namespace Enemies
 
         public void StartMovingToTarget(Transform target) => _enemyMovement.StartMovingToTarget(target);
 
-        public void StopMovingToTarget() => _enemyMovement.StopCurrentAction();
+        public void StopMovingToTarget() => _enemyMovement.StopMovingToTarget();
 
         protected virtual void HandleStateChangedEvent(CharacterState newState)
         {
             if (newState == CharacterState.Dead)
             {
                 _enemyStateMachineAI.StopStateMachine();
-                _enemyMovement.StopCurrentAction();
+                _enemyMovement.StopMovingToTarget();
                 EnemyVisual.PlayDieAnimation();
                 DropSpell();
                 StartCoroutine(DestroyAfterDelay());
@@ -98,11 +97,11 @@ namespace Enemies
 
         private void DropSpell()
         {
-            var localTransform = transform;
+            var cashedTransform = transform;
             var dropDirection = Target == null
-                ? localTransform.forward
-                : (Target.MainTransform.position - localTransform.position).normalized;
-            var spawnPosition = _spawnSpellOffset + localTransform.position;
+                ? cashedTransform.forward
+                : (Target.MainTransform.position - cashedTransform.position).normalized;
+            var spawnPosition = _spawnSpellOffset + cashedTransform.position;
             var pickableSpellController =
                 Instantiate(_pickableSpellPrefab.gameObject, spawnPosition, Quaternion.identity)
                     .GetComponent<PickableSpellController>();

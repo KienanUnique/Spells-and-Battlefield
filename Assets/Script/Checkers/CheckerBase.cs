@@ -7,12 +7,14 @@ namespace Checkers
 {
     public abstract class CheckerBase : MonoBehaviour
     {
+        private ValueWithReactionOnChange<bool> _isCollidingWithReaction;
+        private List<Collider> _colliders;
+
         public event Action<bool> ContactStateChanged;
+
         public bool IsColliding => _isCollidingWithReaction.Value;
         public ReadOnlyCollection<Collider> Colliders => new ReadOnlyCollection<Collider>(_colliders);
         protected abstract LayerMask NeedObjectsMask { get; }
-        private ValueWithReactionOnChange<bool> _isCollidingWithReaction;
-        private List<Collider> _colliders;
 
         private void Awake()
         {
@@ -28,11 +30,6 @@ namespace Checkers
         private void OnDisable()
         {
             _isCollidingWithReaction.AfterValueChanged -= OnAfterGroundedStateChanged;
-        }
-
-        private void OnAfterGroundedStateChanged(bool newIsGrounded)
-        {
-            ContactStateChanged?.Invoke(newIsGrounded);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -56,6 +53,11 @@ namespace Checkers
             {
                 _isCollidingWithReaction.Value = false;
             }
+        }
+
+        private void OnAfterGroundedStateChanged(bool newIsGrounded)
+        {
+            ContactStateChanged?.Invoke(newIsGrounded);
         }
 
         private bool IsGroundCollider(Collider colliderToCheck)

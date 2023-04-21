@@ -10,15 +10,15 @@ namespace Spells
         order = 0)]
     public class SingleSpell : SpellBase
     {
-        public override AnimatorOverrideController CastAnimationAnimatorOverrideController =>
-            _castAnimationAnimatorOverrideController;
-
         [SerializeField] private SpellMovementScriptableObject _movement;
         [SerializeField] private List<SpellApplierScriptableObject> _appliers;
         [SerializeField] private SpellTriggerScriptableObject _mainTrigger;
         [SerializeField] private SpellObjectController _spellObjectPrefab;
         [SerializeField] private AnimatorOverrideController _castAnimationAnimatorOverrideController;
         [SerializeField] private List<SpellBase> _nextSpellsOnFinish;
+
+        public override AnimatorOverrideController CastAnimationAnimatorOverrideController =>
+            _castAnimationAnimatorOverrideController;
 
         private List<ISpellApplier> SpellAppliers
         {

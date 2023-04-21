@@ -7,16 +7,6 @@ public class IdHolder : MonoBehaviour, IInteractable
 {
     public int Id { get; private set; }
 
-    private void Start()
-    {
-        Id = InteractableGameObjectsBankOfIds.Instance.GetId();
-    }
-
-    private void OnDestroy()
-    {
-        InteractableGameObjectsBankOfIds.Instance.ReturnId(Id);
-    }
-
     public int CompareTo(object obj)
     {
         if (obj is IInteractable interactableObject)
@@ -27,5 +17,15 @@ public class IdHolder : MonoBehaviour, IInteractable
         {
             throw new InvalidCastException();
         }
+    }
+
+    private void Start()
+    {
+        Id = InteractableGameObjectsBankOfIds.Instance.GetId();
+    }
+
+    private void OnDestroy()
+    {
+        InteractableGameObjectsBankOfIds.Instance.ReturnId(Id);
     }
 }

@@ -8,7 +8,6 @@ namespace Spells
     [RequireComponent(typeof(Rigidbody))]
     public class SpellObjectController : MonoBehaviour
     {
-        private float TimePassedFromInitialize => Time.time - _initializeTime;
         private Rigidbody _rigidbody;
         private ISpellMovement _spellMovement;
         private ISpellInteractable _casterCharacter;
@@ -17,6 +16,14 @@ namespace Spells
         private ISpellTrigger _spellMainTrigger;
         private float _initializeTime;
         private SpellControllerStatus _controllerStatus = SpellControllerStatus.NonInitialized;
+        private float TimePassedFromInitialize => Time.time - _initializeTime;
+
+        private enum SpellControllerStatus
+        {
+            NonInitialized,
+            Active,
+            Finished
+        }
 
 #nullable enable
         public void Initialize(ISpellMovement spellMovement, List<SpellBase> nextSpellsOnFinish,
@@ -45,25 +52,6 @@ namespace Spells
         }
 #nullable disable
 
-        private void HandleSpellTriggerResponse(SpellTriggerCheckStatusEnum response)
-        {
-            if (response == SpellTriggerCheckStatusEnum.Finish)
-            {
-                HandleFinishSpell();
-            }
-        }
-
-        private void HandleFinishSpell()
-        {
-            _controllerStatus = SpellControllerStatus.Finished;
-            _nextSpellsOnFinish.ForEach(spell =>
-            {
-                var spellTransform = transform;
-                spell.Cast(spellTransform.position, spellTransform.rotation, spellTransform, _casterCharacter);
-            });
-            Destroy(this.gameObject);
-        }
-
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
@@ -90,11 +78,23 @@ namespace Spells
             }
         }
 
-        private enum SpellControllerStatus
+        private void HandleSpellTriggerResponse(SpellTriggerCheckStatusEnum response)
         {
-            NonInitialized,
-            Active,
-            Finished
+            if (response == SpellTriggerCheckStatusEnum.Finish)
+            {
+                HandleFinishSpell();
+            }
+        }
+
+        private void HandleFinishSpell()
+        {
+            _controllerStatus = SpellControllerStatus.Finished;
+            _nextSpellsOnFinish.ForEach(spell =>
+            {
+                var spellTransform = transform;
+                spell.Cast(spellTransform.position, spellTransform.rotation, spellTransform, _casterCharacter);
+            });
+            Destroy(this.gameObject);
         }
     }
 }

@@ -7,11 +7,17 @@ namespace Enemies.State_Machine.Transitions
     {
         [SerializeField] private float _transitionDistance;
         [SerializeField] private TypeOfComparison _typeOfComparison;
-        private Transform _localTransform;
+        private Transform _cashedTransform;
+
+        private enum TypeOfComparison
+        {
+            IsMore,
+            IsLess
+        }
 
         protected override void CheckConditions()
         {
-            var calculatedDistance = Vector3.Distance(_localTransform.position,
+            var calculatedDistance = Vector3.Distance(_cashedTransform.position,
                 StateMachineControllable.Target.MainTransform.position);
             switch (_typeOfComparison)
             {
@@ -36,13 +42,7 @@ namespace Enemies.State_Machine.Transitions
 
         private void Awake()
         {
-            _localTransform = transform;
-        }
-
-        private enum TypeOfComparison
-        {
-            IsMore,
-            IsLess
+            _cashedTransform = transform;
         }
     }
 }

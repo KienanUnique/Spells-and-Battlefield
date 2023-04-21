@@ -6,17 +6,11 @@ namespace Player
 {
     public class PlayerCameraEffects : MonoBehaviour
     {
+        private const RotateMode CameraRotateMode = RotateMode.Fast;
         [SerializeField] private float _rotationAngle = 30f;
         [SerializeField] private float _rotateDuration;
         private Vector3 _defaultRotation;
         private Transform _cachedTransform;
-        private const RotateMode CameraRotateMode = RotateMode.Fast;
-
-        private void Awake()
-        {
-            _cachedTransform = transform;
-            _defaultRotation = _cachedTransform.localRotation.eulerAngles;
-        }
 
         public void Rotate(WallDirection direction)
         {
@@ -34,6 +28,12 @@ namespace Player
         {
             _cachedTransform.DOKill();
             _cachedTransform.DOLocalRotate(_defaultRotation, _rotateDuration, CameraRotateMode);
+        }
+
+        private void Awake()
+        {
+            _cachedTransform = transform;
+            _defaultRotation = _cachedTransform.localRotation.eulerAngles;
         }
     }
 }

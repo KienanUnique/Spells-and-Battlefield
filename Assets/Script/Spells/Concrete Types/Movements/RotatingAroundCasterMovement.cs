@@ -17,8 +17,8 @@ namespace Spells.Concrete_Types.Movements
 
         private class RotatingAroundCasterMovementImplementation : SpellMovementImplementationBase
         {
-            private float _speed;
-            private float _radius;
+            private readonly float _speed;
+            private readonly float _radius;
 
             public RotatingAroundCasterMovementImplementation(float speed, float radius)
             {

@@ -19,9 +19,9 @@ namespace Spells.Concrete_Types.Target_Selectors
 
         private class SphereEnemySelectorImplementation : SpellTargetSelectorImplementationBase
         {
+            private const int LayerMask = Physics.AllLayers;
             private readonly float _sphereRadius;
             private readonly bool _ignoreCasterCollisions;
-            private const int LayerMask = Physics.AllLayers;
 
             public SphereEnemySelectorImplementation(float sphereRadius, bool ignoreCasterCollisions)
             {

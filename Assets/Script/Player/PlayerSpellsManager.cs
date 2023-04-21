@@ -6,23 +6,16 @@ namespace Player
 {
     public class PlayerSpellsManager : MonoBehaviour
     {
-        public bool IsSpellSelected => _spellsStorage.Count > 0;
-
-        public AnimatorOverrideController SelectedSpellHandsAnimatorController =>
-            _spellsStorage[0].CastAnimationAnimatorOverrideController;
-
         [SerializeField] private List<SpellBase> _startTestSpells;
         [SerializeField] private Transform _spellSpawnObject;
         [SerializeField] private PlayerController _player;
         private Transform _playerTransform;
         private List<ISpell> _spellsStorage;
 
-        private void Awake()
-        {
-            _playerTransform = _player.transform;
-            _spellsStorage = new List<ISpell>();
-            _spellsStorage.AddRange(_startTestSpells);
-        }
+        public bool IsSpellSelected => _spellsStorage.Count > 0;
+
+        public AnimatorOverrideController SelectedSpellHandsAnimatorController =>
+            _spellsStorage[0].CastAnimationAnimatorOverrideController;
 
         public void UseSelectedSpell(Quaternion direction)
         {
@@ -33,6 +26,13 @@ namespace Player
         public void AddSpell(ISpell newSpell)
         {
             _spellsStorage.Add(newSpell);
+        }
+
+        private void Awake()
+        {
+            _playerTransform = _player.transform;
+            _spellsStorage = new List<ISpell>();
+            _spellsStorage.AddRange(_startTestSpells);
         }
     }
 }

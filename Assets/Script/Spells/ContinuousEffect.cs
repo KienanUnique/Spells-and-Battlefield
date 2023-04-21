@@ -9,10 +9,10 @@ namespace Spells
 {
     public class ContinuousEffect : IContinuousEffect
     {
-        private Coroutine _effectCoroutine = null;
         private readonly float _cooldownInSeconds;
         private readonly float _durationInSeconds;
         private readonly List<ISpellMechanicEffect> _effects;
+        private Coroutine _effectCoroutine = null;
         private ISpellInteractable _target;
         private MonoBehaviour _fromStartedMonoBehaviour;
 

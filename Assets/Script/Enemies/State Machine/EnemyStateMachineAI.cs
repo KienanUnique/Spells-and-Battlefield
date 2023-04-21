@@ -6,9 +6,25 @@ namespace Enemies.State_Machine
     public class EnemyStateMachineAI : MonoBehaviour
     {
         [SerializeField] private StateEnemyAI _firstStateEnemyAI;
-        private StateEnemyAI CurrentStateEnemyAI { set; get; }
+        private StateEnemyAI _currentStateEnemyAI;
         private IEnemyStateMachineControllable _stateMachineControllable;
         private bool _isActive = false;
+
+        private void OnEnable()
+        {
+            if (_isActive)
+            {
+                SubscribeOnCurrentStateEvents();
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_isActive)
+            {
+                UnsubscribeFromCurrentStateEvents();
+            }
+        }
 
         public void StartStateMachine(IEnemyStateMachineControllable stateMachineControllable)
         {
@@ -35,45 +51,29 @@ namespace Enemies.State_Machine
 
         private void TransitToState(StateEnemyAI nextStateEnemyAI)
         {
-            if (CurrentStateEnemyAI != null)
+            if (_currentStateEnemyAI != null)
             {
                 UnsubscribeFromCurrentStateEvents();
-                CurrentStateEnemyAI.Exit();
+                _currentStateEnemyAI.Exit();
             }
 
-            CurrentStateEnemyAI = nextStateEnemyAI;
+            _currentStateEnemyAI = nextStateEnemyAI;
 
-            if (CurrentStateEnemyAI != null)
+            if (_currentStateEnemyAI != null)
             {
                 SubscribeOnCurrentStateEvents();
-                CurrentStateEnemyAI.Enter(_stateMachineControllable);
-            }
-        }
-
-        private void OnEnable()
-        {
-            if (_isActive)
-            {
-                SubscribeOnCurrentStateEvents();
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (_isActive)
-            {
-                UnsubscribeFromCurrentStateEvents();
+                _currentStateEnemyAI.Enter(_stateMachineControllable);
             }
         }
 
         private void SubscribeOnCurrentStateEvents()
         {
-            CurrentStateEnemyAI.NeedToSwitchToNextState += TransitToState;
+            _currentStateEnemyAI.NeedToSwitchToNextState += TransitToState;
         }
 
         private void UnsubscribeFromCurrentStateEvents()
         {
-            CurrentStateEnemyAI.NeedToSwitchToNextState -= TransitToState;
+            _currentStateEnemyAI.NeedToSwitchToNextState -= TransitToState;
         }
 
         private class StateMachineAlreadyStartedException : Exception

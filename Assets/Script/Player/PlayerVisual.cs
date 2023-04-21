@@ -6,20 +6,18 @@ namespace Player
     [RequireComponent(typeof(Animator))]
     public class PlayerVisual : MonoBehaviour
     {
-        public Action UseSpellAnimationMomentStartEvent;
-        private Animator _characterAnimator;
         private static readonly int AttackTriggerHash = Animator.StringToHash("Attack");
         private static readonly int MovingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
         private static readonly int MovingDirectionYFloatHash = Animator.StringToHash("Moving Direction Y");
-
         private static readonly int RatioOfCurrentVelocityToMaximumVelocityFloatHash =
             Animator.StringToHash("Ratio Of Current Velocity To Maximum Velocity");
-
         private static readonly int JumpTriggerHash = Animator.StringToHash("Jump");
         private static readonly int FallTriggerHash = Animator.StringToHash("Fall");
         private static readonly int LandTriggerHash = Animator.StringToHash("Land");
-
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
+        
+        public Action UseSpellAnimationMomentStartEvent;
+        private Animator _characterAnimator;
 
         public void InvokeUseSpellAnimationMomentStart() => UseSpellAnimationMomentStartEvent?.Invoke();
 

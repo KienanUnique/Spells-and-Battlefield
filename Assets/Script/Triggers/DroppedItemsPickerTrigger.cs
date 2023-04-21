@@ -1,5 +1,4 @@
-﻿using Interfaces;
-using Interfaces.Pickers;
+﻿using Interfaces.Pickers;
 
 namespace Triggers
 {

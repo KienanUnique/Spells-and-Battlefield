@@ -6,11 +6,13 @@ namespace Enemies.State_Machine
 {
     public abstract class TransitionEnemyAI : MonoBehaviour
     {
-        public event Action<StateEnemyAI> NeedTransit;
-        public StateEnemyAI TargetStateEnemyAI => _targetStateEnemyAI;
         [SerializeField] private StateEnemyAI _targetStateEnemyAI;
-        protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
         protected Coroutine _currentCheckConditionsCoroutine = null;
+        
+        public event Action<StateEnemyAI> NeedTransit;
+        
+        public StateEnemyAI TargetStateEnemyAI => _targetStateEnemyAI;
+        protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
 
         public void StartCheckingConditions(IEnemyStateMachineControllable stateMachineControllable)
         {

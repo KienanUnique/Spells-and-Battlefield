@@ -10,33 +10,35 @@ namespace Enemies
     [RequireComponent(typeof(TargetPathfinder))]
     public class EnemyMovement : MonoBehaviour
     {
-        public Vector3 CurrentPosition => _rigidbody.position;
-        public event Action<bool> IsMovingStateChanged;
         [SerializeField] private float _runVelocity;
         private ValueWithReactionOnChange<bool> _isMoving;
         private Rigidbody _rigidbody;
         private TargetPathfinder _targetPathfinder;
-        private Coroutine _currentActionCoroutine = null;
+        private Coroutine _followPathCoroutine = null;
+        public event Action<bool> IsMovingStateChanged;
+        public Vector3 CurrentPosition => _rigidbody.position;
 
         public void StartMovingToTarget(Transform target)
         {
-            if (_currentActionCoroutine != null)
+            if (_followPathCoroutine != null)
             {
-                StopCurrentAction();
+                StopMovingToTarget();
             }
 
             _isMoving.Value = true;
-            _currentActionCoroutine = StartCoroutine(FollowPath(target));
+            _followPathCoroutine = StartCoroutine(FollowPath(target));
         }
 
-        public void StopCurrentAction()
+        public void StopMovingToTarget()
         {
-            if (_currentActionCoroutine != null)
+            if (_followPathCoroutine != null)
             {
-                StopCoroutine(_currentActionCoroutine);
-                _currentActionCoroutine = null;
-                _isMoving.Value = false;
+                StopCoroutine(_followPathCoroutine);
+                _followPathCoroutine = null;
             }
+
+            _isMoving.Value = false;
+            _targetPathfinder.StopUpdatingPath();
         }
 
         public void AddForce(Vector3 force, ForceMode mode)
@@ -64,7 +66,7 @@ namespace Enemies
         private IEnumerator FollowPath(Transform target)
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
-            _targetPathfinder.UpdatePathForTarget(target);
+            _targetPathfinder.StartUpdatingPathForTarget(target);
             var direction = Vector3.zero;
             var currentHorizontalVelocity = Vector3.zero;
             Vector3 currentHorizontalVelocityNormalized, needVelocity;

@@ -6,13 +6,34 @@ namespace Player
 {
     public class PlayerInputManager : MonoBehaviour
     {
-        public Action JumpEvent;
-        public Action UseSpellEvent;
-        public Action<Vector2> MoveInputEvent;
-        public Action<Vector2> MouseLookEvent;
         private const float MinimalInputMagnitude = 0.5f;
+
         private MainControls _mainControls;
         private float _mouseX, _mouseY;
+
+        public event Action JumpEvent;
+        public event Action UseSpellEvent;
+        public event Action<Vector2> MoveInputEvent;
+        public event Action<Vector2> MouseLookEvent;
+        
+        private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpEvent?.Invoke();
+        private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellEvent?.Invoke();
+        
+        public void SwitchToUIInput()
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            _mainControls.Character.Disable();
+            _mainControls.UI.Enable();
+        }
+
+        public void SwitchToGameInput()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            _mainControls.Character.Enable();
+            _mainControls.UI.Disable();
+        }
 
         private void Awake()
         {
@@ -39,25 +60,6 @@ namespace Player
             MoveInputEvent?.Invoke(readDirection.magnitude > MinimalInputMagnitude ? readDirection : Vector2.zero);
 
             MouseLookEvent?.Invoke(_mainControls.Character.Look.ReadValue<Vector2>());
-        }
-
-        private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpEvent?.Invoke();
-        private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellEvent?.Invoke();
-
-        public void SwitchToUIInput()
-        {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
-            _mainControls.Character.Disable();
-            _mainControls.UI.Enable();
-        }
-
-        public void SwitchToGameInput()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            _mainControls.Character.Enable();
-            _mainControls.UI.Disable();
         }
     }
 }

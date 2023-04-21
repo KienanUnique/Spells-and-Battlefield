@@ -9,7 +9,7 @@ namespace Spells.Concrete_Types.Triggers
         menuName = "Spells and Battlefield/Spell System/Trigger/Time Finish Trigger", order = 0)]
     public class TimeFinishTrigger : SpellTriggerScriptableObject
     {
-        [SerializeField] float _timeBeforeFinishTrigger;
+        [SerializeField] private float _timeBeforeFinishTrigger;
 
         public override ISpellTrigger GetImplementationObject() =>
             new TimeFinishTriggerImplementation(_timeBeforeFinishTrigger);

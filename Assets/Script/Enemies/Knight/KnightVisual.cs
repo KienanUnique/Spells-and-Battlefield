@@ -5,9 +5,10 @@ namespace Enemies.Knight
 {
     public class KnightVisual : EnemyVisualBase
     {
-        public Action AttackWithSwordAnimationMomentStartEvent;
-        public void InvokeAttackWithSwordAnimationMomentStart() => AttackWithSwordAnimationMomentStartEvent?.Invoke();
         private static readonly int IsAttackingBoolHash = Animator.StringToHash("Is Attacking");
+        public event Action AttackWithSwordAnimationMomentStartEvent;
+
+        public void InvokeAttackWithSwordAnimationMomentStart() => AttackWithSwordAnimationMomentStartEvent?.Invoke();
 
         public void StartAttackWithSwordAnimation()
         {

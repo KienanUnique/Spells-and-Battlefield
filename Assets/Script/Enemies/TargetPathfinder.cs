@@ -12,15 +12,9 @@ namespace Enemies
         private Seeker _seeker;
         private Path _currentPath;
         private int _currentWaypointIndex;
-        private Transform _localTransform;
+        private Transform _cashedTransform;
 
-        private void Awake()
-        {
-            _seeker = GetComponent<Seeker>();
-            _localTransform = transform;
-        }
-
-        public void UpdatePathForTarget(Transform target)
+        public void StartUpdatingPathForTarget(Transform target)
         {
             StopUpdatingPath();
             StartCoroutine(UpdatePathToTarget(target));
@@ -44,14 +38,21 @@ namespace Enemies
             return true;
         }
 
+        private void Awake()
+        {
+            _seeker = GetComponent<Seeker>();
+            _cashedTransform = transform;
+        }
+
         private IEnumerator TryUpdateCurrentWaypoint()
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
             {
                 if (_currentPath != null && _currentWaypointIndex < _currentPath.vectorPath.Count
-                    && Vector3.Distance(_currentPath.vectorPath[_currentWaypointIndex], transform.position) <=
-                    _nextWaypointDistance)
+                                         && Vector3.Distance(_currentPath.vectorPath[_currentWaypointIndex],
+                                             transform.position) <=
+                                         _nextWaypointDistance)
                 {
                     _currentWaypointIndex++;
                 }
@@ -67,7 +68,7 @@ namespace Enemies
             {
                 if (_seeker.IsDone())
                 {
-                    _seeker.StartPath(_localTransform.position, target.position, OnPathComplete);
+                    _seeker.StartPath(_cashedTransform.position, target.position, OnPathComplete);
                 }
 
                 yield return waitForSeconds;

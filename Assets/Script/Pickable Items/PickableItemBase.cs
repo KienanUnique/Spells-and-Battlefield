@@ -1,7 +1,6 @@
 ﻿using System;
 using Checkers;
 using DG.Tweening;
-using Interfaces;
 using Interfaces.Pickers;
 using Triggers;
 using UnityEngine;
@@ -11,6 +10,8 @@ namespace Pickable_Items
     [RequireComponent(typeof(Rigidbody))]
     public abstract class PickableItemBase<TStoredObject> : MonoBehaviour
     {
+        private const float MaxGroundRayDistance = 2f;
+        private const float GroundCheckOffsetY = 20f;
         [SerializeField] private float _animationMinimumHeight = 1.6f;
         [SerializeField] private float _animationMaximumHeight = 2.6f;
         [SerializeField] private float _yAnimationDuration = 0.6f;
@@ -27,8 +28,6 @@ namespace Pickable_Items
         private Rigidbody _rigidbody;
         private ItemStates _currentState;
         private TStoredObject _storedObject;
-        private const float MaxGroundRayDistance = 2f;
-        private const float GroundCheckOffsetY = 20f;
 
         protected TStoredObject StoredObject
         {
@@ -39,6 +38,15 @@ namespace Pickable_Items
                 _currentState = _needFallDown ? ItemStates.StartFalling : ItemStates.StartIdle;
                 AppearItem();
             }
+        }
+
+        private enum ItemStates
+        {
+            NotInitialized,
+            StartFalling,
+            Falling,
+            StartIdle,
+            Idle
         }
 
         public void DropItem(TStoredObject storedObject, Vector3 direction)
@@ -93,10 +101,10 @@ namespace Pickable_Items
                 _rigidbody.velocity = Vector3.zero;
 
                 var visualObjectSequence = DOTween.Sequence();
-                var localTransform = transform;
+                var cashedTransform = transform;
                 if (_needFallDown)
                 {
-                    var startRayCheckPosition = localTransform.position;
+                    var startRayCheckPosition = cashedTransform.position;
                     startRayCheckPosition.y += GroundCheckOffsetY;
                     if (Physics.Raycast(startRayCheckPosition, Vector3.down,
                             out var hitGround, MaxGroundRayDistance + GroundCheckOffsetY, _groundMask))
@@ -107,13 +115,15 @@ namespace Pickable_Items
                 }
 
                 visualObjectSequence.AppendCallback(() => _visualObjectTransform
-                    .DOMoveY(localTransform.position.y + _animationMaximumHeight, _yAnimationDuration)
+                    .DOMoveY(cashedTransform.position.y + _animationMaximumHeight, _yAnimationDuration)
                     .SetLoops(-1, LoopType.Yoyo)
-                    .SetEase(Ease.InOutCubic));
+                    .SetEase(Ease.InOutCubic)
+                    .SetLink(gameObject));
                 _visualObjectTransform
                     .DORotate(new Vector3(0, 360, 0), _rotateAnimationDuration, RotateMode.FastBeyond360)
                     .SetEase(Ease.Linear)
-                    .SetLoops(-1, LoopType.Restart);
+                    .SetLoops(-1, LoopType.Restart)
+                    .SetLink(gameObject);
                 _currentState = ItemStates.Idle;
             }
         }
@@ -126,7 +136,7 @@ namespace Pickable_Items
             }
 
             SpecialAppearAction();
-            _visualObjectTransform.DOScale(new Vector3(1, 1, 1), _appearScaleAnimationDuration);
+            _visualObjectTransform.DOScale(new Vector3(1, 1, 1), _appearScaleAnimationDuration).SetLink(gameObject);
         }
 
         private void OnPickerDetected(IDroppedItemsPicker picker)
@@ -135,6 +145,7 @@ namespace Pickable_Items
             {
                 SpecialPickUpAction(picker);
                 _visualObjectTransform.DOScale(Vector3.zero, _disappearScaleAnimationDuration)
+                    .SetLink(gameObject)
                     .OnComplete(OnPickupAnimationFinished);
                 if (_currentState != ItemStates.Idle)
                 {
@@ -147,15 +158,6 @@ namespace Pickable_Items
         {
             _visualObjectTransform.DOKill();
             Destroy(this.gameObject);
-        }
-
-        private enum ItemStates
-        {
-            NotInitialized,
-            StartFalling,
-            Falling,
-            StartIdle,
-            Idle
         }
 
         private class SpellObjectWasAlreadyShown : Exception

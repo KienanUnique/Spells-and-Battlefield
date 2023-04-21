@@ -6,7 +6,6 @@ namespace UI.Bar
 {
     public class BarController : MonoBehaviour, IBarController
     {
-        [SerializeField] private Image _background;
         [SerializeField] private Image _foreground;
         [SerializeField] private float _hpChangeDuration;
 

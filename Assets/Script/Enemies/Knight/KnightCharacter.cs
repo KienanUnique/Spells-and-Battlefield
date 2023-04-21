@@ -6,8 +6,9 @@ namespace Enemies.Knight
 {
     public class KnightCharacter : Character
     {
-        protected override string NamePrefix => "Knight";
         [SerializeField] private int _attackSwordDamage = 7;
+
+        protected override string NamePrefix => "Knight";
 
         public void DamageTargetsWithSwordAttack(List<ICharacter> targets)
         {
