@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace Player
 {
@@ -9,15 +10,17 @@ namespace Player
         private static readonly int AttackTriggerHash = Animator.StringToHash("Attack");
         private static readonly int MovingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
         private static readonly int MovingDirectionYFloatHash = Animator.StringToHash("Moving Direction Y");
+
         private static readonly int RatioOfCurrentVelocityToMaximumVelocityFloatHash =
             Animator.StringToHash("Ratio Of Current Velocity To Maximum Velocity");
+
         private static readonly int JumpTriggerHash = Animator.StringToHash("Jump");
         private static readonly int FallTriggerHash = Animator.StringToHash("Fall");
         private static readonly int LandTriggerHash = Animator.StringToHash("Land");
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
-        
-        public Action UseSpellAnimationMomentStartEvent;
+        [SerializeField] private RigBuilder _rigBuilder;
         private Animator _characterAnimator;
+        public event Action UseSpellAnimationMomentStartEvent;
 
         public void InvokeUseSpellAnimationMomentStart() => UseSpellAnimationMomentStartEvent?.Invoke();
 
@@ -50,6 +53,7 @@ namespace Player
 
         public void PlayDieAnimation()
         {
+            _rigBuilder.enabled = false;
             _characterAnimator.ResetTrigger(JumpTriggerHash);
             _characterAnimator.ResetTrigger(FallTriggerHash);
             _characterAnimator.ResetTrigger(LandTriggerHash);
