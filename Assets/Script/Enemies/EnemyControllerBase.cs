@@ -58,6 +58,16 @@ namespace Enemies
 
         public void StopMovingToTarget() => _enemyMovement.StopMovingToTarget();
 
+        public void MultiplySpeedRatioBy(float speedRatio)
+        {
+            _enemyMovement.MultiplySpeedRatioBy(speedRatio);
+        }
+
+        public void DivideSpeedRatioBy(float speedRatio)
+        {
+            _enemyMovement.DivideSpeedRatioBy(speedRatio);
+        }
+
         protected virtual void HandleStateChangedEvent(CharacterState newState)
         {
             if (newState == CharacterState.Dead)

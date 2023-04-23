@@ -66,6 +66,17 @@ namespace Spells.Concrete_Types.Appliers
                 return response;
             }
 
+            public override void HandleRollbackableEffects()
+            {
+                foreach (var effect in _spellMechanicEffects)
+                {
+                    if (effect is ISpellMechanicEffectWithRollback effectWithRollback)
+                    {
+                        effectWithRollback.Rollback();
+                    }
+                }
+            }
+
             private void HandleSpellTriggerResponse(SpellTriggerCheckStatusEnum response)
             {
                 if (response == SpellTriggerCheckStatusEnum.HandleEffect ||

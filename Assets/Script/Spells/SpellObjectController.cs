@@ -89,6 +89,7 @@ namespace Spells
         private void HandleFinishSpell()
         {
             _controllerStatus = SpellControllerStatus.Finished;
+            _spellAppliers.ForEach(applier => applier.HandleRollbackableEffects());
             _nextSpellsOnFinish.ForEach(spell =>
             {
                 var spellTransform = transform;

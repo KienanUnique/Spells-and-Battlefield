@@ -22,7 +22,7 @@ namespace Player
         private PlayerMovement _playerMovement;
         private PlayerLook _playerLook;
         private IdHolder _idHolder;
-        
+
         public int Id => _idHolder.Id;
         public Transform MainTransform => _playerMovement.MainTransform;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
@@ -56,6 +56,16 @@ namespace Player
         public void AddForce(Vector3 force, ForceMode mode)
         {
             _playerMovement.AddForce(force, mode);
+        }
+
+        public void MultiplySpeedRatioBy(float speedRatio)
+        {
+            _playerMovement.MultiplySpeedRatioBy(speedRatio);
+        }
+
+        public void DivideSpeedRatioBy(float speedRatio)
+        {
+            _playerMovement.DivideSpeedRatioBy(speedRatio);
         }
 
         private void Awake()
@@ -110,13 +120,13 @@ namespace Player
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
             _playerCharacter.StateChanged -= OnCharacterStateChanged;
         }
-        
+
         private void OnStartWallRunningEvent(WallDirection direction)
         {
             _playerCameraEffects.Rotate(direction);
             _playerVisual.PlayLandAnimation();
         }
-        
+
         private void OnEndWallRunningEvent()
         {
             _playerCameraEffects.ResetRotation();
@@ -127,7 +137,7 @@ namespace Player
         {
             _hpBar.UpdateValue(_playerCharacter.HitPointCountRatio);
         }
-        
+
         private void OnCharacterStateChanged(CharacterState newState)
         {
             _playerInputManager.SwitchToUIInput();

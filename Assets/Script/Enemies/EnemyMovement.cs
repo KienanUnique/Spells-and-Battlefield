@@ -8,11 +8,9 @@ namespace Enemies
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Seeker))]
     [RequireComponent(typeof(TargetPathfinder))]
-    public class EnemyMovement : MonoBehaviour
+    public class EnemyMovement : MovementBase
     {
-        [SerializeField] private float _runVelocity;
         private ValueWithReactionOnChange<bool> _isMoving;
-        private Rigidbody _rigidbody;
         private TargetPathfinder _targetPathfinder;
         private Coroutine _followPathCoroutine = null;
         public event Action<bool> IsMovingStateChanged;
@@ -46,7 +44,7 @@ namespace Enemies
             _rigidbody.AddForce(force, mode);
         }
 
-        private void Awake()
+        protected override void SpecialAwakeAction()
         {
             _rigidbody = GetComponent<Rigidbody>();
             _targetPathfinder = GetComponent<TargetPathfinder>();
@@ -68,24 +66,14 @@ namespace Enemies
             var waitForFixedUpdate = new WaitForFixedUpdate();
             _targetPathfinder.StartUpdatingPathForTarget(target);
             var direction = Vector3.zero;
-            var currentHorizontalVelocity = Vector3.zero;
-            Vector3 currentHorizontalVelocityNormalized, needVelocity;
             while (true)
             {
                 if (_targetPathfinder.TryGetNextWaypoint(out var waypointPosition))
                 {
                     SetDirectionTowardsPoint(waypointPosition, ref direction);
-                    needVelocity = direction * _runVelocity;
-                    currentHorizontalVelocity.x = _rigidbody.velocity.x;
-                    currentHorizontalVelocity.z = _rigidbody.velocity.z;
-                    currentHorizontalVelocityNormalized = currentHorizontalVelocity.normalized;
-
-                    if (direction.magnitude >= (direction - currentHorizontalVelocityNormalized).magnitude)
-                    {
-                        needVelocity -= currentHorizontalVelocity;
-                    }
-
-                    _rigidbody.AddForce(needVelocity, ForceMode.VelocityChange);
+                    _rigidbody.AddForce(_moveForce * Time.deltaTime * _currentSpeedRatio * direction);
+                    ApplyFriction(direction);
+                    LimitCurrentSpeed();
                 }
                 else
                 {
@@ -106,6 +94,14 @@ namespace Enemies
             direction = needPoint - _rigidbody.position;
             direction.y = 0;
             direction = direction.normalized;
+        }
+
+        private void ApplyFriction(Vector3 needMoveDirection)
+        {
+            var currentVelocity = _rigidbody.velocity;
+            var needFrictionDirection = Time.deltaTime * _currentSpeedRatio * _frictionCoefficient * _moveForce *
+                                        currentVelocity.magnitude * (needMoveDirection - currentVelocity.normalized);
+            _rigidbody.AddForce(needFrictionDirection);
         }
     }
 }

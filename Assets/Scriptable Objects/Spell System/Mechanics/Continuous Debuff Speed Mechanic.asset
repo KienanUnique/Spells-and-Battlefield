@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9621a9962eaf488d93ebd23d88456fec, type: 3}
+  m_Name: Continuous Debuff Speed Mechanic
+  m_EditorClassIdentifier: 
+  _mechanicEffects:
+  - {fileID: 11400000, guid: 4e4b1058da6431143ba91513d85e4ac2, type: 2}
+  _cooldownInSeconds: 0
+  _durationInSeconds: 10
+  _needIgnoreCooldown: 1

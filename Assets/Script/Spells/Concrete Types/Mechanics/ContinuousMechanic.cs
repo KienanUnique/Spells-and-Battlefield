@@ -14,6 +14,7 @@ namespace Spells.Concrete_Types.Mechanics
         [SerializeField] private List<SpellMechanicEffectScriptableObject> _mechanicEffects;
         [SerializeField] private float _cooldownInSeconds;
         [SerializeField] private float _durationInSeconds;
+        [SerializeField] private bool _needIgnoreCooldown;
 
         public override ISpellMechanicEffect GetImplementationObject()
         {
@@ -21,7 +22,7 @@ namespace Spells.Concrete_Types.Mechanics
             _mechanicEffects.ForEach(effectScriptableObject =>
                 spellMechanicEffects.Add(effectScriptableObject.GetImplementationObject()));
             return new ContinuousMechanicImplementation(new ContinuousEffect(_cooldownInSeconds, spellMechanicEffects,
-                _durationInSeconds));
+                _durationInSeconds, _needIgnoreCooldown));
         }
 
         private class ContinuousMechanicImplementation : SpellContinuousMechanicEffectImplementationBase

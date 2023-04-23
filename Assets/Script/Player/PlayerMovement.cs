@@ -5,20 +5,16 @@ using UnityEngine;
 
 namespace Player
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MovementBase
     {
         private const int MaxCountOfAirJumps = 1;
         private const float AirPlayerInputForceMultiplier = 0.5f;
         private const float NormalPlayerInputForceMultiplier = 1;
         private const float WallRunningPlayerInputForceMultiplier = 1.5f;
-
-        [SerializeField] private float _runForce = 4500f;
+        
         [SerializeField] private float _jumpForce = 800f;
         [SerializeField] private float _normalGravityForce = 15;
         [SerializeField] private float _wallRunningGravityForce = 2;
-        [Range(0, 1f)] [SerializeField] private float _groundFriction = 0.175f;
-        [SerializeField] private float _maximumSpeed = 15f;
-        [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private WallChecker _wallChecker;
 
@@ -81,7 +77,7 @@ namespace Player
             _rigidbody.AddForce(force, mode);
         }
 
-        private void Awake()
+        protected override void SpecialAwakeAction()
         {
             MainTransform = _rigidbody.transform;
             _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.OnGround);
@@ -114,15 +110,12 @@ namespace Player
         {
             _rigidbody.AddForce(_currentGravityForce * Vector3.down);
 
-            _rigidbody.AddForce(_inputMoveDirection.x * _runForce * Time.deltaTime *
-                                _currentPlayerInputForceMultiplier * MainTransform.right);
-            _rigidbody.AddForce(_inputMoveDirection.y * _runForce * Time.deltaTime *
+            _rigidbody.AddForce(_inputMoveDirection.x * _moveForce * Time.deltaTime *
+                                _currentPlayerInputForceMultiplier * _currentSpeedRatio * MainTransform.right);
+            _rigidbody.AddForce(_inputMoveDirection.y * _moveForce * Time.deltaTime *
                                 _currentPlayerInputForceMultiplier * _currentPlayerInputForceMultiplier *
-                                MainTransform.forward);
-            if (_rigidbody.velocity.magnitude > _maximumSpeed)
-            {
-                _rigidbody.velocity = _rigidbody.velocity.normalized * _maximumSpeed;
-            }
+                                _currentSpeedRatio * MainTransform.forward);
+            LimitCurrentSpeed();
         }
 
         private void Update()
@@ -130,7 +123,7 @@ namespace Player
             RatioOfCurrentVelocityToMaximumVelocity = _rigidbody.velocity.magnitude / _maximumSpeed;
         }
 
-        private IEnumerator ApplyFriction()
+        private IEnumerator ApplyFrictionContinuously()
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
@@ -139,13 +132,13 @@ namespace Player
 
                 if (_inputMoveDirection.x == 0)
                 {
-                    _rigidbody.AddForce(inverseVelocity.x * MainTransform.right * _runForce * _groundFriction *
+                    _rigidbody.AddForce(inverseVelocity.x * MainTransform.right * _moveForce * _frictionCoefficient *
                                         Time.deltaTime);
                 }
 
                 if (_inputMoveDirection.y == 0)
                 {
-                    _rigidbody.AddForce(inverseVelocity.z * MainTransform.forward * _runForce * _groundFriction *
+                    _rigidbody.AddForce(inverseVelocity.z * MainTransform.forward * _moveForce * _frictionCoefficient *
                                         Time.deltaTime);
                 }
 
@@ -208,7 +201,7 @@ namespace Player
                 case MovingState.InAir:
                     _currentPlayerInputForceMultiplier = AirPlayerInputForceMultiplier;
                     _currentGravityForce = _normalGravityForce;
-                    _frictionCoroutine ??= StartCoroutine(ApplyFriction());
+                    _frictionCoroutine ??= StartCoroutine(ApplyFrictionContinuously());
                     FallEvent?.Invoke();
                     break;
                 case MovingState.WallRunning:
