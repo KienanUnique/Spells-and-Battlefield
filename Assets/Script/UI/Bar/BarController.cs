@@ -14,7 +14,7 @@ namespace UI.Bar
             this.DOKill();
             var oldValueRatio = _foreground.fillAmount;
             DOVirtual.Float(oldValueRatio, newValueRatio, _changeDuration,
-                currentValueRatio => _foreground.fillAmount = currentValueRatio);
+                currentValueRatio => _foreground.fillAmount = currentValueRatio).SetLink(gameObject);
         }
     }
 }

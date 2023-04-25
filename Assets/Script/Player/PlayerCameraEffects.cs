@@ -21,13 +21,13 @@ namespace Player
                 WallDirection.Right => _rotationAngle,
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
             });
-            _cachedTransform.DOLocalRotate(needRotation, _rotateDuration, CameraRotateMode);
+            _cachedTransform.DOLocalRotate(needRotation, _rotateDuration, CameraRotateMode).SetLink(gameObject);
         }
 
         public void ResetRotation()
         {
             _cachedTransform.DOKill();
-            _cachedTransform.DOLocalRotate(_defaultRotation, _rotateDuration, CameraRotateMode);
+            _cachedTransform.DOLocalRotate(_defaultRotation, _rotateDuration, CameraRotateMode).SetLink(gameObject);
         }
 
         private void Awake()

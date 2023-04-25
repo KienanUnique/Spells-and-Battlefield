@@ -9,27 +9,28 @@ namespace UI
         private Transform _cashedTransform;
         private GameObject _cashedGameObject;
 
-        private void Awake()
+        public virtual void Appear()
+        {
+            _cashedGameObject.SetActive(true);
+            _cashedTransform.DOKill();
+            _cashedTransform.DOScale(Vector3.one, _scaleAnimationDuration).SetLink(gameObject);
+            ;
+        }
+
+        public virtual void Disappear()
+        {
+            _cashedTransform.DOKill();
+            _cashedTransform.DOScale(Vector3.zero, _scaleAnimationDuration).SetLink(gameObject)
+                .OnComplete(() => _cashedGameObject.SetActive(false));
+        }
+
+        protected virtual void Awake()
         {
             _cashedTransform = transform;
             _cashedGameObject = gameObject;
 
             _cashedTransform.localScale = Vector3.zero;
             _cashedGameObject.SetActive(false);
-        }
-
-        public virtual void Appear()
-        {
-            _cashedGameObject.SetActive(true);
-            _cashedTransform.DOKill();
-            _cashedTransform.DOScale(Vector3.one, _scaleAnimationDuration);
-        }
-
-        public virtual void Disappear()
-        {
-            _cashedTransform.DOKill();
-             _cashedTransform.DOScale(Vector3.zero, _scaleAnimationDuration).OnComplete(() =>
-                 _cashedGameObject.SetActive(false));
         }
     }
 }

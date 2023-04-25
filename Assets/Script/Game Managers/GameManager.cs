@@ -10,8 +10,15 @@ namespace Game_Managers
     {
         [SerializeField] private PlayerController _player;
         [SerializeField] private InGameManagerUI _inGameManagerUI;
+        [SerializeField] private ScenesSwitcher _scenesSwitcher;
 
         private ValueWithReactionOnChange<GameState> _currentGameState;
+
+        public void OnRestartButtonPressed()
+        {
+            _inGameManagerUI.SwitchToLoadingScreen();
+            _scenesSwitcher.LoadMainLevelScene();
+        }
 
         private void Awake()
         {

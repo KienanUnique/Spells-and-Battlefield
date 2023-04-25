@@ -8,6 +8,7 @@ namespace UI
     {
         [SerializeField] private List<UIElementController> _gameUI;
         [SerializeField] private List<UIElementController> _deathMenuUI;
+        [SerializeField] private List<UIElementController> _loadingScreen;
 
         private List<IEnumerable<IElementUI>> _allUIElements;
 
@@ -21,12 +22,18 @@ namespace UI
             SwitchUI(_deathMenuUI);
         }
 
+        public void SwitchToLoadingScreen()
+        {
+            SwitchUI(_loadingScreen);
+        }
+
         private void Awake()
         {
             _allUIElements = new List<IEnumerable<IElementUI>>
             {
                 _gameUI,
-                _deathMenuUI
+                _deathMenuUI,
+                _loadingScreen
             };
         }
 
