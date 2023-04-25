@@ -26,7 +26,7 @@ namespace Player
         public int Id => _idHolder.Id;
         public Transform MainTransform => _playerMovement.MainTransform;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
-        public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
+        public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => _playerCharacter.CurrentState;
 
         public void HandleHeal(int countOfHealthPoints)
         {

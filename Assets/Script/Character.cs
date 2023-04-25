@@ -11,8 +11,7 @@ public abstract class Character : MonoBehaviour
     public event Action<CharacterState> StateChanged;
     public event Action<float> HitPointsCountChanged;
     public float HitPointCountRatio => _currentCountCountOfHitPoints.Value / _maximumCountOfHitPoints;
-    public CharacterState CurrentCharacterState => CurrentState.Value;
-    protected ValueWithReactionOnChange<CharacterState> CurrentState { get; private set; }
+    public ValueWithReactionOnChange<CharacterState> CurrentState { get; private set; }
     protected abstract string NamePrefix { get; }
 
     public void HandleHeal(int countOfHitPoints)

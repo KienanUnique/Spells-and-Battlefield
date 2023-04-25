@@ -17,7 +17,7 @@ namespace Enemies.State_Machine.Transitions
         protected override void CheckConditions()
         {
             if (_targetCharacter != null && _targetCharacter.Id == StateMachineControllable.Target.Id &&
-                     _targetCharacter.CurrentCharacterState == _needState)
+                _targetCharacter.CurrentCharacterState.Value == _needState)
             {
                 InvokeTransitionEvent();
             }

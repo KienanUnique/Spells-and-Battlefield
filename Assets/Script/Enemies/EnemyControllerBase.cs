@@ -25,7 +25,7 @@ namespace Enemies
 
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
-        public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
+        public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => _character.CurrentState;
         public IEnemyTarget Target { get; private set; }
         protected abstract EnemyVisualBase EnemyVisual { get; }
 

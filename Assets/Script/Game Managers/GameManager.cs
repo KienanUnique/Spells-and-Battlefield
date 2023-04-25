@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using Player;
 using UI;
 using UnityEngine;
@@ -21,26 +20,50 @@ namespace Game_Managers
 
         private void Start()
         {
-            HandleNewState(_currentGameState.Value);
+            OnAfterGameStateChanged(_currentGameState.Value);
         }
 
         private void OnEnable()
         {
-            _currentGameState.AfterValueChanged += HandleNewState;
+            _currentGameState.AfterValueChanged += OnAfterGameStateChanged;
+            _currentGameState.BeforeValueChanged += OnBeforeGameStateChanged;
+            if (_currentGameState.Value == GameState.Running)
+            {
+                _player.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
+            }
         }
 
         private void OnDisable()
         {
-            _currentGameState.AfterValueChanged -= HandleNewState;
+            _currentGameState.AfterValueChanged -= OnAfterGameStateChanged;
+            _currentGameState.BeforeValueChanged -= OnBeforeGameStateChanged;
+            if (_currentGameState.Value == GameState.Running)
+            {
+                _player.CurrentCharacterState.AfterValueChanged -= OnPlayerStateChanged;
+            }
         }
 
-        private void HandleNewState(GameState newState)
+        private void OnBeforeGameStateChanged(GameState newState)
+        {
+            switch (newState)
+            {
+                case GameState.Running:
+                    _player.CurrentCharacterState.AfterValueChanged -= OnPlayerStateChanged;
+                    break;
+                case GameState.GameOver:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+            }
+        }
+
+        private void OnAfterGameStateChanged(GameState newState)
         {
             switch (newState)
             {
                 case GameState.Running:
                     _inGameManagerUI.SwitchToGameUI();
-                    StartCoroutine(CheckPlayerState());
+                    _player.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
                     break;
                 case GameState.GameOver:
                     _inGameManagerUI.SwitchToDeathMenuUI();
@@ -50,14 +73,12 @@ namespace Game_Managers
             }
         }
 
-        private IEnumerator CheckPlayerState()
+        private void OnPlayerStateChanged(CharacterState newState)
         {
-            while (_player.CurrentCharacterState != CharacterState.Dead)
+            if (newState == CharacterState.Dead)
             {
-                yield return null;
+                _currentGameState.Value = GameState.GameOver;
             }
-
-            _currentGameState.Value = GameState.GameOver;
         }
 
         private enum GameState
