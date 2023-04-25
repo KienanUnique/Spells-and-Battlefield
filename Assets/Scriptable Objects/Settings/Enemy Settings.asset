@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5ca97a6734e4418b69882b108d8740c, type: 3}
+  m_Name: Enemy Settings
+  m_EditorClassIdentifier: 
+  _pickableSpellPrefab: {fileID: 4960876760894594233, guid: e5081c11df2aa0745a2264b49c70b283, type: 3}
+  _delayInSecondsBeforeDestroy: 1
+  _spawnSpellOffset: {x: 0, y: 3, z: 0}

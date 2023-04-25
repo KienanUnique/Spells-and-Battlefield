@@ -301,13 +301,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4a49af7cb0c7845afc59eb88fcbe8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _runForce: 4500
+  _moveForce: 4500
+  _maximumSpeed: 15
+  _frictionCoefficient: 0.175
   _jumpForce: 800
   _normalGravityForce: 15
   _wallRunningGravityForce: 2
-  _groundFriction: 0.175
-  _maximumSpeed: 15
-  _rigidbody: {fileID: 1809322364992030679}
   _groundChecker: {fileID: 7524277153600398822}
   _wallChecker: {fileID: 1408449592405486887}
 --- !u!114 &7864329448273911007
@@ -855,9 +854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a6a7408d668f247b5d5228d31e4329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundMask:
-    serializedVersion: 2
-    m_Bits: 192
+  _groundMaskMaskSetting: {fileID: 11400000, guid: aee4bbec25e1db54ab3f7d241df33cdd, type: 2}
 --- !u!65 &11129500
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2026,6 +2023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a26187a5d84f26a4eb752dd713adc288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rigBuilder: {fileID: 0}
 --- !u!1 &4949932016189723091
 GameObject:
   m_ObjectHideFlags: 0

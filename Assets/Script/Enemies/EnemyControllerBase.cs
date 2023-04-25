@@ -1,5 +1,6 @@
 using System.Collections;
 using Enemies.State_Machine;
+using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Pickable_Items;
 using Player;
@@ -16,12 +17,10 @@ namespace Enemies
         protected IdHolder _idHolder;
         protected Character _character;
         protected EnemyMovement _enemyMovement;
+        [SerializeField] protected EnemySettings _settings;
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
-        [SerializeField] protected PickableSpellController _pickableSpellPrefab;
         [SerializeField] protected SpellBase _spellToDrop;
         [SerializeField] private PlayerController _player;
-        [Min(1f)] [SerializeField] private float _delayInSecondsBeforeDestroy = 1f;
-        private readonly Vector3 _spawnSpellOffset = new Vector3(0, 3f, 0);
 
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
@@ -111,16 +110,16 @@ namespace Enemies
             var dropDirection = Target == null
                 ? cashedTransform.forward
                 : (Target.MainTransform.position - cashedTransform.position).normalized;
-            var spawnPosition = _spawnSpellOffset + cashedTransform.position;
+            var spawnPosition = _settings.SpawnSpellOffset + cashedTransform.position;
             var pickableSpellController =
-                Instantiate(_pickableSpellPrefab.gameObject, spawnPosition, Quaternion.identity)
+                Instantiate(_settings.PickableSpellPrefab.gameObject, spawnPosition, Quaternion.identity)
                     .GetComponent<PickableSpellController>();
             pickableSpellController.DropItem(_spellToDrop, dropDirection);
         }
 
         private IEnumerator DestroyAfterDelay()
         {
-            yield return new WaitForSeconds(_delayInSecondsBeforeDestroy);
+            yield return new WaitForSeconds(_settings.DelayInSecondsBeforeDestroy);
             Destroy(this.gameObject);
         }
     }

@@ -1,11 +1,12 @@
 ﻿using DG.Tweening;
+using General_Settings_in_Scriptable_Objects;
 using UnityEngine;
 
 namespace UI
 {
     public class UIElementController : MonoBehaviour, IElementUI
     {
-        [SerializeField] private float _scaleAnimationDuration;
+        [SerializeField] private UIAnimationSettings _settings;
         private Transform _cashedTransform;
         private GameObject _cashedGameObject;
 
@@ -13,14 +14,15 @@ namespace UI
         {
             _cashedGameObject.SetActive(true);
             _cashedTransform.DOKill();
-            _cashedTransform.DOScale(Vector3.one, _scaleAnimationDuration).SetLink(gameObject);
-            ;
+            _cashedTransform.DOScale(Vector3.one, _settings.ScaleAnimationDuration)
+                .SetEase(_settings.ScaleAnimationEase).SetLink(gameObject);
         }
 
         public virtual void Disappear()
         {
             _cashedTransform.DOKill();
-            _cashedTransform.DOScale(Vector3.zero, _scaleAnimationDuration).SetLink(gameObject)
+            _cashedTransform.DOScale(Vector3.zero, _settings.ScaleAnimationDuration)
+                .SetEase(_settings.ScaleAnimationEase).SetLink(gameObject)
                 .OnComplete(() => _cashedGameObject.SetActive(false));
         }
 

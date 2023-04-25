@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6101bd919de148d0aaee5b6fdc1b0698, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scaleAnimationDuration: 0.5
+  _settings: {fileID: 11400000, guid: 56bf131e31d75194e8f15a3f4bb5ed31, type: 2}
   _foreground: {fileID: 7682017992292366731}
   _foregroundBackground: {fileID: 6247435420849208818}
   _changeDuration: 0.1

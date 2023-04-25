@@ -57,9 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a6a7408d668f247b5d5228d31e4329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _groundMaskMaskSetting: {fileID: 11400000, guid: aee4bbec25e1db54ab3f7d241df33cdd, type: 2}
 --- !u!1 &1466388796640824850
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,19 +269,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf9e4cfc3c6948858e657657f9f72ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animationMinimumHeight: 0.5
-  _animationMaximumHeight: 0.8
-  _yAnimationDuration: 0.6
-  _rotateAnimationDuration: 1
-  _appearScaleAnimationDuration: 0.5
-  _disappearScaleAnimationDuration: 0.5
-  _dropForce: 300
   _needFallDown: 1
+  _settings: {fileID: 11400000, guid: 6c627cc36b907fe49a4ce4ed41401468, type: 2}
   _pickerTrigger: {fileID: 1567614831550151120}
   _groundChecker: {fileID: 8806220022315672177}
-  _groundMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _groundMaskSetting: {fileID: 11400000, guid: aee4bbec25e1db54ab3f7d241df33cdd, type: 2}
   _visualObjectTransform: {fileID: 3452848077848786031}
   _title: {fileID: 8167676845872866558}
   _icon: {fileID: 2890200919131679920}
