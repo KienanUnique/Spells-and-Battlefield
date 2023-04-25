@@ -1,6 +1,6 @@
 ﻿namespace UI.Bar
 {
-    public interface IBarController
+    public interface IBarController : IElementUI
     {
         public void UpdateValue(float valueRatio);
     }
