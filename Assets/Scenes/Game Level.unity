@@ -2388,10 +2388,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 137071395}
     m_Modifications:
-    - target: {fileID: 7682017992693673099, guid: d1d1973525ce40142b63002744fa0f3f, type: 3}
-      propertyPath: _scaleAnimationDuration
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 7682017992693673100, guid: d1d1973525ce40142b63002744fa0f3f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2479,18 +2475,6 @@ PrefabInstance:
     - target: {fileID: 7682017992693673101, guid: d1d1973525ce40142b63002744fa0f3f, type: 3}
       propertyPath: m_Name
       value: Health Bar
-      objectReference: {fileID: 0}
-    - target: {fileID: 7682017992693673101, guid: d1d1973525ce40142b63002744fa0f3f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7682017993159650772, guid: d1d1973525ce40142b63002744fa0f3f, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7682017993159650772, guid: d1d1973525ce40142b63002744fa0f3f, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1d1973525ce40142b63002744fa0f3f, type: 3}
