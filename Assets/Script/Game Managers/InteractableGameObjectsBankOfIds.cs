@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Game_Managers
 {
-    public class InteractableGameObjectsBankOfIds : MonoBehaviour
+    public class InteractableGameObjectsBankOfIds : Singleton<InteractableGameObjectsBankOfIds>
     {
         private const int FirstId = 0;
 
         private List<int> _usedIds;
-        public static InteractableGameObjectsBankOfIds Instance { get; private set; }
+        protected override InteractableGameObjectsBankOfIds ThisInstance => this;
 
         public int GetId()
         {
@@ -27,17 +27,9 @@ namespace Game_Managers
             _usedIds.Remove(returnedId);
         }
 
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-            }
-            else
-            {
-                Instance = this;
-            }
 
+        protected override void SpecialAwakeAction()
+        {
             _usedIds = new List<int>();
         }
     }

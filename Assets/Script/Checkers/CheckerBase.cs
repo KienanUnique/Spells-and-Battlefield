@@ -15,11 +15,13 @@ namespace Checkers
         public bool IsColliding => _isCollidingWithReaction.Value;
         public ReadOnlyCollection<Collider> Colliders => new ReadOnlyCollection<Collider>(_colliders);
         protected abstract LayerMask NeedObjectsMask { get; }
+        protected abstract void SpecialAwakeAction();
 
         private void Awake()
         {
             _colliders = new List<Collider>();
             _isCollidingWithReaction = new ValueWithReactionOnChange<bool>(false);
+            SpecialAwakeAction();
         }
 
         private void OnEnable()

@@ -1,5 +1,6 @@
 using System.Collections;
 using Enemies.State_Machine;
+using Game_Managers;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Pickable_Items;
@@ -14,13 +15,14 @@ namespace Enemies
     [RequireComponent(typeof(Character))]
     public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable
     {
+        protected EnemySettings _settings;
         protected IdHolder _idHolder;
         protected Character _character;
         protected EnemyMovement _enemyMovement;
-        [SerializeField] protected EnemySettings _settings;
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected SpellBase _spellToDrop;
         [SerializeField] private PlayerController _player;
+        
 
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
@@ -96,6 +98,7 @@ namespace Enemies
             _idHolder = GetComponent<IdHolder>();
             _enemyMovement = GetComponent<EnemyMovement>();
             _character = GetComponent<Character>();
+            _settings = SettingsProvider.Instance.EnemySettings;
             Target = _player;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Checkers;
 using DG.Tweening;
+using Game_Managers;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces.Pickers;
 using Triggers;
@@ -14,12 +15,12 @@ namespace Pickable_Items
         private const float MaxGroundRayDistance = 2f;
         private const float GroundCheckOffsetY = 20f;
         [SerializeField] private bool _needFallDown = true;
-        [SerializeField] private PickableItemsSettings _settings;
         [SerializeField] private DroppedItemsPickerTrigger _pickerTrigger;
         [SerializeField] private GroundChecker _groundChecker;
-        [SerializeField] private GroundLayerMaskSetting _groundMaskSetting;
         [SerializeField] private Transform _visualObjectTransform;
 
+        private PickableItemsSettings _settings;
+        private GroundLayerMaskSetting _groundMaskSetting;
         private Rigidbody _rigidbody;
         private ItemStates _currentState;
         private TStoredObject _storedObject;
@@ -58,6 +59,8 @@ namespace Pickable_Items
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _groundMaskSetting = SettingsProvider.Instance.GroundLayerMaskSetting;
+            _settings = SettingsProvider.Instance.PickableItemsSettings;
             _currentState = ItemStates.NotInitialized;
         }
 

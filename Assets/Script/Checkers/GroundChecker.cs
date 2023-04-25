@@ -1,4 +1,4 @@
-using General_Settings_in_Scriptable_Objects;
+using Game_Managers;
 using UnityEngine;
 
 namespace Checkers
@@ -6,7 +6,12 @@ namespace Checkers
     [RequireComponent(typeof(BoxCollider))]
     public class GroundChecker : CheckerBase
     {
-        [SerializeField] private GroundLayerMaskSetting _groundMaskMaskSetting;
-        protected override LayerMask NeedObjectsMask => _groundMaskMaskSetting.Mask;
+        private LayerMask _cashedGroundMask;
+        protected override LayerMask NeedObjectsMask => _cashedGroundMask;
+
+        protected override void SpecialAwakeAction()
+        {
+            _cashedGroundMask = SettingsProvider.Instance.GroundLayerMaskSetting.Mask;
+        }
     }
 }

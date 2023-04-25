@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Game_Managers;
+using UnityEngine;
 
 namespace Checkers
 {
@@ -6,5 +7,9 @@ namespace Checkers
     {
         [SerializeField] private LayerMask _wallMask;
         protected override LayerMask NeedObjectsMask => _wallMask;
+
+        protected override void SpecialAwakeAction()
+        {
+        }
     }
 }

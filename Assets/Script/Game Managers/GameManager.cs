@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Game_Managers
 {
-    [RequireComponent(typeof(InteractableGameObjectsBankOfIds))]
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private PlayerController _player;

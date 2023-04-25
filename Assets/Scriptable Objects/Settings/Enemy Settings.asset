@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Enemy Settings
   m_EditorClassIdentifier: 
   _pickableSpellPrefab: {fileID: 4960876760894594233, guid: e5081c11df2aa0745a2264b49c70b283, type: 3}
-  _delayInSecondsBeforeDestroy: 1
+  _delayInSecondsBeforeDestroy: 5
   _spawnSpellOffset: {x: 0, y: 3, z: 0}

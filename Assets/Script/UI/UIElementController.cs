@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Game_Managers;
 using General_Settings_in_Scriptable_Objects;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace UI
 {
     public class UIElementController : MonoBehaviour, IElementUI
     {
-        [SerializeField] private UIAnimationSettings _settings;
+        private UIAnimationSettings _settings;
         private Transform _cashedTransform;
         private GameObject _cashedGameObject;
 
@@ -30,6 +31,7 @@ namespace UI
         {
             _cashedTransform = transform;
             _cashedGameObject = gameObject;
+            _settings = SettingsProvider.Instance.UIAnimationSettings;
 
             _cashedTransform.localScale = Vector3.zero;
             _cashedGameObject.SetActive(false);
