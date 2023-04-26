@@ -5,13 +5,18 @@ using UnityEngine;
 
 namespace Game_Managers
 {
-    public class GameManager : MonoBehaviour
+    [RequireComponent(typeof(InGameInputManager))]
+    public class GameController : Singleton<GameController>
     {
         [SerializeField] private PlayerController _player;
         [SerializeField] private InGameManagerUI _inGameManagerUI;
         [SerializeField] private ScenesSwitcher _scenesSwitcher;
 
         private ValueWithReactionOnChange<GameState> _currentGameState;
+        private bool _needSubscribeOnExternalDependenciesOnlyInStart = true;
+
+        public InGameInputManager InGameInputManager { get; private set; }
+        protected override GameController ThisInstance => this;
 
         public void OnRestartButtonPressed()
         {
@@ -19,13 +24,20 @@ namespace Game_Managers
             _scenesSwitcher.LoadMainLevelScene();
         }
 
-        private void Awake()
+        protected override void SpecialAwakeAction()
         {
             _currentGameState = new ValueWithReactionOnChange<GameState>(GameState.Running);
+            InGameInputManager = GetComponent<InGameInputManager>();
         }
 
         private void Start()
         {
+            if (_currentGameState.Value == GameState.Running && _needSubscribeOnExternalDependenciesOnlyInStart)
+            {
+                _needSubscribeOnExternalDependenciesOnlyInStart = false;
+                _player.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
+            }
+
             OnAfterGameStateChanged(_currentGameState.Value);
         }
 
@@ -33,7 +45,7 @@ namespace Game_Managers
         {
             _currentGameState.AfterValueChanged += OnAfterGameStateChanged;
             _currentGameState.BeforeValueChanged += OnBeforeGameStateChanged;
-            if (_currentGameState.Value == GameState.Running)
+            if (_currentGameState.Value == GameState.Running && !_needSubscribeOnExternalDependenciesOnlyInStart)
             {
                 _player.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
             }
@@ -68,10 +80,12 @@ namespace Game_Managers
             switch (newState)
             {
                 case GameState.Running:
+                    InGameInputManager.SwitchToGameInput();
                     _inGameManagerUI.SwitchToGameUI();
                     _player.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
                     break;
                 case GameState.GameOver:
+                    InGameInputManager.SwitchToUIInput();
                     _inGameManagerUI.SwitchToDeathMenuUI();
                     break;
                 default:

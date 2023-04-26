@@ -1,3 +1,4 @@
+using Game_Managers;
 using Interfaces;
 using Spells;
 using UI.Bar;
@@ -5,7 +6,6 @@ using UnityEngine;
 
 namespace Player
 {
-    [RequireComponent(typeof(PlayerInputManager))]
     [RequireComponent(typeof(PlayerMovement))]
     [RequireComponent(typeof(PlayerLook))]
     [RequireComponent(typeof(PlayerSpellsManager))]
@@ -18,7 +18,7 @@ namespace Player
         [SerializeField] private BarController _hpBar;
         private PlayerCharacter _playerCharacter;
         private PlayerSpellsManager _playerSpellsManager;
-        private PlayerInputManager _playerInputManager;
+        private InGameInputManager _inGameInputManager;
         private PlayerMovement _playerMovement;
         private PlayerLook _playerLook;
         private IdHolder _idHolder;
@@ -72,15 +72,10 @@ namespace Player
         {
             _playerCharacter = GetComponent<PlayerCharacter>();
             _playerSpellsManager = GetComponent<PlayerSpellsManager>();
-            _playerInputManager = GetComponent<PlayerInputManager>();
+            _inGameInputManager = GameController.Instance.InGameInputManager;
             _playerMovement = GetComponent<PlayerMovement>();
             _playerLook = GetComponent<PlayerLook>();
             _idHolder = GetComponent<IdHolder>();
-        }
-
-        private void Start()
-        {
-            _playerInputManager.SwitchToGameInput();
         }
 
         private void Update()
@@ -91,10 +86,10 @@ namespace Player
 
         private void OnEnable()
         {
-            _playerInputManager.JumpEvent += _playerMovement.TryJump;
-            _playerInputManager.UseSpellEvent += StartUseSelectedSpell;
-            _playerInputManager.MoveInputEvent += _playerMovement.Move;
-            _playerInputManager.MouseLookEvent += _playerLook.LookWithMouse;
+            _inGameInputManager.JumpEvent += _playerMovement.TryJump;
+            _inGameInputManager.UseSpellEvent += StartUseSelectedSpell;
+            _inGameInputManager.MoveInputEvent += _playerMovement.Move;
+            _inGameInputManager.MouseLookEvent += _playerLook.LookWithMouse;
             _playerVisual.UseSpellAnimationMomentStartEvent += UseSelectedSpell;
             _playerMovement.GroundJumpEvent += _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
@@ -107,10 +102,10 @@ namespace Player
 
         private void OnDisable()
         {
-            _playerInputManager.JumpEvent -= _playerMovement.TryJump;
-            _playerInputManager.UseSpellEvent -= StartUseSelectedSpell;
-            _playerInputManager.MoveInputEvent -= _playerMovement.Move;
-            _playerInputManager.MouseLookEvent -= _playerLook.LookWithMouse;
+            _inGameInputManager.JumpEvent -= _playerMovement.TryJump;
+            _inGameInputManager.UseSpellEvent -= StartUseSelectedSpell;
+            _inGameInputManager.MoveInputEvent -= _playerMovement.Move;
+            _inGameInputManager.MouseLookEvent -= _playerLook.LookWithMouse;
             _playerVisual.UseSpellAnimationMomentStartEvent -= UseSelectedSpell;
             _playerMovement.GroundJumpEvent -= _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
@@ -140,8 +135,10 @@ namespace Player
 
         private void OnCharacterStateChanged(CharacterState newState)
         {
-            _playerInputManager.SwitchToUIInput();
-            _playerVisual.PlayDieAnimation();
+            if (newState == CharacterState.Dead)
+            {
+                _playerVisual.PlayDieAnimation();
+            }
         }
 
         private void StartUseSelectedSpell()

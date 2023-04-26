@@ -193,7 +193,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 974464277607573819}
-  - component: {fileID: 846477161179582516}
   - component: {fileID: 846477161179582523}
   - component: {fileID: 1698083445434375742}
   - component: {fileID: 1809322364992030679}
@@ -232,18 +231,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &846477161179582516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 846477161179582522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e7bee7f84d5eae48a19c056598ea6ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &846477161179582523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -854,7 +841,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a6a7408d668f247b5d5228d31e4329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundMaskMaskSetting: {fileID: 11400000, guid: aee4bbec25e1db54ab3f7d241df33cdd, type: 2}
 --- !u!65 &11129500
 BoxCollider:
   m_ObjectHideFlags: 0

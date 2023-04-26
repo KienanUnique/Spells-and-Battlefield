@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Player
 {
-    public class PlayerInputManager : MonoBehaviour
+    public class InGameInputManager : MonoBehaviour
     {
         private const float MinimalInputMagnitude = 0.5f;
 
