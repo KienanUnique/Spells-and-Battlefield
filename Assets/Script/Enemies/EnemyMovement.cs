@@ -73,7 +73,7 @@ namespace Enemies
                     SetDirectionTowardsPoint(waypointPosition, ref direction);
                     _rigidbody.AddForce(_moveForce * Time.deltaTime * _currentSpeedRatio * direction);
                     ApplyFriction(direction);
-                    LimitCurrentSpeed();
+                    TryLimitCurrentSpeed();
                 }
                 else
                 {

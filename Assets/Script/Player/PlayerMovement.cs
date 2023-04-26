@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using Checkers;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Player
 {
@@ -11,10 +13,14 @@ namespace Player
         private const float AirPlayerInputForceMultiplier = 0.5f;
         private const float NormalPlayerInputForceMultiplier = 1;
         private const float WallRunningPlayerInputForceMultiplier = 1.5f;
-        
+        private const float DashAimingPlayerInputForceMultiplier = 0;
+
         [SerializeField] private float _jumpForce = 800f;
+        [SerializeField] private float _dashForce = 1000f;
         [SerializeField] private float _normalGravityForce = 15;
         [SerializeField] private float _wallRunningGravityForce = 2;
+        [SerializeField] private float _dashCooldownSeconds = 7f;
+        [SerializeField] private float _dashSpeedLimitationsDisablingForSeconds = 1f;
         [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private WallChecker _wallChecker;
 
@@ -24,6 +30,8 @@ namespace Player
         private Coroutine _frictionCoroutine;
         private float _currentPlayerInputForceMultiplier;
         private float _currentGravityForce;
+        private bool _canDash = true;
+        private bool _speedLimitationEnabled = true;
 
         public event Action LandEvent;
         public event Action GroundJumpEvent;
@@ -31,12 +39,17 @@ namespace Player
         public event Action FallEvent;
         public event Action<WallDirection> StartWallRunningEvent;
         public event Action EndWallRunningEvent;
+        public event Action<float> DashCooldownTimerTick;
+        public event Action DashCooldownFinished;
+        public event Action DashAiming;
+        public event Action DashFinished;
 
         private enum MovingState
         {
             OnGround,
             InAir,
-            WallRunning
+            WallRunning,
+            DashAiming
         }
 
         public Transform MainTransform { private set; get; }
@@ -63,6 +76,26 @@ namespace Player
                 {
                     GroundJumpEvent?.Invoke();
                 }
+            }
+        }
+
+        public void TryAimForDashing()
+        {
+            if ((_currentMovingState.Value == MovingState.InAir ||
+                 _currentMovingState.Value == MovingState.WallRunning) && _canDash)
+            {
+                _currentMovingState.Value = MovingState.DashAiming;
+            }
+        }
+
+        public void TryDash(Vector3 cameraForwardDirection)
+        {
+            if (_currentMovingState.Value == MovingState.DashAiming)
+            {
+                StartCoroutine(DashDisableSpeedLimitation());
+                _rigidbody.velocity = Vector3.zero;
+                _rigidbody.AddForce(cameraForwardDirection * _dashForce);
+                _currentMovingState.Value = IsGrounded ? MovingState.OnGround : MovingState.InAir;
             }
         }
 
@@ -115,7 +148,10 @@ namespace Player
             _rigidbody.AddForce(_inputMoveDirection.y * _moveForce * Time.deltaTime *
                                 _currentPlayerInputForceMultiplier * _currentPlayerInputForceMultiplier *
                                 _currentSpeedRatio * MainTransform.forward);
-            LimitCurrentSpeed();
+            if (_speedLimitationEnabled)
+            {
+                TryLimitCurrentSpeed();
+            }
         }
 
         private void Update()
@@ -145,6 +181,30 @@ namespace Player
                 yield return waitForFixedUpdate;
             }
         }
+
+        private IEnumerator WaitForDashCooldownWithTicking()
+        {
+            _canDash = false;
+            var startTime = Time.time;
+            float passedTime;
+            do
+            {
+                yield return null;
+                passedTime = Time.time - startTime;
+                DashCooldownTimerTick?.Invoke(passedTime / _dashCooldownSeconds);
+            } while (passedTime < _dashCooldownSeconds);
+
+            _canDash = true;
+            DashCooldownFinished?.Invoke();
+        }
+
+        private IEnumerator DashDisableSpeedLimitation()
+        {
+            _speedLimitationEnabled = false;
+            yield return new WaitForSeconds(_dashSpeedLimitationsDisablingForSeconds);
+            _speedLimitationEnabled = true;
+        }
+
 
         private void OnGroundedStatusChanged(bool isGrounded)
         {
@@ -183,6 +243,10 @@ namespace Player
                 case MovingState.WallRunning:
                     EndWallRunningEvent?.Invoke();
                     break;
+                case MovingState.DashAiming:
+                    DashFinished?.Invoke();
+                    StartCoroutine(WaitForDashCooldownWithTicking());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(movingState), movingState, null);
             }
@@ -211,6 +275,10 @@ namespace Player
                     var closestPoint = _wallChecker.Colliders[0].ClosestPoint(CurrentPosition);
                     var dot = Vector3.Dot(MainTransform.right, closestPoint - CurrentPosition);
                     StartWallRunningEvent?.Invoke(dot < 0 ? WallDirection.Left : WallDirection.Right);
+                    break;
+                case MovingState.DashAiming:
+                    _currentPlayerInputForceMultiplier = DashAimingPlayerInputForceMultiplier;
+                    DashAiming?.Invoke();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(movingState), movingState, null);

@@ -26,7 +26,7 @@ public abstract class MovementBase : MonoBehaviour
 
     protected abstract void SpecialAwakeAction();
 
-    protected void LimitCurrentSpeed()
+    protected void TryLimitCurrentSpeed()
     {
         if (_rigidbody.velocity.magnitude > CurrentMaximumSpeed)
         {

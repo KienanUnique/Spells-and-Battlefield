@@ -87,6 +87,8 @@ namespace Player
         private void OnEnable()
         {
             _inGameInputManager.JumpEvent += _playerMovement.TryJump;
+            _inGameInputManager.DashAimingEvent += _playerMovement.TryAimForDashing;
+            _inGameInputManager.DashEvent += OnDashAiming;
             _inGameInputManager.UseSpellEvent += StartUseSelectedSpell;
             _inGameInputManager.MoveInputEvent += _playerMovement.Move;
             _inGameInputManager.MouseLookEvent += _playerLook.LookWithMouse;
@@ -96,6 +98,8 @@ namespace Player
             _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
             _playerMovement.StartWallRunningEvent += OnStartWallRunningEvent;
             _playerMovement.EndWallRunningEvent += OnEndWallRunningEvent;
+            _playerMovement.DashAiming += TimeController.Instance.SlowDownTimeForDashAiming;
+            _playerMovement.DashFinished += TimeController.Instance.RestoreTimeSpeed;
             _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
             _playerCharacter.StateChanged += OnCharacterStateChanged;
         }
@@ -103,6 +107,8 @@ namespace Player
         private void OnDisable()
         {
             _inGameInputManager.JumpEvent -= _playerMovement.TryJump;
+            _inGameInputManager.DashAimingEvent -= _playerMovement.TryAimForDashing;
+            _inGameInputManager.DashEvent -= OnDashAiming;
             _inGameInputManager.UseSpellEvent -= StartUseSelectedSpell;
             _inGameInputManager.MoveInputEvent -= _playerMovement.Move;
             _inGameInputManager.MouseLookEvent -= _playerLook.LookWithMouse;
@@ -113,6 +119,8 @@ namespace Player
             _playerMovement.StartWallRunningEvent -= OnStartWallRunningEvent;
             _playerMovement.EndWallRunningEvent -= OnEndWallRunningEvent;
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
+            _playerMovement.DashAiming -= TimeController.Instance.SlowDownTimeForDashAiming;
+            _playerMovement.DashFinished -= TimeController.Instance.RestoreTimeSpeed;
             _playerCharacter.StateChanged -= OnCharacterStateChanged;
         }
 
@@ -126,6 +134,11 @@ namespace Player
         {
             _playerCameraEffects.ResetRotation();
             _playerVisual.PlayFallAnimation();
+        }
+
+        private void OnDashAiming()
+        {
+            _playerMovement.TryDash(_playerLook.CameraForward);
         }
 
         private void OnHitPointsCountChanged(float newHitPointsCount)

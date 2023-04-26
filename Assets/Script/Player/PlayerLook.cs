@@ -14,7 +14,8 @@ namespace Player
         private Transform _cameraTransform;
         private Transform _playerTransform;
 
-        public Quaternion CameraRotation => _camera.transform.rotation;
+        public Quaternion CameraRotation => _cameraTransform.rotation;
+        public Vector3 CameraForward => _cameraTransform.forward;
 
         private void Awake()
         {
@@ -25,11 +26,11 @@ namespace Player
         public void LookWithMouse(Vector2 mouseLookDelta)
         {
             _cameraTransform.position = _cameraRootTransform.position;
-            _xRotation -= mouseLookDelta.y * _mouseSensitivity * Time.deltaTime;
+            _xRotation -= mouseLookDelta.y * _mouseSensitivity * Time.unscaledDeltaTime;
             _xRotation = Mathf.Clamp(_xRotation, _upperLimit, _bottomLimit);
 
             _cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
-            _playerTransform.Rotate(Vector3.up, mouseLookDelta.x * _mouseSensitivity * Time.deltaTime);
+            _playerTransform.Rotate(Vector3.up, mouseLookDelta.x * _mouseSensitivity * Time.unscaledDeltaTime);
         }
     }
 }
