@@ -16,7 +16,6 @@ namespace Game_Managers
         private bool _needSubscribeOnExternalDependenciesOnlyInStart = true;
 
         public InGameInputManager InGameInputManager { get; private set; }
-        protected override GameController ThisInstance => this;
 
         public void OnRestartButtonPressed()
         {

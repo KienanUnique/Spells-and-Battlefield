@@ -8,7 +8,6 @@ namespace Game_Managers
         private const int FirstId = 0;
 
         private List<int> _usedIds;
-        protected override InteractableGameObjectsBankOfIds ThisInstance => this;
 
         public int GetId()
         {

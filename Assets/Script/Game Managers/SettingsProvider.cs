@@ -14,7 +14,6 @@ namespace Game_Managers
         public GroundLayerMaskSetting GroundLayerMaskSetting => _groundLayerMaskSetting;
         public PickableItemsSettings PickableItemsSettings => _pickableItemsSettings;
         public UIAnimationSettings UIAnimationSettings => _uiAnimationSettings;
-        protected override SettingsProvider ThisInstance => this;
 
         protected override void SpecialAwakeAction()
         {
