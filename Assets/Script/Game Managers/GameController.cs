@@ -1,4 +1,5 @@
 ﻿using System;
+using Interfaces;
 using Player;
 using UI;
 using UnityEngine;
@@ -8,12 +9,12 @@ namespace Game_Managers
     [RequireComponent(typeof(InGameInputManager))]
     public class GameController : Singleton<GameController>
     {
-        [SerializeField] private PlayerController _player;
         [SerializeField] private InGameManagerUI _inGameManagerUI;
         [SerializeField] private ScenesSwitcher _scenesSwitcher;
 
         private ValueWithReactionOnChange<GameState> _currentGameState;
         private bool _needSubscribeOnExternalDependenciesOnlyInStart = true;
+        private IPlayer _player;
 
         public InGameInputManager InGameInputManager { get; private set; }
 
@@ -27,6 +28,7 @@ namespace Game_Managers
         {
             _currentGameState = new ValueWithReactionOnChange<GameState>(GameState.Running);
             InGameInputManager = GetComponent<InGameInputManager>();
+            _player = PlayerProvider.Instance.Player;
         }
 
         private void Start()

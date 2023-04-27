@@ -13,7 +13,7 @@ namespace Enemies
         private ValueWithReactionOnChange<bool> _isMoving;
         private TargetPathfinder _targetPathfinder;
         private Coroutine _followPathCoroutine = null;
-        public event Action<bool> IsMovingStateChanged;
+        public event Action<bool> MovingStateChanged;
         public Vector3 CurrentPosition => _rigidbody.position;
 
         public void StartMovingToTarget(Transform target)
@@ -53,12 +53,12 @@ namespace Enemies
 
         private void OnEnable()
         {
-            _isMoving.AfterValueChanged += b => IsMovingStateChanged?.Invoke(b);
+            _isMoving.AfterValueChanged += b => MovingStateChanged?.Invoke(b);
         }
 
         private void OnDisable()
         {
-            _isMoving.AfterValueChanged -= b => IsMovingStateChanged?.Invoke(b);
+            _isMoving.AfterValueChanged -= b => MovingStateChanged?.Invoke(b);
         }
 
         private IEnumerator FollowPath(Transform target)

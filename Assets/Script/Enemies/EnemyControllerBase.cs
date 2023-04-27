@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Enemies.State_Machine;
 using Game_Managers;
@@ -21,14 +22,16 @@ namespace Enemies
         protected EnemyMovement _enemyMovement;
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected SpellBase _spellToDrop;
-        [SerializeField] private PlayerController _player;
-        
+
+        public event Action<CharacterState> StateChanged;
+        public event Action<float> HitPointsCountChanged;
 
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
         public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => _character.CurrentState;
         public IEnemyTarget Target { get; private set; }
         protected abstract EnemyVisualBase EnemyVisual { get; }
+        public float HitPointCountRatio => _character.HitPointCountRatio;
 
         public int CompareTo(object obj)
         {
@@ -69,8 +72,37 @@ namespace Enemies
             _enemyMovement.DivideSpeedRatioBy(speedRatio);
         }
 
-        protected virtual void HandleStateChangedEvent(CharacterState newState)
+        protected virtual void OnEnable()
         {
+            _character.StateChanged += OnStateChanged;
+            _character.HitPointsCountChanged += OnHitPointsCountChanged;
+            _enemyMovement.MovingStateChanged += EnemyVisual.UpdateMovingData;
+        }
+
+        protected virtual void OnDisable()
+        {
+            _character.StateChanged -= OnStateChanged;
+            _character.HitPointsCountChanged -= OnHitPointsCountChanged;
+            _enemyMovement.MovingStateChanged -= EnemyVisual.UpdateMovingData;
+        }
+
+        protected virtual void Awake()
+        {
+            _idHolder = GetComponent<IdHolder>();
+            _enemyMovement = GetComponent<EnemyMovement>();
+            _character = GetComponent<Character>();
+            _settings = SettingsProvider.Instance.EnemySettings;
+            Target = PlayerProvider.Instance.Player;
+        }
+
+        protected virtual void Start()
+        {
+            _enemyStateMachineAI.StartStateMachine(this);
+        }
+
+        private void OnStateChanged(CharacterState newState)
+        {
+            StateChanged?.Invoke(newState);
             if (newState == CharacterState.Dead)
             {
                 _enemyStateMachineAI.StopStateMachine();
@@ -81,31 +113,8 @@ namespace Enemies
             }
         }
 
-        protected virtual void OnEnable()
-        {
-            _character.StateChanged += HandleStateChangedEvent;
-            _enemyMovement.IsMovingStateChanged += EnemyVisual.UpdateMovingData;
-        }
-
-        protected virtual void OnDisable()
-        {
-            _character.StateChanged -= HandleStateChangedEvent;
-            _enemyMovement.IsMovingStateChanged -= EnemyVisual.UpdateMovingData;
-        }
-
-        protected virtual void Awake()
-        {
-            _idHolder = GetComponent<IdHolder>();
-            _enemyMovement = GetComponent<EnemyMovement>();
-            _character = GetComponent<Character>();
-            _settings = SettingsProvider.Instance.EnemySettings;
-            Target = _player;
-        }
-
-        protected virtual void Start()
-        {
-            _enemyStateMachineAI.StartStateMachine(this);
-        }
+        private void OnHitPointsCountChanged(float newHitPointsCount) =>
+            HitPointsCountChanged?.Invoke(newHitPointsCount);
 
         private void DropSpell()
         {

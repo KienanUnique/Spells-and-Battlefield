@@ -20,9 +20,9 @@ namespace Player
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
         [SerializeField] private RigBuilder _rigBuilder;
         private Animator _characterAnimator;
-        public event Action UseSpellAnimationMomentStartEvent;
+        public event Action CastSpellAnimationMoment;
 
-        public void InvokeUseSpellAnimationMomentStart() => UseSpellAnimationMomentStartEvent?.Invoke();
+        public void InvokeUseSpellAnimationMomentStart() => CastSpellAnimationMoment?.Invoke();
 
         public void PlayUseSpellAnimation(AnimatorOverrideController useSpellHandsAnimatorController)
         {

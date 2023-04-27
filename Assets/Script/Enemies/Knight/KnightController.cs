@@ -31,17 +31,17 @@ namespace Enemies.Knight
         protected override void OnEnable()
         {
             base.OnEnable();
-            _knightVisual.AttackWithSwordAnimationMomentStartEvent += HandleAttackWithSwordAnimationMomentStartEvent;
+            _knightVisual.AttackWithSwordAnimationMomentStart += HandleAttackWithSwordAnimationMomentStart;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            _knightVisual.AttackWithSwordAnimationMomentStartEvent -= HandleAttackWithSwordAnimationMomentStartEvent;
+            _knightVisual.AttackWithSwordAnimationMomentStart -= HandleAttackWithSwordAnimationMomentStart;
         }
 
 
-        private void HandleAttackWithSwordAnimationMomentStartEvent()
+        private void HandleAttackWithSwordAnimationMomentStart()
         {
             var targets = _swordTargetSelector.GetTargetsInCollider();
             targets.RemoveAll(target => target.Id == Id);

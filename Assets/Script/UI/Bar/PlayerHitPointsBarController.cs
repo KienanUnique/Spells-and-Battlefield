@@ -1,14 +1,37 @@
 ﻿using DG.Tweening;
+using Game_Managers;
+using Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI.Bar
 {
-    public class HealPointsBarController : UIElementController, IBarController
+    public class PlayerHitPointsBarController : UIElementController
     {
         [SerializeField] private Image _foreground;
         [SerializeField] private Image _foregroundBackground;
         [SerializeField] private float _changeDuration = 0.1f;
+
+        private ICharacter _playerCharacter;
+        
+        protected override void Awake()
+        {
+            base.Awake();
+            _playerCharacter = PlayerProvider.Instance.Player;
+        }
+
+        private void OnEnable()
+        {
+            _playerCharacter.HitPointsCountChanged += OnPlayerHitPointsCountChanged;
+        }
+
+        private void OnDisable()
+        {
+            _playerCharacter.HitPointsCountChanged -= OnPlayerHitPointsCountChanged;
+        }
+
+        private void OnPlayerHitPointsCountChanged(float obj) =>
+            UpdateValue(_playerCharacter.HitPointCountRatio);
 
         public void UpdateValue(float newValueRatio)
         {

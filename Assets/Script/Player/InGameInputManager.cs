@@ -12,17 +12,17 @@ namespace Player
         private MainControls _mainControls;
         private float _mouseX, _mouseY;
 
-        public event Action JumpEvent;
-        public event Action DashAimingEvent;
-        public event Action DashEvent;
-        public event Action UseSpellEvent;
-        public event Action<Vector2> MoveInputEvent;
-        public event Action<Vector2> MouseLookEvent;
+        public event Action JumpInputted;
+        public event Action StartDashAimingInputted;
+        public event Action DashInputted;
+        public event Action UseSpellInputted;
+        public event Action<Vector2> MoveInputted;
+        public event Action<Vector2> LookInputted;
 
-        private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpEvent?.Invoke();
-        private void OnDashStarted(InputAction.CallbackContext obj) => DashAimingEvent?.Invoke();
-        private void OnDashCanceled(InputAction.CallbackContext obj) => DashEvent?.Invoke();
-        private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellEvent?.Invoke();
+        private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpInputted?.Invoke();
+        private void OnDashStarted(InputAction.CallbackContext obj) => StartDashAimingInputted?.Invoke();
+        private void OnDashCanceled(InputAction.CallbackContext obj) => DashInputted?.Invoke();
+        private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellInputted?.Invoke();
 
         public void SwitchToUIInput()
         {
@@ -73,8 +73,8 @@ namespace Player
             while (true)
             {
                 readDirection = _mainControls.Character.Move.ReadValue<Vector2>().normalized;
-                MoveInputEvent?.Invoke(readDirection.magnitude > MinimalInputMagnitude ? readDirection : Vector2.zero);
-                MouseLookEvent?.Invoke(_mainControls.Character.Look.ReadValue<Vector2>());
+                MoveInputted?.Invoke(readDirection.magnitude > MinimalInputMagnitude ? readDirection : Vector2.zero);
+                LookInputted?.Invoke(_mainControls.Character.Look.ReadValue<Vector2>());
                 yield return null;
             }
         }

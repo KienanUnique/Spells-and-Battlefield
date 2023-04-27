@@ -33,16 +33,16 @@ namespace Player
         private bool _canDash = true;
         private bool _speedLimitationEnabled = true;
 
-        public event Action LandEvent;
-        public event Action GroundJumpEvent;
-        public event Action AirJumpEvent;
-        public event Action FallEvent;
-        public event Action<WallDirection> StartWallRunningEvent;
-        public event Action EndWallRunningEvent;
+        public event Action Land;
+        public event Action GroundJump;
+        public event Action AirJump;
+        public event Action Fall;
+        public event Action<WallDirection> StartWallRunning;
+        public event Action EndWallRunning;
         public event Action<float> DashCooldownTimerTick;
         public event Action DashCooldownFinished;
         public event Action DashAiming;
-        public event Action DashFinished;
+        public event Action Dashed;
 
         private enum MovingState
         {
@@ -59,7 +59,7 @@ namespace Player
         private bool IsGrounded => _groundChecker.IsColliding;
         private bool IsInContactWithWall => _wallChecker.IsColliding;
 
-        public void TryJump()
+        public void TryJumpInputted()
         {
             if (_currentMovingState.Value == MovingState.OnGround ||
                 _currentMovingState.Value == MovingState.WallRunning ||
@@ -70,16 +70,16 @@ namespace Player
                     _currentMovingState.Value == MovingState.WallRunning)
                 {
                     _currentCountOfAirJumps++;
-                    AirJumpEvent?.Invoke();
+                    AirJump?.Invoke();
                 }
                 else if (_currentMovingState.Value == MovingState.OnGround)
                 {
-                    GroundJumpEvent?.Invoke();
+                    GroundJump?.Invoke();
                 }
             }
         }
 
-        public void TryAimForDashing()
+        public void TryStartDashAiming()
         {
             if ((_currentMovingState.Value == MovingState.InAir ||
                  _currentMovingState.Value == MovingState.WallRunning) && _canDash)
@@ -99,7 +99,7 @@ namespace Player
             }
         }
 
-        public void Move(Vector2 direction2d)
+        public void MoveInputted(Vector2 direction2d)
         {
             NormalizedVelocityDirectionXY = direction2d;
             _inputMoveDirection = direction2d;
@@ -241,10 +241,10 @@ namespace Player
                     _frictionCoroutine = null;
                     break;
                 case MovingState.WallRunning:
-                    EndWallRunningEvent?.Invoke();
+                    EndWallRunning?.Invoke();
                     break;
                 case MovingState.DashAiming:
-                    DashFinished?.Invoke();
+                    Dashed?.Invoke();
                     StartCoroutine(WaitForDashCooldownWithTicking());
                     break;
                 default:
@@ -260,13 +260,13 @@ namespace Player
                     _currentCountOfAirJumps = 0;
                     _currentPlayerInputForceMultiplier = NormalPlayerInputForceMultiplier;
                     _currentGravityForce = _normalGravityForce;
-                    LandEvent?.Invoke();
+                    Land?.Invoke();
                     break;
                 case MovingState.InAir:
                     _currentPlayerInputForceMultiplier = AirPlayerInputForceMultiplier;
                     _currentGravityForce = _normalGravityForce;
                     _frictionCoroutine ??= StartCoroutine(ApplyFrictionContinuously());
-                    FallEvent?.Invoke();
+                    Fall?.Invoke();
                     break;
                 case MovingState.WallRunning:
                     _currentCountOfAirJumps = 0;
@@ -274,7 +274,7 @@ namespace Player
                     _currentGravityForce = _wallRunningGravityForce;
                     var closestPoint = _wallChecker.Colliders[0].ClosestPoint(CurrentPosition);
                     var dot = Vector3.Dot(MainTransform.right, closestPoint - CurrentPosition);
-                    StartWallRunningEvent?.Invoke(dot < 0 ? WallDirection.Left : WallDirection.Right);
+                    StartWallRunning?.Invoke(dot < 0 ? WallDirection.Left : WallDirection.Right);
                     break;
                 case MovingState.DashAiming:
                     _currentPlayerInputForceMultiplier = DashAimingPlayerInputForceMultiplier;

@@ -23,7 +23,7 @@ namespace Player
             _cameraTransform = _camera.transform;
         }
 
-        public void LookWithMouse(Vector2 mouseLookDelta)
+        public void LookInputtedWith(Vector2 mouseLookDelta)
         {
             _cameraTransform.position = _cameraRootTransform.position;
             _xRotation -= mouseLookDelta.y * _mouseSensitivity * Time.unscaledDeltaTime;

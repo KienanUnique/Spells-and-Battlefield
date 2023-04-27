@@ -1,3 +1,4 @@
+using System;
 using Game_Managers;
 using Interfaces;
 using Spells;
@@ -15,7 +16,7 @@ namespace Player
     {
         [SerializeField] private PlayerVisual _playerVisual;
         [SerializeField] private PlayerCameraEffects _playerCameraEffects;
-        [SerializeField] private HealPointsBarController _healPointsHealPointsBar;
+        [SerializeField] private PlayerHitPointsBarController _playerHitPointsPlayerHitPointsBar;
         [SerializeField] private DashBarController _dashCooldownDashBar;
         private PlayerCharacter _playerCharacter;
         private PlayerSpellsManager _playerSpellsManager;
@@ -24,6 +25,14 @@ namespace Player
         private PlayerLook _playerLook;
         private IdHolder _idHolder;
 
+        public event Action DashAiming;
+        public event Action Dashed;
+        public event Action DashCooldownFinished;
+        public event Action<float> DashCooldownTimerTick;
+        public event Action<CharacterState> StateChanged;
+        public event Action<float> HitPointsCountChanged;
+
+        public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
         public int Id => _idHolder.Id;
         public Transform MainTransform => _playerMovement.MainTransform;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
@@ -87,79 +96,89 @@ namespace Player
 
         private void OnEnable()
         {
-            _inGameInputManager.JumpEvent += _playerMovement.TryJump;
-            _inGameInputManager.DashAimingEvent += _playerMovement.TryAimForDashing;
-            _inGameInputManager.DashEvent += OnDashAiming;
-            _inGameInputManager.UseSpellEvent += StartUseSelectedSpell;
-            _inGameInputManager.MoveInputEvent += _playerMovement.Move;
-            _inGameInputManager.MouseLookEvent += _playerLook.LookWithMouse;
-            _playerVisual.UseSpellAnimationMomentStartEvent += UseSelectedSpell;
-            _playerMovement.GroundJumpEvent += _playerVisual.PlayGroundJumpAnimation;
-            _playerMovement.FallEvent += _playerVisual.PlayFallAnimation;
-            _playerMovement.LandEvent += _playerVisual.PlayLandAnimation;
-            _playerMovement.StartWallRunningEvent += OnStartWallRunningEvent;
-            _playerMovement.EndWallRunningEvent += OnEndWallRunningEvent;
-            _playerMovement.DashAiming += TimeController.Instance.SlowDownTimeForDashAiming;
-            _playerMovement.DashFinished += TimeController.Instance.RestoreTimeSpeed;
-            _playerMovement.DashCooldownFinished += _dashCooldownDashBar.PlayFullBarScaleAnimation;
-            _playerMovement.DashCooldownTimerTick += _dashCooldownDashBar.UpdateValue; 
-            _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
+            _inGameInputManager.JumpInputted += _playerMovement.TryJumpInputted;
+            _inGameInputManager.StartDashAimingInputted += _playerMovement.TryStartDashAiming;
+            _inGameInputManager.DashInputted += OnDashInputted;
+            _inGameInputManager.UseSpellInputted += OnUseSpellInputted;
+            _inGameInputManager.MoveInputted += _playerMovement.MoveInputted;
+            _inGameInputManager.LookInputted += _playerLook.LookInputtedWith;
+
+            _playerVisual.CastSpellAnimationMoment += OnCastSpellAnimationMoment;
+
+            _playerMovement.GroundJump += _playerVisual.PlayGroundJumpAnimation;
+            _playerMovement.Fall += _playerVisual.PlayFallAnimation;
+            _playerMovement.Land += _playerVisual.PlayLandAnimation;
+            _playerMovement.StartWallRunning += OnStartWallRunning;
+            _playerMovement.EndWallRunning += OnEndWallRunning;
+            _playerMovement.DashAiming += OnDashAiming;
+            _playerMovement.Dashed += OnDashed;
+            _playerMovement.DashCooldownFinished += OnDashCooldownFinished;
+            _playerMovement.DashCooldownTimerTick += OnDashCooldownTimerTick;
+
             _playerCharacter.StateChanged += OnCharacterStateChanged;
+            _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
         }
 
         private void OnDisable()
         {
-            _inGameInputManager.JumpEvent -= _playerMovement.TryJump;
-            _inGameInputManager.DashAimingEvent -= _playerMovement.TryAimForDashing;
-            _inGameInputManager.DashEvent -= OnDashAiming;
-            _inGameInputManager.UseSpellEvent -= StartUseSelectedSpell;
-            _inGameInputManager.MoveInputEvent -= _playerMovement.Move;
-            _inGameInputManager.MouseLookEvent -= _playerLook.LookWithMouse;
-            _playerVisual.UseSpellAnimationMomentStartEvent -= UseSelectedSpell;
-            _playerMovement.GroundJumpEvent -= _playerVisual.PlayGroundJumpAnimation;
-            _playerMovement.FallEvent -= _playerVisual.PlayFallAnimation;
-            _playerMovement.LandEvent -= _playerVisual.PlayLandAnimation;
-            _playerMovement.StartWallRunningEvent -= OnStartWallRunningEvent;
-            _playerMovement.EndWallRunningEvent -= OnEndWallRunningEvent;
-            _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
-            _playerMovement.DashAiming -= TimeController.Instance.SlowDownTimeForDashAiming;
-            _playerMovement.DashFinished -= TimeController.Instance.RestoreTimeSpeed;
-            _playerMovement.DashCooldownFinished -= _dashCooldownDashBar.PlayFullBarScaleAnimation;
-            _playerMovement.DashCooldownTimerTick -= _dashCooldownDashBar.UpdateValue;
+            _inGameInputManager.JumpInputted -= _playerMovement.TryJumpInputted;
+            _inGameInputManager.StartDashAimingInputted -= _playerMovement.TryStartDashAiming;
+            _inGameInputManager.DashInputted -= OnDashInputted;
+            _inGameInputManager.UseSpellInputted -= OnUseSpellInputted;
+            _inGameInputManager.MoveInputted -= _playerMovement.MoveInputted;
+            _inGameInputManager.LookInputted -= _playerLook.LookInputtedWith;
+
+            _playerVisual.CastSpellAnimationMoment -= OnCastSpellAnimationMoment;
+
+            _playerMovement.GroundJump -= _playerVisual.PlayGroundJumpAnimation;
+            _playerMovement.Fall -= _playerVisual.PlayFallAnimation;
+            _playerMovement.Land -= _playerVisual.PlayLandAnimation;
+            _playerMovement.StartWallRunning -= OnStartWallRunning;
+            _playerMovement.EndWallRunning -= OnEndWallRunning;
+            _playerMovement.DashAiming -= OnDashAiming;
+            _playerMovement.Dashed -= OnDashed;
+            _playerMovement.DashCooldownFinished -= OnDashCooldownFinished;
+            _playerMovement.DashCooldownTimerTick -= OnDashCooldownTimerTick;
+
             _playerCharacter.StateChanged -= OnCharacterStateChanged;
+            _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
         }
 
-        private void OnStartWallRunningEvent(WallDirection direction)
+        private void OnHitPointsCountChanged(float newHitPointsCount) =>
+            HitPointsCountChanged?.Invoke(newHitPointsCount);
+
+        private void OnDashCooldownTimerTick(float cooldownRatio) => DashCooldownTimerTick?.Invoke(cooldownRatio);
+        private void OnDashCooldownFinished() => DashCooldownFinished?.Invoke();
+        private void OnDashed() => Dashed?.Invoke();
+        private void OnDashAiming() => DashAiming?.Invoke();
+
+        private void OnStartWallRunning(WallDirection direction)
         {
             _playerCameraEffects.Rotate(direction);
             _playerVisual.PlayLandAnimation();
         }
 
-        private void OnEndWallRunningEvent()
+        private void OnEndWallRunning()
         {
             _playerCameraEffects.ResetRotation();
             _playerVisual.PlayFallAnimation();
         }
 
-        private void OnDashAiming()
+        private void OnDashInputted()
         {
             _playerMovement.TryDash(_playerLook.CameraForward);
         }
 
-        private void OnHitPointsCountChanged(float newHitPointsCount)
-        {
-            _healPointsHealPointsBar.UpdateValue(_playerCharacter.HitPointCountRatio);
-        }
-
         private void OnCharacterStateChanged(CharacterState newState)
         {
+            StateChanged?.Invoke(newState);
             if (newState == CharacterState.Dead)
             {
                 _playerVisual.PlayDieAnimation();
             }
         }
 
-        private void StartUseSelectedSpell()
+        private void OnUseSpellInputted()
         {
             if (_playerSpellsManager.IsSpellSelected)
             {
@@ -167,7 +186,7 @@ namespace Player
             }
         }
 
-        private void UseSelectedSpell()
+        private void OnCastSpellAnimationMoment()
         {
             if (_playerSpellsManager.IsSpellSelected)
             {
