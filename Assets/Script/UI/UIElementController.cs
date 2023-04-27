@@ -8,8 +8,8 @@ namespace UI
     public class UIElementController : MonoBehaviour, IElementUI
     {
         private UIAnimationSettings _settings;
-        private Transform _cashedTransform;
-        private GameObject _cashedGameObject;
+        protected Transform _cashedTransform;
+        protected GameObject _cashedGameObject;
 
         public virtual void Appear()
         {
@@ -32,9 +32,6 @@ namespace UI
             _cashedTransform = transform;
             _cashedGameObject = gameObject;
             _settings = SettingsProvider.Instance.UIAnimationSettings;
-
-            _cashedTransform.localScale = Vector3.zero;
-            _cashedGameObject.SetActive(false);
         }
     }
 }

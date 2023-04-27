@@ -15,7 +15,8 @@ namespace Player
     {
         [SerializeField] private PlayerVisual _playerVisual;
         [SerializeField] private PlayerCameraEffects _playerCameraEffects;
-        [SerializeField] private BarController _hpBar;
+        [SerializeField] private HealPointsBarController _healPointsHealPointsBar;
+        [SerializeField] private DashBarController _dashCooldownDashBar;
         private PlayerCharacter _playerCharacter;
         private PlayerSpellsManager _playerSpellsManager;
         private InGameInputManager _inGameInputManager;
@@ -100,6 +101,8 @@ namespace Player
             _playerMovement.EndWallRunningEvent += OnEndWallRunningEvent;
             _playerMovement.DashAiming += TimeController.Instance.SlowDownTimeForDashAiming;
             _playerMovement.DashFinished += TimeController.Instance.RestoreTimeSpeed;
+            _playerMovement.DashCooldownFinished += _dashCooldownDashBar.PlayFullBarScaleAnimation;
+            _playerMovement.DashCooldownTimerTick += _dashCooldownDashBar.UpdateValue; 
             _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
             _playerCharacter.StateChanged += OnCharacterStateChanged;
         }
@@ -121,6 +124,8 @@ namespace Player
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
             _playerMovement.DashAiming -= TimeController.Instance.SlowDownTimeForDashAiming;
             _playerMovement.DashFinished -= TimeController.Instance.RestoreTimeSpeed;
+            _playerMovement.DashCooldownFinished -= _dashCooldownDashBar.PlayFullBarScaleAnimation;
+            _playerMovement.DashCooldownTimerTick -= _dashCooldownDashBar.UpdateValue;
             _playerCharacter.StateChanged -= OnCharacterStateChanged;
         }
 
@@ -143,7 +148,7 @@ namespace Player
 
         private void OnHitPointsCountChanged(float newHitPointsCount)
         {
-            _hpBar.UpdateValue(_playerCharacter.HitPointCountRatio);
+            _healPointsHealPointsBar.UpdateValue(_playerCharacter.HitPointCountRatio);
         }
 
         private void OnCharacterStateChanged(CharacterState newState)

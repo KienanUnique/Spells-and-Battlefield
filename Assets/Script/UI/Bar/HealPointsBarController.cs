@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace UI.Bar
 {
-    public class BarController : UIElementController, IBarController
+    public class HealPointsBarController : UIElementController, IBarController
     {
         [SerializeField] private Image _foreground;
         [SerializeField] private Image _foregroundBackground;

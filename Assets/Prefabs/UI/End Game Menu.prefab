@@ -388,7 +388,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2675020239366087244}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Game_Managers.GameManager, Assembly-CSharp
+        m_MethodName: OnRestartButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2675020239501146911
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,7 +412,7 @@ GameObject:
   - component: {fileID: 2675020239501146910}
   - component: {fileID: 2675020239501146912}
   - component: {fileID: 2675020239501146913}
-  - component: {fileID: 2675020239501146915}
+  - component: {fileID: 8395025}
   m_Layer: 5
   m_Name: End Game Menu
   m_TagString: Untagged
@@ -467,7 +479,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2675020239501146915
+--- !u!114 &8395025
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -476,7 +488,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2675020239501146911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bb3cba741934ef49164d89b8fa7e330, type: 3}
+  m_Script: {fileID: 11500000, guid: cb094580b3854b62a68436b83e5e0b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _settings: {fileID: 11400000, guid: 56bf131e31d75194e8f15a3f4bb5ed31, type: 2}
