@@ -245,7 +245,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerVisual: {fileID: 7465651251748099925}
   _playerCameraEffects: {fileID: 5655418622634499215}
-  _hpBar: {fileID: 0}
 --- !u!136 &1698083445434375742
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1746,6 +1745,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationAngle: 30
   _rotateDuration: 0.5
+  _cameraIncreasedFOV: 130
+  _cameraNormalFOV: 100
+  _changeCameraFOVAnimationDuration: 0.1
+  _changeCameraFOVAnimationEase: 9
+  _camera: {fileID: 3951135657180910355}
 --- !u!1 &4394579768765709600
 GameObject:
   m_ObjectHideFlags: 0

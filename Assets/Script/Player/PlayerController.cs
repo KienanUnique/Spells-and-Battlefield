@@ -2,7 +2,6 @@ using System;
 using Game_Managers;
 using Interfaces;
 using Spells;
-using UI.Bar;
 using UnityEngine;
 
 namespace Player
@@ -16,8 +15,6 @@ namespace Player
     {
         [SerializeField] private PlayerVisual _playerVisual;
         [SerializeField] private PlayerCameraEffects _playerCameraEffects;
-        [SerializeField] private PlayerHitPointsBarController _playerHitPointsPlayerHitPointsBar;
-        [SerializeField] private DashBarController _dashCooldownDashBar;
         private PlayerCharacter _playerCharacter;
         private PlayerSpellsManager _playerSpellsManager;
         private InGameInputManager _inGameInputManager;
@@ -149,7 +146,12 @@ namespace Player
 
         private void OnDashCooldownTimerTick(float cooldownRatio) => DashCooldownTimerTick?.Invoke(cooldownRatio);
         private void OnDashCooldownFinished() => DashCooldownFinished?.Invoke();
-        private void OnDashed() => Dashed?.Invoke();
+        private void OnDashed()
+        {
+            Dashed?.Invoke();
+            _playerCameraEffects.PlayIncreaseFieldOfViewAnimation();
+        }
+
         private void OnDashAiming() => DashAiming?.Invoke();
 
         private void OnStartWallRunning(WallDirection direction)
