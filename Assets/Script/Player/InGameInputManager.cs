@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Player
 {
-    public class InGameInputManager : MonoBehaviour
+    public class InGameInputManager : Singleton<InGameInputManager>
     {
         private const float MinimalInputMagnitude = 0.5f;
 
@@ -18,29 +18,33 @@ namespace Player
         public event Action UseSpellInputted;
         public event Action<Vector2> MoveInputted;
         public event Action<Vector2> LookInputted;
+        public event Action GamePause;
+        public event Action GameContinue;
 
         private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpInputted?.Invoke();
         private void OnDashStarted(InputAction.CallbackContext obj) => StartDashAimingInputted?.Invoke();
         private void OnDashCanceled(InputAction.CallbackContext obj) => DashInputted?.Invoke();
         private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellInputted?.Invoke();
+        private void OnPauseGamePerformed(InputAction.CallbackContext obj) => GamePause?.Invoke();
+        private void OnContinueGamePerformed(InputAction.CallbackContext obj) => GameContinue?.Invoke();
 
         public void SwitchToUIInput()
         {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
             _mainControls.Character.Disable();
             _mainControls.UI.Enable();
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
         }
 
         public void SwitchToGameInput()
         {
+            _mainControls.UI.Disable();
+            _mainControls.Character.Enable();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            _mainControls.Character.Enable();
-            _mainControls.UI.Disable();
         }
 
-        private void Awake()
+        protected override void SpecialAwakeAction()
         {
             _mainControls = new MainControls();
         }
@@ -57,14 +61,19 @@ namespace Player
             _mainControls.Character.Dash.started += OnDashStarted;
             _mainControls.Character.Dash.canceled += OnDashCanceled;
             _mainControls.Character.UseSpell.performed += OnUseSpellPerformed;
+            _mainControls.Character.PauseGame.performed += OnPauseGamePerformed;
+            _mainControls.UI.ContinueGame.performed += OnContinueGamePerformed;
         }
 
         private void OnDisable()
         {
             _mainControls.Disable();
             _mainControls.Character.Jump.performed -= OnJumpPerformed;
-            _mainControls.Character.Dash.performed -= OnDashStarted;
+            _mainControls.Character.Dash.started -= OnDashStarted;
+            _mainControls.Character.Dash.canceled -= OnDashCanceled;
             _mainControls.Character.UseSpell.performed -= OnUseSpellPerformed;
+            _mainControls.Character.PauseGame.performed -= OnPauseGamePerformed;
+            _mainControls.UI.ContinueGame.performed -= OnContinueGamePerformed;
         }
 
         private IEnumerator UpdateLookData()

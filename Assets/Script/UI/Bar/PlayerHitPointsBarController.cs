@@ -13,7 +13,7 @@ namespace UI.Bar
         [SerializeField] private float _changeDuration = 0.1f;
 
         private ICharacter _playerCharacter;
-        
+
         protected override void Awake()
         {
             base.Awake();
@@ -37,10 +37,13 @@ namespace UI.Bar
         {
             this.DOKill();
             var oldValueRatio = _foreground.fillAmount;
-            DOVirtual.Float(oldValueRatio, newValueRatio, _changeDuration,
-                currentValueRatio => _foreground.fillAmount = currentValueRatio).SetLink(gameObject).OnComplete(() =>
-                DOVirtual.Float(oldValueRatio, newValueRatio, _changeDuration,
-                    currentValueRatio => _foregroundBackground.fillAmount = currentValueRatio).SetLink(gameObject));
+            DOVirtual
+                .Float(oldValueRatio, newValueRatio, _changeDuration,
+                    currentValueRatio => _foreground.fillAmount = currentValueRatio).ApplyCustomSetupForUI(gameObject)
+                .OnComplete(() =>
+                    DOVirtual.Float(oldValueRatio, newValueRatio, _changeDuration,
+                            currentValueRatio => _foregroundBackground.fillAmount = currentValueRatio)
+                        .ApplyCustomSetupForUI(gameObject));
         }
     }
 }

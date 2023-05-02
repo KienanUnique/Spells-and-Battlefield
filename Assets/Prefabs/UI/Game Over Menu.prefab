@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 2675020239501146913}
   - component: {fileID: 8395025}
   m_Layer: 5
-  m_Name: End Game Menu
+  m_Name: Game Over Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

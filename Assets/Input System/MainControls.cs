@@ -80,6 +80,15 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""3fb6d9ed-c34a-4ef9-8147-91e2bc2a0684"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,14 +201,47 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09543f98-ccc3-4fc1-beca-29c449d3a981"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Pause Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
         {
             ""name"": ""UI"",
             ""id"": ""351c0220-d939-40f0-b092-2e6a19aee6eb"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Continue Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""37c75fa3-71a2-4ae8-b15e-3bd0ce7944e1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""30099ab4-8994-42c7-9d92-ab3777b355ab"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Continue Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -229,8 +271,10 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         m_Character_UseSpell = m_Character.FindAction("Use Spell", throwIfNotFound: true);
         m_Character_Walk = m_Character.FindAction("Walk", throwIfNotFound: true);
         m_Character_Dash = m_Character.FindAction("Dash", throwIfNotFound: true);
+        m_Character_PauseGame = m_Character.FindAction("Pause Game", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_ContinueGame = m_UI.FindAction("Continue Game", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -296,6 +340,7 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_UseSpell;
     private readonly InputAction m_Character_Walk;
     private readonly InputAction m_Character_Dash;
+    private readonly InputAction m_Character_PauseGame;
     public struct CharacterActions
     {
         private @MainControls m_Wrapper;
@@ -306,6 +351,7 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         public InputAction @UseSpell => m_Wrapper.m_Character_UseSpell;
         public InputAction @Walk => m_Wrapper.m_Character_Walk;
         public InputAction @Dash => m_Wrapper.m_Character_Dash;
+        public InputAction @PauseGame => m_Wrapper.m_Character_PauseGame;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -333,6 +379,9 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnDash;
+                @PauseGame.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnPauseGame;
+                @PauseGame.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnPauseGame;
+                @PauseGame.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnPauseGame;
             }
             m_Wrapper.m_CharacterActionsCallbackInterface = instance;
             if (instance != null)
@@ -355,6 +404,9 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @PauseGame.started += instance.OnPauseGame;
+                @PauseGame.performed += instance.OnPauseGame;
+                @PauseGame.canceled += instance.OnPauseGame;
             }
         }
     }
@@ -363,10 +415,12 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_ContinueGame;
     public struct UIActions
     {
         private @MainControls m_Wrapper;
         public UIActions(@MainControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ContinueGame => m_Wrapper.m_UI_ContinueGame;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -376,10 +430,16 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_UIActionsCallbackInterface != null)
             {
+                @ContinueGame.started -= m_Wrapper.m_UIActionsCallbackInterface.OnContinueGame;
+                @ContinueGame.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnContinueGame;
+                @ContinueGame.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnContinueGame;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @ContinueGame.started += instance.OnContinueGame;
+                @ContinueGame.performed += instance.OnContinueGame;
+                @ContinueGame.canceled += instance.OnContinueGame;
             }
         }
     }
@@ -401,8 +461,10 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         void OnUseSpell(InputAction.CallbackContext context);
         void OnWalk(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnPauseGame(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
+        void OnContinueGame(InputAction.CallbackContext context);
     }
 }

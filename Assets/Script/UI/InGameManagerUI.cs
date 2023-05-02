@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,9 +9,15 @@ namespace UI
     {
         [SerializeField] private List<UIElementController> _gameUI;
         [SerializeField] private List<UIElementController> _deathMenuUI;
+        [SerializeField] private List<UIElementController> _pauseMenuUI;
         [SerializeField] private List<UIElementController> _loadingScreen;
-
         private List<IEnumerable<IElementUI>> _allUIElements;
+
+        public event Action RestartRequested;
+        public event Action GameContinueRequested;
+
+        public void RequestRestart() => RestartRequested?.Invoke();
+        public void RequestGameContinue() => GameContinueRequested?.Invoke();
 
         public void SwitchToGameUI()
         {
@@ -27,12 +34,18 @@ namespace UI
             SwitchUI(_loadingScreen);
         }
 
+        public void SwitchToPauseScreen()
+        {
+            SwitchUI(_pauseMenuUI);
+        }
+
         private void Awake()
         {
             _allUIElements = new List<IEnumerable<IElementUI>>
             {
                 _gameUI,
                 _deathMenuUI,
+                _pauseMenuUI,
                 _loadingScreen
             };
         }

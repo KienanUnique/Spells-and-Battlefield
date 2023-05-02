@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6518296616262366151}
   - component: {fileID: 6518296617393244772}
   - component: {fileID: 6518296617393244773}
+  - component: {fileID: 6383192793901642754}
   m_Layer: 0
   m_Name: Game Managers
   m_TagString: Untagged
@@ -44,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e38c20df718f472a8a9cc04cfbeb4ea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
   _inGameManagerUI: {fileID: 0}
   _scenesSwitcher: {fileID: 0}
 --- !u!114 &6518296617393244773
@@ -59,3 +59,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e7bee7f84d5eae48a19c056598ea6ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6383192793901642754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6518296616262366145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf338a65f6734bc88fd72360fb7ce234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dashAimingTimeScaleRatio: 0.1

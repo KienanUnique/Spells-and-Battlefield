@@ -16,14 +16,14 @@ namespace UI
             _cashedGameObject.SetActive(true);
             _cashedTransform.DOKill();
             _cashedTransform.DOScale(Vector3.one, _settings.ScaleAnimationDuration)
-                .SetEase(_settings.ScaleAnimationEase).SetLink(gameObject);
+                .SetEase(_settings.ScaleAnimationEase).ApplyCustomSetupForUI(gameObject);
         }
 
         public virtual void Disappear()
         {
             _cashedTransform.DOKill();
             _cashedTransform.DOScale(Vector3.zero, _settings.ScaleAnimationDuration)
-                .SetEase(_settings.ScaleAnimationEase).SetLink(gameObject)
+                .SetEase(_settings.ScaleAnimationEase).ApplyCustomSetupForUI(gameObject)
                 .OnComplete(() => _cashedGameObject.SetActive(false));
         }
 

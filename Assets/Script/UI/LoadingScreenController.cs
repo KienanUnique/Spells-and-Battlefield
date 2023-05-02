@@ -19,7 +19,7 @@ namespace UI
                 .DORotate(new Vector3(0, 0, 360), _rotateAnimationDuration, RotateMode.FastBeyond360)
                 .SetEase(Ease.Linear)
                 .SetLoops(-1, LoopType.Restart)
-                .SetLink(gameObject);
+                .ApplyCustomSetupForUI(gameObject);
         }
 
         public override void Disappear()

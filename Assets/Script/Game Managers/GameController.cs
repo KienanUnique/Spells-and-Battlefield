@@ -1,4 +1,5 @@
 ﻿using System;
+using Game_Managers.Time_Controller;
 using Interfaces;
 using Player;
 using UI;
@@ -7,91 +8,180 @@ using UnityEngine;
 namespace Game_Managers
 {
     [RequireComponent(typeof(InGameInputManager))]
+    [RequireComponent(typeof(TimeController))]
     public class GameController : Singleton<GameController>
     {
         [SerializeField] private InGameManagerUI _inGameManagerUI;
         [SerializeField] private ScenesSwitcher _scenesSwitcher;
 
         private ValueWithReactionOnChange<GameState> _currentGameState;
-        private bool _needSubscribeOnExternalDependenciesOnlyInStart = true;
+        private GameState _lastState;
+        private bool _needSubscribeOnEventsOnlyInStart = true;
         private IPlayer _player;
-
-        public InGameInputManager InGameInputManager { get; private set; }
-
-        public void OnRestartButtonPressed()
-        {
-            _inGameManagerUI.SwitchToLoadingScreen();
-            _scenesSwitcher.LoadMainLevelScene();
-        }
+        private InGameInputManager _inGameInputManager;
+        private ITimeController _timeController;
 
         protected override void SpecialAwakeAction()
         {
-            _currentGameState = new ValueWithReactionOnChange<GameState>(GameState.Running);
-            InGameInputManager = GetComponent<InGameInputManager>();
+            _currentGameState = new ValueWithReactionOnChange<GameState>(GameState.Playing);
+            _lastState = _currentGameState.Value;
+            _inGameInputManager = GetComponent<InGameInputManager>();
+            _timeController = GetComponent<TimeController>();
             _player = PlayerProvider.Instance.Player;
         }
 
         private void Start()
         {
-            if (_currentGameState.Value == GameState.Running && _needSubscribeOnExternalDependenciesOnlyInStart)
+            _player.Initialize(_inGameInputManager, _timeController);
+            if (_needSubscribeOnEventsOnlyInStart)
             {
-                _needSubscribeOnExternalDependenciesOnlyInStart = false;
-                _player.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
+                _needSubscribeOnEventsOnlyInStart = false;
+                SubscribeOnEvents();
             }
-
+            
+            _timeController.RestoreTimeToNormal();
             OnAfterGameStateChanged(_currentGameState.Value);
         }
 
         private void OnEnable()
         {
-            _currentGameState.AfterValueChanged += OnAfterGameStateChanged;
-            _currentGameState.BeforeValueChanged += OnBeforeGameStateChanged;
-            if (_currentGameState.Value == GameState.Running && !_needSubscribeOnExternalDependenciesOnlyInStart)
+            if (!_needSubscribeOnEventsOnlyInStart)
             {
-                _player.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
+                SubscribeOnEvents();
             }
         }
 
         private void OnDisable()
         {
-            _currentGameState.AfterValueChanged -= OnAfterGameStateChanged;
-            _currentGameState.BeforeValueChanged -= OnBeforeGameStateChanged;
-            if (_currentGameState.Value == GameState.Running)
+            UnsubscribeFromEvents();
+        }
+
+        private void SubscribeOnEvents()
+        {
+            _currentGameState.AfterValueChanged += OnAfterGameStateChanged;
+            _currentGameState.BeforeValueChanged += OnBeforeGameStateChanged;
+            switch (_currentGameState.Value)
             {
-                _player.CurrentCharacterState.AfterValueChanged -= OnPlayerStateChanged;
+                case GameState.Playing:
+                    SubscribeOnPlayingEvents();
+                    break;
+                case GameState.Pause:
+                    SubscribeOnPauseEvents();
+                    break;
+                case GameState.GameOver:
+                    SubscribeOnGameOverEvents();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void OnBeforeGameStateChanged(GameState newState)
+        private void UnsubscribeFromEvents()
         {
-            switch (newState)
+            _currentGameState.AfterValueChanged -= OnAfterGameStateChanged;
+            _currentGameState.BeforeValueChanged -= OnBeforeGameStateChanged;
+            switch (_currentGameState.Value)
             {
-                case GameState.Running:
-                    _player.CurrentCharacterState.AfterValueChanged -= OnPlayerStateChanged;
+                case GameState.Playing:
+                    UnsubscribeFromPlayingEvents();
+                    break;
+                case GameState.Pause:
+                    UnsubscribeFromPauseEvents();
                     break;
                 case GameState.GameOver:
+                    UnsubscribeFromGameOverEvents();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+                    throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void SubscribeOnPlayingEvents()
+        {
+            _player.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
+            _inGameInputManager.GamePause += OnGamePauseInputted;
+        }
+
+        private void UnsubscribeFromPlayingEvents()
+        {
+            _player.CurrentCharacterState.AfterValueChanged -= OnPlayerStateChanged;
+            _inGameInputManager.GamePause -= OnGamePauseInputted;
+        }
+
+        private void SubscribeOnPauseEvents()
+        {
+            _inGameInputManager.GameContinue += OnGameContinueRequestedInputted;
+            _inGameManagerUI.GameContinueRequested += OnGameContinueRequestedInputted;
+            _inGameManagerUI.RestartRequested += OnRestartRequested;
+        }
+
+        private void UnsubscribeFromPauseEvents()
+        {
+            _inGameInputManager.GameContinue -= OnGameContinueRequestedInputted;
+            _inGameManagerUI.GameContinueRequested -= OnGameContinueRequestedInputted;
+            _inGameManagerUI.RestartRequested -= OnRestartRequested;
+        }
+
+        private void SubscribeOnGameOverEvents()
+        {
+            _inGameManagerUI.RestartRequested += OnRestartRequested;
+        }
+
+        private void UnsubscribeFromGameOverEvents()
+        {
+            _inGameManagerUI.RestartRequested -= OnRestartRequested;
+        }
+
+        private void OnBeforeGameStateChanged(GameState previousState)
+        {
+            switch (previousState)
+            {
+                case GameState.Playing:
+                    UnsubscribeFromPlayingEvents();
+                    break;
+                case GameState.GameOver:
+                    UnsubscribeFromGameOverEvents();
+                    break;
+                case GameState.Pause:
+                    UnsubscribeFromPauseEvents();
+                    _timeController.RestoreTimeToPrevious();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(previousState), previousState, null);
+            }
+
+            _lastState = previousState;
         }
 
         private void OnAfterGameStateChanged(GameState newState)
         {
             switch (newState)
             {
-                case GameState.Running:
-                    InGameInputManager.SwitchToGameInput();
+                case GameState.Playing:
+                    SubscribeOnPlayingEvents();
+                    _inGameInputManager.SwitchToGameInput();
                     _inGameManagerUI.SwitchToGameUI();
-                    _player.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
                     break;
                 case GameState.GameOver:
-                    InGameInputManager.SwitchToUIInput();
+                    SubscribeOnGameOverEvents();
+                    _inGameInputManager.SwitchToUIInput();
                     _inGameManagerUI.SwitchToDeathMenuUI();
+                    break;
+                case GameState.Pause:
+                    SubscribeOnPauseEvents();
+                    _timeController.StopTime();
+                    _inGameInputManager.SwitchToUIInput();
+                    _inGameManagerUI.SwitchToPauseScreen();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
             }
+        }
+        
+        private void OnRestartRequested()
+        {
+            _inGameManagerUI.SwitchToLoadingScreen();
+            _scenesSwitcher.LoadMainLevelScene();
         }
 
         private void OnPlayerStateChanged(CharacterState newState)
@@ -102,10 +192,21 @@ namespace Game_Managers
             }
         }
 
+        private void OnGamePauseInputted()
+        {
+            _currentGameState.Value = GameState.Pause;
+        }
+
+        private void OnGameContinueRequestedInputted()
+        {
+            _currentGameState.Value = _lastState;
+        }
+
         private enum GameState
         {
-            Running,
-            GameOver
+            Playing,
+            Pause,
+            GameOver,
         }
     }
 }

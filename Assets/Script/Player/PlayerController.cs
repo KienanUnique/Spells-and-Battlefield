@@ -1,5 +1,5 @@
 using System;
-using Game_Managers;
+using Game_Managers.Time_Controller;
 using Interfaces;
 using Spells;
 using UnityEngine;
@@ -21,9 +21,9 @@ namespace Player
         private PlayerMovement _playerMovement;
         private PlayerLook _playerLook;
         private IdHolder _idHolder;
+        private ITimeControllerForPlayer _timeController;
+        private bool _wasInitialized = false;
 
-        public event Action DashAiming;
-        public event Action Dashed;
         public event Action DashCooldownFinished;
         public event Action<float> DashCooldownTimerTick;
         public event Action<CharacterState> StateChanged;
@@ -34,6 +34,14 @@ namespace Player
         public Transform MainTransform => _playerMovement.MainTransform;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => _playerCharacter.CurrentState;
+
+        public void Initialize(InGameInputManager inputManager, ITimeControllerForPlayer timeController)
+        {
+            _inGameInputManager = inputManager;
+            _timeController = timeController;
+            SubscribeOnEvents();
+            _wasInitialized = true;
+        }
 
         public void HandleHeal(int countOfHealthPoints)
         {
@@ -79,7 +87,6 @@ namespace Player
         {
             _playerCharacter = GetComponent<PlayerCharacter>();
             _playerSpellsManager = GetComponent<PlayerSpellsManager>();
-            _inGameInputManager = GameController.Instance.InGameInputManager;
             _playerMovement = GetComponent<PlayerMovement>();
             _playerLook = GetComponent<PlayerLook>();
             _idHolder = GetComponent<IdHolder>();
@@ -92,6 +99,19 @@ namespace Player
         }
 
         private void OnEnable()
+        {
+            if (_wasInitialized)
+            {
+                SubscribeOnEvents();
+            }
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeFromEvents();
+        }
+
+        private void SubscribeOnEvents()
         {
             _inGameInputManager.JumpInputted += _playerMovement.TryJumpInputted;
             _inGameInputManager.StartDashAimingInputted += _playerMovement.TryStartDashAiming;
@@ -116,7 +136,7 @@ namespace Player
             _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
         }
 
-        private void OnDisable()
+        private void UnsubscribeFromEvents()
         {
             _inGameInputManager.JumpInputted -= _playerMovement.TryJumpInputted;
             _inGameInputManager.StartDashAimingInputted -= _playerMovement.TryStartDashAiming;
@@ -146,13 +166,17 @@ namespace Player
 
         private void OnDashCooldownTimerTick(float cooldownRatio) => DashCooldownTimerTick?.Invoke(cooldownRatio);
         private void OnDashCooldownFinished() => DashCooldownFinished?.Invoke();
+
         private void OnDashed()
         {
-            Dashed?.Invoke();
+            _timeController.RestoreTimeToNormal();
             _playerCameraEffects.PlayIncreaseFieldOfViewAnimation();
         }
 
-        private void OnDashAiming() => DashAiming?.Invoke();
+        private void OnDashAiming()
+        {
+            _timeController.SlowDownTimeForDashAiming();
+        }
 
         private void OnStartWallRunning(WallDirection direction)
         {

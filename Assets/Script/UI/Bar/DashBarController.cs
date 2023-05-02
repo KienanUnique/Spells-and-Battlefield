@@ -43,7 +43,8 @@ namespace UI.Bar
 
         private void PlayFullBarScaleAnimation()
         {
-            _cashedTransform.DOPunchScale(PunchStrengthVector3, _onFillAnimationDurationSeconds);
+            _cashedTransform.DOPunchScale(PunchStrengthVector3, _onFillAnimationDurationSeconds)
+                .ApplyCustomSetupForUI(gameObject);
         }
     }
 }
