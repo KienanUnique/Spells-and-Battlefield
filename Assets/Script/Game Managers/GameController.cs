@@ -13,6 +13,7 @@ namespace Game_Managers
     {
         [SerializeField] private InGameManagerUI _inGameManagerUI;
         [SerializeField] private ScenesSwitcher _scenesSwitcher;
+        [SerializeField] private PostProcessingController _postProcessingController;
 
         private ValueWithReactionOnChange<GameState> _currentGameState;
         private GameState _lastState;
@@ -32,13 +33,13 @@ namespace Game_Managers
 
         private void Start()
         {
-            _player.Initialize(_inGameInputManager, _timeController);
+            _player.Initialize(_inGameInputManager, _timeController, _postProcessingController);
             if (_needSubscribeOnEventsOnlyInStart)
             {
                 _needSubscribeOnEventsOnlyInStart = false;
                 SubscribeOnEvents();
             }
-            
+
             _timeController.RestoreTimeToNormal();
             OnAfterGameStateChanged(_currentGameState.Value);
         }
@@ -177,7 +178,7 @@ namespace Game_Managers
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
             }
         }
-        
+
         private void OnRestartRequested()
         {
             _inGameManagerUI.SwitchToLoadingScreen();

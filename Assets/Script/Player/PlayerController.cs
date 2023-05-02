@@ -1,4 +1,5 @@
 using System;
+using Game_Managers;
 using Game_Managers.Time_Controller;
 using Interfaces;
 using Spells;
@@ -22,6 +23,7 @@ namespace Player
         private PlayerLook _playerLook;
         private IdHolder _idHolder;
         private ITimeControllerForPlayer _timeController;
+        private PostProcessingController _postProcessingController;
         private bool _wasInitialized = false;
 
         public event Action DashCooldownFinished;
@@ -35,10 +37,12 @@ namespace Player
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => _playerCharacter.CurrentState;
 
-        public void Initialize(InGameInputManager inputManager, ITimeControllerForPlayer timeController)
+        public void Initialize(InGameInputManager inputManager, ITimeControllerForPlayer timeController,
+            PostProcessingController postProcessingController)
         {
             _inGameInputManager = inputManager;
             _timeController = timeController;
+            _postProcessingController = postProcessingController;
             SubscribeOnEvents();
             _wasInitialized = true;
         }
@@ -171,6 +175,7 @@ namespace Player
         {
             _timeController.RestoreTimeToNormal();
             _playerCameraEffects.PlayIncreaseFieldOfViewAnimation();
+            _postProcessingController.PlayDashEffects();
         }
 
         private void OnDashAiming()
