@@ -10,6 +10,7 @@
     "com.unity.inputsystem": "1.4.4",
     "com.unity.probuilder": "4.5.2",
     "com.unity.progrids": "3.0.3-preview.6",
+    "com.unity.render-pipelines.universal": "10.10.1",
     "com.unity.test-framework": "1.1.33",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.4.8",

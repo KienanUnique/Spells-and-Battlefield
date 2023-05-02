@@ -7,6 +7,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 150496975149910787, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 862764743027552122, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 862764743027552122, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 862764743027552122, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.34831452
+      objectReference: {fileID: 0}
+    - target: {fileID: 1339301835837938237, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.56456846
+      objectReference: {fileID: 0}
+    - target: {fileID: 4321523076285932714, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4321523076285932714, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4321523076285932714, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.34831452
+      objectReference: {fileID: 0}
     - target: {fileID: 6269413903018196924, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -53,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6269413903018196925, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
       propertyPath: m_Name
-      value: Yellow Orb
+      value: Green Orb
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}
