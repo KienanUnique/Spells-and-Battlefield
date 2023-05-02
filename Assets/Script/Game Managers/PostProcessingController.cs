@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -13,6 +12,7 @@ namespace Game_Managers
 
         public void PlayDashEffects()
         {
+            _dashEffectsVolume.enabled = true;
             DOVirtual
                 .Float(0, 1, _applyDashEffectsVolumeDurationSeconds,
                     currentWeight => _dashEffectsVolume.weight = currentWeight).SetLink(gameObject)
@@ -21,7 +21,7 @@ namespace Game_Managers
                     DOVirtual.Float(1, 0, _applyDashEffectsVolumeDurationSeconds,
                             currentWeight => _dashEffectsVolume.weight = currentWeight)
                         .SetLink(gameObject)
-                        .SetEase(_applyDashEffectsVolumeEase));
+                        .SetEase(_applyDashEffectsVolumeEase).OnComplete(() => _dashEffectsVolume.enabled = false));
         }
 
         protected override void SpecialAwakeAction()
@@ -31,6 +31,7 @@ namespace Game_Managers
         private void Start()
         {
             _dashEffectsVolume.weight = 0;
+            _dashEffectsVolume.enabled = false;
         }
     }
 }
