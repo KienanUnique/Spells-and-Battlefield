@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using Interfaces;
+using UnityEngine;
+using Zenject;
 
 namespace Game_Managers.Time_Controller
 {
@@ -6,6 +9,13 @@ namespace Game_Managers.Time_Controller
     {
         [Range(0, 1f)] [SerializeField] private float _dashAimingTimeScaleRatio = 0.1f;
         private float _timeScaleBeforePause = 1f;
+        private IPlayerInformation _playerInformation;
+
+        [Inject]
+        private void Construct(IPlayerInformation playerInformation)
+        {
+            _playerInformation = playerInformation;
+        }
 
         public void StopTime()
         {
@@ -18,14 +28,26 @@ namespace Game_Managers.Time_Controller
             Time.timeScale = _timeScaleBeforePause;
         }
 
-        public void SlowDownTimeForDashAiming()
-        {
-            Time.timeScale = _dashAimingTimeScaleRatio;
-        }
-
         public void RestoreTimeToNormal()
         {
             Time.timeScale = 1f;
+        }
+
+        private void OnEnable()
+        {
+            _playerInformation.DashAiming += SlowDownTimeForDashAiming;
+            _playerInformation.Dashed += RestoreTimeToNormal;
+        }
+
+        private void OnDisable()
+        {
+            _playerInformation.DashAiming -= SlowDownTimeForDashAiming;
+            _playerInformation.Dashed -= RestoreTimeToNormal;
+        }
+
+        private void SlowDownTimeForDashAiming()
+        {
+            Time.timeScale = _dashAimingTimeScaleRatio;
         }
     }
 }

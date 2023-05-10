@@ -3,6 +3,7 @@ using Game_Managers;
 using Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI.Bar
 {
@@ -12,12 +13,12 @@ namespace UI.Bar
         [SerializeField] private Image _foregroundBackground;
         [SerializeField] private float _changeDuration = 0.1f;
 
-        private ICharacter _playerCharacter;
+        private ICharacterInformation _playerCharacter;
 
-        protected override void Awake()
+        [Inject]
+        private void Construct(IPlayerInformation playerInformation)
         {
-            base.Awake();
-            _playerCharacter = PlayerProvider.Instance.Player;
+            _playerCharacter = playerInformation;
         }
 
         private void OnEnable()
@@ -33,7 +34,7 @@ namespace UI.Bar
         private void OnPlayerHitPointsCountChanged(float obj) =>
             UpdateValue(_playerCharacter.HitPointCountRatio);
 
-        public void UpdateValue(float newValueRatio)
+        private void UpdateValue(float newValueRatio)
         {
             this.DOKill();
             var oldValueRatio = _foreground.fillAmount;

@@ -1,9 +1,8 @@
 using System;
-using Game_Managers;
-using Game_Managers.Time_Controller;
 using Interfaces;
 using Spells;
 using UnityEngine;
+using Zenject;
 
 namespace Player
 {
@@ -18,18 +17,22 @@ namespace Player
         [SerializeField] private PlayerCameraEffects _playerCameraEffects;
         private PlayerCharacter _playerCharacter;
         private PlayerSpellsManager _playerSpellsManager;
-        private InGameInputManager _inGameInputManager;
+        private IPlayerInput _playerInput;
         private PlayerMovement _playerMovement;
         private PlayerLook _playerLook;
         private IdHolder _idHolder;
-        private ITimeControllerForPlayer _timeController;
-        private PostProcessingController _postProcessingController;
-        private bool _wasInitialized = false;
+
+        [Inject]
+        private void Construct(IPlayerInput playerInput)
+        {
+            _playerInput = playerInput;
+        }
 
         public event Action DashCooldownFinished;
         public event Action<float> DashCooldownTimerTick;
-        public event Action<CharacterState> StateChanged;
         public event Action<float> HitPointsCountChanged;
+        public event Action Dashed;
+        public event Action DashAiming;
 
         public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
         public int Id => _idHolder.Id;
@@ -37,15 +40,6 @@ namespace Player
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => _playerCharacter.CurrentState;
 
-        public void Initialize(InGameInputManager inputManager, ITimeControllerForPlayer timeController,
-            PostProcessingController postProcessingController)
-        {
-            _inGameInputManager = inputManager;
-            _timeController = timeController;
-            _postProcessingController = postProcessingController;
-            SubscribeOnEvents();
-            _wasInitialized = true;
-        }
 
         public void HandleHeal(int countOfHealthPoints)
         {
@@ -104,10 +98,7 @@ namespace Player
 
         private void OnEnable()
         {
-            if (_wasInitialized)
-            {
-                SubscribeOnEvents();
-            }
+            SubscribeOnEvents();
         }
 
         private void OnDisable()
@@ -117,12 +108,12 @@ namespace Player
 
         private void SubscribeOnEvents()
         {
-            _inGameInputManager.JumpInputted += _playerMovement.TryJumpInputted;
-            _inGameInputManager.StartDashAimingInputted += _playerMovement.TryStartDashAiming;
-            _inGameInputManager.DashInputted += OnDashInputted;
-            _inGameInputManager.UseSpellInputted += OnUseSpellInputted;
-            _inGameInputManager.MoveInputted += _playerMovement.MoveInputted;
-            _inGameInputManager.LookInputted += _playerLook.LookInputtedWith;
+            _playerInput.JumpInputted += _playerMovement.TryJumpInputted;
+            _playerInput.StartDashAimingInputted += _playerMovement.TryStartDashAiming;
+            _playerInput.DashInputted += OnDashInputted;
+            _playerInput.UseSpellInputted += OnUseSpellInputted;
+            _playerInput.MoveInputted += _playerMovement.MoveInputted;
+            _playerInput.LookInputted += _playerLook.LookInputtedWith;
 
             _playerVisual.CastSpellAnimationMoment += OnCastSpellAnimationMoment;
 
@@ -142,12 +133,12 @@ namespace Player
 
         private void UnsubscribeFromEvents()
         {
-            _inGameInputManager.JumpInputted -= _playerMovement.TryJumpInputted;
-            _inGameInputManager.StartDashAimingInputted -= _playerMovement.TryStartDashAiming;
-            _inGameInputManager.DashInputted -= OnDashInputted;
-            _inGameInputManager.UseSpellInputted -= OnUseSpellInputted;
-            _inGameInputManager.MoveInputted -= _playerMovement.MoveInputted;
-            _inGameInputManager.LookInputted -= _playerLook.LookInputtedWith;
+            _playerInput.JumpInputted -= _playerMovement.TryJumpInputted;
+            _playerInput.StartDashAimingInputted -= _playerMovement.TryStartDashAiming;
+            _playerInput.DashInputted -= OnDashInputted;
+            _playerInput.UseSpellInputted -= OnUseSpellInputted;
+            _playerInput.MoveInputted -= _playerMovement.MoveInputted;
+            _playerInput.LookInputted -= _playerLook.LookInputtedWith;
 
             _playerVisual.CastSpellAnimationMoment -= OnCastSpellAnimationMoment;
 
@@ -173,14 +164,13 @@ namespace Player
 
         private void OnDashed()
         {
-            _timeController.RestoreTimeToNormal();
+            Dashed?.Invoke();
             _playerCameraEffects.PlayIncreaseFieldOfViewAnimation();
-            _postProcessingController.PlayDashEffects();
         }
 
         private void OnDashAiming()
         {
-            _timeController.SlowDownTimeForDashAiming();
+            DashAiming?.Invoke();
         }
 
         private void OnStartWallRunning(WallDirection direction)
@@ -202,7 +192,6 @@ namespace Player
 
         private void OnCharacterStateChanged(CharacterState newState)
         {
-            StateChanged?.Invoke(newState);
             if (newState == CharacterState.Dead)
             {
                 _playerVisual.PlayDieAnimation();

@@ -1,6 +1,8 @@
 using DG.Tweening;
+using Interfaces;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Zenject;
 
 namespace Game_Managers
 {
@@ -10,7 +12,31 @@ namespace Game_Managers
         [SerializeField] private float _applyDashEffectsVolumeDurationSeconds = 0.2f;
         [SerializeField] private Ease _applyDashEffectsVolumeEase = Ease.OutCubic;
 
-        public void PlayDashEffects()
+        private IPlayerInformation _playerInformation;
+
+        [Inject]
+        private void Construct(IPlayerInformation playerInformation)
+        {
+            _playerInformation = playerInformation;
+        }
+
+        private void OnEnable()
+        {
+            _playerInformation.Dashed += PlayDashEffects;
+        }
+
+        private void OnDisable()
+        {
+            _playerInformation.Dashed -= PlayDashEffects;
+        }
+
+        private void Start()
+        {
+            _dashEffectsVolume.weight = 0;
+            _dashEffectsVolume.enabled = false;
+        }
+
+        private void PlayDashEffects()
         {
             _dashEffectsVolume.enabled = true;
             DOVirtual
@@ -22,16 +48,6 @@ namespace Game_Managers
                             currentWeight => _dashEffectsVolume.weight = currentWeight)
                         .SetLink(gameObject)
                         .SetEase(_applyDashEffectsVolumeEase).OnComplete(() => _dashEffectsVolume.enabled = false));
-        }
-
-        protected override void SpecialAwakeAction()
-        {
-        }
-
-        private void Start()
-        {
-            _dashEffectsVolume.weight = 0;
-            _dashEffectsVolume.enabled = false;
         }
     }
 }

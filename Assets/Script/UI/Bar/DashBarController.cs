@@ -3,6 +3,7 @@ using Game_Managers;
 using Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI.Bar
 {
@@ -12,27 +13,27 @@ namespace UI.Bar
         [SerializeField] private float _onFillAnimationDurationSeconds = 0.3f;
         [SerializeField] private float _onFillAnimationPunchStrength = 0.15f;
 
-        private IPlayer _player;
+        private IPlayerInformation _playerInformation;
 
+        [Inject]
+        private void Construct(IPlayerInformation playerInformation)
+        {
+            _playerInformation = playerInformation;
+        }
+        
         private Vector3 PunchStrengthVector3 =>
             new Vector3(_onFillAnimationPunchStrength, _onFillAnimationPunchStrength, 0);
 
-        protected override void Awake()
-        {
-            base.Awake();
-            _player = PlayerProvider.Instance.Player;
-        }
-
         private void OnEnable()
         {
-            _player.DashCooldownTimerTick += UpdateBarFill;
-            _player.DashCooldownFinished += PlayFullBarScaleAnimation;
+            _playerInformation.DashCooldownTimerTick += UpdateBarFill;
+            _playerInformation.DashCooldownFinished += PlayFullBarScaleAnimation;
         }
 
         private void OnDisable()
         {
-            _player.DashCooldownTimerTick -= UpdateBarFill;
-            _player.DashCooldownFinished -= PlayFullBarScaleAnimation;
+            _playerInformation.DashCooldownTimerTick -= UpdateBarFill;
+            _playerInformation.DashCooldownFinished -= PlayFullBarScaleAnimation;
         }
 
         private void UpdateBarFill(float valueRatio)

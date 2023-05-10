@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Enemies.State_Machine;
-using Game_Managers;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Pickable_Items;
@@ -24,12 +23,12 @@ namespace Enemies
         private GeneralEnemySettings _generalEnemySettings;
 
         [Inject]
-        private void Construct(GeneralEnemySettings generalEnemySettings)
+        private void Construct(GeneralEnemySettings generalEnemySettings, IEnemyTarget enemyTarget)
         {
             _generalEnemySettings = generalEnemySettings;
+            Target = enemyTarget; // TODO: Add enemy trigger zone from which Target will be got 
         }
 
-        public event Action<CharacterState> StateChanged;
         public event Action<float> HitPointsCountChanged;
 
         public float HitPointCountRatio => _character.HitPointCountRatio;
@@ -98,7 +97,6 @@ namespace Enemies
             _idHolder = GetComponent<IdHolder>();
             _enemyMovement = GetComponent<EnemyMovement>();
             _character = GetComponent<Character>();
-            Target = PlayerProvider.Instance.Player;
             _enemyMovement.Initialize(EnemySettings.MovementSettings, EnemySettings.TargetPathfinderSettingsSection);
         }
 
@@ -109,7 +107,6 @@ namespace Enemies
 
         private void OnStateChanged(CharacterState newState)
         {
-            StateChanged?.Invoke(newState);
             if (newState == CharacterState.Dead)
             {
                 _enemyStateMachineAI.StopStateMachine();

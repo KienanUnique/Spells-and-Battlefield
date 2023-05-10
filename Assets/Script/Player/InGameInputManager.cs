@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Player
 {
-    public class InGameInputManager : Singleton<InGameInputManager>
+    public class InGameInputManager : Singleton<InGameInputManager>, IPlayerInput, IMenuInput
     {
         private const float MinimalInputMagnitude = 0.5f;
 

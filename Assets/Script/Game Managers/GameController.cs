@@ -4,6 +4,7 @@ using Interfaces;
 using Player;
 using UI;
 using UnityEngine;
+using Zenject;
 
 namespace Game_Managers
 {
@@ -13,27 +14,30 @@ namespace Game_Managers
     {
         [SerializeField] private InGameManagerUI _inGameManagerUI;
         [SerializeField] private ScenesSwitcher _scenesSwitcher;
-        [SerializeField] private PostProcessingController _postProcessingController;
 
         private ValueWithReactionOnChange<GameState> _currentGameState;
         private GameState _lastState;
         private bool _needSubscribeOnEventsOnlyInStart = true;
-        private IPlayer _player;
-        private InGameInputManager _inGameInputManager;
+        private IPlayerInformation _playerInformation;
+        private InGameInputManager _inGameMenuInput;
         private ITimeController _timeController;
+
+        [Inject]
+        private void Construct(IPlayerInformation playerInformation)
+        {
+            _playerInformation = playerInformation;
+        }
 
         protected override void SpecialAwakeAction()
         {
             _currentGameState = new ValueWithReactionOnChange<GameState>(GameState.Playing);
             _lastState = _currentGameState.Value;
-            _inGameInputManager = GetComponent<InGameInputManager>();
+            _inGameMenuInput = GetComponent<InGameInputManager>();
             _timeController = GetComponent<TimeController>();
-            _player = PlayerProvider.Instance.Player;
         }
 
         private void Start()
         {
-            _player.Initialize(_inGameInputManager, _timeController, _postProcessingController);
             if (_needSubscribeOnEventsOnlyInStart)
             {
                 _needSubscribeOnEventsOnlyInStart = false;
@@ -99,27 +103,27 @@ namespace Game_Managers
 
         private void SubscribeOnPlayingEvents()
         {
-            _player.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
-            _inGameInputManager.GamePause += OnGamePauseInputted;
+            _playerInformation.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
+            _inGameMenuInput.GamePause += OnOpenMenuInputted;
         }
 
         private void UnsubscribeFromPlayingEvents()
         {
-            _player.CurrentCharacterState.AfterValueChanged -= OnPlayerStateChanged;
-            _inGameInputManager.GamePause -= OnGamePauseInputted;
+            _playerInformation.CurrentCharacterState.AfterValueChanged -= OnPlayerStateChanged;
+            _inGameMenuInput.GamePause -= OnOpenMenuInputted;
         }
 
         private void SubscribeOnPauseEvents()
         {
-            _inGameInputManager.GameContinue += OnGameContinueRequestedInputted;
-            _inGameManagerUI.GameContinueRequested += OnGameContinueRequestedInputted;
+            _inGameMenuInput.GameContinue += OnCloseMenuInputted;
+            _inGameManagerUI.GameContinueRequested += OnCloseMenuInputted;
             _inGameManagerUI.RestartRequested += OnRestartRequested;
         }
 
         private void UnsubscribeFromPauseEvents()
         {
-            _inGameInputManager.GameContinue -= OnGameContinueRequestedInputted;
-            _inGameManagerUI.GameContinueRequested -= OnGameContinueRequestedInputted;
+            _inGameMenuInput.GameContinue -= OnCloseMenuInputted;
+            _inGameManagerUI.GameContinueRequested -= OnCloseMenuInputted;
             _inGameManagerUI.RestartRequested -= OnRestartRequested;
         }
 
@@ -160,18 +164,18 @@ namespace Game_Managers
             {
                 case GameState.Playing:
                     SubscribeOnPlayingEvents();
-                    _inGameInputManager.SwitchToGameInput();
+                    _inGameMenuInput.SwitchToGameInput();
                     _inGameManagerUI.SwitchToGameUI();
                     break;
                 case GameState.GameOver:
                     SubscribeOnGameOverEvents();
-                    _inGameInputManager.SwitchToUIInput();
+                    _inGameMenuInput.SwitchToUIInput();
                     _inGameManagerUI.SwitchToDeathMenuUI();
                     break;
                 case GameState.Pause:
                     SubscribeOnPauseEvents();
                     _timeController.StopTime();
-                    _inGameInputManager.SwitchToUIInput();
+                    _inGameMenuInput.SwitchToUIInput();
                     _inGameManagerUI.SwitchToPauseScreen();
                     break;
                 default:
@@ -193,12 +197,12 @@ namespace Game_Managers
             }
         }
 
-        private void OnGamePauseInputted()
+        private void OnOpenMenuInputted()
         {
             _currentGameState.Value = GameState.Pause;
         }
 
-        private void OnGameContinueRequestedInputted()
+        private void OnCloseMenuInputted()
         {
             _currentGameState.Value = _lastState;
         }

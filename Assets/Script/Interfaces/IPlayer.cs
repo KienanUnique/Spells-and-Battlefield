@@ -1,18 +1,9 @@
-﻿using System;
-using Game_Managers;
-using Game_Managers.Time_Controller;
-using Interfaces.Pickers;
-using Player;
+﻿using Interfaces.Pickers;
 
 namespace Interfaces
 {
-    public interface IPlayer : ISpellInteractable, ICharacter, IInteractable, IEnemyTarget, IDroppedItemsPicker,
-        IPhysicsInteractable, IDroppedEffectPicker, IDroppedSpellPicker, IMovable
+    public interface IPlayer : IPlayerInformation, ISpellInteractable, ICharacter, IInteractable, IEnemyTarget,
+        IDroppedItemsPicker, IPhysicsInteractable, IDroppedEffectPicker, IDroppedSpellPicker, IMovable
     {
-        public event Action DashCooldownFinished;
-        public event Action<float> DashCooldownTimerTick;
-
-        public void Initialize(InGameInputManager inputManager, ITimeControllerForPlayer timeController,
-            PostProcessingController postProcessingController);
     }
 }

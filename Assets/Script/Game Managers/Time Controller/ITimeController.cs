@@ -1,8 +1,9 @@
 ﻿namespace Game_Managers.Time_Controller
 {
-    public interface ITimeController : ITimeControllerForPlayer
+    public interface ITimeController
     {
         public void StopTime();
         public void RestoreTimeToPrevious();
+        public void RestoreTimeToNormal();
     }
 }
