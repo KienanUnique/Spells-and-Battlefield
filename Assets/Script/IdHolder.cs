@@ -13,19 +13,12 @@ public class IdHolder : MonoBehaviour, IInteractable
         {
             return interactableObject.Id == Id ? 0 : 1;
         }
-        else
-        {
-            throw new InvalidCastException();
-        }
+
+        throw new InvalidCastException();
     }
 
     private void Start()
     {
-        Id = InteractableGameObjectsBankOfIds.Instance.GetId();
-    }
-
-    private void OnDestroy()
-    {
-        InteractableGameObjectsBankOfIds.Instance.ReturnId(Id);
+        Id = gameObject.GetInstanceID();
     }
 }
