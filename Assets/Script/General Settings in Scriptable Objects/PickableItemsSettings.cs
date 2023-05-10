@@ -4,7 +4,7 @@ using UnityEngine;
 namespace General_Settings_in_Scriptable_Objects
 {
     [CreateAssetMenu(fileName = "Pickable Items Settings",
-        menuName = "Spells and Battlefield/General Settings/Pickable Items Settings", order = 0)]
+        menuName = "Spells and Battlefield/Settings/General Settings/Pickable Items Settings", order = 0)]
     public class PickableItemsSettings : ScriptableObject
     {
         [SerializeField] private float _animationMinimumHeight = 1.6f;

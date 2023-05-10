@@ -1,5 +1,4 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using Game_Managers;
 using Interfaces;
 using UnityEngine;
@@ -11,7 +10,7 @@ namespace UI.Bar
     {
         [SerializeField] private Image _foreground;
         [SerializeField] private float _onFillAnimationDurationSeconds = 0.3f;
-        [SerializeField] private float _onFillAnimationPunchStrength = 0.5f;
+        [SerializeField] private float _onFillAnimationPunchStrength = 0.15f;
 
         private IPlayer _player;
 

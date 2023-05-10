@@ -3,7 +3,10 @@
 public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     public static T Instance { get; private set; }
-    protected abstract void SpecialAwakeAction();
+
+    protected virtual void SpecialAwakeAction()
+    {
+    }
 
     private void Awake()
     {

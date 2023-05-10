@@ -1,7 +1,9 @@
 ﻿using DG.Tweening;
 using Game_Managers;
 using General_Settings_in_Scriptable_Objects;
+using UnityEditor;
 using UnityEngine;
+using Zenject;
 
 namespace UI
 {
@@ -10,6 +12,12 @@ namespace UI
         private UIAnimationSettings _settings;
         protected Transform _cashedTransform;
         protected GameObject _cashedGameObject;
+
+        [Inject]
+        private void Construct(UIAnimationSettings settings)
+        {
+            _settings = settings;
+        }
 
         public virtual void Appear()
         {
@@ -31,7 +39,6 @@ namespace UI
         {
             _cashedTransform = transform;
             _cashedGameObject = gameObject;
-            _settings = SettingsProvider.Instance.UIAnimationSettings;
         }
     }
 }

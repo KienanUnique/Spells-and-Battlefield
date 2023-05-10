@@ -1,26 +1,27 @@
 using System;
 using System.Collections.Generic;
+using General_Settings_in_Scriptable_Objects;
 using Spells;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    [SerializeField] protected float _maximumCountOfHitPoints;
     protected ValueWithReactionOnChange<float> _currentCountCountOfHitPoints;
     protected List<IContinuousEffect> _currentEffects;
     public event Action<CharacterState> StateChanged;
     public event Action<float> HitPointsCountChanged;
-    public float HitPointCountRatio => _currentCountCountOfHitPoints.Value / _maximumCountOfHitPoints;
+    public float HitPointCountRatio => _currentCountCountOfHitPoints.Value / CharacterSettings.MaximumCountOfHitPoints;
     public ValueWithReactionOnChange<CharacterState> CurrentState { get; private set; }
     protected abstract string NamePrefix { get; }
+    protected abstract CharacterSettingsSection CharacterSettings { get; }
 
     public void HandleHeal(int countOfHitPoints)
     {
         if (CurrentState.Value == CharacterState.Dead) return;
         _currentCountCountOfHitPoints.Value += countOfHitPoints;
-        if (_currentCountCountOfHitPoints.Value > _maximumCountOfHitPoints)
+        if (_currentCountCountOfHitPoints.Value > CharacterSettings.MaximumCountOfHitPoints)
         {
-            _currentCountCountOfHitPoints.Value = _maximumCountOfHitPoints;
+            _currentCountCountOfHitPoints.Value = CharacterSettings.MaximumCountOfHitPoints;
         }
 
         Debug.Log(
@@ -52,7 +53,7 @@ public abstract class Character : MonoBehaviour
     private void Awake()
     {
         CurrentState = new ValueWithReactionOnChange<CharacterState>(CharacterState.Alive);
-        _currentCountCountOfHitPoints = new ValueWithReactionOnChange<float>(_maximumCountOfHitPoints);
+        _currentCountCountOfHitPoints = new ValueWithReactionOnChange<float>(CharacterSettings.MaximumCountOfHitPoints);
         _currentEffects = new List<IContinuousEffect>();
     }
 

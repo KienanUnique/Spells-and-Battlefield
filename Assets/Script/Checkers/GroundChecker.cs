@@ -1,5 +1,6 @@
-using Game_Managers;
+using General_Settings_in_Scriptable_Objects;
 using UnityEngine;
+using Zenject;
 
 namespace Checkers
 {
@@ -7,11 +8,17 @@ namespace Checkers
     public class GroundChecker : CheckerBase
     {
         private LayerMask _cashedGroundMask;
+
+        [Inject]
+        private void Construct(GroundLayerMaskSetting groundLayerMaskSetting)
+        {
+            _cashedGroundMask = groundLayerMaskSetting.Mask;
+        }
+
         protected override LayerMask NeedObjectsMask => _cashedGroundMask;
 
         protected override void SpecialAwakeAction()
         {
-            _cashedGroundMask = SettingsProvider.Instance.GroundLayerMaskSetting.Mask;
         }
     }
 }

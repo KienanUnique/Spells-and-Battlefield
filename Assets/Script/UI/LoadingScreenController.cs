@@ -7,7 +7,7 @@ namespace UI
     public class LoadingScreenController : UIElementController
     {
         [SerializeField] private Image _loadingIcon;
-        [SerializeField] private float _rotateAnimationDuration;
+        [SerializeField] private float _rotateAnimationDuration = 0.3f;
 
         private Transform _cashedBackgroundTransform;
         private Transform _cashedLoadingIconTransform;

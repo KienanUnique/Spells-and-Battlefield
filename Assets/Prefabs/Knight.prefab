@@ -1708,7 +1708,6 @@ GameObject:
   - component: {fileID: 217853341345618375}
   - component: {fileID: 700351198359705668}
   - component: {fileID: 3893434166212012850}
-  - component: {fileID: 730085658377649740}
   m_Layer: 9
   m_Name: Knight
   m_TagString: Untagged
@@ -1787,10 +1786,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b44b65a28e0b7843b36a5902a4d297b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _settings: {fileID: 11400000, guid: aecfa3bb47d13344a9cae947558288cb, type: 2}
   _enemyStateMachineAI: {fileID: 6049343359790611563}
   _spellToDrop: {fileID: 11400000, guid: 729933c9d38cfdf4cb641b94b443364b, type: 2}
-  _player: {fileID: 0}
   _knightVisual: {fileID: 3080045603991402992}
   _swordTargetSelector: {fileID: 7758560344049107641}
 --- !u!114 &217853341345618375
@@ -1805,8 +1802,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d4b5ec528f63c64aa0c44245df35c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maximumCountOfHitPoints: 15
-  _attackSwordDamage: 7
 --- !u!114 &700351198359705668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1819,9 +1814,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8976c1506ed808d4890374e4fd7723fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveForce: 2500
-  _maximumSpeed: 10
-  _frictionCoefficient: 0.4
 --- !u!114 &3893434166212012850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1850,20 +1842,6 @@ MonoBehaviour:
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
---- !u!114 &730085658377649740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4773416566356749373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af7697b0ef8f4651906868066aca5491, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _updateDestinationCooldownSeconds: 0.75
-  _nextWaypointDistance: 2
 --- !u!1 &4829227311415161147
 GameObject:
   m_ObjectHideFlags: 0

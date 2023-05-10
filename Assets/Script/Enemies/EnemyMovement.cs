@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using General_Settings_in_Scriptable_Objects;
 using Pathfinding;
 using UnityEngine;
 
@@ -7,14 +8,23 @@ namespace Enemies
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Seeker))]
-    [RequireComponent(typeof(TargetPathfinder))]
-    public class EnemyMovement : MovementBase
+    public class EnemyMovement : MovementBase, ICoroutineStarter
     {
         private ValueWithReactionOnChange<bool> _isMoving;
         private TargetPathfinder _targetPathfinder;
         private Coroutine _followPathCoroutine = null;
+        private MovementSettingsSectionBase _movementSettings;
         public event Action<bool> MovingStateChanged;
         public Vector3 CurrentPosition => _rigidbody.position;
+        protected override MovementSettingsSectionBase MovementBaseSettings => _movementSettings;
+
+        public void Initialize(MovementSettingsSectionBase movementSettings,
+            TargetPathfinderSettingsSection targetPathfinderSettings)
+        {
+            _movementSettings = movementSettings;
+            var seeker = GetComponent<Seeker>();
+            _targetPathfinder = new TargetPathfinder(seeker, targetPathfinderSettings, this);
+        }
 
         public void StartMovingToTarget(Transform target)
         {
@@ -47,7 +57,6 @@ namespace Enemies
         protected override void SpecialAwakeAction()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _targetPathfinder = GetComponent<TargetPathfinder>();
             _isMoving = new ValueWithReactionOnChange<bool>(false);
         }
 
@@ -71,7 +80,8 @@ namespace Enemies
                 if (_targetPathfinder.TryGetNextWaypoint(out var waypointPosition))
                 {
                     SetDirectionTowardsPoint(waypointPosition, ref direction);
-                    _rigidbody.AddForce(_moveForce * Time.deltaTime * _currentSpeedRatio * direction);
+                    _rigidbody.AddForce(
+                        MovementBaseSettings.MoveForce * Time.deltaTime * _currentSpeedRatio * direction);
                     ApplyFriction(direction);
                     TryLimitCurrentSpeed();
                 }
@@ -99,8 +109,9 @@ namespace Enemies
         private void ApplyFriction(Vector3 needMoveDirection)
         {
             var currentVelocity = _rigidbody.velocity;
-            var needFrictionDirection = Time.deltaTime * _currentSpeedRatio * _frictionCoefficient * _moveForce *
-                                        currentVelocity.magnitude * (needMoveDirection - currentVelocity.normalized);
+            var needFrictionDirection = Time.deltaTime * _currentSpeedRatio * MovementBaseSettings.FrictionCoefficient *
+                                        MovementBaseSettings.MoveForce * currentVelocity.magnitude *
+                                        (needMoveDirection - currentVelocity.normalized);
             _rigidbody.AddForce(needFrictionDirection);
         }
     }

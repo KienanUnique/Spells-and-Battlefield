@@ -1,11 +1,11 @@
 ﻿using System;
 using Checkers;
 using DG.Tweening;
-using Game_Managers;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces.Pickers;
 using Triggers;
 using UnityEngine;
+using Zenject;
 
 namespace Pickable_Items
 {
@@ -18,12 +18,19 @@ namespace Pickable_Items
         [SerializeField] private DroppedItemsPickerTrigger _pickerTrigger;
         [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private Transform _visualObjectTransform;
-
-        private PickableItemsSettings _settings;
-        private GroundLayerMaskSetting _groundMaskSetting;
+        private PickableItemsSettings _pickableItemsSettings;
+        private GroundLayerMaskSetting _groundLayerMaskSetting;
         private Rigidbody _rigidbody;
         private ItemStates _currentState;
         private TStoredObject _storedObject;
+
+        [Inject]
+        private void Construct(GroundLayerMaskSetting groundLayerMaskSetting,
+            PickableItemsSettings pickableItemsSettings)
+        {
+            _groundLayerMaskSetting = groundLayerMaskSetting;
+            _pickableItemsSettings = pickableItemsSettings;
+        }
 
         protected TStoredObject StoredObject
         {
@@ -48,7 +55,7 @@ namespace Pickable_Items
         public void DropItem(TStoredObject storedObject, Vector3 direction)
         {
             StoredObject = storedObject;
-            _rigidbody.AddForce(_settings.DropForce * direction, ForceMode.Impulse);
+            _rigidbody.AddForce(_pickableItemsSettings.DropForce * direction, ForceMode.Impulse);
         }
 
         protected abstract void Initialize();
@@ -59,8 +66,6 @@ namespace Pickable_Items
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _groundMaskSetting = SettingsProvider.Instance.GroundLayerMaskSetting;
-            _settings = SettingsProvider.Instance.PickableItemsSettings;
             _currentState = ItemStates.NotInitialized;
         }
 
@@ -105,22 +110,24 @@ namespace Pickable_Items
                     var startRayCheckPosition = cashedTransform.position;
                     startRayCheckPosition.y += GroundCheckOffsetY;
                     if (Physics.Raycast(startRayCheckPosition, Vector3.down,
-                            out var hitGround, MaxGroundRayDistance + GroundCheckOffsetY, _groundMaskSetting.Mask))
+                            out var hitGround, MaxGroundRayDistance + GroundCheckOffsetY, _groundLayerMaskSetting.Mask))
                     {
                         visualObjectSequence.Append(_visualObjectTransform.DOMoveY(
-                            hitGround.point.y + _settings.AnimationMinimumHeight, _settings.YAnimationDuration));
+                            hitGround.point.y + _pickableItemsSettings.AnimationMinimumHeight,
+                            _pickableItemsSettings.YAnimationDuration));
                     }
                 }
 
                 visualObjectSequence.AppendCallback(() => _visualObjectTransform
-                    .DOMoveY(cashedTransform.position.y + _settings.AnimationMaximumHeight,
-                        _settings.YAnimationDuration)
+                    .DOMoveY(cashedTransform.position.y + _pickableItemsSettings.AnimationMaximumHeight,
+                        _pickableItemsSettings.YAnimationDuration)
                     .SetLoops(-1, LoopType.Yoyo)
-                    .SetEase(_settings.YMovingEase)
+                    .SetEase(_pickableItemsSettings.YMovingEase)
                     .SetLink(gameObject));
                 _visualObjectTransform
-                    .DORotate(new Vector3(0, 360, 0), _settings.RotateAnimationDuration, RotateMode.FastBeyond360)
-                    .SetEase(_settings.RotatingEase)
+                    .DORotate(new Vector3(0, 360, 0), _pickableItemsSettings.RotateAnimationDuration,
+                        RotateMode.FastBeyond360)
+                    .SetEase(_pickableItemsSettings.RotatingEase)
                     .SetLoops(-1, LoopType.Restart)
                     .SetLink(gameObject);
                 _currentState = ItemStates.Idle;
@@ -135,8 +142,8 @@ namespace Pickable_Items
             }
 
             SpecialAppearAction();
-            _visualObjectTransform.DOScale(Vector3.one, _settings.AppearScaleAnimationDuration)
-                .SetEase(_settings.SizeChangeEase)
+            _visualObjectTransform.DOScale(Vector3.one, _pickableItemsSettings.AppearScaleAnimationDuration)
+                .SetEase(_pickableItemsSettings.SizeChangeEase)
                 .SetLink(gameObject);
         }
 
@@ -145,8 +152,8 @@ namespace Pickable_Items
             if (CanBePickedUpByThisPeeker(picker))
             {
                 SpecialPickUpAction(picker);
-                _visualObjectTransform.DOScale(Vector3.zero, _settings.DisappearScaleAnimationDuration)
-                    .SetEase(_settings.SizeChangeEase)
+                _visualObjectTransform.DOScale(Vector3.zero, _pickableItemsSettings.DisappearScaleAnimationDuration)
+                    .SetEase(_pickableItemsSettings.SizeChangeEase)
                     .SetLink(gameObject)
                     .OnComplete(OnPickupAnimationFinished);
                 if (_currentState != ItemStates.Idle)

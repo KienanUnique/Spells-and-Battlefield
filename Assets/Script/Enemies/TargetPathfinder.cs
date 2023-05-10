@@ -1,29 +1,41 @@
 ﻿using System.Collections;
+using General_Settings_in_Scriptable_Objects;
 using Pathfinding;
 using UnityEngine;
 
 namespace Enemies
 {
-    [RequireComponent(typeof(Seeker))]
-    public class TargetPathfinder : MonoBehaviour
+    public class TargetPathfinder
     {
-        [SerializeField] private float _updateDestinationCooldownSeconds;
-        [SerializeField] private float _nextWaypointDistance;
-        private Seeker _seeker;
+        private readonly Seeker _seeker;
+        private readonly TargetPathfinderSettingsSection _settings;
+        private readonly ICoroutineStarter _coroutineStarter;
+        private readonly Transform _seekerObjectTransform;
         private Path _currentPath;
         private int _currentWaypointIndex;
-        private Transform _cashedTransform;
+        private Coroutine _tryUpdateCurrentWaypointCoroutine;
+        private Coroutine _updatePathToTargetCoroutine;
+
+        public TargetPathfinder(Seeker seeker, TargetPathfinderSettingsSection settings,
+            ICoroutineStarter coroutineStarter)
+        {
+            _seeker = seeker;
+            _seekerObjectTransform = _seeker.transform;
+            _settings = settings;
+            _coroutineStarter = coroutineStarter;
+        }
 
         public void StartUpdatingPathForTarget(Transform target)
         {
             StopUpdatingPath();
-            StartCoroutine(UpdatePathToTarget(target));
-            StartCoroutine(TryUpdateCurrentWaypoint());
+            _updatePathToTargetCoroutine = _coroutineStarter.StartCoroutine(UpdatePathToTarget(target));
+            _tryUpdateCurrentWaypointCoroutine = _coroutineStarter.StartCoroutine(TryUpdateCurrentWaypoint());
         }
 
         public void StopUpdatingPath()
         {
-            StopAllCoroutines();
+            TryStopCoroutine(_updatePathToTargetCoroutine);
+            TryStopCoroutine(_tryUpdateCurrentWaypointCoroutine);
         }
 
         public bool TryGetNextWaypoint(out Vector3 position)
@@ -38,10 +50,12 @@ namespace Enemies
             return true;
         }
 
-        private void Awake()
+        private void TryStopCoroutine(Coroutine coroutineToStop)
         {
-            _seeker = GetComponent<Seeker>();
-            _cashedTransform = transform;
+            if (coroutineToStop != null)
+            {
+                _coroutineStarter.StopCoroutine(coroutineToStop);
+            }
         }
 
         private IEnumerator TryUpdateCurrentWaypoint()
@@ -51,8 +65,7 @@ namespace Enemies
             {
                 if (_currentPath != null && _currentWaypointIndex < _currentPath.vectorPath.Count
                                          && Vector3.Distance(_currentPath.vectorPath[_currentWaypointIndex],
-                                             transform.position) <=
-                                         _nextWaypointDistance)
+                                             _seekerObjectTransform.position) <= _settings.NextWaypointDistance)
                 {
                     _currentWaypointIndex++;
                 }
@@ -63,12 +76,12 @@ namespace Enemies
 
         private IEnumerator UpdatePathToTarget(Transform target)
         {
-            var waitForSeconds = new WaitForSeconds(_updateDestinationCooldownSeconds);
+            var waitForSeconds = new WaitForSeconds(_settings.UpdateDestinationCooldownSeconds);
             while (true)
             {
                 if (_seeker.IsDone())
                 {
-                    _seeker.StartPath(_cashedTransform.position, target.position, OnPathComplete);
+                    _seeker.StartPath(_seekerObjectTransform.position, target.position, OnPathComplete);
                 }
 
                 yield return waitForSeconds;

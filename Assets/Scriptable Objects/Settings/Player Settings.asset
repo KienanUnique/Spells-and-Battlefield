@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 908a05f5f4584214a530a2d18e858473, type: 3}
+  m_Name: Player Settings
+  m_EditorClassIdentifier: 
+  _cameraEffects:
+    _rotationAngle: 30
+    _rotateDuration: 0.5
+    _cameraIncreasedFOV: 130
+    _cameraNormalFOV: 100
+    _changeCameraFOVAnimationDuration: 0.1
+    _changeCameraFOVAnimationEase: 9
+  _look:
+    _upperLimit: -40
+    _bottomLimit: 70
+  _movement:
+    _moveForce: 4500
+    _maximumSpeed: 15
+    _frictionCoefficient: 0.175
+    _jumpForce: 800
+    _dashForce: 1500
+    _normalGravityForce: 30
+    _wallRunningGravityForce: 2
+    _dashCooldownSeconds: 5
+    _dashSpeedLimitationsDisablingForSeconds: 0.3
+  _character:
+    _maximumCountOfHitPoints: 30

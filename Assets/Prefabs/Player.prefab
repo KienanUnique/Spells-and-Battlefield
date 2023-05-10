@@ -287,15 +287,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4a49af7cb0c7845afc59eb88fcbe8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveForce: 4500
-  _maximumSpeed: 15
-  _frictionCoefficient: 0.175
-  _jumpForce: 800
-  _dashForce: 1500
-  _normalGravityForce: 30
-  _wallRunningGravityForce: 2
-  _dashCooldownSeconds: 5
-  _dashSpeedLimitationsDisablingForSeconds: 0.3
   _groundChecker: {fileID: 7524277153600398822}
   _wallChecker: {fileID: 1408449592405486887}
 --- !u!114 &7864329448273911007
@@ -312,10 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 3951135657180910355}
   _cameraRootTransform: {fileID: 7751128588636151014}
-  _playerController: {fileID: 846477161179582523}
-  _upperLimit: -40
-  _bottomLimit: 70
-  _mouseSensitivity: 21
+  _rotateObject: {fileID: 974464277607573819}
 --- !u!114 &6121561518250540764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,7 +347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e265b715d32591498e4462ab6370a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maximumCountOfHitPoints: 50
 --- !u!95 &1671144018873720890
 Animator:
   serializedVersion: 5
@@ -1524,7 +1511,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 759
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1556,7 +1543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -1776,12 +1763,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 774ffaa00e10451a8ef40c49d9bc0298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotationAngle: 30
-  _rotateDuration: 0.5
-  _cameraIncreasedFOV: 130
-  _cameraNormalFOV: 100
-  _changeCameraFOVAnimationDuration: 0.1
-  _changeCameraFOVAnimationEase: 9
   _camera: {fileID: 3951135657180910355}
 --- !u!1 &4420877526216856891
 GameObject:

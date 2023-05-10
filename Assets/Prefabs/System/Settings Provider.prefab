@@ -47,3 +47,4 @@ MonoBehaviour:
   _groundLayerMaskSetting: {fileID: 11400000, guid: aee4bbec25e1db54ab3f7d241df33cdd, type: 2}
   _pickableItemsSettings: {fileID: 11400000, guid: 6c627cc36b907fe49a4ce4ed41401468, type: 2}
   _uiAnimationSettings: {fileID: 11400000, guid: 56bf131e31d75194e8f15a3f4bb5ed31, type: 2}
+  _playerSettings: {fileID: 11400000, guid: 4228318d54c7bc0459c17d466d500aea, type: 2}

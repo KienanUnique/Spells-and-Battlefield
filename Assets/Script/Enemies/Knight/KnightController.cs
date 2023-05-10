@@ -1,20 +1,29 @@
-﻿using UnityEngine;
+﻿using General_Settings_in_Scriptable_Objects;
+using UnityEngine;
+using Zenject;
 
 namespace Enemies.Knight
 {
-    [RequireComponent(typeof(KnightCharacter))]
     [RequireComponent(typeof(KnightCharacter))]
     public class KnightController : EnemyControllerBase
     {
         [SerializeField] private KnightVisual _knightVisual;
         [SerializeField] private BoxColliderTargetSelector _swordTargetSelector;
         protected override EnemyVisualBase EnemyVisual => _knightVisual;
+        protected override IEnemySettings EnemySettings => _knightSettings;
         private KnightCharacter _knightCharacter;
+        private KnightSettings _knightSettings;
+
+        [Inject]
+        private void Construct(KnightSettings knightSettings)
+        {
+            _knightSettings = knightSettings;
+        }
 
         public void StartSwordAttack(Transform target)
         {
             _knightVisual.StartAttackWithSwordAnimation();
-            _enemyMovement.StartMovingToTarget(Target.MainTransform);
+            _enemyMovement.StartMovingToTarget(target);
         }
 
         public void StopSwordAttack()

@@ -9,6 +9,8 @@ namespace Player
     {
         private const float MinimalInputMagnitude = 0.5f;
 
+        [SerializeField] private float _inGameMouseSensitivity = 21f;
+
         private MainControls _mainControls;
         private float _mouseX, _mouseY;
 
@@ -83,7 +85,8 @@ namespace Player
             {
                 readDirection = _mainControls.Character.Move.ReadValue<Vector2>().normalized;
                 MoveInputted?.Invoke(readDirection.magnitude > MinimalInputMagnitude ? readDirection : Vector2.zero);
-                LookInputted?.Invoke(_mainControls.Character.Look.ReadValue<Vector2>());
+                LookInputted?.Invoke(_inGameMouseSensitivity * Time.unscaledDeltaTime *
+                                     _mainControls.Character.Look.ReadValue<Vector2>());
                 yield return null;
             }
         }
