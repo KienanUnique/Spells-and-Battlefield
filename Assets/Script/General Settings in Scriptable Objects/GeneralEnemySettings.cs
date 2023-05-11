@@ -7,12 +7,10 @@ namespace General_Settings_in_Scriptable_Objects
         menuName = "Spells and Battlefield/Settings/General Settings/Enemy Settings", order = 0)]
     public class GeneralEnemySettings : ScriptableObject
     {
-        [SerializeField] private PickableSpellController _pickableSpellPrefab;
         [Min(1f)] [SerializeField] private float _delayInSecondsBeforeDestroy = 1f;
         [SerializeField] private Vector3 _spawnSpellOffset = new Vector3(0, 3f, 0);
 
         public Vector3 SpawnSpellOffset => _spawnSpellOffset;
         public float DelayInSecondsBeforeDestroy => _delayInSecondsBeforeDestroy;
-        public PickableSpellController PickableSpellPrefab => _pickableSpellPrefab;
     }
 }

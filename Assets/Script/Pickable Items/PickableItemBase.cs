@@ -10,7 +10,7 @@ using Zenject;
 namespace Pickable_Items
 {
     [RequireComponent(typeof(Rigidbody))]
-    public abstract class PickableItemBase<TStoredObject> : MonoBehaviour
+    public abstract class PickableItemBase<TStoredObject> : MonoBehaviour, IPickableItem
     {
         private const float MaxGroundRayDistance = 2f;
         private const float GroundCheckOffsetY = 20f;
@@ -52,9 +52,13 @@ namespace Pickable_Items
             Idle
         }
 
-        public void DropItem(TStoredObject storedObject, Vector3 direction)
+        public void SetStoredData(TStoredObject storedObject)
         {
             StoredObject = storedObject;
+        }
+
+        public void DropItemTowardsDirection(Vector3 direction)
+        {
             _rigidbody.AddForce(_pickableItemsSettings.DropForce * direction, ForceMode.Impulse);
         }
 

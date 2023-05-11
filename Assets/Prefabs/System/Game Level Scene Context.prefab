@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8945726531586246359}
   - component: {fileID: 1619584736600135485}
   - component: {fileID: 6921710625290566928}
+  - component: {fileID: 4819919980478210988}
   m_Layer: 0
   m_Name: Game Level Scene Context
   m_TagString: Untagged
@@ -50,6 +51,7 @@ MonoBehaviour:
   _monoInstallers:
   - {fileID: 6921710625290566928}
   - {fileID: 1619584736600135485}
+  - {fileID: 4819919980478210988}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -93,3 +95,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inGameMenuInput: {fileID: 0}
+--- !u!114 &4819919980478210988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8945726531586246344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 920842a47dc44fd787331ae319ba0372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pickableSpellsFactory:
+    _pickableSpellPrefab: {fileID: 4960876760894594233, guid: e5081c11df2aa0745a2264b49c70b283, type: 3}

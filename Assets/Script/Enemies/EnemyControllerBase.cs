@@ -21,12 +21,15 @@ namespace Enemies
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected SpellBase _spellToDrop;
         private GeneralEnemySettings _generalEnemySettings;
+        private IPickableSpellsFactory _spellsFactory;
 
         [Inject]
-        private void Construct(GeneralEnemySettings generalEnemySettings, IEnemyTarget enemyTarget)
+        private void Construct(GeneralEnemySettings generalEnemySettings, IEnemyTarget enemyTarget,
+            IPickableSpellsFactory spellsFactory)
         {
             _generalEnemySettings = generalEnemySettings;
-            Target = enemyTarget; // TODO: Add enemy trigger zone from which Target will be got 
+            Target = enemyTarget; // TODO: Add enemy trigger zone from which Target will be got
+            _spellsFactory = spellsFactory;
         }
 
         public event Action<float> HitPointsCountChanged;
@@ -127,10 +130,8 @@ namespace Enemies
                 ? cashedTransform.forward
                 : (Target.MainTransform.position - cashedTransform.position).normalized;
             var spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
-            var pickableSpellController =
-                Instantiate(_generalEnemySettings.PickableSpellPrefab.gameObject, spawnPosition, Quaternion.identity)
-                    .GetComponent<PickableSpellController>();
-            pickableSpellController.DropItem(_spellToDrop, dropDirection);
+            var pickableSpell = _spellsFactory.Create(_spellToDrop, spawnPosition);
+            pickableSpell.DropItemTowardsDirection(dropDirection);
         }
 
         private IEnumerator DestroyAfterDelay()
