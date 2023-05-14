@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e06d410321be49d0b16006b380f1c29e, type: 3}
+  m_Name: Orange Orb
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 7329610058335965431, guid: 14d387ad6a00da24c8ba4a83becd5030, type: 3}

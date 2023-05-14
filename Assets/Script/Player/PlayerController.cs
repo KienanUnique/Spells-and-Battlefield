@@ -1,6 +1,8 @@
 using System;
 using Interfaces;
 using Spells;
+using Spells.Continuous_Effect;
+using Spells.Spell;
 using UnityEngine;
 using Zenject;
 
@@ -202,7 +204,8 @@ namespace Player
         {
             if (_playerSpellsManager.IsSpellSelected)
             {
-                _playerVisual.PlayUseSpellAnimation(_playerSpellsManager.SelectedSpellHandsAnimatorController);
+                _playerVisual.PlayUseSpellAnimation(_playerSpellsManager.SelectedSpellAnimationInformation
+                    .CastAnimationAnimatorOverrideController);
             }
         }
 

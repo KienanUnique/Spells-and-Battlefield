@@ -5,6 +5,8 @@ using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Pickable_Items;
 using Spells;
+using Spells.Continuous_Effect;
+using Spells.Spell.Scriptable_Objects;
 using UnityEngine;
 using Zenject;
 
@@ -19,7 +21,7 @@ namespace Enemies
         protected Character _character;
         protected EnemyMovement _enemyMovement;
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
-        [SerializeField] protected SpellBase _spellToDrop;
+        [SerializeField] protected SpellScriptableObject _spellToDrop;
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableSpellsFactory _spellsFactory;
 
@@ -130,7 +132,7 @@ namespace Enemies
                 ? cashedTransform.forward
                 : (Target.MainTransform.position - cashedTransform.position).normalized;
             var spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
-            var pickableSpell = _spellsFactory.Create(_spellToDrop, spawnPosition);
+            var pickableSpell = _spellsFactory.Create(_spellToDrop.GetImplementationObject(), spawnPosition);
             pickableSpell.DropItemTowardsDirection(dropDirection);
         }
 

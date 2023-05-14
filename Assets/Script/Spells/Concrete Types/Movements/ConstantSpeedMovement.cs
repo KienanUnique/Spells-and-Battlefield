@@ -1,6 +1,7 @@
-using Spells.Abstract_Types.Implementation_Bases;
-using Spells.Abstract_Types.Scriptable_Objects;
+using Spells.Abstract_Types.Implementation_Bases.Implementations;
+using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces;
+using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace Spells.Concrete_Types.Movements
@@ -16,13 +17,11 @@ namespace Spells.Concrete_Types.Movements
         {
             private readonly float _speed;
             public ConstantSpeedMovementImplementation(float speed) => _speed = speed;
-#nullable enable
             public override void UpdatePosition()
             {
                 _spellRigidbody.MovePosition(_spellRigidbodyTransform.position +
                                              _speed * Time.deltaTime * _spellRigidbodyTransform.forward);
             }
-#nullable disable
         }
     }
 }

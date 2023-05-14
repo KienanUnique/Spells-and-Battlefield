@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using Interfaces;
-using Spells.Abstract_Types.Scriptable_Objects;
+using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces;
+using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace Spells.Concrete_Types.Mechanics
@@ -14,16 +15,15 @@ namespace Spells.Concrete_Types.Mechanics
 
         private class NoneMechanicImplementation : ISpellMechanicEffect
         {
+            public void Initialize(Rigidbody spellRigidbody, ICaster caster)
+            {
+            }
+
             public void ApplyEffectToTargets(List<ISpellInteractable> targets)
             {
             }
 
             public void ApplyEffectToTarget(ISpellInteractable target)
-            {
-            }
-
-            public void Initialize(Rigidbody spellRigidbody, Transform fromCastObjectTransform,
-                ISpellInteractable casterCharacter)
             {
             }
         }

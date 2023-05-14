@@ -1,25 +1,37 @@
 using System.Collections.Generic;
 using Spells;
+using Spells.Factory;
+using Spells.Spell;
+using Spells.Spell.Interfaces;
+using Spells.Spell.Scriptable_Objects;
 using UnityEngine;
+using Zenject;
 
 namespace Player
 {
     public class PlayerSpellsManager : MonoBehaviour
     {
-        [SerializeField] private List<SpellBase> _startTestSpells;
+        [SerializeField] private List<SpellScriptableObject> _startTestSpells;
         [SerializeField] private Transform _spellSpawnObject;
         [SerializeField] private PlayerController _player;
-        private Transform _playerTransform;
         private List<ISpell> _spellsStorage;
+        private ISpellObjectsFactory _spellObjectsFactory;
+
+        [Inject]
+        private void Construct(ISpellObjectsFactory spellObjectsFactory)
+        {
+            _spellObjectsFactory = spellObjectsFactory;
+        }
 
         public bool IsSpellSelected => _spellsStorage.Count > 0;
+        private ISpell SelectedSpell => _spellsStorage[0];
 
-        public AnimatorOverrideController SelectedSpellHandsAnimatorController =>
-            _spellsStorage[0].CastAnimationAnimatorOverrideController;
+        public ISpellAnimationInformation SelectedSpellAnimationInformation => SelectedSpell.SpellAnimationInformation;
 
         public void UseSelectedSpell(Quaternion direction)
         {
-            _spellsStorage[0].Cast(_spellSpawnObject.position, direction, _playerTransform, _player);
+            _spellObjectsFactory.Create(SelectedSpell.SpellDataForSpellController,
+                SelectedSpell.SpellGameObjectProvider, _player, _spellSpawnObject.position, direction);
             _spellsStorage.RemoveAt(0);
         }
 
@@ -30,9 +42,8 @@ namespace Player
 
         private void Awake()
         {
-            _playerTransform = _player.transform;
             _spellsStorage = new List<ISpell>();
-            _spellsStorage.AddRange(_startTestSpells);
+            _startTestSpells.ForEach(spell => _spellsStorage.Add(spell.GetImplementationObject()));
         }
     }
 }

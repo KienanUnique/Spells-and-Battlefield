@@ -5,9 +5,6 @@ namespace Spells.Implementations_Interfaces
 {
     public interface ISpellImplementation
     {
-#nullable enable
-        public void Initialize(Rigidbody spellRigidbody, Transform? casterTransform,
-            ISpellInteractable casterCharacter);
-#nullable disable
+        public void Initialize(Rigidbody spellRigidbody, ICaster caster);
     }
 }

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be24e3d51e3c3724fa102db9aab6b01c, type: 3}
+  m_Name: Boost Speed
+  m_EditorClassIdentifier: 
+  _cardInformation:
+    _icon: {fileID: 21300000, guid: f41413a91e8d778458b926d8cf1d1c9a, type: 3}
+    _title: Speed Boost
+  _animationInformation:
+    _castAnimationAnimatorOverrideController: {fileID: 22100000, guid: fafa660b8bafd8443b7400437ff0c012, type: 2}
+  _dataForSpellController:
+    _movement: {fileID: 11400000, guid: da903162503c1b1418a8327a7a18e499, type: 2}
+    _appliers:
+    - {fileID: 11400000, guid: 5602c054b0950df4fba2944be8d1b439, type: 2}
+    _mainTrigger: {fileID: 11400000, guid: 9489e5928a003224a8cdf9b0a76e6051, type: 2}
+    _nextSpellsOnFinish: []
+  _gameObjectProvider: {fileID: 11400000, guid: 1cf7be5c695233041b187c9bd8bf6a52, type: 2}

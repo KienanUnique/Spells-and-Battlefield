@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using General_Settings_in_Scriptable_Objects;
 using Spells;
+using Spells.Continuous_Effect;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour

@@ -1,5 +1,6 @@
 ﻿using System;
 using Spells;
+using Spells.Spell;
 using UnityEngine;
 using Zenject;
 

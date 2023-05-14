@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using Interfaces;
 using Spells.Abstract_Types.Implementation_Bases;
+using Spells.Abstract_Types.Implementation_Bases.Implementations;
 using Spells.Abstract_Types.Scriptable_Objects;
+using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces;
+using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace Spells.Concrete_Types.Appliers
@@ -12,7 +15,7 @@ namespace Spells.Concrete_Types.Appliers
     public class DefaultSpellApplier : SpellApplierScriptableObject
     {
         [SerializeField] private List<SpellMechanicEffectScriptableObject> _spellMechanicEffects;
-        [SerializeField] private SpellTargetSelecterScriptableObject _targetSelector;
+        [SerializeField] private SpellTargetSelectorScriptableObject _targetSelector;
         [SerializeField] private SpellTriggerScriptableObject _spellTrigger;
 
         public override ISpellApplier GetImplementationObject()
@@ -38,8 +41,7 @@ namespace Spells.Concrete_Types.Appliers
                 _spellTrigger = spellTrigger;
             }
 
-            public override void Initialize(Rigidbody spellRigidbody, Transform casterTransform,
-                ISpellInteractable casterCharacter)
+            public override void Initialize(Rigidbody spellRigidbody, ICaster caster)
             {
                 var spellImplementations = new List<ISpellImplementation>()
                 {
@@ -49,7 +51,7 @@ namespace Spells.Concrete_Types.Appliers
                 spellImplementations.AddRange(_spellMechanicEffects);
 
                 spellImplementations.ForEach(spellImplementation =>
-                    spellImplementation.Initialize(spellRigidbody, casterTransform, casterCharacter));
+                    spellImplementation.Initialize(spellRigidbody, caster));
             }
 
             public override SpellTriggerCheckStatusEnum CheckContact(Collider other)

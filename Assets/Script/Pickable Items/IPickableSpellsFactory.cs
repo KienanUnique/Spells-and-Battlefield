@@ -1,4 +1,5 @@
 ﻿using Spells;
+using Spells.Spell;
 using UnityEngine;
 
 namespace Pickable_Items

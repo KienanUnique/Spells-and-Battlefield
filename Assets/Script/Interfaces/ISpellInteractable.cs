@@ -1,4 +1,5 @@
 using Spells;
+using Spells.Continuous_Effect;
 
 namespace Interfaces
 {

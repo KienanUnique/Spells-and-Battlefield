@@ -1,6 +1,7 @@
-using Spells.Abstract_Types.Implementation_Bases;
-using Spells.Abstract_Types.Scriptable_Objects;
+using Spells.Abstract_Types.Implementation_Bases.Implementations;
+using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces;
+using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace Spells.Concrete_Types.Movements
@@ -13,17 +14,15 @@ namespace Spells.Concrete_Types.Movements
 
         private class FollowCastObjectMovementImplementation : SpellMovementImplementationBase
         {
-#nullable enable
             public override void UpdatePosition()
             {
-                if (_casterTransform == null)
+                if (Caster == null)
                 {
                     return;
                 }
 
-                _spellRigidbody.position = _casterTransform.position;
+                _spellRigidbody.position = Caster.CurrentPosition;
             }
-#nullable disable
         }
     }
 }
