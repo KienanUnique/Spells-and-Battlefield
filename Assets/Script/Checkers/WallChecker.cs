@@ -1,5 +1,4 @@
-﻿using Game_Managers;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Checkers
 {

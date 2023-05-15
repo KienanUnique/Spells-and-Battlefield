@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
+using Common;
+using Common.Abstract_Bases.Character;
 using Enemies.State_Machine;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Pickable_Items;
+using Settings;
 using Spells;
 using Spells.Continuous_Effect;
 using Spells.Spell.Scriptable_Objects;
@@ -14,14 +17,14 @@ namespace Enemies
 {
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(EnemyMovement))]
-    [RequireComponent(typeof(Character))]
+    [RequireComponent(typeof(CharacterBase))]
     public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable
     {
-        protected IdHolder _idHolder;
-        protected Character _character;
         protected EnemyMovement _enemyMovement;
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected SpellScriptableObject _spellToDrop;
+        private IdHolder _idHolder;
+        private CharacterBase _character;
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableSpellsFactory _spellsFactory;
 
@@ -101,7 +104,7 @@ namespace Enemies
         {
             _idHolder = GetComponent<IdHolder>();
             _enemyMovement = GetComponent<EnemyMovement>();
-            _character = GetComponent<Character>();
+            _character = GetComponent<CharacterBase>();
             _enemyMovement.Initialize(EnemySettings.MovementSettings, EnemySettings.TargetPathfinderSettingsSection);
         }
 

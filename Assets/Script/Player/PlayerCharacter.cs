@@ -1,9 +1,12 @@
+using Common.Abstract_Bases.Character;
 using General_Settings_in_Scriptable_Objects;
+using General_Settings_in_Scriptable_Objects.Sections;
+using Settings;
 using Zenject;
 
 namespace Player
 {
-    public class PlayerCharacter : Character
+    public class PlayerCharacter : CharacterBase
     {
         private CharacterSettingsSection _characterSettings;
 

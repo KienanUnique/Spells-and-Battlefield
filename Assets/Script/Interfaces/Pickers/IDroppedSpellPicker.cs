@@ -1,5 +1,4 @@
-﻿using Spells;
-using Spells.Spell;
+﻿using Spells.Spell;
 
 namespace Interfaces.Pickers
 {

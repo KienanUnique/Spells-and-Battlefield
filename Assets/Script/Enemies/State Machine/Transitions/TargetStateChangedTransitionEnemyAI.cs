@@ -1,4 +1,5 @@
-﻿using Interfaces;
+﻿using Common.Abstract_Bases.Character;
+using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine.Transitions

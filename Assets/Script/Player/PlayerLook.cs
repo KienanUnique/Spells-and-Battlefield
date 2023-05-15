@@ -1,5 +1,5 @@
-using Game_Managers;
 using General_Settings_in_Scriptable_Objects;
+using Settings;
 using UnityEngine;
 using Zenject;
 

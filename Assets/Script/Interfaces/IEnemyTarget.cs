@@ -2,7 +2,7 @@
 
 namespace Interfaces
 {
-    public interface IEnemyTarget : IInteractable
+    public interface IEnemyTarget : IIdHolder
     {
         public Transform MainTransform { get; }
     }

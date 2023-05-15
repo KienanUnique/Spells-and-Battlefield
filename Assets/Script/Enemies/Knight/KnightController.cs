@@ -1,4 +1,5 @@
 ﻿using General_Settings_in_Scriptable_Objects;
+using Settings;
 using UnityEngine;
 using Zenject;
 
@@ -54,7 +55,7 @@ namespace Enemies.Knight
         {
             var targets = _swordTargetSelector.GetTargetsInCollider();
             targets.RemoveAll(target => target.Id == Id);
-            _knightCharacter.DamageTargetsWithSwordAttack(targets);
+            _knightCharacter.TryDamageTargetsWithSwordAttack(targets);
         }
     }
 }

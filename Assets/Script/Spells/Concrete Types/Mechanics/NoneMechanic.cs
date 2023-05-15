@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using Interfaces;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
-using Spells.Implementations_Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace Spells.Concrete_Types.Mechanics
 {
     [CreateAssetMenu(fileName = "None Mechanic",
-        menuName = "Spells and Battlefield/Spell System/Mechanic/None Mechanic", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.SpellMechanicDirectory + "None Mechanic", order = 0)]
     public class NoneMechanic : SpellMechanicEffectScriptableObject
     {
         public override ISpellMechanicEffect GetImplementationObject() => new NoneMechanicImplementation();

@@ -1,15 +1,12 @@
-using Spells.Abstract_Types.Implementation_Bases;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
-using Spells.Abstract_Types.Scriptable_Objects;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
-using Spells.Implementations_Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace Spells.Concrete_Types.Triggers
 {
     [CreateAssetMenu(fileName = "Time Finish Trigger",
-        menuName = "Spells and Battlefield/Spell System/Trigger/Time Finish Trigger", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.SpellTriggerDirectory + "Time Finish Trigger", order = 0)]
     public class TimeFinishTrigger : SpellTriggerScriptableObject
     {
         [SerializeField] private float _timeBeforeFinishTrigger;

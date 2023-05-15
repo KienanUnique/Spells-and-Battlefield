@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using Checkers;
-using Game_Managers;
+using Common;
+using Common.Abstract_Bases;
 using General_Settings_in_Scriptable_Objects;
+using General_Settings_in_Scriptable_Objects.Sections;
+using Settings;
 using UnityEngine;
 using Zenject;
 using Vector2 = UnityEngine.Vector2;
@@ -23,7 +26,7 @@ namespace Player
 
         private Vector2 _inputMoveDirection = Vector2.zero;
         private ValueWithReactionOnChange<MovingState> _currentMovingState;
-        private int _currentCountOfAirJumps = 0;
+        private int _currentCountOfAirJumps;
         private Coroutine _frictionCoroutine;
         private float _currentPlayerInputForceMultiplier;
         private float _currentGravityForce;
@@ -61,7 +64,7 @@ namespace Player
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
         public Vector3 CurrentPosition => _rigidbody.position;
 
-        protected override MovementSettingsSectionBase MovementBaseSettings => _movementSettings;
+        protected override MovementSettingsSection MovementSettings => _movementSettings;
 
         private bool IsGrounded => _groundChecker.IsColliding;
         private bool IsInContactWithWall => _wallChecker.IsColliding;
@@ -271,6 +274,7 @@ namespace Player
                     Land?.Invoke();
                     break;
                 case MovingState.InAir:
+                    _currentCountOfAirJumps = 0;
                     _currentPlayerInputForceMultiplier = AirPlayerInputForceMultiplier;
                     _currentGravityForce = _movementSettings.NormalGravityForce;
                     _frictionCoroutine ??= StartCoroutine(ApplyFrictionContinuously());

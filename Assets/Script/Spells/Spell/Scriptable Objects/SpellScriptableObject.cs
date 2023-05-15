@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Spells.Spell.Scriptable_Objects
 {
     [CreateAssetMenu(fileName = "Spell",
-        menuName = "Spells and Battlefield/Spell System/Spell", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.SpellSystemDirectory + "Spell", order = 0)]
     public class SpellScriptableObject : ScriptableObject, IImplementationObjectProvider<ISpell>
     {
         [SerializeField] private SpellCardInformation _cardInformation;

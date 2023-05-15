@@ -13,7 +13,7 @@ namespace Spells.Continuous_Effect
         private readonly float _durationInSeconds;
         private readonly List<ISpellMechanicEffect> _mechanics;
         private readonly bool _needIgnoreCooldown;
-        private Coroutine _effectCoroutine = null;
+        private Coroutine _effectCoroutine;
         private ISpellInteractable _target;
         private MonoBehaviour _fromStartedMonoBehaviour;
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Knight Settings
   m_EditorClassIdentifier: 
   _knightCharacterSettings:
-    _maximumCountOfHitPoints: 0
+    _maximumCountOfHitPoints: 15
     _attackSwordDamage: 7
   _targetPathfinderSettings:
     _updateDestinationCooldownSeconds: 0.75

@@ -7,27 +7,27 @@ namespace Enemies
     [RequireComponent(typeof(BoxCollider))]
     public class BoxColliderTargetSelector : MonoBehaviour
     {
-        private List<ICharacter> _charactersInside;
-        public List<ICharacter> GetTargetsInCollider() => _charactersInside;
+        private List<IEnemyTarget> _targetsInside;
+        public List<IEnemyTarget> GetTargetsInCollider() => _targetsInside;
 
         private void Awake()
         {
-            _charactersInside = new List<ICharacter>();
+            _targetsInside = new List<IEnemyTarget>();
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out ICharacter character))
+            if (other.TryGetComponent(out IEnemyTarget character))
             {
-                _charactersInside.Add(character);
+                _targetsInside.Add(character);
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent(out ICharacter character) && _charactersInside.Contains(character))
+            if (other.TryGetComponent(out IEnemyTarget character) && _targetsInside.Contains(character))
             {
-                _charactersInside.Remove(character);
+                _targetsInside.Remove(character);
             }
         }
     }

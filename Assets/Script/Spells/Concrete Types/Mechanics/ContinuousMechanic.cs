@@ -1,18 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Spells.Abstract_Types.Implementation_Bases;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
-using Spells.Abstract_Types.Scriptable_Objects;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Continuous_Effect;
-using Spells.Implementations_Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace Spells.Concrete_Types.Mechanics
 {
     [CreateAssetMenu(fileName = "Continuous Mechanic",
-        menuName = "Spells and Battlefield/Spell System/Mechanic/Continuous Mechanic", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.SpellMechanicDirectory + "Continuous Mechanic", order = 0)]
     public class ContinuousMechanic : SpellContinuousMechanicEffectScriptableObject
     {
         [SerializeField] private List<SpellMechanicEffectScriptableObject> _mechanicEffects;

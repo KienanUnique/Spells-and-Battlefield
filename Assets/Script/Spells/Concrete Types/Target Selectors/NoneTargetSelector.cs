@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using Interfaces;
-using Spells.Abstract_Types.Scriptable_Objects;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
-using Spells.Implementations_Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace Spells.Concrete_Types.Target_Selectors
 {
     [CreateAssetMenu(fileName = "None Target Selector",
-        menuName = "Spells and Battlefield/Spell System/Target Selector/None Target Selector", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.SpellTargetSelectorDirectory + "None Target Selector", order = 0)]
     public class NoneTargetSelector : SpellTargetSelectorScriptableObject
     {
         public override ISpellTargetSelector GetImplementationObject() => new NoneSelectorImplementation();

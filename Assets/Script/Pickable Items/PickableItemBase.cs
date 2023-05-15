@@ -3,6 +3,7 @@ using Checkers;
 using DG.Tweening;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces.Pickers;
+using Settings;
 using Triggers;
 using UnityEngine;
 using Zenject;

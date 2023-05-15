@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
-using Game_Managers;
 using General_Settings_in_Scriptable_Objects;
-using UnityEditor;
+using Settings;
 using UnityEngine;
 using Zenject;
 
@@ -23,15 +22,13 @@ namespace UI
         {
             _cashedGameObject.SetActive(true);
             _cashedTransform.DOKill();
-            _cashedTransform.DOScale(Vector3.one, _settings.ScaleAnimationDuration)
-                .SetEase(_settings.ScaleAnimationEase).ApplyCustomSetupForUI(gameObject);
+            _cashedTransform.SetupAppearAnimationForUI(_settings, gameObject);
         }
 
         public virtual void Disappear()
         {
             _cashedTransform.DOKill();
-            _cashedTransform.DOScale(Vector3.zero, _settings.ScaleAnimationDuration)
-                .SetEase(_settings.ScaleAnimationEase).ApplyCustomSetupForUI(gameObject)
+            _cashedTransform.SetupDisappearAnimationForUI(_settings, gameObject)
                 .OnComplete(() => _cashedGameObject.SetActive(false));
         }
 

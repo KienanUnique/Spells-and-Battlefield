@@ -1,15 +1,12 @@
-using Spells.Abstract_Types.Implementation_Bases;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
-using Spells.Abstract_Types.Scriptable_Objects;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
-using Spells.Implementations_Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace Spells.Concrete_Types.Triggers
 {
     [CreateAssetMenu(fileName = "Collision Enter Trigger",
-        menuName = "Spells and Battlefield/Spell System/Trigger/Collision Enter Trigger", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.SpellTriggerDirectory + "Collision Enter Trigger", order = 0)]
     public class CollisionEnterTrigger : SpellTriggerScriptableObject
     {
         [SerializeField] private float _timeBeforeFinishTrigger;

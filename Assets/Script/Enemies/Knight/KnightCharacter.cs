@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
+using Common.Abstract_Bases.Character;
 using General_Settings_in_Scriptable_Objects;
+using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
+using Settings;
 using Zenject;
 
 namespace Enemies.Knight
 {
-    public class KnightCharacter : Character
+    public class KnightCharacter : CharacterBase
     {
         private KnightSettings.KnightCharacterSettingsSection _characterSettings;
 
@@ -18,9 +21,15 @@ namespace Enemies.Knight
         protected override string NamePrefix => "Knight";
         protected override CharacterSettingsSection CharacterSettings => _characterSettings;
 
-        public void DamageTargetsWithSwordAttack(List<ICharacter> targets)
+        public void TryDamageTargetsWithSwordAttack(List<IEnemyTarget> targets)
         {
-            targets.ForEach(target => target.HandleDamage(_characterSettings.AttackSwordDamage));
+            foreach (var target in targets)
+            {
+                if (target is ICharacter targetCharacter)
+                {
+                    targetCharacter.HandleDamage(_characterSettings.AttackSwordDamage);
+                }
+            }
         }
     }
 }

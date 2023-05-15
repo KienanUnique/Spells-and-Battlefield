@@ -2,7 +2,7 @@
 
 namespace Interfaces
 {
-    public interface IPhysicsInformation : IInteractable
+    public interface IPhysicsInformation
     {
         public Vector3 CurrentPosition { get; }
     }

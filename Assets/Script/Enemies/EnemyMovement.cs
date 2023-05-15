@@ -1,6 +1,10 @@
 using System;
 using System.Collections;
+using Common;
+using Common.Abstract_Bases;
 using General_Settings_in_Scriptable_Objects;
+using General_Settings_in_Scriptable_Objects.Sections;
+using Interfaces;
 using Pathfinding;
 using UnityEngine;
 
@@ -13,12 +17,12 @@ namespace Enemies
         private ValueWithReactionOnChange<bool> _isMoving;
         private TargetPathfinder _targetPathfinder;
         private Coroutine _followPathCoroutine = null;
-        private MovementSettingsSectionBase _movementSettings;
+        private MovementSettingsSection _movementSettings;
         public event Action<bool> MovingStateChanged;
         public Vector3 CurrentPosition => _rigidbody.position;
-        protected override MovementSettingsSectionBase MovementBaseSettings => _movementSettings;
+        protected override MovementSettingsSection MovementSettings => _movementSettings;
 
-        public void Initialize(MovementSettingsSectionBase movementSettings,
+        public void Initialize(MovementSettingsSection movementSettings,
             TargetPathfinderSettingsSection targetPathfinderSettings)
         {
             _movementSettings = movementSettings;
@@ -81,7 +85,7 @@ namespace Enemies
                 {
                     SetDirectionTowardsPoint(waypointPosition, ref direction);
                     _rigidbody.AddForce(
-                        MovementBaseSettings.MoveForce * Time.deltaTime * _currentSpeedRatio * direction);
+                        MovementSettings.MoveForce * Time.deltaTime * _currentSpeedRatio * direction);
                     ApplyFriction(direction);
                     TryLimitCurrentSpeed();
                 }
@@ -109,8 +113,8 @@ namespace Enemies
         private void ApplyFriction(Vector3 needMoveDirection)
         {
             var currentVelocity = _rigidbody.velocity;
-            var needFrictionDirection = Time.deltaTime * _currentSpeedRatio * MovementBaseSettings.FrictionCoefficient *
-                                        MovementBaseSettings.MoveForce * currentVelocity.magnitude *
+            var needFrictionDirection = Time.deltaTime * _currentSpeedRatio * MovementSettings.FrictionCoefficient *
+                                        MovementSettings.MoveForce * currentVelocity.magnitude *
                                         (needMoveDirection - currentVelocity.normalized);
             _rigidbody.AddForce(needFrictionDirection);
         }

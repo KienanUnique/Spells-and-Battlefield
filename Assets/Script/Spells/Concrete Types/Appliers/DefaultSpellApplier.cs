@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using Interfaces;
-using Spells.Abstract_Types.Implementation_Bases;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
-using Spells.Abstract_Types.Scriptable_Objects;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
@@ -11,7 +9,7 @@ using UnityEngine;
 namespace Spells.Concrete_Types.Appliers
 {
     [CreateAssetMenu(fileName = "Default Spell Applier",
-        menuName = "Spells and Battlefield/Spell System/Spell Appliers/Default Spell Applier", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.SpellAppliersDirectory + "Default Spell Applier", order = 0)]
     public class DefaultSpellApplier : SpellApplierScriptableObject
     {
         [SerializeField] private List<SpellMechanicEffectScriptableObject> _spellMechanicEffects;
