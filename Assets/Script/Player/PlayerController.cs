@@ -1,27 +1,39 @@
 using System;
+using System.Collections.Generic;
 using Checkers;
 using Common;
 using Common.Abstract_Bases.Character;
 using Interfaces;
 using Settings;
 using Spells.Continuous_Effect;
+using Spells.Factory;
 using Spells.Spell;
+using Spells.Spell.Scriptable_Objects;
 using Systems.Input_Manager;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using Zenject;
 
 namespace Player
 {
-    [RequireComponent(typeof(PlayerLook))]
-    [RequireComponent(typeof(PlayerSpellsManager))]
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerController : MonoBehaviour, IPlayer, ICoroutineStarter
     {
-        [SerializeField] private PlayerVisual _playerVisual;
-        [SerializeField] private PlayerCameraEffects _playerCameraEffects;
+        [SerializeField] private Transform _cameraFollowObject;
+        [SerializeField] private Transform _objectToRotateHorizontally;
+        [SerializeField] private Camera _camera;
+        [SerializeField] private GameObject _cameraEffectsGameObject;
+        [SerializeField] private RigBuilder _rigBuilder;
+        [SerializeField] private Animator _characterAnimator;
         [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private WallChecker _wallChecker;
+        [SerializeField] private List<SpellScriptableObject> _startTestSpells;
+        [SerializeField] private Transform _spellSpawnObject;
+        [SerializeField] private PlayerEventInvokerForAnimations _playerEventInvokerForAnimations;
+
+        private PlayerCameraEffects _playerCameraEffects;
+        private PlayerVisual _playerVisual;
         private PlayerCharacter _playerCharacter;
         private PlayerSpellsManager _playerSpellsManager;
         private IPlayerInput _playerInput;
@@ -29,12 +41,16 @@ namespace Player
         private PlayerLook _playerLook;
         private IdHolder _idHolder;
         private PlayerSettings _settings;
+        private ISpellObjectsFactory _spellObjectsFactory;
+        private List<IDisableable> _itemsNeedDisabling;
 
         [Inject]
-        private void Construct(IPlayerInput playerInput, PlayerSettings settings)
+        private void Construct(IPlayerInput playerInput, PlayerSettings settings,
+            ISpellObjectsFactory spellObjectsFactory)
         {
             _playerInput = playerInput;
             _settings = settings;
+            _spellObjectsFactory = spellObjectsFactory;
         }
 
         public event Action DashCooldownFinished;
@@ -92,13 +108,21 @@ namespace Player
 
         private void Awake()
         {
-            _playerCharacter = new PlayerCharacter(this, _settings.Character);
-            _playerSpellsManager = GetComponent<PlayerSpellsManager>();
-            _playerLook = GetComponent<PlayerLook>();
             _idHolder = GetComponent<IdHolder>();
-
             var thisRigidbody = GetComponent<Rigidbody>();
+
+            _itemsNeedDisabling = new List<IDisableable>();
+
             _playerMovement = new PlayerMovement(thisRigidbody, _settings.Movement, _groundChecker, _wallChecker, this);
+            _playerCharacter = new PlayerCharacter(this, _settings.Character);
+            _itemsNeedDisabling.Add(_playerMovement);
+            _itemsNeedDisabling.Add(_playerCharacter);
+
+            _playerLook = new PlayerLook(_camera, _cameraFollowObject, _objectToRotateHorizontally, _settings.Look);
+            _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator);
+            _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
+            _playerSpellsManager =
+                new PlayerSpellsManager(_startTestSpells, _spellSpawnObject, this, _spellObjectsFactory);
         }
 
         private void Update()
@@ -110,11 +134,13 @@ namespace Player
         private void OnEnable()
         {
             SubscribeOnEvents();
+            _itemsNeedDisabling.ForEach(item => item.Enable());
         }
 
         private void OnDisable()
         {
             UnsubscribeFromEvents();
+            _itemsNeedDisabling.ForEach(item => item.Disable());
         }
 
         private void SubscribeOnEvents()
@@ -126,7 +152,7 @@ namespace Player
             _playerInput.MoveInputted += _playerMovement.MoveInputted;
             _playerInput.LookInputted += _playerLook.LookInputtedWith;
 
-            _playerVisual.CastSpellAnimationMoment += OnCastSpellAnimationMoment;
+            _playerEventInvokerForAnimations.CastSpellAnimationMoment += OnCastSpellEventInvokerForAnimationMoment;
 
             _playerMovement.GroundJump += _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.Fall += _playerVisual.PlayFallAnimation;
@@ -151,7 +177,7 @@ namespace Player
             _playerInput.MoveInputted -= _playerMovement.MoveInputted;
             _playerInput.LookInputted -= _playerLook.LookInputtedWith;
 
-            _playerVisual.CastSpellAnimationMoment -= OnCastSpellAnimationMoment;
+            _playerEventInvokerForAnimations.CastSpellAnimationMoment -= OnCastSpellEventInvokerForAnimationMoment;
 
             _playerMovement.GroundJump -= _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.Fall -= _playerVisual.PlayFallAnimation;
@@ -218,7 +244,7 @@ namespace Player
             }
         }
 
-        private void OnCastSpellAnimationMoment()
+        private void OnCastSpellEventInvokerForAnimationMoment()
         {
             if (_playerSpellsManager.IsSpellSelected)
             {

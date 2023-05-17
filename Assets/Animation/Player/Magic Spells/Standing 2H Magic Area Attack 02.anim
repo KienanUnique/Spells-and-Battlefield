@@ -121374,7 +121374,7 @@ AnimationClip:
   - time: 1.6666666
     functionName: InvokeUseSpellAnimationMomentStart
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 1782778395989589091, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

@@ -1,24 +1,32 @@
 ﻿using System;
 using DG.Tweening;
-using General_Settings_in_Scriptable_Objects;
 using Settings;
 using UnityEngine;
-using Zenject;
 
 namespace Player
 {
-    public class PlayerCameraEffects : MonoBehaviour
+    public class PlayerCameraEffects
     {
         private const RotateMode CameraRotateMode = RotateMode.Fast;
-        [SerializeField] private Camera _camera;
-        private Vector3 _defaultRotation;
-        private Transform _cachedTransform;
-        private PlayerSettings.PlayerCameraEffectsSettingsSection _cameraEffectsSettings;
 
-        [Inject]
-        private void Construct(PlayerSettings settings)
+        private readonly Camera _camera;
+        private readonly PlayerSettings.PlayerCameraEffectsSettingsSection _cameraEffectsSettings;
+        private readonly GameObject _effectsGameObject;
+
+        private readonly Vector3 _defaultRotation;
+        private readonly Transform _cachedTransform;
+
+
+        public PlayerCameraEffects(PlayerSettings.PlayerCameraEffectsSettingsSection cameraEffectsSettings,
+            Camera camera, GameObject effectsGameObject)
         {
-            _cameraEffectsSettings = settings.CameraEffects;
+            _camera = camera;
+            _cameraEffectsSettings = cameraEffectsSettings;
+            _effectsGameObject = effectsGameObject;
+
+            _cachedTransform = _effectsGameObject.transform;
+            _defaultRotation = _cachedTransform.localRotation.eulerAngles;
+            _camera.fieldOfView = _cameraEffectsSettings.CameraNormalFOV;
         }
 
         public void Rotate(WallDirection direction)
@@ -31,14 +39,14 @@ namespace Player
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
             });
             _cachedTransform.DOLocalRotate(needRotation, _cameraEffectsSettings.RotateDuration, CameraRotateMode)
-                .SetLink(gameObject);
+                .SetLink(_effectsGameObject);
         }
 
         public void ResetRotation()
         {
             _cachedTransform.DOKill();
             _cachedTransform.DOLocalRotate(_defaultRotation, _cameraEffectsSettings.RotateDuration, CameraRotateMode)
-                .SetLink(gameObject);
+                .SetLink(_effectsGameObject);
         }
 
         public void PlayIncreaseFieldOfViewAnimation()
@@ -50,17 +58,6 @@ namespace Player
                     .DOFieldOfView(_cameraEffectsSettings.CameraNormalFOV,
                         _cameraEffectsSettings.ChangeCameraFOVAnimationDuration)
                     .SetEase(_cameraEffectsSettings.ChangeCameraFOVAnimationEase));
-        }
-
-        private void Awake()
-        {
-            _cachedTransform = transform;
-            _defaultRotation = _cachedTransform.localRotation.eulerAngles;
-        }
-
-        private void Start()
-        {
-            _camera.fieldOfView = _cameraEffectsSettings.CameraNormalFOV;
         }
     }
 }

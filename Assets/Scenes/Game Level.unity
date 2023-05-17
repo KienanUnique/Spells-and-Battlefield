@@ -1609,7 +1609,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh130642
+  m_Name: pb_Mesh-11456
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1822,38 +1822,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6121561518250540764, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6121561518250540764, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-    - target: {fileID: 6121561518250540764, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-    - target: {fileID: 6121561518250540764, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-    - target: {fileID: 6121561518250540764, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-    - target: {fileID: 6121561518250540764, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: 64f2c7c17c0f77446a5eacd00b9c1249, type: 2}
-    - target: {fileID: 6121561518250540764, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: bfe8aaaff70991942abfecc5faa2545a, type: 2}
-    - target: {fileID: 6121561518250540764, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: 1dd7c65c56be6274da0df03a900e71dd, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
 --- !u!114 &1818211453 stripped

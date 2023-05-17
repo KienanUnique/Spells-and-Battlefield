@@ -1,32 +1,29 @@
-using General_Settings_in_Scriptable_Objects;
 using Settings;
 using UnityEngine;
-using Zenject;
 
 namespace Player
 {
-    public class PlayerLook : MonoBehaviour
+    public class PlayerLook
     {
-        [SerializeField] private Camera _camera;
-        [SerializeField] private Transform _cameraRootTransform;
-        [SerializeField] private Transform _rotateObject;
-        private float _xRotation = 0f;
-        private Transform _cameraTransform;
-        private PlayerSettings.PlayerLookSettingsSection _lookSettings;
-        
-        [Inject]
-        private void Construct(PlayerSettings settings)
+        private readonly Transform _cameraRootTransform;
+        private readonly Transform _rotateObject;
+        private readonly PlayerSettings.PlayerLookSettingsSection _lookSettings;
+        private readonly Transform _cameraTransform;
+
+        private float _xRotation;
+
+
+        public PlayerLook(Camera camera, Transform cameraRootTransform, Transform rotateObject,
+            PlayerSettings.PlayerLookSettingsSection lookSettings)
         {
-            _lookSettings = settings.Look;
+            _cameraRootTransform = cameraRootTransform;
+            _rotateObject = rotateObject;
+            _lookSettings = lookSettings;
+            _cameraTransform = camera.transform;
         }
 
         public Quaternion CameraRotation => _cameraTransform.rotation;
         public Vector3 CameraForward => _cameraTransform.forward;
-
-        private void Awake()
-        {
-            _cameraTransform = _camera.transform;
-        }
 
         public void LookInputtedWith(Vector2 mouseLookDelta)
         {

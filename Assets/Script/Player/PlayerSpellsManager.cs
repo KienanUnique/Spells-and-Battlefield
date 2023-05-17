@@ -1,25 +1,29 @@
 using System.Collections.Generic;
+using Interfaces;
 using Spells.Factory;
 using Spells.Spell;
 using Spells.Spell.Interfaces;
 using Spells.Spell.Scriptable_Objects;
 using UnityEngine;
-using Zenject;
 
 namespace Player
 {
-    public class PlayerSpellsManager : MonoBehaviour
+    public class PlayerSpellsManager
     {
-        [SerializeField] private List<SpellScriptableObject> _startTestSpells;
-        [SerializeField] private Transform _spellSpawnObject;
-        [SerializeField] private PlayerController _player;
-        private List<ISpell> _spellsStorage;
-        private ISpellObjectsFactory _spellObjectsFactory;
+        private readonly Transform _spellSpawnObject;
+        private readonly ICaster _player;
+        private readonly ISpellObjectsFactory _spellObjectsFactory;
 
-        [Inject]
-        private void Construct(ISpellObjectsFactory spellObjectsFactory)
+        private readonly List<ISpell> _spellsStorage;
+
+        public PlayerSpellsManager(List<SpellScriptableObject> startTestSpells, Transform spellSpawnObject,
+            ICaster player, ISpellObjectsFactory spellObjectsFactory)
         {
+            _spellSpawnObject = spellSpawnObject;
+            _player = player;
             _spellObjectsFactory = spellObjectsFactory;
+            _spellsStorage = new List<ISpell>();
+            startTestSpells.ForEach(spell => _spellsStorage.Add(spell.GetImplementationObject()));
         }
 
         public bool IsSpellSelected => _spellsStorage.Count > 0;
@@ -37,12 +41,6 @@ namespace Player
         public void AddSpell(ISpell newSpell)
         {
             _spellsStorage.Add(newSpell);
-        }
-
-        private void Awake()
-        {
-            _spellsStorage = new List<ISpell>();
-            _startTestSpells.ForEach(spell => _spellsStorage.Add(spell.GetImplementationObject()));
         }
     }
 }

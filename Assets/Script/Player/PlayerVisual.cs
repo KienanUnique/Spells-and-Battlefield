@@ -1,11 +1,9 @@
-using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 namespace Player
 {
-    [RequireComponent(typeof(Animator))]
-    public class PlayerVisual : MonoBehaviour
+    public class PlayerVisual
     {
         private static readonly int AttackTriggerHash = Animator.StringToHash("Attack");
         private static readonly int MovingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
@@ -18,11 +16,15 @@ namespace Player
         private static readonly int FallTriggerHash = Animator.StringToHash("Fall");
         private static readonly int LandTriggerHash = Animator.StringToHash("Land");
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
-        [SerializeField] private RigBuilder _rigBuilder;
-        private Animator _characterAnimator;
-        public event Action CastSpellAnimationMoment;
 
-        public void InvokeUseSpellAnimationMomentStart() => CastSpellAnimationMoment?.Invoke();
+        private readonly RigBuilder _rigBuilder;
+        private readonly Animator _characterAnimator;
+
+        public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator)
+        {
+            _rigBuilder = rigBuilder;
+            _characterAnimator = characterAnimator;
+        }
 
         public void PlayUseSpellAnimation(AnimatorOverrideController useSpellHandsAnimatorController)
         {
@@ -66,11 +68,6 @@ namespace Player
             _characterAnimator.SetFloat(MovingDirectionYFloatHash, movingDirectionNormalized.y);
             _characterAnimator.SetFloat(RatioOfCurrentVelocityToMaximumVelocityFloatHash,
                 ratioOfCurrentVelocityToMaximumVelocity);
-        }
-
-        private void Awake()
-        {
-            _characterAnimator = GetComponent<Animator>();
         }
     }
 }
