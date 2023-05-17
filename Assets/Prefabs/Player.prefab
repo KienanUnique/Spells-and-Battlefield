@@ -196,7 +196,6 @@ GameObject:
   - component: {fileID: 846477161179582523}
   - component: {fileID: 1698083445434375742}
   - component: {fileID: 1809322364992030679}
-  - component: {fileID: 1429199914850347932}
   - component: {fileID: 7864329448273911007}
   - component: {fileID: 6121561518250540764}
   - component: {fileID: 5594681853249262957}
@@ -244,6 +243,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerVisual: {fileID: 7465651251748099925}
   _playerCameraEffects: {fileID: 5655418622634499215}
+  _groundChecker: {fileID: 7524277153600398822}
+  _wallChecker: {fileID: 1408449592405486887}
 --- !u!136 &1698083445434375742
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -274,20 +275,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1429199914850347932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 846477161179582522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b4a49af7cb0c7845afc59eb88fcbe8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _groundChecker: {fileID: 7524277153600398822}
-  _wallChecker: {fileID: 1408449592405486887}
 --- !u!114 &7864329448273911007
 MonoBehaviour:
   m_ObjectHideFlags: 0

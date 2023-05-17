@@ -1,9 +1,9 @@
 using System;
+using Checkers;
 using Common;
 using Common.Abstract_Bases.Character;
 using Interfaces;
 using Settings;
-using Spells;
 using Spells.Continuous_Effect;
 using Spells.Spell;
 using Systems.Input_Manager;
@@ -12,14 +12,16 @@ using Zenject;
 
 namespace Player
 {
-    [RequireComponent(typeof(PlayerMovement))]
     [RequireComponent(typeof(PlayerLook))]
     [RequireComponent(typeof(PlayerSpellsManager))]
     [RequireComponent(typeof(IdHolder))]
+    [RequireComponent(typeof(Rigidbody))]
     public class PlayerController : MonoBehaviour, IPlayer, ICoroutineStarter
     {
         [SerializeField] private PlayerVisual _playerVisual;
         [SerializeField] private PlayerCameraEffects _playerCameraEffects;
+        [SerializeField] private GroundChecker _groundChecker;
+        [SerializeField] private WallChecker _wallChecker;
         private PlayerCharacter _playerCharacter;
         private PlayerSpellsManager _playerSpellsManager;
         private IPlayerInput _playerInput;
@@ -92,9 +94,11 @@ namespace Player
         {
             _playerCharacter = new PlayerCharacter(this, _settings.Character);
             _playerSpellsManager = GetComponent<PlayerSpellsManager>();
-            _playerMovement = GetComponent<PlayerMovement>();
             _playerLook = GetComponent<PlayerLook>();
             _idHolder = GetComponent<IdHolder>();
+
+            var thisRigidbody = GetComponent<Rigidbody>();
+            _playerMovement = new PlayerMovement(thisRigidbody, _settings.Movement, _groundChecker, _wallChecker, this);
         }
 
         private void Update()

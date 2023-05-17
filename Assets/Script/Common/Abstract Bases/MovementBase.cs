@@ -1,17 +1,22 @@
-﻿using General_Settings_in_Scriptable_Objects;
-using General_Settings_in_Scriptable_Objects.Sections;
+﻿using General_Settings_in_Scriptable_Objects.Sections;
 using UnityEngine;
 
 namespace Common.Abstract_Bases
 {
-    [RequireComponent(typeof(Rigidbody))]
-    public abstract class MovementBase : MonoBehaviour
+    public abstract class MovementBase : BaseWithDisabling
     {
         private const float StopVelocityMagnitude = 0.0001f;
 
-        protected Rigidbody _rigidbody;
+        protected readonly Rigidbody _rigidbody;
         protected float _currentSpeedRatio = 1;
-        protected abstract MovementSettingsSection MovementSettings { get; }
+        protected readonly MovementSettingsSection MovementSettings;
+
+        protected MovementBase(Rigidbody rigidbody, MovementSettingsSection movementSettings)
+        {
+            _rigidbody = rigidbody;
+            MovementSettings = movementSettings;
+        }
+
         private float CurrentMaximumSpeed => MovementSettings.MaximumSpeed * _currentSpeedRatio;
 
         public void MultiplySpeedRatioBy(float speedRatio)
@@ -26,8 +31,6 @@ namespace Common.Abstract_Bases
             _rigidbody.velocity /= speedRatio;
         }
 
-        protected abstract void SpecialAwakeAction();
-
         protected void TryLimitCurrentSpeed()
         {
             if (_rigidbody.velocity.magnitude > CurrentMaximumSpeed)
@@ -38,12 +41,6 @@ namespace Common.Abstract_Bases
             {
                 _rigidbody.velocity = Vector3.zero;
             }
-        }
-
-        private void Awake()
-        {
-            _rigidbody = GetComponent<Rigidbody>();
-            SpecialAwakeAction();
         }
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using Common;
 using Common.Abstract_Bases;
-using General_Settings_in_Scriptable_Objects;
 using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
 using Pathfinding;
@@ -10,24 +9,23 @@ using UnityEngine;
 
 namespace Enemies
 {
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(Seeker))]
-    public class EnemyMovement : MovementBase, ICoroutineStarter
+    public sealed class EnemyMovement : MovementBase
     {
-        private ValueWithReactionOnChange<bool> _isMoving;
-        private TargetPathfinder _targetPathfinder;
-        private Coroutine _followPathCoroutine = null;
-        private MovementSettingsSection _movementSettings;
+        private readonly ValueWithReactionOnChange<bool> _isMoving;
+        private readonly TargetPathfinder _targetPathfinder;
+        private readonly ICoroutineStarter _coroutineStarter;
+        private Coroutine _followPathCoroutine;
         public event Action<bool> MovingStateChanged;
         public Vector3 CurrentPosition => _rigidbody.position;
-        protected override MovementSettingsSection MovementSettings => _movementSettings;
 
-        public void Initialize(MovementSettingsSection movementSettings,
-            TargetPathfinderSettingsSection targetPathfinderSettings)
+        public EnemyMovement(ICoroutineStarter coroutineStarter, MovementSettingsSection movementSettings,
+            TargetPathfinderSettingsSection targetPathfinderSettings, Seeker seeker, Rigidbody rigidbody) :
+            base(rigidbody, movementSettings)
         {
-            _movementSettings = movementSettings;
-            var seeker = GetComponent<Seeker>();
-            _targetPathfinder = new TargetPathfinder(seeker, targetPathfinderSettings, this);
+            _coroutineStarter = coroutineStarter;
+            _isMoving = new ValueWithReactionOnChange<bool>(false);
+            _targetPathfinder = new TargetPathfinder(seeker, targetPathfinderSettings, _coroutineStarter);
+            SubscribeOnEvents();
         }
 
         public void StartMovingToTarget(Transform target)
@@ -38,14 +36,14 @@ namespace Enemies
             }
 
             _isMoving.Value = true;
-            _followPathCoroutine = StartCoroutine(FollowPath(target));
+            _followPathCoroutine = _coroutineStarter.StartCoroutine(FollowPath(target));
         }
 
         public void StopMovingToTarget()
         {
             if (_followPathCoroutine != null)
             {
-                StopCoroutine(_followPathCoroutine);
+                _coroutineStarter.StopCoroutine(_followPathCoroutine);
                 _followPathCoroutine = null;
             }
 
@@ -58,20 +56,19 @@ namespace Enemies
             _rigidbody.AddForce(force, mode);
         }
 
-        protected override void SpecialAwakeAction()
+        protected override void SubscribeOnEvents()
         {
-            _rigidbody = GetComponent<Rigidbody>();
-            _isMoving = new ValueWithReactionOnChange<bool>(false);
+            _isMoving.AfterValueChanged += OnIsMovingStatusChanged;
         }
 
-        private void OnEnable()
+        protected override void UnsubscribeFromEvents()
         {
-            _isMoving.AfterValueChanged += b => MovingStateChanged?.Invoke(b);
+            _isMoving.AfterValueChanged -= OnIsMovingStatusChanged;
         }
 
-        private void OnDisable()
+        private void OnIsMovingStatusChanged(bool b)
         {
-            _isMoving.AfterValueChanged -= b => MovingStateChanged?.Invoke(b);
+            MovingStateChanged?.Invoke(b);
         }
 
         private IEnumerator FollowPath(Transform target)

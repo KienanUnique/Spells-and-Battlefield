@@ -3,17 +3,15 @@ using System.Collections;
 using Checkers;
 using Common;
 using Common.Abstract_Bases;
-using General_Settings_in_Scriptable_Objects;
-using General_Settings_in_Scriptable_Objects.Sections;
+using Interfaces;
 using Settings;
 using UnityEngine;
-using Zenject;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
 namespace Player
 {
-    public class PlayerMovement : MovementBase
+    public sealed class PlayerMovement : MovementBase
     {
         private const int MaxCountOfAirJumps = 1;
         private const float AirPlayerInputForceMultiplier = 0.5f;
@@ -21,23 +19,39 @@ namespace Player
         private const float WallRunningPlayerInputForceMultiplier = 1.5f;
         private const float DashAimingPlayerInputForceMultiplier = 0;
 
-        [SerializeField] private GroundChecker _groundChecker;
-        [SerializeField] private WallChecker _wallChecker;
+        public readonly Transform MainTransform;
+
+        private readonly GroundChecker _groundChecker;
+        private readonly WallChecker _wallChecker;
+        private readonly PlayerSettings.PlayerMovementSettingsSection _movementSettings;
+        private readonly ICoroutineStarter _coroutineStarter;
 
         private Vector2 _inputMoveDirection = Vector2.zero;
-        private ValueWithReactionOnChange<MovingState> _currentMovingState;
+        private readonly ValueWithReactionOnChange<MovingState> _currentMovingState;
         private int _currentCountOfAirJumps;
         private Coroutine _frictionCoroutine;
         private float _currentPlayerInputForceMultiplier;
         private float _currentGravityForce;
         private bool _canDash = true;
         private bool _speedLimitationEnabled = true;
-        private PlayerSettings.PlayerMovementSettingsSection _movementSettings;
 
-        [Inject]
-        private void Construct(PlayerSettings settings)
+        public PlayerMovement(Rigidbody rigidbody, PlayerSettings.PlayerMovementSettingsSection movementSettings,
+            GroundChecker groundChecker, WallChecker wallChecker, ICoroutineStarter coroutineStarter) :
+            base(rigidbody, movementSettings)
         {
-            _movementSettings = settings.Movement;
+            _groundChecker = groundChecker;
+            _wallChecker = wallChecker;
+            _movementSettings = movementSettings;
+            _coroutineStarter = coroutineStarter;
+            MainTransform = _rigidbody.transform;
+
+            _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.OnGround);
+            _currentPlayerInputForceMultiplier = NormalPlayerInputForceMultiplier;
+            _currentGravityForce = _movementSettings.NormalGravityForce;
+
+            _coroutineStarter.StartCoroutine(HandleInputMovement());
+            _coroutineStarter.StartCoroutine(UpdateRatioOfCurrentVelocityToMaximumVelocity());
+            SubscribeOnEvents();
         }
 
         public event Action Land;
@@ -59,13 +73,9 @@ namespace Player
             DashAiming
         }
 
-        public Transform MainTransform { private set; get; }
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
         public Vector3 CurrentPosition => _rigidbody.position;
-
-        protected override MovementSettingsSection MovementSettings => _movementSettings;
-
         private bool IsGrounded => _groundChecker.IsColliding;
         private bool IsInContactWithWall => _wallChecker.IsColliding;
 
@@ -102,7 +112,7 @@ namespace Player
         {
             if (_currentMovingState.Value == MovingState.DashAiming)
             {
-                StartCoroutine(DashDisableSpeedLimitation());
+                _coroutineStarter.StartCoroutine(DashDisableSpeedLimitation());
                 _rigidbody.velocity = Vector3.zero;
                 _rigidbody.AddForce(cameraForwardDirection * _movementSettings.DashForce);
                 _currentMovingState.Value = IsGrounded ? MovingState.OnGround : MovingState.InAir;
@@ -120,13 +130,7 @@ namespace Player
             _rigidbody.AddForce(force, mode);
         }
 
-        protected override void SpecialAwakeAction()
-        {
-            MainTransform = _rigidbody.transform;
-            _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.OnGround);
-        }
-
-        private void OnEnable()
+        protected override void SubscribeOnEvents()
         {
             _groundChecker.ContactStateChanged += OnGroundedStatusChanged;
             _wallChecker.ContactStateChanged += OnWallContactStatusChanged;
@@ -134,7 +138,7 @@ namespace Player
             _currentMovingState.AfterValueChanged += OnAfterMovingStateChanged;
         }
 
-        private void OnDisable()
+        protected override void UnsubscribeFromEvents()
         {
             _groundChecker.ContactStateChanged -= OnGroundedStatusChanged;
             _wallChecker.ContactStateChanged -= OnWallContactStatusChanged;
@@ -142,32 +146,35 @@ namespace Player
             _currentMovingState.AfterValueChanged -= OnAfterMovingStateChanged;
         }
 
-        private void Start()
+        private IEnumerator HandleInputMovement()
         {
-            _currentMovingState.Value = MovingState.OnGround;
-            _currentPlayerInputForceMultiplier = NormalPlayerInputForceMultiplier;
-            _currentGravityForce = _movementSettings.NormalGravityForce;
-        }
-
-        private void FixedUpdate()
-        {
-            _rigidbody.AddForce(_currentGravityForce * Vector3.down);
-
-            _rigidbody.AddForce(_inputMoveDirection.x * _movementSettings.MoveForce * Time.deltaTime *
-                                _currentPlayerInputForceMultiplier * _currentSpeedRatio * MainTransform.right);
-            _rigidbody.AddForce(_inputMoveDirection.y * _movementSettings.MoveForce * Time.deltaTime *
-                                _currentPlayerInputForceMultiplier * _currentPlayerInputForceMultiplier *
-                                _currentSpeedRatio * MainTransform.forward);
-            if (_speedLimitationEnabled)
+            var waitForFixedUpdate = new WaitForFixedUpdate();
+            while (true)
             {
-                TryLimitCurrentSpeed();
+                _rigidbody.AddForce(_currentGravityForce * Vector3.down);
+
+                _rigidbody.AddForce(_inputMoveDirection.x * _movementSettings.MoveForce * Time.deltaTime *
+                                    _currentPlayerInputForceMultiplier * _currentSpeedRatio * MainTransform.right);
+                _rigidbody.AddForce(_inputMoveDirection.y * _movementSettings.MoveForce * Time.deltaTime *
+                                    _currentPlayerInputForceMultiplier * _currentPlayerInputForceMultiplier *
+                                    _currentSpeedRatio * MainTransform.forward);
+                if (_speedLimitationEnabled)
+                {
+                    TryLimitCurrentSpeed();
+                }
+
+                yield return waitForFixedUpdate;
             }
         }
 
-        private void Update()
+        private IEnumerator UpdateRatioOfCurrentVelocityToMaximumVelocity()
         {
-            RatioOfCurrentVelocityToMaximumVelocity =
-                _rigidbody.velocity.magnitude / _movementSettings.MaximumSpeed;
+            while (true)
+            {
+                RatioOfCurrentVelocityToMaximumVelocity =
+                    _rigidbody.velocity.magnitude / _movementSettings.MaximumSpeed;
+                yield return null;
+            }
         }
 
         private IEnumerator ApplyFrictionContinuously()
@@ -179,13 +186,13 @@ namespace Player
 
                 if (_inputMoveDirection.x == 0)
                 {
-                    _rigidbody.AddForce(inverseVelocity.x * MainTransform.right * _movementSettings.MoveForce *
+                    _rigidbody.AddForce(inverseVelocity.x * _movementSettings.MoveForce * MainTransform.right *
                                         _movementSettings.FrictionCoefficient * Time.deltaTime);
                 }
 
                 if (_inputMoveDirection.y == 0)
                 {
-                    _rigidbody.AddForce(inverseVelocity.z * MainTransform.forward * _movementSettings.MoveForce *
+                    _rigidbody.AddForce(inverseVelocity.z * _movementSettings.MoveForce * MainTransform.forward *
                                         _movementSettings.FrictionCoefficient * Time.deltaTime);
                 }
 
@@ -248,7 +255,7 @@ namespace Player
                 case MovingState.OnGround:
                     break;
                 case MovingState.InAir when _frictionCoroutine != null:
-                    StopCoroutine(_frictionCoroutine);
+                    _coroutineStarter.StopCoroutine(_frictionCoroutine);
                     _frictionCoroutine = null;
                     break;
                 case MovingState.WallRunning:
@@ -256,7 +263,7 @@ namespace Player
                     break;
                 case MovingState.DashAiming:
                     Dashed?.Invoke();
-                    StartCoroutine(WaitForDashCooldownWithTicking());
+                    _coroutineStarter.StartCoroutine(WaitForDashCooldownWithTicking());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(movingState), movingState, null);
@@ -277,7 +284,7 @@ namespace Player
                     _currentCountOfAirJumps = 0;
                     _currentPlayerInputForceMultiplier = AirPlayerInputForceMultiplier;
                     _currentGravityForce = _movementSettings.NormalGravityForce;
-                    _frictionCoroutine ??= StartCoroutine(ApplyFrictionContinuously());
+                    _frictionCoroutine ??= _coroutineStarter.StartCoroutine(ApplyFrictionContinuously());
                     Fall?.Invoke();
                     break;
                 case MovingState.WallRunning:

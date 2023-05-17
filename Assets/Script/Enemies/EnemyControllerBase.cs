@@ -5,9 +5,9 @@ using Common.Abstract_Bases.Character;
 using Enemies.State_Machine;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces;
+using Pathfinding;
 using Pickable_Items;
 using Settings;
-using Spells;
 using Spells.Continuous_Effect;
 using Spells.Spell.Scriptable_Objects;
 using UnityEngine;
@@ -16,12 +16,13 @@ using Zenject;
 namespace Enemies
 {
     [RequireComponent(typeof(IdHolder))]
-    [RequireComponent(typeof(EnemyMovement))]
+    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Seeker))]
     public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable, ICoroutineStarter
     {
-        protected EnemyMovement _enemyMovement;
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected SpellScriptableObject _spellToDrop;
+        protected EnemyMovement _enemyMovement;
         private IdHolder _idHolder;
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableSpellsFactory _spellsFactory;
@@ -102,8 +103,10 @@ namespace Enemies
         protected virtual void Awake()
         {
             _idHolder = GetComponent<IdHolder>();
-            _enemyMovement = GetComponent<EnemyMovement>();
-            _enemyMovement.Initialize(EnemySettings.MovementSettings, EnemySettings.TargetPathfinderSettingsSection);
+            var seeker = GetComponent<Seeker>();
+            var thisRigidbody = GetComponent<Rigidbody>();
+            _enemyMovement = new EnemyMovement(this, EnemySettings.MovementSettings,
+                EnemySettings.TargetPathfinderSettingsSection, seeker, thisRigidbody);
         }
 
         protected virtual void Start()
