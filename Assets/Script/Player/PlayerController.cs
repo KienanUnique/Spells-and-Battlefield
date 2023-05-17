@@ -20,17 +20,22 @@ namespace Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerController : MonoBehaviour, IPlayer, ICoroutineStarter
     {
-        [SerializeField] private Transform _cameraFollowObject;
+        [Header("Camera")] [SerializeField] private Transform _cameraFollowObject;
         [SerializeField] private Transform _objectToRotateHorizontally;
-        [SerializeField] private Camera _camera;
         [SerializeField] private GameObject _cameraEffectsGameObject;
-        [SerializeField] private RigBuilder _rigBuilder;
+        [SerializeField] private Camera _camera;
+
+        [Header("Animations")] [SerializeField]
+        private RigBuilder _rigBuilder;
+
         [SerializeField] private Animator _characterAnimator;
-        [SerializeField] private GroundChecker _groundChecker;
-        [SerializeField] private WallChecker _wallChecker;
-        [SerializeField] private List<SpellScriptableObject> _startTestSpells;
-        [SerializeField] private Transform _spellSpawnObject;
         [SerializeField] private PlayerEventInvokerForAnimations _playerEventInvokerForAnimations;
+
+        [Header("Checkers")] [SerializeField] private GroundChecker _groundChecker;
+        [SerializeField] private WallChecker _wallChecker;
+
+        [Header("Spells")] [SerializeField] private List<SpellScriptableObject> _startTestSpells;
+        [SerializeField] private Transform _spellSpawnObject;
 
         private PlayerCameraEffects _playerCameraEffects;
         private PlayerVisual _playerVisual;
