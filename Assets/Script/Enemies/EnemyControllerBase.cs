@@ -17,14 +17,12 @@ namespace Enemies
 {
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(EnemyMovement))]
-    [RequireComponent(typeof(CharacterBase))]
-    public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable
+    public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable, ICoroutineStarter
     {
         protected EnemyMovement _enemyMovement;
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected SpellScriptableObject _spellToDrop;
         private IdHolder _idHolder;
-        private CharacterBase _character;
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableSpellsFactory _spellsFactory;
 
@@ -33,19 +31,20 @@ namespace Enemies
             IPickableSpellsFactory spellsFactory)
         {
             _generalEnemySettings = generalEnemySettings;
-            Target = enemyTarget; // TODO: Add enemy trigger zone from which Target will be got
+            Target = enemyTarget;
             _spellsFactory = spellsFactory;
         }
 
         public event Action<float> HitPointsCountChanged;
 
-        public float HitPointCountRatio => _character.HitPointCountRatio;
+        public float HitPointCountRatio => Character.HitPointCountRatio;
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
-        public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => _character.CurrentState;
+        public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => Character.CurrentState;
         public IEnemyTarget Target { get; private set; }
         protected abstract EnemyVisualBase EnemyVisual { get; }
         protected abstract IEnemySettings EnemySettings { get; }
+        protected abstract CharacterBase Character { get; }
 
         public int CompareTo(object obj)
         {
@@ -59,17 +58,17 @@ namespace Enemies
 
         public virtual void HandleHeal(int countOfHealthPoints)
         {
-            _character.HandleHeal(countOfHealthPoints);
+            Character.HandleHeal(countOfHealthPoints);
         }
 
         public virtual void HandleDamage(int countOfHealthPoints)
         {
-            _character.HandleDamage(countOfHealthPoints);
+            Character.HandleDamage(countOfHealthPoints);
         }
 
-        public void ApplyContinuousEffect(IContinuousEffect effect)
+        public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {
-            _character.ApplyContinuousEffect(effect);
+            Character.ApplyContinuousEffect(effect);
         }
 
         public void StartMovingToTarget(Transform target) => _enemyMovement.StartMovingToTarget(target);
@@ -88,15 +87,15 @@ namespace Enemies
 
         protected virtual void OnEnable()
         {
-            _character.StateChanged += OnStateChanged;
-            _character.HitPointsCountChanged += OnHitPointsCountChanged;
+            Character.StateChanged += OnStateChanged;
+            Character.HitPointsCountChanged += OnHitPointsCountChanged;
             _enemyMovement.MovingStateChanged += EnemyVisual.UpdateMovingData;
         }
 
         protected virtual void OnDisable()
         {
-            _character.StateChanged -= OnStateChanged;
-            _character.HitPointsCountChanged -= OnHitPointsCountChanged;
+            Character.StateChanged -= OnStateChanged;
+            Character.HitPointsCountChanged -= OnHitPointsCountChanged;
             _enemyMovement.MovingStateChanged -= EnemyVisual.UpdateMovingData;
         }
 
@@ -104,7 +103,6 @@ namespace Enemies
         {
             _idHolder = GetComponent<IdHolder>();
             _enemyMovement = GetComponent<EnemyMovement>();
-            _character = GetComponent<CharacterBase>();
             _enemyMovement.Initialize(EnemySettings.MovementSettings, EnemySettings.TargetPathfinderSettingsSection);
         }
 

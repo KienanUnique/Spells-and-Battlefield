@@ -1705,7 +1705,6 @@ GameObject:
   - component: {fileID: 4773416566356749375}
   - component: {fileID: 4465156568623437304}
   - component: {fileID: 3852422692244049268}
-  - component: {fileID: 217853341345618375}
   - component: {fileID: 700351198359705668}
   - component: {fileID: 3893434166212012850}
   m_Layer: 9
@@ -1790,18 +1789,6 @@ MonoBehaviour:
   _spellToDrop: {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
   _knightVisual: {fileID: 3080045603991402992}
   _swordTargetSelector: {fileID: 7758560344049107641}
---- !u!114 &217853341345618375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4773416566356749373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d4b5ec528f63c64aa0c44245df35c4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &700351198359705668
 MonoBehaviour:
   m_ObjectHideFlags: 0

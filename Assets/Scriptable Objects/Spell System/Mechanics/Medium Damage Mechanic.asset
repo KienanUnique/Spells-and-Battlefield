@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ce9c987d099ab74caa390e3eeaa6c09, type: 3}
-  m_Name: Damage Mechanic
+  m_Name: Medium Damage Mechanic
   m_EditorClassIdentifier: 
   _damage: 10

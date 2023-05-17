@@ -15,7 +15,7 @@ namespace Spells.Continuous_Effect
         private readonly bool _needIgnoreCooldown;
         private Coroutine _effectCoroutine;
         private ISpellInteractable _target;
-        private MonoBehaviour _fromStartedMonoBehaviour;
+        private ICoroutineStarter _coroutineStarter;
 
         public ContinuousEffect(float cooldownInSeconds, List<ISpellMechanicEffect> mechanics, float durationInSeconds,
             bool needIgnoreCooldown)
@@ -28,22 +28,21 @@ namespace Spells.Continuous_Effect
 
         public event Action<IContinuousEffect> EffectEnded;
 
-        public void Start(MonoBehaviour target)
+        public void Start(ICoroutineStarter coroutineStarter)
         {
-            if (_effectCoroutine == null && target.TryGetComponent<ISpellInteractable>(out var targetSpellInteractable))
+            if (_effectCoroutine == null)
             {
-                _fromStartedMonoBehaviour = target;
-                _target = targetSpellInteractable;
+                _coroutineStarter = coroutineStarter;
                 _effectCoroutine =
-                    target.StartCoroutine(_needIgnoreCooldown ? WaitTillEnd() : ApplyEffectWithCooldown());
+                    coroutineStarter.StartCoroutine(_needIgnoreCooldown ? WaitTillEnd() : ApplyEffectWithCooldown());
             }
         }
 
         public void End()
         {
             if (_effectCoroutine == null) return;
-            _fromStartedMonoBehaviour.StopCoroutine(_effectCoroutine);
-            _fromStartedMonoBehaviour = null;
+            _coroutineStarter.StopCoroutine(_effectCoroutine);
+            _coroutineStarter = null;
             _effectCoroutine = null;
             foreach (var mechanic in _mechanics)
             {
@@ -54,6 +53,11 @@ namespace Spells.Continuous_Effect
             }
 
             EffectEnded?.Invoke(this);
+        }
+
+        public void SetTarget(ISpellInteractable target)
+        {
+            _target = target;
         }
 
         private void ApplyEffects()

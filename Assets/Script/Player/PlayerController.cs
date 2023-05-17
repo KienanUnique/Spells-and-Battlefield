@@ -2,6 +2,7 @@ using System;
 using Common;
 using Common.Abstract_Bases.Character;
 using Interfaces;
+using Settings;
 using Spells;
 using Spells.Continuous_Effect;
 using Spells.Spell;
@@ -14,9 +15,8 @@ namespace Player
     [RequireComponent(typeof(PlayerMovement))]
     [RequireComponent(typeof(PlayerLook))]
     [RequireComponent(typeof(PlayerSpellsManager))]
-    [RequireComponent(typeof(PlayerCharacter))]
     [RequireComponent(typeof(IdHolder))]
-    public class PlayerController : MonoBehaviour, IPlayer
+    public class PlayerController : MonoBehaviour, IPlayer, ICoroutineStarter
     {
         [SerializeField] private PlayerVisual _playerVisual;
         [SerializeField] private PlayerCameraEffects _playerCameraEffects;
@@ -26,11 +26,13 @@ namespace Player
         private PlayerMovement _playerMovement;
         private PlayerLook _playerLook;
         private IdHolder _idHolder;
+        private PlayerSettings _settings;
 
         [Inject]
-        private void Construct(IPlayerInput playerInput)
+        private void Construct(IPlayerInput playerInput, PlayerSettings settings)
         {
             _playerInput = playerInput;
+            _settings = settings;
         }
 
         public event Action DashCooldownFinished;
@@ -56,7 +58,7 @@ namespace Player
             _playerCharacter.HandleDamage(countOfHealthPoints);
         }
 
-        public void ApplyContinuousEffect(IContinuousEffect effect)
+        public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {
             _playerCharacter.ApplyContinuousEffect(effect);
         }
@@ -88,7 +90,7 @@ namespace Player
 
         private void Awake()
         {
-            _playerCharacter = GetComponent<PlayerCharacter>();
+            _playerCharacter = new PlayerCharacter(this, _settings.Character);
             _playerSpellsManager = GetComponent<PlayerSpellsManager>();
             _playerMovement = GetComponent<PlayerMovement>();
             _playerLook = GetComponent<PlayerLook>();

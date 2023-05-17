@@ -1,12 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using Interfaces;
 
 namespace Spells.Continuous_Effect
 {
-    public interface IContinuousEffect
+    public interface IContinuousEffect : IAppliedContinuousEffect
     {
-        public event Action<IContinuousEffect> EffectEnded;
-        public void Start(MonoBehaviour monoBehaviour);
-        public void End();
+        public void SetTarget(ISpellInteractable target);
     }
 }

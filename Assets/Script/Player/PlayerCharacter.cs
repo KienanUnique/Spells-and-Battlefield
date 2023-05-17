@@ -1,6 +1,7 @@
 using Common.Abstract_Bases.Character;
 using General_Settings_in_Scriptable_Objects;
 using General_Settings_in_Scriptable_Objects.Sections;
+using Interfaces;
 using Settings;
 using Zenject;
 
@@ -8,16 +9,11 @@ namespace Player
 {
     public class PlayerCharacter : CharacterBase
     {
-        private CharacterSettingsSection _characterSettings;
+        private const string NamePrefix = "Player";
 
-        [Inject]
-        private void Construct(PlayerSettings settings)
+        public PlayerCharacter(ICoroutineStarter coroutineStarter, CharacterSettingsSection characterSettings) :
+            base(coroutineStarter, characterSettings, NamePrefix)
         {
-            _characterSettings = settings.Character;
         }
-
-        protected override string NamePrefix => "Player";
-
-        protected override CharacterSettingsSection CharacterSettings => _characterSettings;
     }
 }

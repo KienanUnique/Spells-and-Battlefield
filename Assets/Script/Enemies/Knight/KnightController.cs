@@ -1,17 +1,18 @@
-﻿using General_Settings_in_Scriptable_Objects;
+﻿using Common.Abstract_Bases.Character;
+using General_Settings_in_Scriptable_Objects;
 using Settings;
 using UnityEngine;
 using Zenject;
 
 namespace Enemies.Knight
 {
-    [RequireComponent(typeof(KnightCharacter))]
     public class KnightController : EnemyControllerBase
     {
         [SerializeField] private KnightVisual _knightVisual;
         [SerializeField] private BoxColliderTargetSelector _swordTargetSelector;
         protected override EnemyVisualBase EnemyVisual => _knightVisual;
         protected override IEnemySettings EnemySettings => _knightSettings;
+        protected override CharacterBase Character => _knightCharacter;
         private KnightCharacter _knightCharacter;
         private KnightSettings _knightSettings;
 
@@ -34,19 +35,21 @@ namespace Enemies.Knight
 
         protected override void Awake()
         {
+            _knightCharacter = new KnightCharacter(this, _knightSettings.KnightCharacterSettings);
             base.Awake();
-            _knightCharacter = GetComponent<KnightCharacter>();
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
+            _knightCharacter.Enable();
             _knightVisual.AttackWithSwordAnimationMomentStart += HandleAttackWithSwordAnimationMomentStart;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
+            _knightCharacter.Disable();
             _knightVisual.AttackWithSwordAnimationMomentStart -= HandleAttackWithSwordAnimationMomentStart;
         }
 
