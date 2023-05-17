@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Character;
 using Enemies.State_Machine;
@@ -23,6 +24,7 @@ namespace Enemies
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected SpellScriptableObject _spellToDrop;
         protected EnemyMovement _enemyMovement;
+        private List<IDisableable> _itemsNeedDisabling;
         private IdHolder _idHolder;
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableSpellsFactory _spellsFactory;
@@ -88,6 +90,7 @@ namespace Enemies
 
         protected virtual void OnEnable()
         {
+            _itemsNeedDisabling.ForEach(item => item.Enable());
             Character.StateChanged += OnStateChanged;
             Character.HitPointsCountChanged += OnHitPointsCountChanged;
             _enemyMovement.MovingStateChanged += EnemyVisual.UpdateMovingData;
@@ -95,6 +98,7 @@ namespace Enemies
 
         protected virtual void OnDisable()
         {
+            _itemsNeedDisabling.ForEach(item => item.Disable());
             Character.StateChanged -= OnStateChanged;
             Character.HitPointsCountChanged -= OnHitPointsCountChanged;
             _enemyMovement.MovingStateChanged -= EnemyVisual.UpdateMovingData;
@@ -107,6 +111,12 @@ namespace Enemies
             var thisRigidbody = GetComponent<Rigidbody>();
             _enemyMovement = new EnemyMovement(this, EnemySettings.MovementSettings,
                 EnemySettings.TargetPathfinderSettingsSection, seeker, thisRigidbody);
+
+            _itemsNeedDisabling = new List<IDisableable>
+            {
+                _enemyMovement,
+                Character
+            };
         }
 
         protected virtual void Start()
