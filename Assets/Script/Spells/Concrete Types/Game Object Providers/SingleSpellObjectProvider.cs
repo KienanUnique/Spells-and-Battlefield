@@ -7,7 +7,7 @@ namespace Spells.Concrete_Types.Game_Object_Providers
     [CreateAssetMenu(fileName = "Single Spell Object Provider",
         menuName = ScriptableObjectsMenuDirectories.SpellObjectsProvidersDirectory + "Single Spell Object Provider",
         order = 0)]
-    public class SingleSpellObjectProvider : SpellGameObjectProviderScriptableObject
+    public class SingleSpellObjectProvider : SpellPrefabProviderScriptableObject
     {
         [SerializeField] private SingleSpellObjectController _prefab;
         public override GameObject Prefab => _prefab.gameObject;

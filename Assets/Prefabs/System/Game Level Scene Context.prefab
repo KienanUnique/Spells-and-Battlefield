@@ -107,5 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 920842a47dc44fd787331ae319ba0372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pickableSpellsFactory:
-    _pickableSpellPrefab: {fileID: 4960876760894594233, guid: e5081c11df2aa0745a2264b49c70b283, type: 3}
+  _enemiesParent: {fileID: 0}
+  _spellsParent: {fileID: 0}
+  _pickableItemsParent: {fileID: 0}
+  _pickableSpellPrefab: {fileID: 4960876760894594233, guid: e5081c11df2aa0745a2264b49c70b283, type: 3}

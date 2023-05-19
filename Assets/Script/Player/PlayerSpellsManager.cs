@@ -34,7 +34,7 @@ namespace Player
         public void UseSelectedSpell(Quaternion direction)
         {
             _spellObjectsFactory.Create(SelectedSpell.SpellDataForSpellController,
-                SelectedSpell.SpellGameObjectProvider, _player, _spellSpawnObject.position, direction);
+                SelectedSpell.SpellPrefabProvider, _player, _spellSpawnObject.position, direction);
             _spellsStorage.RemoveAt(0);
         }
 

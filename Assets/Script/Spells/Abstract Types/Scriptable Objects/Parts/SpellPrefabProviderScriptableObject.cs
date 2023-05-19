@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Spells.Abstract_Types.Scriptable_Objects.Parts
 {
-    public abstract class SpellGameObjectProviderScriptableObject : ScriptableObject, ISpellGameObjectProvider
+    public abstract class SpellPrefabProviderScriptableObject : ScriptableObject, ISpellPrefabProvider
     {
         public abstract GameObject Prefab { get; }
     }

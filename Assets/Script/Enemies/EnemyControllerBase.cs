@@ -19,7 +19,7 @@ namespace Enemies
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Seeker))]
-    public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable, ICoroutineStarter
+    public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable, ICoroutineStarter, IEnemyTriggersSettable
     {
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected SpellScriptableObject _spellToDrop;
@@ -48,6 +48,10 @@ namespace Enemies
         protected abstract EnemyVisualBase EnemyVisual { get; }
         protected abstract IEnemySettings EnemySettings { get; }
         protected abstract CharacterBase Character { get; }
+
+        public void SetExternalEnemyTargetTriggers(List<IEnemyTargetTrigger> enemyTargetTriggers)
+        {
+        }
 
         public int CompareTo(object obj)
         {

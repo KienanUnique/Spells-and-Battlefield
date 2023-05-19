@@ -6,17 +6,17 @@ namespace Spells.Spell
     public class Spell : ISpell
     {
         public Spell(ISpellCardInformation spellCardInformation, ISpellAnimationInformation spellAnimationInformation,
-            ISpellDataForSpellController spellDataForSpellController, ISpellGameObjectProvider spellGameObjectProvider)
+            ISpellDataForSpellController spellDataForSpellController, ISpellPrefabProvider spellPrefabProvider)
         {
             SpellCardInformation = spellCardInformation;
             SpellAnimationInformation = spellAnimationInformation;
             SpellDataForSpellController = spellDataForSpellController;
-            SpellGameObjectProvider = spellGameObjectProvider;
+            SpellPrefabProvider = spellPrefabProvider;
         }
 
         public ISpellCardInformation SpellCardInformation { get; }
         public ISpellAnimationInformation SpellAnimationInformation { get; }
         public ISpellDataForSpellController SpellDataForSpellController { get; }
-        public ISpellGameObjectProvider SpellGameObjectProvider { get; }
+        public ISpellPrefabProvider SpellPrefabProvider { get; }
     }
 }

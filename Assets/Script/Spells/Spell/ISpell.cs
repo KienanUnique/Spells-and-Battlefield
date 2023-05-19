@@ -8,6 +8,6 @@ namespace Spells.Spell
         public ISpellCardInformation SpellCardInformation { get; }
         public ISpellAnimationInformation SpellAnimationInformation { get; }
         public ISpellDataForSpellController SpellDataForSpellController { get; }
-        public ISpellGameObjectProvider SpellGameObjectProvider { get; }
+        public ISpellPrefabProvider SpellPrefabProvider { get; }
     }
 }

@@ -7,7 +7,7 @@ using Image = UnityEngine.UI.Image;
 
 namespace Pickable_Items
 {
-    public class PickableSpellController : PickableItemBase<ISpell>
+    public class PickableSpellController : PickableItemBase<ISpell>, IPickableSpellController
     {
         [SerializeField] private TMP_Text _title;
         [SerializeField] private Image _icon;

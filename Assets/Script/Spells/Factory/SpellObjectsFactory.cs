@@ -1,4 +1,5 @@
-﻿using Interfaces;
+﻿using Common.Abstract_Bases;
+using Interfaces;
 using Spells.Controllers;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell.Interfaces;
@@ -7,22 +8,20 @@ using Zenject;
 
 namespace Spells.Factory
 {
-    public class SpellObjectsFactory : ISpellObjectsFactory
+    public class SpellObjectsFactory : FactoryWithInstantiatorBase, ISpellObjectsFactory
     {
-        private readonly IInstantiator _instantiator;
-
-        public SpellObjectsFactory(IInstantiator instantiator)
+        public SpellObjectsFactory(IInstantiator instantiator, Transform parentTransform) :
+            base(instantiator, parentTransform)
         {
-            _instantiator = instantiator;
         }
 
         public void Create(ISpellDataForSpellController spellData,
-            ISpellGameObjectProvider spellGameObjectProvider, ICaster caster,
+            ISpellPrefabProvider spellPrefabProvider, ICaster caster,
             Vector3 spawnPosition, Quaternion spawnRotation)
         {
             var spellController =
-                _instantiator.InstantiatePrefabForComponent<ISpellObjectController>(spellGameObjectProvider.Prefab,
-                    spawnPosition, spawnRotation, null);
+                InstantiatePrefabForComponent<ISpellObjectController>(spellPrefabProvider, spawnPosition,
+                    spawnRotation);
             spellController.Initialize(spellData, caster, this);
         }
     }

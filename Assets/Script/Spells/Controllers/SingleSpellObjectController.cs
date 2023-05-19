@@ -77,7 +77,7 @@ namespace Spells.Controllers
             _spellData.NextSpellsOnFinish.ForEach(spell =>
             {
                 var spellTransform = _rigidbody.transform;
-                _spellObjectsFactory.Create(spell.SpellDataForSpellController, spell.SpellGameObjectProvider,
+                _spellObjectsFactory.Create(spell.SpellDataForSpellController, spell.SpellPrefabProvider,
                     _caster, spellTransform.position, spellTransform.rotation);
             });
             Destroy(this.gameObject);

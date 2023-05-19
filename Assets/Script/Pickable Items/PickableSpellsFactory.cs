@@ -1,26 +1,26 @@
-﻿using System;
+﻿using Common.Abstract_Bases;
 using Spells.Spell;
 using UnityEngine;
 using Zenject;
 
 namespace Pickable_Items
 {
-    [Serializable]
-    public class PickableSpellsFactory : IPickableSpellsFactory
+    public class PickableSpellsFactory : FactoryWithInstantiatorBase, IPickableSpellsFactory
     {
-        [SerializeField] private PickableSpellController _pickableSpellPrefab;
-        private IInstantiator _instantiator;
+        private readonly PickableSpellController _pickableSpellPrefab;
 
-        public void SetInstantiator(IInstantiator instantiator)
+        public PickableSpellsFactory(IInstantiator instantiator, Transform parentTransform,
+            PickableSpellController pickableSpellPrefab) :
+            base(instantiator, parentTransform)
         {
-            _instantiator = instantiator;
+            _pickableSpellPrefab = pickableSpellPrefab;
         }
 
         public IPickableItem Create(ISpell spellToStore, Vector3 position)
         {
             var pickableSpellController =
-                _instantiator.InstantiatePrefabForComponent<PickableSpellController>(_pickableSpellPrefab, position,
-                    Quaternion.identity, null);
+                InstantiatePrefabForComponent<IPickableSpellController>(_pickableSpellPrefab.gameObject,
+                    position, Quaternion.identity);
             pickableSpellController.SetStoredData(spellToStore);
             return pickableSpellController;
         }

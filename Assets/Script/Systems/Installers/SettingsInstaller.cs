@@ -11,8 +11,10 @@ namespace Systems.Installers
         [SerializeField] private GroundLayerMaskSetting _groundLayerMaskSetting;
         [SerializeField] private PickableItemsSettings _pickableItemsSettings;
         [SerializeField] private UIAnimationSettings _uiAnimationSettings;
-        [SerializeField] private GeneralEnemySettings _generalEnemySettings;
         [SerializeField] private PlayerSettings _playerSettings;
+        
+        [Header("Enemies")]
+        [SerializeField] private GeneralEnemySettings _generalEnemySettings;
         [SerializeField] private KnightSettings _knightSettings;
 
         public override void InstallBindings()

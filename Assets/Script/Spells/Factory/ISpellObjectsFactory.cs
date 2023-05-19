@@ -8,7 +8,7 @@ namespace Spells.Factory
     public interface ISpellObjectsFactory
     {
         public void Create(ISpellDataForSpellController spellData,
-            ISpellGameObjectProvider spellGameObjectProvider, ICaster caster,
+            ISpellPrefabProvider spellPrefabProvider, ICaster caster,
             Vector3 spawnPosition, Quaternion spawnRotation);
     }
 }

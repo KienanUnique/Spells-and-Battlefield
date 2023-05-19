@@ -13,12 +13,12 @@ namespace Spells.Spell.Scriptable_Objects
         [SerializeField] private SpellCardInformation _cardInformation;
         [SerializeField] private SpellAnimationInformation _animationInformation;
         [SerializeField] private SpellDataForSpellControllerProvider _dataForSpellController;
-        [SerializeField] private SpellGameObjectProviderScriptableObject _gameObjectProvider;
+        [SerializeField] private SpellPrefabProviderScriptableObject _prefabProviderScriptableObjectProvider;
 
         private ISpellDataForSpellController SpellDataForSpellController =>
             _dataForSpellController.GetImplementationObject();
 
         public ISpell GetImplementationObject() => new Spell(_cardInformation, _animationInformation,
-            SpellDataForSpellController, _gameObjectProvider);
+            SpellDataForSpellController, _prefabProviderScriptableObjectProvider);
     }
 }
