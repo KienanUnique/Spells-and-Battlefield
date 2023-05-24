@@ -18,7 +18,7 @@
 
     #region Settings
 
-    public const string SettingsDirectory = RootDirectory + "Settings/";
+    private const string SettingsDirectory = RootDirectory + "Settings/";
 
     public const string GeneralSettingsDirectory = SettingsDirectory + "General/";
     public const string ConcreteEnemiesSettingsDirectory = SettingsDirectory + "Concrete Enemies/";
@@ -29,6 +29,14 @@
     #region Installers
 
     public const string InstallersDirectory = RootDirectory + "Installers/";
+
+    #endregion
+
+    #region PrefabProviders
+
+    private const string PrefabProvidersDirectory = RootDirectory + "Prefab Providers/";
+
+    public const string EnemiesPrefabProvidersDirectory = PrefabProvidersDirectory + "Enemies/";
 
     #endregion
 }

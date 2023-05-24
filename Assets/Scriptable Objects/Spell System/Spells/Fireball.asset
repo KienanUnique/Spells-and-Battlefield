@@ -23,4 +23,4 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 7625cdd303a1b204c9c18ee576a62adc, type: 2}
     _mainTrigger: {fileID: 11400000, guid: 6e4167d6efc4a0649932a733d1797436, type: 2}
     _nextSpellsOnFinish: []
-  _gameObjectProvider: {fileID: 11400000, guid: 2fa2bf13d9bbe744c8b38256cfb92887, type: 2}
+  _prefabProviderScriptableObjectProvider: {fileID: 11400000, guid: 2fa2bf13d9bbe744c8b38256cfb92887, type: 2}
