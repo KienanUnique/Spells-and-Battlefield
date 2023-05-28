@@ -1,12 +1,11 @@
-﻿using Enemies.Target_Selector;
-using Enemies.Trigger;
+﻿using Enemies.Target_Selector_From_Triggers;
 using UnityEngine;
 
 namespace Enemies.State_Machine
 {
     public interface IEnemyStateMachineControllable
     {
-        public IEnemyTargetSelector TargetSelector { get; }
+        public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; }
         public void StartMovingToTarget(Transform target);
         public void StopMovingToTarget();
     }

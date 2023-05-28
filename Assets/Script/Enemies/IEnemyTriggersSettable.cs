@@ -5,6 +5,6 @@ namespace Enemies
 {
     public interface IEnemyTriggersSettable
     {
-        void SetExternalEnemyTargetTriggers(List<IEnemyTargetTrigger> enemyTargetTriggers);
+        void SetExternalEnemyTargetTriggers(List<Trigger.IEnemyTargetTrigger> enemyTargetTriggers);
     }
 }

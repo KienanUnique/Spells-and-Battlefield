@@ -1,18 +1,17 @@
 ﻿using System;
-using Enemies.Target_Selector;
-using Enemies.Trigger;
+using Enemies.Target_Selector_From_Triggers;
 using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine
 {
-    public class EnemyStateMachineAI : MonoBehaviour
+    public class EnemyStateMachineAI : MonoBehaviour, IEnemyStateMachineAI
     {
         [SerializeField] private StateEnemyAI _firstStateEnemyAI;
         private StateEnemyAI _currentStateEnemyAI;
         private IEnemyStateMachineControllable _stateMachineControllable;
         private bool _isActive;
-        private IEnemyTargetSelector _targetSelector;
+        private IEnemyTargetFromTriggersSelector _targetFromTriggersSelector;
 
         private void OnEnable()
         {
@@ -38,8 +37,8 @@ namespace Enemies.State_Machine
             }
 
             _stateMachineControllable = stateMachineControllable;
-            _targetSelector = _stateMachineControllable.TargetSelector;
-            _targetSelector.CurrentTargetChanged += OnCurrentTargetChanged;
+            _targetFromTriggersSelector = _stateMachineControllable.TargetFromTriggersSelector;
+            _targetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
             TransitToState(_firstStateEnemyAI);
             _isActive = true;
         }
@@ -72,21 +71,21 @@ namespace Enemies.State_Machine
             }
         }
 
-        private void OnCurrentTargetChanged(IEnemyTarget obj)
+        private void OnCurrentTargetFromTriggersChanged(IEnemyTarget obj)
         {
             TransitToState(_currentStateEnemyAI);
         }
 
         private void SubscribeOnEvents()
         {
-            _targetSelector.CurrentTargetChanged += OnCurrentTargetChanged;
+            _targetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
             _currentStateEnemyAI.NeedToSwitchToNextState += TransitToState;
         }
 
 
         private void UnsubscribeFromEvents()
         {
-            _targetSelector.CurrentTargetChanged -= OnCurrentTargetChanged;
+            _targetFromTriggersSelector.CurrentTargetChanged -= OnCurrentTargetFromTriggersChanged;
             _currentStateEnemyAI.NeedToSwitchToNextState -= TransitToState;
         }
 

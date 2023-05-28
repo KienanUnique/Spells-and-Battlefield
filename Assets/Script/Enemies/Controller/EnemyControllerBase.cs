@@ -3,42 +3,52 @@ using System.Collections;
 using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Character;
+using Enemies.Movement;
+using Enemies.Setup;
 using Enemies.State_Machine;
-using Enemies.Target_Selector;
-using Enemies.Trigger;
+using Enemies.Target_Selector_From_Triggers;
+using Enemies.Visual;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Pathfinding;
 using Pickable_Items;
 using Settings;
 using Spells.Continuous_Effect;
-using Spells.Spell.Scriptable_Objects;
+using Spells.Spell;
 using UnityEngine;
-using Zenject;
 
-namespace Enemies
+namespace Enemies.Controller
 {
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Seeker))]
     public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable,
-        ICoroutineStarter, IEnemyTriggersSettable
+        ICoroutineStarter
     {
-        [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
-        [SerializeField] protected SpellScriptableObject _spellToDrop;
-        [SerializeField] private List<EnemyTargetTrigger> _targetTriggers;
-        protected EnemyMovement _enemyMovement;
+        private IEnemyStateMachineAI _enemyStateMachineAI;
+        private ISpell _spellToDrop;
+        protected IEnemyMovement _enemyMovement;
         private List<IDisableable> _itemsNeedDisabling;
-        private IdHolder _idHolder;
+        private IIdHolder _idHolder;
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableSpellsFactory _spellsFactory;
-        private EnemyTargetSelector _targetSelector;
+        private IEnemyTargetFromTriggersSelector _targetFromTriggersSelector;
+        private ValueWithReactionOnChange<EnemyControllerState> _currentControllerState;
 
-        [Inject]
-        private void Construct(GeneralEnemySettings generalEnemySettings, IPickableSpellsFactory spellsFactory)
+        protected void InitializeBase(IEnemyBaseSetupData setupData)
         {
-            _generalEnemySettings = generalEnemySettings;
-            _spellsFactory = spellsFactory;
+            _enemyStateMachineAI = setupData.SetEnemyStateMachineAI;
+            _spellToDrop = setupData.SetSpellToDrop;
+            _enemyMovement = setupData.SetEnemyMovement;
+            _itemsNeedDisabling = setupData.SetItemsNeedDisabling;
+            _idHolder = setupData.SetIdHolder;
+            _generalEnemySettings = setupData.SetGeneralEnemySettings;
+            _spellsFactory = setupData.SetSpellsFactory;
+            _targetFromTriggersSelector = setupData.SetTargetFromTriggersSelector;
+
+            SubscribeOnEvents();
+
+            _currentControllerState.Value = EnemyControllerState.Initialized;
         }
 
         public event Action<float> HitPointsCountChanged;
@@ -47,13 +57,15 @@ namespace Enemies
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
         public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => Character.CurrentState;
-        protected abstract EnemyVisualBase EnemyVisual { get; }
+        protected abstract IEnemyVisualBase EnemyVisual { get; }
         protected abstract IEnemySettings EnemySettings { get; }
-        protected abstract CharacterBase Character { get; }
+        protected abstract ICharacterBase Character { get; }
 
-        public void SetExternalEnemyTargetTriggers(List<IEnemyTargetTrigger> enemyTargetTriggers)
+        private enum EnemyControllerState
         {
-            enemyTargetTriggers.ForEach(trigger => _targetSelector.AddTrigger(trigger));
+            NonInitialized,
+            Initialized,
+            Destroying
         }
 
         public int CompareTo(object obj)
@@ -81,7 +93,7 @@ namespace Enemies
             Character.ApplyContinuousEffect(effect);
         }
 
-        public IEnemyTargetSelector TargetSelector => _targetSelector;
+        public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector => _targetFromTriggersSelector;
         public void StartMovingToTarget(Transform target) => _enemyMovement.StartMovingToTarget(target);
 
         public void StopMovingToTarget() => _enemyMovement.StopMovingToTarget();
@@ -96,55 +108,65 @@ namespace Enemies
             _enemyMovement.DivideSpeedRatioBy(speedRatio);
         }
 
-        protected virtual void OnEnable()
+        private void OnEnable()
         {
+            if (_currentControllerState.Value == EnemyControllerState.Initialized)
+            {
+                SubscribeOnEvents();
+            }
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeFromEvents();
+        }
+
+        private void Awake()
+        {
+            _currentControllerState =
+                new ValueWithReactionOnChange<EnemyControllerState>(EnemyControllerState.NonInitialized);
+        }
+
+        protected virtual void SubscribeOnEvents()
+        {
+            _currentControllerState.AfterValueChanged += OnControllerStateChanged;
             _itemsNeedDisabling.ForEach(item => item.Enable());
-            Character.StateChanged += OnStateChanged;
+            Character.StateChanged += OnCharacterStateChanged;
             Character.HitPointsCountChanged += OnHitPointsCountChanged;
             _enemyMovement.MovingStateChanged += EnemyVisual.UpdateMovingData;
         }
 
-        protected virtual void OnDisable()
+        protected virtual void UnsubscribeFromEvents()
         {
+            _currentControllerState.AfterValueChanged -= OnControllerStateChanged;
             _itemsNeedDisabling.ForEach(item => item.Disable());
-            Character.StateChanged -= OnStateChanged;
+            Character.StateChanged -= OnCharacterStateChanged;
             Character.HitPointsCountChanged -= OnHitPointsCountChanged;
             _enemyMovement.MovingStateChanged -= EnemyVisual.UpdateMovingData;
         }
 
-        protected virtual void Awake()
+        private void OnControllerStateChanged(EnemyControllerState newState)
         {
-            _idHolder = GetComponent<IdHolder>();
-            var seeker = GetComponent<Seeker>();
-            var thisRigidbody = GetComponent<Rigidbody>();
-            _enemyMovement = new EnemyMovement(this, EnemySettings.MovementSettings,
-                EnemySettings.TargetPathfinderSettingsSection, seeker, thisRigidbody);
-            _targetSelector = new EnemyTargetSelector();
-            _targetTriggers.ForEach(trigger => _targetSelector.AddTrigger(trigger));
-
-            _itemsNeedDisabling = new List<IDisableable>
+            switch (newState)
             {
-                _enemyMovement,
-                Character,
-                _targetSelector
-            };
-            
+                case EnemyControllerState.Initialized:
+                    _enemyStateMachineAI.StartStateMachine(this);
+                    break;
+                case EnemyControllerState.Destroying:
+                    _enemyStateMachineAI.StopStateMachine();
+                    _enemyMovement.StopMovingToTarget();
+                    EnemyVisual.PlayDieAnimation();
+                    DropSpell();
+                    StartCoroutine(DestroyAfterDelay());
+                    break;
+            }
         }
 
-        protected virtual void Start()
-        {
-            _enemyStateMachineAI.StartStateMachine(this);
-        }
-
-        private void OnStateChanged(CharacterState newState)
+        private void OnCharacterStateChanged(CharacterState newState)
         {
             if (newState == CharacterState.Dead)
             {
-                _enemyStateMachineAI.StopStateMachine();
-                _enemyMovement.StopMovingToTarget();
-                EnemyVisual.PlayDieAnimation();
-                DropSpell();
-                StartCoroutine(DestroyAfterDelay());
+                _currentControllerState.Value = EnemyControllerState.Destroying;
             }
         }
 
@@ -154,11 +176,11 @@ namespace Enemies
         private void DropSpell()
         {
             var cashedTransform = transform;
-            var dropDirection = _targetSelector.CurrentTarget == null
+            var dropDirection = _targetFromTriggersSelector.CurrentTarget == null
                 ? cashedTransform.forward
-                : (_targetSelector.CurrentTarget.MainTransform.position - cashedTransform.position).normalized;
+                : (_targetFromTriggersSelector.CurrentTarget.MainTransform.position - cashedTransform.position).normalized;
             var spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
-            var pickableSpell = _spellsFactory.Create(_spellToDrop.GetImplementationObject(), spawnPosition);
+            var pickableSpell = _spellsFactory.Create(_spellToDrop, spawnPosition);
             pickableSpell.DropItemTowardsDirection(dropDirection);
         }
 

@@ -3,9 +3,9 @@ using Common.Abstract_Bases.Character;
 using Interfaces;
 using Settings;
 
-namespace Enemies.Knight
+namespace Enemies.Concrete_Types.Knight.Character
 {
-    public class KnightCharacter : CharacterBase
+    public class KnightCharacter : CharacterBase, IKnightCharacter
     {
         private const string NamePrefix = "Knight";
         private readonly KnightSettings.KnightCharacterSettingsSection _characterSettings;

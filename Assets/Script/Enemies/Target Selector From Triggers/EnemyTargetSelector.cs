@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using Common;
-using Enemies.Trigger;
 using Interfaces;
 using ModestTree;
 
-namespace Enemies.Target_Selector
+namespace Enemies.Target_Selector_From_Triggers
 {
-    public class EnemyTargetSelector : BaseWithDisabling, IEnemyTargetSelector
+    public class EnemyTargetFromTriggersSelector : BaseWithDisabling, IEnemyTargetFromTriggersSelector
     {
         private readonly HashSet<IEnemyTarget> _targets = new HashSet<IEnemyTarget>();
-        private readonly List<IEnemyTargetTrigger> _triggers = new List<IEnemyTargetTrigger>();
+        private readonly List<Trigger.IEnemyTargetTrigger> _triggers = new List<Trigger.IEnemyTargetTrigger>();
         public event Action<IEnemyTarget> CurrentTargetChanged;
 
         public IEnemyTarget CurrentTarget { get; private set; }
 
-        public void AddTrigger(IEnemyTargetTrigger trigger)
+        public void AddTrigger(Trigger.IEnemyTargetTrigger trigger)
         {
             _triggers.Add(trigger);
             trigger.TargetDetected += OnTargetInTriggerDetected;

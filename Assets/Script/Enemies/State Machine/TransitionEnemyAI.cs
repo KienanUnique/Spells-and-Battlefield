@@ -7,19 +7,15 @@ namespace Enemies.State_Machine
     public abstract class TransitionEnemyAI : MonoBehaviour
     {
         [SerializeField] private StateEnemyAI _targetStateEnemyAI;
-        protected Coroutine _currentCheckConditionsCoroutine = null;
-        
+        private Coroutine _currentCheckConditionsCoroutine;
+
         public event Action<StateEnemyAI> NeedTransit;
-        
-        public StateEnemyAI TargetStateEnemyAI => _targetStateEnemyAI;
+
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
 
         public void StartCheckingConditions(IEnemyStateMachineControllable stateMachineControllable)
         {
-            if (_currentCheckConditionsCoroutine != null)
-            {
-                throw new TransitionIsAlreadyActivatedException();
-            }
+            if (_currentCheckConditionsCoroutine != null) return;
 
             StateMachineControllable = stateMachineControllable;
             _currentCheckConditionsCoroutine = StartCoroutine(CheckConditionsCoroutine());
@@ -27,12 +23,9 @@ namespace Enemies.State_Machine
 
         public void StopCheckingConditions()
         {
-            if (_currentCheckConditionsCoroutine == null)
-            {
-                throw new TryingDeactivateNotActivatedTransitionException();
-            }
-
+            if (_currentCheckConditionsCoroutine == null) return;
             StopCoroutine(_currentCheckConditionsCoroutine);
+
             _currentCheckConditionsCoroutine = null;
         }
 
@@ -44,7 +37,7 @@ namespace Enemies.State_Machine
 
         protected void InvokeTransitionEvent()
         {
-            NeedTransit?.Invoke(TargetStateEnemyAI);
+            NeedTransit?.Invoke(_targetStateEnemyAI);
         }
 
         private IEnumerator CheckConditionsCoroutine()
@@ -53,20 +46,6 @@ namespace Enemies.State_Machine
             {
                 CheckConditions();
                 yield return null;
-            }
-        }
-
-        private class TransitionIsAlreadyActivatedException : Exception
-        {
-            public TransitionIsAlreadyActivatedException() : base("Transition is already activated")
-            {
-            }
-        }
-
-        private class TryingDeactivateNotActivatedTransitionException : Exception
-        {
-            public TryingDeactivateNotActivatedTransitionException() : base("Can't deactivate not active transition")
-            {
             }
         }
     }

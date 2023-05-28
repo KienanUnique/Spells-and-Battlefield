@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Interfaces;
 using UnityEngine;
 
@@ -18,6 +19,9 @@ namespace Enemies.Trigger
             return _targetsInside.Contains(target);
         }
 
+        public ReadOnlyCollection<IEnemyTarget> GetTargetsInCollider() =>
+            new ReadOnlyCollection<IEnemyTarget>(_targetsInside);
+
         private void Awake()
         {
             _targetsInside = new List<IEnemyTarget>();
@@ -34,7 +38,7 @@ namespace Enemies.Trigger
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent(out IEnemyTarget lostTarget))
+            if (other.TryGetComponent(out IEnemyTarget lostTarget) && _targetsInside.Contains(lostTarget))
             {
                 _targetsInside.Remove(lostTarget);
                 TargetLost?.Invoke(lostTarget);

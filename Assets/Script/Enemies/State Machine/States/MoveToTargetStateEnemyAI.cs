@@ -4,7 +4,7 @@ namespace Enemies.State_Machine.States
 {
     public class MoveToTargetStateEnemyAI : StateEnemyAI
     {
-        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetSelector.CurrentTarget;
+        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
         protected override void SpecialEnterAction()
         {
             if (CurrentTarget == null)

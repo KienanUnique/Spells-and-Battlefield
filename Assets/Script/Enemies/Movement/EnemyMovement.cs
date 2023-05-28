@@ -2,14 +2,15 @@ using System;
 using System.Collections;
 using Common;
 using Common.Abstract_Bases;
+using Common.Abstract_Bases.Movement;
 using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
 using Pathfinding;
 using UnityEngine;
 
-namespace Enemies
+namespace Enemies.Movement
 {
-    public sealed class EnemyMovement : MovementBase
+    public sealed class EnemyMovement : MovementBase, IEnemyMovement
     {
         private readonly ValueWithReactionOnChange<bool> _isMoving;
         private readonly TargetPathfinder _targetPathfinder;

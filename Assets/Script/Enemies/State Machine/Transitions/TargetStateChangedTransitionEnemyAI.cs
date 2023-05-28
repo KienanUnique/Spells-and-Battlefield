@@ -9,7 +9,7 @@ namespace Enemies.State_Machine.Transitions
         [SerializeField] private CharacterState _needState;
         private ICharacter _targetCharacter = null;
         private int _lastCashedTargetId;
-        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetSelector.CurrentTarget;
+        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
 
         protected override void SpecialActionOnStartChecking()
         {

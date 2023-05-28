@@ -1,4 +1,4 @@
-﻿using Enemies.Knight;
+﻿using Enemies.Concrete_Types.Knight;
 using UnityEngine;
 
 namespace Enemies.Prefab_Provider

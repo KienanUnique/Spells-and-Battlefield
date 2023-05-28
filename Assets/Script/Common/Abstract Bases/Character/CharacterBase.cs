@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Common.Abstract_Bases.Character
 {
-    public abstract class CharacterBase : BaseWithDisabling
+    public abstract class CharacterBase : BaseWithDisabling, ICharacterBase
     {
         protected readonly ValueWithReactionOnChange<float> _currentCountCountOfHitPoints;
         protected readonly ICoroutineStarter _coroutineStarter;

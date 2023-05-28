@@ -1,9 +1,9 @@
 ﻿using General_Settings_in_Scriptable_Objects.Sections;
 using UnityEngine;
 
-namespace Common.Abstract_Bases
+namespace Common.Abstract_Bases.Movement
 {
-    public abstract class MovementBase : BaseWithDisabling
+    public abstract class MovementBase : BaseWithDisabling, IMovementBase
     {
         private const float StopVelocityMagnitude = 0.0001f;
 

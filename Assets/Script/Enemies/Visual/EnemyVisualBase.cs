@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace Enemies
+namespace Enemies.Visual
 {
     [RequireComponent(typeof(Animator))]
-    public abstract class EnemyVisualBase : MonoBehaviour
+    public abstract class EnemyVisualBase : MonoBehaviour, IEnemyVisualBase
     {
         protected Animator _characterAnimator;
         private static readonly int IsRunningBoolHash = Animator.StringToHash("Is Running");

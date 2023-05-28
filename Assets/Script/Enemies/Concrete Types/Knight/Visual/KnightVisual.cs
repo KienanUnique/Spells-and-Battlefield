@@ -1,9 +1,10 @@
 ﻿using System;
+using Enemies.Visual;
 using UnityEngine;
 
-namespace Enemies.Knight
+namespace Enemies.Concrete_Types.Knight.Visual
 {
-    public class KnightVisual : EnemyVisualBase
+    public class KnightVisual : EnemyVisualBase, IKnightVisual
     {
         private static readonly int IsAttackingBoolHash = Animator.StringToHash("Is Attacking");
         public event Action AttackWithSwordAnimationMomentStart;

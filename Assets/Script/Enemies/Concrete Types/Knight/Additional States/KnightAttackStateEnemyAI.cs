@@ -2,12 +2,12 @@
 using Enemies.State_Machine;
 using Interfaces;
 
-namespace Enemies.Knight.Additional_States
+namespace Enemies.Concrete_Types.Knight.Additional_States
 {
     public class KnightAttackStateEnemyAI : StateEnemyAI
     {
         private KnightController _knightController;
-        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetSelector.CurrentTarget;
+        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
 
         protected override void SpecialEnterAction()
         {

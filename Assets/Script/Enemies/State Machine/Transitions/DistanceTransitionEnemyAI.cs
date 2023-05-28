@@ -10,7 +10,7 @@ namespace Enemies.State_Machine.Transitions
         [SerializeField] private TypeOfComparison _typeOfComparison;
         private Transform _cashedTransform;
 
-        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetSelector.CurrentTarget;
+        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
         private Vector3 CurrentTargetPosition => CurrentTarget.MainTransform.position;
 
         private enum TypeOfComparison

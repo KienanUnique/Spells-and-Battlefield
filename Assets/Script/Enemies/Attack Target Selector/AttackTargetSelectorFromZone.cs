@@ -2,10 +2,10 @@
 using Interfaces;
 using UnityEngine;
 
-namespace Enemies
+namespace Enemies.Attack_Target_Selector
 {
     [RequireComponent(typeof(BoxCollider))]
-    public class BoxColliderTargetSelector : MonoBehaviour
+    public class AttackTargetSelectorFromZone : MonoBehaviour, IAttackTargetSelectorFromZone
     {
         private List<IEnemyTarget> _targetsInside;
         public List<IEnemyTarget> GetTargetsInCollider() => _targetsInside;

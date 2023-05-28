@@ -13,7 +13,7 @@ namespace Enemies.Factory
         {
         }
 
-        public void Create(IEnemyPrefabProvider enemyPrefabProvider, List<IEnemyTargetTrigger> enemyTargetTriggers,
+        public void Create(IEnemyPrefabProvider enemyPrefabProvider, List<Trigger.IEnemyTargetTrigger> enemyTargetTriggers,
             Vector3 spawnPosition, Quaternion spawnRotation)
         {
             var enemyTriggersSettable = InstantiatePrefabForComponent<IEnemyTriggersSettable>(enemyPrefabProvider,
