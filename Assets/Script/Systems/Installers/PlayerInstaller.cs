@@ -12,15 +12,6 @@ namespace Systems.Installers
         public override void InstallBindings()
         {
             InstallPlayerInformation();
-            InstallEnemyTarget();
-        }
-
-        private void InstallEnemyTarget()
-        {
-            Container
-                .Bind<IEnemyTarget>()
-                .FromInstance(_player)
-                .AsSingle();
         }
 
         private void InstallPlayerInformation()

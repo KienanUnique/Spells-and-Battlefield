@@ -1,4 +1,5 @@
 ﻿using System;
+using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine.Transitions
@@ -9,6 +10,9 @@ namespace Enemies.State_Machine.Transitions
         [SerializeField] private TypeOfComparison _typeOfComparison;
         private Transform _cashedTransform;
 
+        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetSelector.CurrentTarget;
+        private Vector3 CurrentTargetPosition => CurrentTarget.MainTransform.position;
+
         private enum TypeOfComparison
         {
             IsMore,
@@ -17,8 +21,11 @@ namespace Enemies.State_Machine.Transitions
 
         protected override void CheckConditions()
         {
-            var calculatedDistance = Vector3.Distance(_cashedTransform.position,
-                StateMachineControllable.Target.MainTransform.position);
+            if (CurrentTarget == null)
+            {
+                return;
+            }
+            var calculatedDistance = Vector3.Distance(_cashedTransform.position, CurrentTargetPosition);
             switch (_typeOfComparison)
             {
                 case TypeOfComparison.IsMore:

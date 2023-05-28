@@ -9,6 +9,7 @@ namespace Enemies.State_Machine.Transitions
         [SerializeField] private CharacterState _needState;
         private ICharacter _targetCharacter = null;
         private int _lastCashedTargetId;
+        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetSelector.CurrentTarget;
 
         protected override void SpecialActionOnStartChecking()
         {
@@ -17,12 +18,17 @@ namespace Enemies.State_Machine.Transitions
 
         protected override void CheckConditions()
         {
-            if (_targetCharacter != null && _targetCharacter.Id == StateMachineControllable.Target.Id &&
+            if (CurrentTarget == null)
+            {
+                return;
+            }
+
+            if (_targetCharacter != null && _targetCharacter.Id == CurrentTarget.Id &&
                 _targetCharacter.CurrentCharacterState.Value == _needState)
             {
                 InvokeTransitionEvent();
             }
-            else if (_lastCashedTargetId != StateMachineControllable.Target.Id)
+            else if (_lastCashedTargetId != CurrentTarget.Id)
             {
                 TryUpdateCashedCharacter();
             }
@@ -30,13 +36,18 @@ namespace Enemies.State_Machine.Transitions
 
         private void TryUpdateCashedCharacter()
         {
-            if ((_targetCharacter == null || _targetCharacter.Id != StateMachineControllable.Target.Id) &&
-                StateMachineControllable.Target is ICharacter targetCharacter)
+            if (CurrentTarget == null)
+            {
+                return;
+            }
+
+            if ((_targetCharacter == null || _targetCharacter.Id != CurrentTarget.Id) &&
+                CurrentTarget is ICharacter targetCharacter)
             {
                 _targetCharacter = targetCharacter;
             }
 
-            _lastCashedTargetId = StateMachineControllable.Target.Id;
+            _lastCashedTargetId = CurrentTarget.Id;
         }
     }
 }

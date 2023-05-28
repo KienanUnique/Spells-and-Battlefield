@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Character;
 using Enemies.State_Machine;
+using Enemies.Target_Selector;
+using Enemies.Trigger;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Pathfinding;
@@ -19,22 +21,23 @@ namespace Enemies
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Seeker))]
-    public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable, ICoroutineStarter, IEnemyTriggersSettable
+    public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable,
+        ICoroutineStarter, IEnemyTriggersSettable
     {
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] protected SpellScriptableObject _spellToDrop;
+        [SerializeField] private List<EnemyTargetTrigger> _targetTriggers;
         protected EnemyMovement _enemyMovement;
         private List<IDisableable> _itemsNeedDisabling;
         private IdHolder _idHolder;
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableSpellsFactory _spellsFactory;
+        private EnemyTargetSelector _targetSelector;
 
         [Inject]
-        private void Construct(GeneralEnemySettings generalEnemySettings, IEnemyTarget enemyTarget,
-            IPickableSpellsFactory spellsFactory)
+        private void Construct(GeneralEnemySettings generalEnemySettings, IPickableSpellsFactory spellsFactory)
         {
             _generalEnemySettings = generalEnemySettings;
-            Target = enemyTarget;
             _spellsFactory = spellsFactory;
         }
 
@@ -44,13 +47,13 @@ namespace Enemies
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
         public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => Character.CurrentState;
-        public IEnemyTarget Target { get; private set; }
         protected abstract EnemyVisualBase EnemyVisual { get; }
         protected abstract IEnemySettings EnemySettings { get; }
         protected abstract CharacterBase Character { get; }
 
         public void SetExternalEnemyTargetTriggers(List<IEnemyTargetTrigger> enemyTargetTriggers)
         {
+            enemyTargetTriggers.ForEach(trigger => _targetSelector.AddTrigger(trigger));
         }
 
         public int CompareTo(object obj)
@@ -78,6 +81,7 @@ namespace Enemies
             Character.ApplyContinuousEffect(effect);
         }
 
+        public IEnemyTargetSelector TargetSelector => _targetSelector;
         public void StartMovingToTarget(Transform target) => _enemyMovement.StartMovingToTarget(target);
 
         public void StopMovingToTarget() => _enemyMovement.StopMovingToTarget();
@@ -115,12 +119,16 @@ namespace Enemies
             var thisRigidbody = GetComponent<Rigidbody>();
             _enemyMovement = new EnemyMovement(this, EnemySettings.MovementSettings,
                 EnemySettings.TargetPathfinderSettingsSection, seeker, thisRigidbody);
+            _targetSelector = new EnemyTargetSelector();
+            _targetTriggers.ForEach(trigger => _targetSelector.AddTrigger(trigger));
 
             _itemsNeedDisabling = new List<IDisableable>
             {
                 _enemyMovement,
-                Character
+                Character,
+                _targetSelector
             };
+            
         }
 
         protected virtual void Start()
@@ -146,9 +154,9 @@ namespace Enemies
         private void DropSpell()
         {
             var cashedTransform = transform;
-            var dropDirection = Target == null
+            var dropDirection = _targetSelector.CurrentTarget == null
                 ? cashedTransform.forward
-                : (Target.MainTransform.position - cashedTransform.position).normalized;
+                : (_targetSelector.CurrentTarget.MainTransform.position - cashedTransform.position).normalized;
             var spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
             var pickableSpell = _spellsFactory.Create(_spellToDrop.GetImplementationObject(), spawnPosition);
             pickableSpell.DropItemTowardsDirection(dropDirection);

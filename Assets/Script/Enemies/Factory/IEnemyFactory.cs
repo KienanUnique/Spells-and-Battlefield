@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Enemies.Trigger;
 using UnityEngine;
 
 namespace Enemies.Factory

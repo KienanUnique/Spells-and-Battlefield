@@ -1,4 +1,7 @@
 ﻿using System;
+using Enemies.Target_Selector;
+using Enemies.Trigger;
+using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine
@@ -8,13 +11,14 @@ namespace Enemies.State_Machine
         [SerializeField] private StateEnemyAI _firstStateEnemyAI;
         private StateEnemyAI _currentStateEnemyAI;
         private IEnemyStateMachineControllable _stateMachineControllable;
-        private bool _isActive = false;
+        private bool _isActive;
+        private IEnemyTargetSelector _targetSelector;
 
         private void OnEnable()
         {
             if (_isActive)
             {
-                SubscribeOnCurrentStateEvents();
+                SubscribeOnEvents();
             }
         }
 
@@ -22,7 +26,7 @@ namespace Enemies.State_Machine
         {
             if (_isActive)
             {
-                UnsubscribeFromCurrentStateEvents();
+                UnsubscribeFromEvents();
             }
         }
 
@@ -34,6 +38,8 @@ namespace Enemies.State_Machine
             }
 
             _stateMachineControllable = stateMachineControllable;
+            _targetSelector = _stateMachineControllable.TargetSelector;
+            _targetSelector.CurrentTargetChanged += OnCurrentTargetChanged;
             TransitToState(_firstStateEnemyAI);
             _isActive = true;
         }
@@ -53,7 +59,7 @@ namespace Enemies.State_Machine
         {
             if (_currentStateEnemyAI != null)
             {
-                UnsubscribeFromCurrentStateEvents();
+                UnsubscribeFromEvents();
                 _currentStateEnemyAI.Exit();
             }
 
@@ -61,18 +67,26 @@ namespace Enemies.State_Machine
 
             if (_currentStateEnemyAI != null)
             {
-                SubscribeOnCurrentStateEvents();
+                SubscribeOnEvents();
                 _currentStateEnemyAI.Enter(_stateMachineControllable);
             }
         }
 
-        private void SubscribeOnCurrentStateEvents()
+        private void OnCurrentTargetChanged(IEnemyTarget obj)
         {
+            TransitToState(_currentStateEnemyAI);
+        }
+
+        private void SubscribeOnEvents()
+        {
+            _targetSelector.CurrentTargetChanged += OnCurrentTargetChanged;
             _currentStateEnemyAI.NeedToSwitchToNextState += TransitToState;
         }
 
-        private void UnsubscribeFromCurrentStateEvents()
+
+        private void UnsubscribeFromEvents()
         {
+            _targetSelector.CurrentTargetChanged -= OnCurrentTargetChanged;
             _currentStateEnemyAI.NeedToSwitchToNextState -= TransitToState;
         }
 

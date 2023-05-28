@@ -1,10 +1,17 @@
-﻿namespace Enemies.State_Machine.States
+﻿using Interfaces;
+
+namespace Enemies.State_Machine.States
 {
     public class MoveToTargetStateEnemyAI : StateEnemyAI
     {
+        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetSelector.CurrentTarget;
         protected override void SpecialEnterAction()
         {
-            StateMachineControllable.StartMovingToTarget(StateMachineControllable.Target.MainTransform);
+            if (CurrentTarget == null)
+            {
+                return;
+            }
+            StateMachineControllable.StartMovingToTarget(CurrentTarget.MainTransform);
         }
 
         protected override void SpecialExitAction()

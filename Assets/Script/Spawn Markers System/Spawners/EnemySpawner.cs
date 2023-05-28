@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
-using Enemies;
 using Enemies.Factory;
+using Enemies.Trigger;
 using Spawn_Markers_System.Markers.Enemy_Marker;
+using UnityEngine;
 using Zenject;
 
 namespace Spawn_Markers_System.Spawners
 {
     public class EnemySpawner : SpawnerBase<IEnemySpawnMarker>
     {
+        [SerializeField] private List<EnemyTargetTrigger> _triggerList;
         private IEnemyFactory _enemyFactory;
-        private List<IEnemyTargetTrigger> _triggerList;
 
         [Inject]
         private void Construct(IEnemyFactory enemyFactory)
@@ -19,10 +20,10 @@ namespace Spawn_Markers_System.Spawners
 
         protected override void Spawn()
         {
-            _triggerList = new List<IEnemyTargetTrigger>();
+            var targetTriggers = new List<IEnemyTargetTrigger>(_triggerList);
             foreach (var marker in _markers)
             {
-                _enemyFactory.Create(marker.ObjectToSpawn, _triggerList, marker.Position, marker.Rotation);
+                _enemyFactory.Create(marker.ObjectToSpawn, targetTriggers, marker.Position, marker.Rotation);
             }
         }
     }
