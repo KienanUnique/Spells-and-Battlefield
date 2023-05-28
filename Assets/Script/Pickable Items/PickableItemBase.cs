@@ -75,12 +75,12 @@ namespace Pickable_Items
 
         private void OnEnable()
         {
-            _pickerTrigger.RequiredObjectEnteringDetected += OnPickerDetected;
+            _pickerTrigger.PickerDetected += OnPickerDetected;
         }
 
         private void OnDisable()
         {
-            _pickerTrigger.RequiredObjectEnteringDetected -= OnPickerDetected;
+            _pickerTrigger.PickerDetected -= OnPickerDetected;
         }
 
         private void Start()

@@ -1,4 +1,5 @@
-﻿using Common.Abstract_Bases.Character;
+﻿using System.Collections.Generic;
+using Common.Abstract_Bases.Character;
 using Enemies.Attack_Target_Selector;
 using Enemies.Concrete_Types.Knight.Character;
 using Enemies.Concrete_Types.Knight.Setup;
@@ -8,6 +9,7 @@ using Enemies.Setup;
 using Enemies.Trigger;
 using Enemies.Visual;
 using General_Settings_in_Scriptable_Objects;
+using Interfaces;
 using Settings;
 using UnityEngine;
 
@@ -64,7 +66,7 @@ namespace Enemies.Concrete_Types.Knight
 
         private void HandleAttackWithSwordAnimationMomentStart()
         {
-            var targets = _swordTargetSelector.GetTargetsInCollider();
+            var targets = new List<IEnemyTarget>(_swordTargetSelector.GetTargetsInCollider());
             targets.RemoveAll(target => target.Id == Id);
             _knightCharacter.TryDamageTargetsWithSwordAttack(targets);
         }

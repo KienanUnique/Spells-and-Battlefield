@@ -5,6 +5,6 @@ namespace Enemies.Attack_Target_Selector
 {
     public interface IAttackTargetSelectorFromZone
     {
-        List<IEnemyTarget> GetTargetsInCollider();
+        public IReadOnlyCollection<IEnemyTarget> GetTargetsInCollider();
     }
 }
