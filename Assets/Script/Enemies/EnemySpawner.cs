@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Common.Abstract_Bases.Spawn_Markers_System.Spawners;
 using Enemies.Factory;
+using Enemies.Marker;
 using Enemies.Trigger;
-using Spawn_Markers_System.Markers.Enemy_Marker;
 using UnityEngine;
 using Zenject;
 
-namespace Spawn_Markers_System.Spawners
+namespace Enemies
 {
     public class EnemySpawner : SpawnerBase<IEnemySpawnMarker>
     {

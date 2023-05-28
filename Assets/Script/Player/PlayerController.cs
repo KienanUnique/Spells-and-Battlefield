@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Checkers;
 using Common;
 using Common.Abstract_Bases.Character;
+using Common.Abstract_Bases.Checkers;
 using Interfaces;
 using Settings;
 using Spells.Continuous_Effect;

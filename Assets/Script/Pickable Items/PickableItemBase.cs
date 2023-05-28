@@ -1,9 +1,8 @@
 ﻿using System;
-using Checkers;
+using Common.Abstract_Bases.Checkers;
 using DG.Tweening;
 using Interfaces.Pickers;
 using Settings;
-using Triggers;
 using UnityEngine;
 using Zenject;
 

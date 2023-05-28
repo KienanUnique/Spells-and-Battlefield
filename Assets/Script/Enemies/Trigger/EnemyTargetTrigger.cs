@@ -1,6 +1,6 @@
 ﻿using System;
+using Common.Abstract_Bases;
 using Interfaces;
-using Triggers;
 using UnityEngine;
 
 namespace Enemies.Trigger

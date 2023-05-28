@@ -1,6 +1,6 @@
-﻿using Enemies;
+﻿using Common.Abstract_Bases.Spawn_Markers_System.Markers;
 
-namespace Spawn_Markers_System.Markers.Enemy_Marker
+namespace Enemies.Marker
 {
     public interface IEnemySpawnMarker : ISpawnMarker<IEnemyPrefabProvider>
     {

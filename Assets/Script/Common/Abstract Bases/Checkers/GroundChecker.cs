@@ -1,9 +1,8 @@
-using General_Settings_in_Scriptable_Objects;
 using Settings;
 using UnityEngine;
 using Zenject;
 
-namespace Checkers
+namespace Common.Abstract_Bases.Checkers
 {
     [RequireComponent(typeof(BoxCollider))]
     public class GroundChecker : CheckerBase

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Common;
 using UnityEngine;
 
-namespace Checkers
+namespace Common.Abstract_Bases.Checkers
 {
     public abstract class CheckerBase : MonoBehaviour
     {

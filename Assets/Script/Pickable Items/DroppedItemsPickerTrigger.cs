@@ -1,7 +1,8 @@
 ﻿using System;
+using Common.Abstract_Bases;
 using Interfaces.Pickers;
 
-namespace Triggers
+namespace Pickable_Items
 {
     public class DroppedItemsPickerTrigger : BoxColliderTriggerBase<IDroppedItemsPicker>
     {

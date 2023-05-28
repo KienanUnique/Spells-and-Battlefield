@@ -1,7 +1,6 @@
-﻿using Common;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Spawn_Markers_System.Markers
+namespace Common.Abstract_Bases.Spawn_Markers_System.Markers
 {
     public interface ISpawnMarker<out TPrefabProvider> : ISpawnMarkerPlaceInfo where TPrefabProvider : IPrefabProvider
     {

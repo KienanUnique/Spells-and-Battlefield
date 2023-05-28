@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Spawn_Markers_System.Markers;
+using Common.Abstract_Bases.Spawn_Markers_System.Markers;
 using UnityEngine;
 
-namespace Spawn_Markers_System.Spawners
+namespace Common.Abstract_Bases.Spawn_Markers_System.Spawners
 {
     public abstract class SpawnerBase<TSpawnMarker> : MonoBehaviour
         where TSpawnMarker : ISpawnMarkerPlaceInfo

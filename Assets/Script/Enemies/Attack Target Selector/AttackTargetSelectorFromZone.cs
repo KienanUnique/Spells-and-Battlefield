@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Common.Abstract_Bases;
 using Interfaces;
-using Triggers;
 using UnityEngine;
 
 namespace Enemies.Attack_Target_Selector
