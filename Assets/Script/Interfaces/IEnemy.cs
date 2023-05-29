@@ -1,6 +1,8 @@
-﻿namespace Interfaces
+﻿using Enemies;
+
+namespace Interfaces
 {
-    public interface IEnemy : ISpellInteractable, ICharacter, IIdHolder, IPhysicsInteractable, IMovable
+    public interface IEnemy : ISpellInteractable, IEnemyCharacter, IIdHolder, IPhysicsInteractable, IMovable
     {
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using Common.Abstract_Bases.Character;
 using Enemies.Attack_Target_Selector;
 using Enemies.Concrete_Types.Knight.Character;
 using Enemies.Concrete_Types.Knight.Setup;
 using Enemies.Concrete_Types.Knight.Visual;
 using Enemies.Controller;
 using Enemies.Setup;
-using Enemies.Trigger;
 using Enemies.Visual;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces;
@@ -37,7 +35,7 @@ namespace Enemies.Concrete_Types.Knight
 
         protected override IEnemyVisualBase EnemyVisual => _knightVisual;
         protected override IEnemySettings EnemySettings => _knightSettings;
-        protected override ICharacterBase Character => _knightCharacter;
+        protected override IEnemyCharacter Character => _knightCharacter;
 
 
         public void StartSwordAttack(Transform target)

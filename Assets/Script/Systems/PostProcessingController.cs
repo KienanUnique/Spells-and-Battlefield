@@ -13,22 +13,22 @@ namespace Systems
         [SerializeField] private float _applyDashEffectsVolumeDurationSeconds = 0.2f;
         [SerializeField] private Ease _applyDashEffectsVolumeEase = Ease.OutCubic;
 
-        private IPlayerInformation _playerInformation;
+        private IPlayerInformationProvider _playerInformationProvider;
 
         [Inject]
-        private void Construct(IPlayerInformation playerInformation)
+        private void Construct(IPlayerInformationProvider playerInformationProvider)
         {
-            _playerInformation = playerInformation;
+            _playerInformationProvider = playerInformationProvider;
         }
 
         private void OnEnable()
         {
-            _playerInformation.Dashed += PlayDashEffects;
+            _playerInformationProvider.Dashed += PlayDashEffects;
         }
 
         private void OnDisable()
         {
-            _playerInformation.Dashed -= PlayDashEffects;
+            _playerInformationProvider.Dashed -= PlayDashEffects;
         }
 
         private void Start()

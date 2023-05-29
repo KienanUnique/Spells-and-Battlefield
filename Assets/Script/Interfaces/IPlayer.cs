@@ -3,7 +3,7 @@ using Spells;
 
 namespace Interfaces
 {
-    public interface IPlayer : IPlayerInformation, ISpellInteractable, ICaster, ICharacter, IIdHolder, IEnemyTarget,
+    public interface IPlayer : IPlayerInformationProvider, ISpellInteractable, ICaster, IInteractableCharacter, IIdHolder, IEnemyTarget,
         IDroppedItemsPicker, IPhysicsInteractable, IDroppedEffectPicker, IDroppedSpellPicker, IMovable
     {
     }

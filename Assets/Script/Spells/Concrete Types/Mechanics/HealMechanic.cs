@@ -12,17 +12,21 @@ namespace Spells.Concrete_Types.Mechanics
     {
         [SerializeField] private int _healPoints;
 
-        public override ISpellMechanicEffect GetImplementationObject() => new HealInstantMechanicImplementation(_healPoints);
+        public override ISpellMechanicEffect GetImplementationObject() =>
+            new HealInstantMechanicImplementation(_healPoints);
 
         private class HealInstantMechanicImplementation : SpellInstantMechanicEffectImplementationBase
         {
-            private int _healPoints;
+            private readonly int _healPoints;
 
             public HealInstantMechanicImplementation(int healPoints) => _healPoints = healPoints;
 
             public override void ApplyEffectToTarget(ISpellInteractable target)
             {
-                target.HandleHeal(_healPoints);
+                if (target is IHealable healableTarget)
+                {
+                    healableTarget.HandleHeal(_healPoints);
+                }
             }
         }
     }

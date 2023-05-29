@@ -18,8 +18,11 @@ namespace Spells.Abstract_Types.Implementation_Bases.Implementations
 
         public virtual void ApplyEffectToTarget(ISpellInteractable target)
         {
-            _effect.SetTarget(target);
-            target.ApplyContinuousEffect(_effect);
+            if (target is IContinuousEffectApplicable continuousEffectApplicableTarget)
+            {
+                _effect.SetTarget(target);
+                continuousEffectApplicableTarget.ApplyContinuousEffect(_effect);
+            }
         }
 
         public virtual void ApplyEffectToTargets(List<ISpellInteractable> targets)

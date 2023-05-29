@@ -60,6 +60,7 @@ namespace Player
 
         public event Action DashCooldownFinished;
         public event Action<float> DashCooldownTimerTick;
+        public event Action<CharacterState> CharacterStateChanged;
         public event Action<float> HitPointsCountChanged;
         public event Action Dashed;
         public event Action DashAiming;
@@ -68,7 +69,7 @@ namespace Player
         public int Id => _idHolder.Id;
         public Transform MainTransform => _playerMovement.MainTransform;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
-        public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => _playerCharacter.CurrentState;
+        public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
 
 
         public void HandleHeal(int countOfHealthPoints)
@@ -169,7 +170,7 @@ namespace Player
             _playerMovement.DashCooldownFinished += OnDashCooldownFinished;
             _playerMovement.DashCooldownTimerTick += OnDashCooldownTimerTick;
 
-            _playerCharacter.StateChanged += OnCharacterStateChanged;
+            _playerCharacter.CharacterStateChanged += OnCharacterStateChanged;
             _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
         }
 
@@ -194,7 +195,7 @@ namespace Player
             _playerMovement.DashCooldownFinished -= OnDashCooldownFinished;
             _playerMovement.DashCooldownTimerTick -= OnDashCooldownTimerTick;
 
-            _playerCharacter.StateChanged -= OnCharacterStateChanged;
+            _playerCharacter.CharacterStateChanged -= OnCharacterStateChanged;
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
         }
 
@@ -238,6 +239,8 @@ namespace Player
             {
                 _playerVisual.PlayDieAnimation();
             }
+
+            CharacterStateChanged?.Invoke(newState);
         }
 
         private void OnUseSpellInputted()

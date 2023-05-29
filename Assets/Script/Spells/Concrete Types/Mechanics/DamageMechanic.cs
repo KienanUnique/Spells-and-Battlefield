@@ -25,7 +25,10 @@ namespace Spells.Concrete_Types.Mechanics
 
             public override void ApplyEffectToTarget(ISpellInteractable target)
             {
-                target.HandleDamage(_damage);
+                if (target is IDamageable damageableTarget)
+                {
+                    damageableTarget.HandleDamage(_damage);
+                }
             }
         }
     }

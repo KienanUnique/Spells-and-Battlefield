@@ -1,16 +1,8 @@
-﻿using System;
-using Spells.Continuous_Effect;
+﻿using Interfaces;
 
 namespace Common.Abstract_Bases.Character
 {
-    public interface ICharacterBase
+    public interface ICharacterBase : IDamageable, IHealable, IContinuousEffectApplicable, ICharacterInformationProvider
     {
-        event Action<CharacterState> StateChanged;
-        event Action<float> HitPointsCountChanged;
-        float HitPointCountRatio { get; }
-        ValueWithReactionOnChange<CharacterState> CurrentState { get; }
-        void HandleHeal(int countOfHitPoints);
-        void HandleDamage(int countOfHitPoints);
-        void ApplyContinuousEffect(IAppliedContinuousEffect effect);
     }
 }

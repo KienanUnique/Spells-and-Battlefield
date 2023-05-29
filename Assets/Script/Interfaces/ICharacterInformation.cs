@@ -1,12 +1,12 @@
 ﻿using System;
-using Common;
 using Common.Abstract_Bases.Character;
 
 namespace Interfaces
 {
-    public interface ICharacterInformation
+    public interface ICharacterInformationProvider
     {
-        public ValueWithReactionOnChange<CharacterState> CurrentCharacterState { get; }
+        public CharacterState CurrentCharacterState { get; }
+        public event Action<CharacterState> CharacterStateChanged;
         public event Action<float> HitPointsCountChanged;
         public float HitPointCountRatio { get; }
     }

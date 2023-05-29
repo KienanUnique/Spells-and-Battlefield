@@ -12,12 +12,12 @@ namespace UI.Bar
         [SerializeField] private Image _foregroundBackground;
         [SerializeField] private float _changeDuration = 0.1f;
 
-        private ICharacterInformation _playerCharacter;
+        private ICharacterInformationProvider _playerCharacter;
 
         [Inject]
-        private void Construct(IPlayerInformation playerInformation)
+        private void Construct(IPlayerInformationProvider playerInformationProvider)
         {
-            _playerCharacter = playerInformation;
+            _playerCharacter = playerInformationProvider;
         }
 
         private void OnEnable()

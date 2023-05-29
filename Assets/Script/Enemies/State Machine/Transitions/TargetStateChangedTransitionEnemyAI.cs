@@ -7,7 +7,7 @@ namespace Enemies.State_Machine.Transitions
     public class TargetStateChangedTransitionEnemyAI : TransitionEnemyAI
     {
         [SerializeField] private CharacterState _needState;
-        private ICharacter _targetCharacter = null;
+        private IInteractableCharacter _targetInteractableCharacter = null;
         private int _lastCashedTargetId;
         private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
 
@@ -23,8 +23,8 @@ namespace Enemies.State_Machine.Transitions
                 return;
             }
 
-            if (_targetCharacter != null && _targetCharacter.Id == CurrentTarget.Id &&
-                _targetCharacter.CurrentCharacterState.Value == _needState)
+            if (_targetInteractableCharacter != null && _targetInteractableCharacter.Id == CurrentTarget.Id &&
+                _targetInteractableCharacter.CurrentCharacterState == _needState)
             {
                 InvokeTransitionEvent();
             }
@@ -41,10 +41,10 @@ namespace Enemies.State_Machine.Transitions
                 return;
             }
 
-            if ((_targetCharacter == null || _targetCharacter.Id != CurrentTarget.Id) &&
-                CurrentTarget is ICharacter targetCharacter)
+            if ((_targetInteractableCharacter == null || _targetInteractableCharacter.Id != CurrentTarget.Id) &&
+                CurrentTarget is IInteractableCharacter targetCharacter)
             {
-                _targetCharacter = targetCharacter;
+                _targetInteractableCharacter = targetCharacter;
             }
 
             _lastCashedTargetId = CurrentTarget.Id;

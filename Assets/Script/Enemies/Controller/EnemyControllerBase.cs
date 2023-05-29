@@ -52,14 +52,15 @@ namespace Enemies.Controller
         }
 
         public event Action<float> HitPointsCountChanged;
+        public event Action<CharacterState> CharacterStateChanged;
 
         public float HitPointCountRatio => Character.HitPointCountRatio;
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
-        public ValueWithReactionOnChange<CharacterState> CurrentCharacterState => Character.CurrentState;
+        public CharacterState CurrentCharacterState => Character.CurrentCharacterState;
         protected abstract IEnemyVisualBase EnemyVisual { get; }
         protected abstract IEnemySettings EnemySettings { get; }
-        protected abstract ICharacterBase Character { get; }
+        protected abstract IEnemyCharacter Character { get; }
 
         private enum EnemyControllerState
         {
@@ -131,7 +132,7 @@ namespace Enemies.Controller
         {
             _currentControllerState.AfterValueChanged += OnControllerStateChanged;
             _itemsNeedDisabling.ForEach(item => item.Enable());
-            Character.StateChanged += OnCharacterStateChanged;
+            Character.CharacterStateChanged += OnCharacterStateChanged;
             Character.HitPointsCountChanged += OnHitPointsCountChanged;
             _enemyMovement.MovingStateChanged += EnemyVisual.UpdateMovingData;
         }
@@ -140,7 +141,7 @@ namespace Enemies.Controller
         {
             _currentControllerState.AfterValueChanged -= OnControllerStateChanged;
             _itemsNeedDisabling.ForEach(item => item.Disable());
-            Character.StateChanged -= OnCharacterStateChanged;
+            Character.CharacterStateChanged -= OnCharacterStateChanged;
             Character.HitPointsCountChanged -= OnHitPointsCountChanged;
             _enemyMovement.MovingStateChanged -= EnemyVisual.UpdateMovingData;
         }
@@ -160,6 +161,8 @@ namespace Enemies.Controller
                     StartCoroutine(DestroyAfterDelay());
                     break;
             }
+
+            Debug.Log($"Current state: {newState.ToString()}");
         }
 
         private void OnCharacterStateChanged(CharacterState newState)
@@ -168,6 +171,8 @@ namespace Enemies.Controller
             {
                 _currentControllerState.Value = EnemyControllerState.Destroying;
             }
+
+            CharacterStateChanged?.Invoke(newState);
         }
 
         private void OnHitPointsCountChanged(float newHitPointsCount) =>
@@ -178,7 +183,8 @@ namespace Enemies.Controller
             var cashedTransform = transform;
             var dropDirection = _targetFromTriggersSelector.CurrentTarget == null
                 ? cashedTransform.forward
-                : (_targetFromTriggersSelector.CurrentTarget.MainTransform.position - cashedTransform.position).normalized;
+                : (_targetFromTriggersSelector.CurrentTarget.MainTransform.position - cashedTransform.position)
+                .normalized;
             var spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
             var pickableSpell = _spellsFactory.Create(_spellToDrop, spawnPosition);
             pickableSpell.DropItemTowardsDirection(dropDirection);

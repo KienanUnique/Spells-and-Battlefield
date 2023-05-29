@@ -14,6 +14,7 @@ namespace Common.Abstract_Bases.Character
         private readonly List<IAppliedContinuousEffect> _currentEffects;
         private readonly CharacterSettingsSection _characterSettings;
         private readonly string _namePrefix;
+        private readonly ValueWithReactionOnChange<CharacterState> _currentState;
 
         protected CharacterBase(ICoroutineStarter coroutineStarter, CharacterSettingsSection characterSettings,
             string namePrefix)
@@ -21,24 +22,24 @@ namespace Common.Abstract_Bases.Character
             _coroutineStarter = coroutineStarter;
             _characterSettings = characterSettings;
             _namePrefix = namePrefix;
-            CurrentState = new ValueWithReactionOnChange<CharacterState>(CharacterState.Alive);
+            _currentState = new ValueWithReactionOnChange<CharacterState>(CharacterState.Alive);
             _currentCountCountOfHitPoints =
                 new ValueWithReactionOnChange<float>(_characterSettings.MaximumCountOfHitPoints);
             _currentEffects = new List<IAppliedContinuousEffect>();
             SubscribeOnEvents();
         }
 
-        public event Action<CharacterState> StateChanged;
+        public event Action<CharacterState> CharacterStateChanged;
         public event Action<float> HitPointsCountChanged;
+
+        public CharacterState CurrentCharacterState => _currentState.Value;
 
         public float HitPointCountRatio =>
             _currentCountCountOfHitPoints.Value / _characterSettings.MaximumCountOfHitPoints;
 
-        public ValueWithReactionOnChange<CharacterState> CurrentState { get; private set; }
-
         public void HandleHeal(int countOfHitPoints)
         {
-            if (CurrentState.Value == CharacterState.Dead) return;
+            if (_currentState.Value == CharacterState.Dead) return;
             _currentCountCountOfHitPoints.Value += countOfHitPoints;
             if (_currentCountCountOfHitPoints.Value > _characterSettings.MaximumCountOfHitPoints)
             {
@@ -46,26 +47,26 @@ namespace Common.Abstract_Bases.Character
             }
 
             Debug.Log(
-                $"{_namePrefix}: Handle_Heal<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints.Value}>, Current_State<{CurrentState.Value.ToString()}>");
+                $"{_namePrefix}: Handle_Heal<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints.Value}>, Current_State<{_currentState.Value.ToString()}>");
         }
 
         public void HandleDamage(int countOfHitPoints)
         {
-            if (CurrentState.Value == CharacterState.Dead) return;
+            if (_currentState.Value == CharacterState.Dead) return;
             _currentCountCountOfHitPoints.Value -= countOfHitPoints;
             if (_currentCountCountOfHitPoints.Value <= 0)
             {
-                CurrentState.Value = CharacterState.Dead;
+                _currentState.Value = CharacterState.Dead;
                 _currentCountCountOfHitPoints.Value = 0;
             }
 
             Debug.Log(
-                $"{_namePrefix}: Handle_Damage<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints.Value}>, Current_State<{CurrentState.Value.ToString()}>");
+                $"{_namePrefix}: Handle_Damage<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints.Value}>, Current_State<{_currentState.Value.ToString()}>");
         }
 
         public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {
-            if (CurrentState.Value == CharacterState.Dead) return;
+            if (_currentState.Value == CharacterState.Dead) return;
             _currentEffects.Add(effect);
             effect.EffectEnded += OnEffectEnded;
             effect.Start(_coroutineStarter);
@@ -73,14 +74,14 @@ namespace Common.Abstract_Bases.Character
 
         protected sealed override void SubscribeOnEvents()
         {
-            CurrentState.AfterValueChanged += OnCharacterStateChanged;
+            _currentState.AfterValueChanged += OnCharacterStateChanged;
             _currentCountCountOfHitPoints.AfterValueChanged += OnHitPointsCountChanged;
             _currentEffects.ForEach(effect => effect.EffectEnded += OnEffectEnded);
         }
 
         protected sealed override void UnsubscribeFromEvents()
         {
-            CurrentState.AfterValueChanged -= OnCharacterStateChanged;
+            _currentState.AfterValueChanged -= OnCharacterStateChanged;
             _currentCountCountOfHitPoints.AfterValueChanged -= OnHitPointsCountChanged;
             _currentEffects.ForEach(effect => effect.EffectEnded -= OnEffectEnded);
         }
@@ -104,7 +105,7 @@ namespace Common.Abstract_Bases.Character
                 _currentEffects.Clear();
             }
 
-            StateChanged?.Invoke(newState);
+            CharacterStateChanged?.Invoke(newState);
         }
 
         private void OnHitPointsCountChanged(float newHitPointsCount) =>

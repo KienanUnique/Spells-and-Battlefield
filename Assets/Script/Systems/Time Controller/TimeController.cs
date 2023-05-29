@@ -8,12 +8,12 @@ namespace Systems.Time_Controller
     {
         [Range(0, 1f)] [SerializeField] private float _dashAimingTimeScaleRatio = 0.1f;
         private float _timeScaleBeforePause = 1f;
-        private IPlayerInformation _playerInformation;
+        private IPlayerInformationProvider _playerInformationProvider;
 
         [Inject]
-        private void Construct(IPlayerInformation playerInformation)
+        private void Construct(IPlayerInformationProvider playerInformationProvider)
         {
-            _playerInformation = playerInformation;
+            _playerInformationProvider = playerInformationProvider;
         }
 
         public void StopTime()
@@ -34,14 +34,14 @@ namespace Systems.Time_Controller
 
         private void OnEnable()
         {
-            _playerInformation.DashAiming += SlowDownTimeForDashAiming;
-            _playerInformation.Dashed += RestoreTimeToNormal;
+            _playerInformationProvider.DashAiming += SlowDownTimeForDashAiming;
+            _playerInformationProvider.Dashed += RestoreTimeToNormal;
         }
 
         private void OnDisable()
         {
-            _playerInformation.DashAiming -= SlowDownTimeForDashAiming;
-            _playerInformation.Dashed -= RestoreTimeToNormal;
+            _playerInformationProvider.DashAiming -= SlowDownTimeForDashAiming;
+            _playerInformationProvider.Dashed -= RestoreTimeToNormal;
         }
 
         private void SlowDownTimeForDashAiming()

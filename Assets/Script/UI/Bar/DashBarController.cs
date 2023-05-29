@@ -12,12 +12,12 @@ namespace UI.Bar
         [SerializeField] private float _onFillAnimationDurationSeconds = 0.3f;
         [SerializeField] private float _onFillAnimationPunchStrength = 0.15f;
 
-        private IPlayerInformation _playerInformation;
+        private IPlayerInformationProvider _playerInformationProvider;
 
         [Inject]
-        private void Construct(IPlayerInformation playerInformation)
+        private void Construct(IPlayerInformationProvider playerInformationProvider)
         {
-            _playerInformation = playerInformation;
+            _playerInformationProvider = playerInformationProvider;
         }
         
         private Vector3 PunchStrengthVector3 =>
@@ -25,14 +25,14 @@ namespace UI.Bar
 
         private void OnEnable()
         {
-            _playerInformation.DashCooldownTimerTick += UpdateBarFill;
-            _playerInformation.DashCooldownFinished += PlayFullBarScaleAnimation;
+            _playerInformationProvider.DashCooldownTimerTick += UpdateBarFill;
+            _playerInformationProvider.DashCooldownFinished += PlayFullBarScaleAnimation;
         }
 
         private void OnDisable()
         {
-            _playerInformation.DashCooldownTimerTick -= UpdateBarFill;
-            _playerInformation.DashCooldownFinished -= PlayFullBarScaleAnimation;
+            _playerInformationProvider.DashCooldownTimerTick -= UpdateBarFill;
+            _playerInformationProvider.DashCooldownFinished -= PlayFullBarScaleAnimation;
         }
 
         private void UpdateBarFill(float valueRatio)

@@ -2,7 +2,7 @@
 
 namespace Interfaces
 {
-    public interface IPlayerInformation : ICharacterInformation, IPhysicsInformation
+    public interface IPlayerInformationProvider : ICharacterInformationProvider, IPhysicsInformation
     {
         public event Action DashCooldownFinished;
         public event Action<float> DashCooldownTimerTick;

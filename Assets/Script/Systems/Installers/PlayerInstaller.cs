@@ -17,7 +17,7 @@ namespace Systems.Installers
         private void InstallPlayerInformation()
         {
             Container
-                .Bind<IPlayerInformation>()
+                .Bind<IPlayerInformationProvider>()
                 .FromInstance(_player)
                 .AsSingle();
         }

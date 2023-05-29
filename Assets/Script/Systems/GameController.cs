@@ -20,14 +20,14 @@ namespace Systems
         private ValueWithReactionOnChange<GameState> _currentGameState;
         private GameState _lastState;
         private bool _needSubscribeOnEventsOnlyInStart = true;
-        private IPlayerInformation _playerInformation;
+        private IPlayerInformationProvider _playerInformationProvider;
         private InGameInputManager _inGameMenuInput;
         private ITimeController _timeController;
 
         [Inject]
-        private void Construct(IPlayerInformation playerInformation)
+        private void Construct(IPlayerInformationProvider playerInformationProvider)
         {
-            _playerInformation = playerInformation;
+            _playerInformationProvider = playerInformationProvider;
         }
 
         protected override void SpecialAwakeAction()
@@ -105,13 +105,13 @@ namespace Systems
 
         private void SubscribeOnPlayingEvents()
         {
-            _playerInformation.CurrentCharacterState.AfterValueChanged += OnPlayerStateChanged;
+            _playerInformationProvider.CharacterStateChanged += OnPlayerStateChanged;
             _inGameMenuInput.GamePause += OnOpenMenuInputted;
         }
 
         private void UnsubscribeFromPlayingEvents()
         {
-            _playerInformation.CurrentCharacterState.AfterValueChanged -= OnPlayerStateChanged;
+            _playerInformationProvider.CharacterStateChanged -= OnPlayerStateChanged;
             _inGameMenuInput.GamePause -= OnOpenMenuInputted;
         }
 

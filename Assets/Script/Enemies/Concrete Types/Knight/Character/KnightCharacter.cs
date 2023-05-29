@@ -21,7 +21,7 @@ namespace Enemies.Concrete_Types.Knight.Character
         {
             foreach (var target in targets)
             {
-                if (target is ICharacter targetCharacter)
+                if (target is IInteractableCharacter targetCharacter)
                 {
                     targetCharacter.HandleDamage(_characterSettings.AttackSwordDamage);
                 }
