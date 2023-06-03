@@ -1827,7 +1827,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyStateMachineAI: {fileID: 6049343359790611563}
-  _spellToDrop: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+  _itemToDrop: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
   _targetTriggers:
   - {fileID: 2245860688038419852}
   _knightVisual: {fileID: 3080045603991402992}

@@ -1,6 +1,6 @@
 ﻿namespace Interfaces.Pickers
 {
-    public interface IDroppedEffectPicker : IDroppedItemsPicker, ISpellInteractable
+    public interface IPickableEffectPicker : IPickableItemsPicker, ISpellInteractable
     {
     }
 }

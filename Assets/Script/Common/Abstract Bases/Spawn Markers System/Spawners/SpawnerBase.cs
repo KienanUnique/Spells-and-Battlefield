@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Common.Abstract_Bases.Spawn_Markers_System.Spawners
 {
     public abstract class SpawnerBase<TSpawnMarker> : MonoBehaviour
-        where TSpawnMarker : ISpawnMarkerPlaceInfo
+        where TSpawnMarker : ISpawnMarker
     {
         protected List<TSpawnMarker> _markers;
 

@@ -22,7 +22,7 @@ namespace Spells.Spell.Scriptable_Objects
             get
             {
                 var iSpellDataForSpellController = new List<ISpell>();
-                _nextSpellsOnFinish.ForEach(spell => iSpellDataForSpellController.Add(spell.GetImplementationObject()));
+                _nextSpellsOnFinish.ForEach(spell => iSpellDataForSpellController.Add(spell));
                 return iSpellDataForSpellController;
             }
         }

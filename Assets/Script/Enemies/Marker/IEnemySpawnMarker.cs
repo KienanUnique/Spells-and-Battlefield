@@ -2,7 +2,8 @@
 
 namespace Enemies.Marker
 {
-    public interface IEnemySpawnMarker : ISpawnMarker<IEnemyPrefabProvider>
+    public interface IEnemySpawnMarker : ISpawnMarker
     {
+        public IEnemyPrefabProvider ObjectToSpawn { get; }
     }
 }

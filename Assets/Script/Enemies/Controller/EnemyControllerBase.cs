@@ -8,13 +8,12 @@ using Enemies.Setup;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Visual;
-using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Pathfinding;
-using Pickable_Items;
+using Pickable_Items.Data_For_Creating;
+using Pickable_Items.Factory;
 using Settings;
 using Spells.Continuous_Effect;
-using Spells.Spell;
 using UnityEngine;
 
 namespace Enemies.Controller
@@ -25,25 +24,26 @@ namespace Enemies.Controller
     public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable,
         ICoroutineStarter
     {
+        private const bool NeedCreatedItemsFallDown = true;
         private IEnemyStateMachineAI _enemyStateMachineAI;
-        private ISpell _spellToDrop;
+        private IPickableItemDataForCreating _itemToDrop;
         protected IEnemyMovement _enemyMovement;
         private List<IDisableable> _itemsNeedDisabling;
         private IIdHolder _idHolder;
         private GeneralEnemySettings _generalEnemySettings;
-        private IPickableSpellsFactory _spellsFactory;
+        private IPickableItemsFactory _itemsFactory;
         private IEnemyTargetFromTriggersSelector _targetFromTriggersSelector;
         private ValueWithReactionOnChange<EnemyControllerState> _currentControllerState;
 
         protected void InitializeBase(IEnemyBaseSetupData setupData)
         {
             _enemyStateMachineAI = setupData.SetEnemyStateMachineAI;
-            _spellToDrop = setupData.SetSpellToDrop;
+            _itemToDrop = setupData.SetItemToDrop;
             _enemyMovement = setupData.SetEnemyMovement;
             _itemsNeedDisabling = setupData.SetItemsNeedDisabling;
             _idHolder = setupData.SetIdHolder;
             _generalEnemySettings = setupData.SetGeneralEnemySettings;
-            _spellsFactory = setupData.SetSpellsFactory;
+            _itemsFactory = setupData.SetPickableItemsFactory;
             _targetFromTriggersSelector = setupData.SetTargetFromTriggersSelector;
 
             SubscribeOnEvents();
@@ -59,7 +59,6 @@ namespace Enemies.Controller
         public Vector3 CurrentPosition => _enemyMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => Character.CurrentCharacterState;
         protected abstract IEnemyVisualBase EnemyVisual { get; }
-        protected abstract IEnemySettings EnemySettings { get; }
         protected abstract IEnemyCharacter Character { get; }
 
         private enum EnemyControllerState
@@ -161,8 +160,6 @@ namespace Enemies.Controller
                     StartCoroutine(DestroyAfterDelay());
                     break;
             }
-
-            Debug.Log($"Current state: {newState.ToString()}");
         }
 
         private void OnCharacterStateChanged(CharacterState newState)
@@ -186,7 +183,7 @@ namespace Enemies.Controller
                 : (_targetFromTriggersSelector.CurrentTarget.MainTransform.position - cashedTransform.position)
                 .normalized;
             var spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
-            var pickableSpell = _spellsFactory.Create(_spellToDrop, spawnPosition);
+            var pickableSpell = _itemsFactory.Create(_itemToDrop, spawnPosition, NeedCreatedItemsFallDown);
             pickableSpell.DropItemTowardsDirection(dropDirection);
         }
 

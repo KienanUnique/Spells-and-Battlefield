@@ -1,5 +1,5 @@
 ﻿using Enemies.Factory;
-using Pickable_Items;
+using Pickable_Items.Factory;
 using Spells.Factory;
 using UnityEngine;
 using Zenject;
@@ -15,11 +15,9 @@ namespace Systems.Installers
         [Header("Pickable Items")] [SerializeField]
         private Transform _pickableItemsParent;
 
-        [SerializeField] private PickableSpellController _pickableSpellPrefab;
-
         public override void InstallBindings()
         {
-            InstallPickableSpellFactory();
+            InstallPickableItemsFactory();
             InstallSpellFactory();
             InstallEnemyFactory();
         }
@@ -33,13 +31,12 @@ namespace Systems.Installers
                 .AsSingle();
         }
 
-        private void InstallPickableSpellFactory()
+        private void InstallPickableItemsFactory()
         {
-            IPickableSpellsFactory pickableSpellsFactory =
-                new PickableSpellsFactory(Container, _pickableItemsParent, _pickableSpellPrefab);
+            IPickableItemsFactory pickableItemsFactory = new PickableItemsFactory(Container, _pickableItemsParent);
             Container
-                .Bind<IPickableSpellsFactory>()
-                .FromInstance(pickableSpellsFactory)
+                .Bind<IPickableItemsFactory>()
+                .FromInstance(pickableItemsFactory)
                 .AsSingle();
         }
 

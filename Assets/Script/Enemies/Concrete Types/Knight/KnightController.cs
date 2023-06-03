@@ -34,7 +34,6 @@ namespace Enemies.Concrete_Types.Knight
         }
 
         protected override IEnemyVisualBase EnemyVisual => _knightVisual;
-        protected override IEnemySettings EnemySettings => _knightSettings;
         protected override IEnemyCharacter Character => _knightCharacter;
 
 

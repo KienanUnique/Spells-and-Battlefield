@@ -9,6 +9,8 @@ using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Pathfinding;
 using Pickable_Items;
+using Pickable_Items.Data_For_Creating.Scriptable_Object;
+using Pickable_Items.Factory;
 using Settings;
 using Spells.Spell.Scriptable_Objects;
 using UnityEngine;
@@ -20,22 +22,22 @@ namespace Enemies.Setup
         IEnemyTriggersSettable
     {
         [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
-        [SerializeField] protected SpellScriptableObject _spellToDrop;
+        [SerializeField] protected PickableItemScriptableObjectBase _itemToDrop;
         [SerializeField] private List<EnemyTargetTrigger> _targetTriggers;
         private EnemyMovement _enemyMovement;
         private List<IDisableable> _itemsNeedDisabling;
         private IdHolder _idHolder;
         private GeneralEnemySettings _generalEnemySettings;
-        private IPickableSpellsFactory _spellsFactory;
+        private IPickableItemsFactory _itemsFactory;
         private EnemyTargetFromTriggersSelector _targetFromTriggersSelector;
         protected abstract IEnemySettings EnemySettings { get; }
         protected abstract CharacterBase Character { get; }
 
         [Inject]
-        private void Construct(GeneralEnemySettings generalEnemySettings, IPickableSpellsFactory spellsFactory)
+        private void Construct(GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory)
         {
             _generalEnemySettings = generalEnemySettings;
-            _spellsFactory = spellsFactory;
+            _itemsFactory = itemsFactory;
         }
 
         public void SetExternalEnemyTargetTriggers(List<Trigger.IEnemyTargetTrigger> enemyTargetTriggers)
@@ -72,12 +74,12 @@ namespace Enemies.Setup
             var controllerToSetup = GetComponent<TController>();
             var baseSetupData = new EnemyBaseSetupData(
                 _enemyStateMachineAI,
-                _spellToDrop.GetImplementationObject(),
+                _itemToDrop,
                 _enemyMovement,
                 _itemsNeedDisabling,
                 _idHolder,
                 _generalEnemySettings,
-                _spellsFactory,
+                _itemsFactory,
                 _targetFromTriggersSelector);
 
             SetupConcreteController(baseSetupData, controllerToSetup);

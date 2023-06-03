@@ -23,7 +23,7 @@ namespace Player
             _player = player;
             _spellObjectsFactory = spellObjectsFactory;
             _spellsStorage = new List<ISpell>();
-            startTestSpells.ForEach(spell => _spellsStorage.Add(spell.GetImplementationObject()));
+            startTestSpells.ForEach(spell => _spellsStorage.Add(spell));
         }
 
         public bool IsSpellSelected => _spellsStorage.Count > 0;

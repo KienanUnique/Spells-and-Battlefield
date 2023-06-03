@@ -23,4 +23,5 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f2f8496c1a5c6fe49a21c7f81b369bc7, type: 2}
     _mainTrigger: {fileID: 11400000, guid: 9489e5928a003224a8cdf9b0a76e6051, type: 2}
     _nextSpellsOnFinish: []
-  _prefabProviderScriptableObjectProvider: {fileID: 11400000, guid: 1b59beab87a96f8438985edfb1030c17, type: 2}
+  _spellPrefabProvider: {fileID: 11400000, guid: 2fa2bf13d9bbe744c8b38256cfb92887, type: 2}
+  _cardPrefabProvider: {fileID: 11400000, guid: 3eac42da268645142bdf96a71c371773, type: 2}

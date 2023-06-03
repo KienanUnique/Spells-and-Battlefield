@@ -2,7 +2,7 @@
 
 namespace Interfaces.Pickers
 {
-    public interface IDroppedSpellPicker : IDroppedItemsPicker
+    public interface IPickableSpellPicker : IPickableItemsPicker
     {
         public void AddSpell(ISpell newSpell);
     }
