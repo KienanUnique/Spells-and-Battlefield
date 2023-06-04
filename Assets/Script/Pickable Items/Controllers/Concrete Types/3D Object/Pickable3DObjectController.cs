@@ -1,12 +1,14 @@
-﻿using Pickable_Items.Strategies_For_Pickable_Controller;
+﻿using Pickable_Items.Setup;
+using UnityEngine;
 
 namespace Pickable_Items.Controllers.Concrete_Types._3D_Object
 {
+    [RequireComponent(typeof(Pickable3DObjectControllerSetup))]
     public class Pickable3DObjectController : PickableItemControllerBase, IInitializablePickable3DObjectController
     {
-        public new void Initialize(IStrategyForPickableController strategyForPickableController, bool needFallDown)
+        public new void Initialize(IPickableItemControllerBaseSetupData setupData)
         {
-            base.Initialize(strategyForPickableController, needFallDown);
+            base.Initialize(setupData);
         }
     }
 }

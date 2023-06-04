@@ -1,22 +1,19 @@
-﻿using Pickable_Items.Card_Information;
-using Pickable_Items.Strategies_For_Pickable_Controller;
-using TMPro;
+﻿using Pickable_Items.Card_Controls;
+using Pickable_Items.Card_Information;
+using Pickable_Items.Setup;
 using UnityEngine;
-using Image = UnityEngine.UI.Image;
 
 namespace Pickable_Items.Controllers.Concrete_Types.Card
 {
+    [RequireComponent(typeof(PickableCardControllerSetup))]
     public class PickableCardController : PickableItemControllerBase, IInitializablePickableCardController
     {
-        [SerializeField] private TMP_Text _title;
-        [SerializeField] private Image _icon;
-
-        public void Initialize(IStrategyForPickableController strategyForPickableController, bool needFallDown,
+        public void Initialize(IPickableItemControllerBaseSetupData setupData, ICardControls cardControls,
             ICardInformation cardInformation)
         {
-            _title.SetText(cardInformation.Title);
-            _icon.sprite = cardInformation.Icon;
-            base.Initialize(strategyForPickableController, needFallDown);
+            cardControls.Title.SetText(cardInformation.Title);
+            cardControls.Icon.sprite = cardInformation.Icon;
+            base.Initialize(setupData);
         }
     }
 }

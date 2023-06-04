@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 7097424893626516503}
   - component: {fileID: 7097424893626516502}
   - component: {fileID: 7097424893626516501}
+  - component: {fileID: 9076150816844498072}
   m_Layer: 0
   m_Name: Pickable 3D Object
   m_TagString: Untagged
@@ -258,7 +259,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66e8cef27640472f9d2e3158c19131af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _needFallDown: 1
+--- !u!114 &9076150816844498072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7097424893626516500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b30b492bae984c8d83dde96f4409f45a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _pickerTrigger: {fileID: 7097424892605468458}
   _groundChecker: {fileID: 7097424893394379844}
   _visualObjectTransform: {fileID: 7097424892634511578}

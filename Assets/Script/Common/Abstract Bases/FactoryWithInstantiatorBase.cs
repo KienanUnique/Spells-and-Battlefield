@@ -14,6 +14,17 @@ namespace Common.Abstract_Bases
             _parentTransform = parentTransform;
         }
 
+        protected GameObject InstantiatePrefab(IPrefabProvider prefabProvider, Vector3 spawnPosition,
+            Quaternion spawnRotation)
+        {
+            return InstantiatePrefab(prefabProvider.Prefab, spawnPosition, spawnRotation);
+        }
+
+        protected GameObject InstantiatePrefab(GameObject prefab, Vector3 spawnPosition, Quaternion spawnRotation)
+        {
+            return _instantiator.InstantiatePrefab(prefab, spawnPosition, spawnRotation, _parentTransform);
+        }
+
         protected TComponent InstantiatePrefabForComponent<TComponent>(IPrefabProvider prefabProvider,
             Vector3 spawnPosition, Quaternion spawnRotation)
         {

@@ -3,6 +3,7 @@ using Common.Abstract_Bases;
 using Pickable_Items.Controllers.Concrete_Types._3D_Object;
 using Pickable_Items.Controllers.Concrete_Types.Card;
 using Pickable_Items.Data_For_Creating;
+using Pickable_Items.Setup;
 using UnityEngine;
 using Zenject;
 
@@ -18,24 +19,22 @@ namespace Pickable_Items.Factory
         public IPickableItem Create(IPickableItemDataForCreating dataForCreating, Vector3 position,
             bool needItemFallDown)
         {
-            IPickableItem createdItem;
+            var createdItem = InstantiatePrefab(dataForCreating.PickableItemPrefabProvider,
+                position, Quaternion.identity);
+
+            var strategySettable = createdItem.GetComponent<IPickableItemStrategySettable>();
+            strategySettable.SetStrategyForPickableController(dataForCreating.StrategyForController, needItemFallDown);
+
             switch (dataForCreating)
             {
                 case IPickableCardDataForCreating cardDataForCreating:
                 {
-                    var createdCard = InstantiatePrefabForComponent<IInitializablePickableCardController>(
-                        cardDataForCreating.PickableItemPrefabProvider.Prefab, position, Quaternion.identity);
-                    createdCard.Initialize(cardDataForCreating.StrategyForController, needItemFallDown,
-                        cardDataForCreating.CardInformation);
-                    createdItem = createdCard;
+                    var cardInformationSettable = createdItem.GetComponent<ICardInformationSettable>();
+                    cardInformationSettable.SetCardInformation(cardDataForCreating.CardInformation);
                     break;
                 }
                 case IPickable3DObjectDataForCreating object3DDataForCreating:
                 {
-                    var created3DObject = InstantiatePrefabForComponent<IInitializablePickable3DObjectController>(
-                        object3DDataForCreating.PickableItemPrefabProvider.Prefab, position, Quaternion.identity);
-                    created3DObject.Initialize(object3DDataForCreating.StrategyForController, needItemFallDown);
-                    createdItem = created3DObject;
                     break;
                 }
                 default:
@@ -43,7 +42,7 @@ namespace Pickable_Items.Factory
             }
 
 
-            return createdItem;
+            return createdItem.GetComponent<IPickableItem>();
         }
 
         private class InvalidPickableItemDataForCreatingType : Exception

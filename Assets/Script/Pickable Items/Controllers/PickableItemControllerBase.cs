@@ -3,10 +3,10 @@ using Common;
 using Common.Abstract_Bases.Checkers;
 using DG.Tweening;
 using Interfaces.Pickers;
+using Pickable_Items.Setup;
 using Pickable_Items.Strategies_For_Pickable_Controller;
 using Settings;
 using UnityEngine;
-using Zenject;
 
 namespace Pickable_Items.Controllers
 {
@@ -15,9 +15,9 @@ namespace Pickable_Items.Controllers
     {
         private const float MaxGroundRayDistance = 2f;
         private const float GroundCheckOffsetY = 20f;
-        [SerializeField] private PickableItemsPickerTrigger _pickerTrigger;
-        [SerializeField] private GroundChecker _groundChecker;
-        [SerializeField] private Transform _visualObjectTransform;
+        private PickableItemsPickerTrigger _pickerTrigger;
+        private GroundChecker _groundChecker;
+        private Transform _visualObjectTransform;
         private bool _needFallDown;
         private PickableItemsSettings _pickableItemsSettings;
         private GroundLayerMaskSetting _groundLayerMaskSetting;
@@ -25,18 +25,19 @@ namespace Pickable_Items.Controllers
         private ValueWithReactionOnChange<ControllerStates> _currentControllerState;
         private IStrategyForPickableController _strategyForPickableController;
 
-        [Inject]
-        private void Construct(GroundLayerMaskSetting groundLayerMaskSetting,
-            PickableItemsSettings pickableItemsSettings)
+        protected void Initialize(IPickableItemControllerBaseSetupData setupData)
         {
-            _groundLayerMaskSetting = groundLayerMaskSetting;
-            _pickableItemsSettings = pickableItemsSettings;
-        }
+            _pickerTrigger = setupData.SetPickerTrigger;
+            _groundChecker = setupData.SetGroundChecker;
+            _visualObjectTransform = setupData.SetVisualObjectTransform;
+            _pickableItemsSettings = setupData.SetPickableItemsSettings;
+            _groundLayerMaskSetting = setupData.SetGroundLayerMaskSetting;
+            _pickableItemsSettings = setupData.SetPickableItemsSettings;
+            _rigidbody = setupData.SetRigidBody;
+            _strategyForPickableController = setupData.SetStrategyForPickableController;
+            _needFallDown = setupData.SetNeedFallDown;
 
-        protected void Initialize(IStrategyForPickableController strategyForPickableController, bool needFallDown)
-        {
-            _strategyForPickableController = strategyForPickableController;
-            _needFallDown = needFallDown;
+            SubscribeOnEvents();
 
             _currentControllerState.Value = ControllerStates.Initialized;
         }
@@ -57,19 +58,30 @@ namespace Pickable_Items.Controllers
 
         private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
             _currentControllerState = new ValueWithReactionOnChange<ControllerStates>(ControllerStates.NotInitialized);
-            _visualObjectTransform.localScale = Vector3.zero;
         }
 
         private void OnEnable()
+        {
+            if (_currentControllerState.Value != ControllerStates.NotInitialized)
+            {
+                SubscribeOnEvents();
+            }
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeFromEvents();
+        }
+
+        protected virtual void SubscribeOnEvents()
         {
             _pickerTrigger.PickerDetected += OnPickerDetected;
             _groundChecker.ContactStateChanged += OnIsGroundedStatusChanged;
             _currentControllerState.AfterValueChanged += OnControllerStateChanged;
         }
 
-        private void OnDisable()
+        protected virtual void UnsubscribeFromEvents()
         {
             _pickerTrigger.PickerDetected -= OnPickerDetected;
             _groundChecker.ContactStateChanged -= OnIsGroundedStatusChanged;
@@ -82,6 +94,7 @@ namespace Pickable_Items.Controllers
             {
                 case ControllerStates.Initialized:
                     PlayAppearAnimation();
+                    _visualObjectTransform.localScale = Vector3.zero;
                     _currentControllerState.Value = _needFallDown ? ControllerStates.Falling : ControllerStates.Idle;
                     break;
                 case ControllerStates.Falling:

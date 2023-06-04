@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 3703881124557459534}
   - component: {fileID: 1752505543324713682}
   - component: {fileID: 1076616537251893113}
+  - component: {fileID: 613437442980694007}
   m_Layer: 0
   m_Name: Pickable Card
   m_TagString: Untagged
@@ -268,7 +269,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 088f82df11604cc9afffba448b1fbeee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _needFallDown: 1
+--- !u!114 &613437442980694007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613288014758191246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158063c20c8f42f6834b60e76bca9c82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _pickerTrigger: {fileID: 1567614831550151120}
   _groundChecker: {fileID: 8806220022315672177}
   _visualObjectTransform: {fileID: 3452848077848786031}
