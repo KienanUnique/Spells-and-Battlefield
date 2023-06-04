@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1671144018873720890}
   - component: {fileID: 3163376710727498730}
   - component: {fileID: 5891682041777490881}
+  - component: {fileID: 8572857587980053230}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -55,21 +56,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e703b59f98f64ba459239781df202b0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cameraFollowObject: {fileID: 7751128588636151014}
-  _objectToRotateHorizontally: {fileID: 974464277607573819}
-  _camera: {fileID: 3951135657180910355}
-  _cameraEffectsGameObject: {fileID: 4385135920744681487}
-  _rigBuilder: {fileID: 3163376710727498730}
-  _characterAnimator: {fileID: 1856917474014603066}
-  _groundChecker: {fileID: 7524277153600398822}
-  _wallChecker: {fileID: 1408449592405486887}
-  _startTestSpells:
-  - {fileID: 11400000, guid: 64f2c7c17c0f77446a5eacd00b9c1249, type: 2}
-  - {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
-  - {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
-  - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-  _spellSpawnObject: {fileID: 9054392896323866226}
-  _playerEventInvokerForAnimations: {fileID: 7250497769501624016}
 --- !u!136 &1698083445434375742
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -241,6 +227,34 @@ MonoBehaviour:
   - {fileID: 8399786871439030932}
   - {fileID: 8689979055251552139}
   - {fileID: 4969929249209038530}
+--- !u!114 &8572857587980053230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846477161179582522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ea82dac3f7a49d697dd47b07277305b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraFollowObject: {fileID: 7751128588636151014}
+  _objectToRotateHorizontally: {fileID: 974464277607573819}
+  _cameraEffectsGameObject: {fileID: 4385135920744681487}
+  _camera: {fileID: 3951135657180910355}
+  _rigBuilder: {fileID: 3163376710727498730}
+  _characterAnimator: {fileID: 1856917474014603066}
+  _playerEventInvokerForAnimations: {fileID: 7250497769501624016}
+  _groundChecker: {fileID: 7524277153600398822}
+  _wallChecker: {fileID: 1408449592405486887}
+  _startTestSpells:
+  - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+  - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+  - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+  - {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
+  - {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
+  _spellSpawnObject: {fileID: 9054392896323866226}
 --- !u!1 &2284558118937813315
 GameObject:
   m_ObjectHideFlags: 0

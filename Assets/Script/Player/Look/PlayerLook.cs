@@ -1,9 +1,9 @@
 using Settings;
 using UnityEngine;
 
-namespace Player
+namespace Player.Look
 {
-    public class PlayerLook
+    public class PlayerLook : IPlayerLook
     {
         private readonly Transform _cameraRootTransform;
         private readonly Transform _rotateObject;

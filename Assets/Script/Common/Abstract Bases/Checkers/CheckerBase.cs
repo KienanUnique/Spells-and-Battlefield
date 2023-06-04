@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Common.Abstract_Bases.Checkers
 {
-    public abstract class CheckerBase : MonoBehaviour
+    public abstract class CheckerBase : MonoBehaviour, IChecker
     {
         private ValueWithReactionOnChange<bool> _isCollidingWithReaction;
         private List<Collider> _colliders;

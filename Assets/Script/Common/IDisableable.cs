@@ -2,7 +2,7 @@
 {
     public interface IDisableable
     {
-        public void Enable();
-        public void Disable();
+        void Enable();
+        void Disable();
     }
 }

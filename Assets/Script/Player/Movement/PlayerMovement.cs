@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Common;
-using Common.Abstract_Bases;
 using Common.Abstract_Bases.Checkers;
 using Common.Abstract_Bases.Movement;
 using Interfaces;
@@ -10,9 +9,9 @@ using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
-namespace Player
+namespace Player.Movement
 {
-    public sealed class PlayerMovement : MovementBase
+    public sealed class PlayerMovement : MovementBase, IPlayerMovement
     {
         private const int MaxCountOfAirJumps = 1;
         private const float AirPlayerInputForceMultiplier = 0.5f;
@@ -20,8 +19,7 @@ namespace Player
         private const float WallRunningPlayerInputForceMultiplier = 1.5f;
         private const float DashAimingPlayerInputForceMultiplier = 0;
 
-        public readonly Transform MainTransform;
-
+        private readonly Transform _cashedTransform;
         private readonly GroundChecker _groundChecker;
         private readonly WallChecker _wallChecker;
         private readonly PlayerSettings.PlayerMovementSettingsSection _movementSettings;
@@ -44,7 +42,7 @@ namespace Player
             _wallChecker = wallChecker;
             _movementSettings = movementSettings;
             _coroutineStarter = coroutineStarter;
-            MainTransform = _rigidbody.transform;
+            _cashedTransform = _rigidbody.transform;
 
             _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.OnGround);
             _currentPlayerInputForceMultiplier = NormalPlayerInputForceMultiplier;
@@ -77,6 +75,7 @@ namespace Player
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
         public Vector3 CurrentPosition => _rigidbody.position;
+        public Transform MainTransform => _cashedTransform;
         private bool IsGrounded => _groundChecker.IsColliding;
         private bool IsInContactWithWall => _wallChecker.IsColliding;
 
@@ -155,10 +154,10 @@ namespace Player
                 _rigidbody.AddForce(_currentGravityForce * Vector3.down);
 
                 _rigidbody.AddForce(_inputMoveDirection.x * _movementSettings.MoveForce * Time.deltaTime *
-                                    _currentPlayerInputForceMultiplier * _currentSpeedRatio * MainTransform.right);
+                                    _currentPlayerInputForceMultiplier * _currentSpeedRatio * _cashedTransform.right);
                 _rigidbody.AddForce(_inputMoveDirection.y * _movementSettings.MoveForce * Time.deltaTime *
                                     _currentPlayerInputForceMultiplier * _currentPlayerInputForceMultiplier *
-                                    _currentSpeedRatio * MainTransform.forward);
+                                    _currentSpeedRatio * _cashedTransform.forward);
                 if (_speedLimitationEnabled)
                 {
                     TryLimitCurrentSpeed();
@@ -187,13 +186,13 @@ namespace Player
 
                 if (_inputMoveDirection.x == 0)
                 {
-                    _rigidbody.AddForce(inverseVelocity.x * _movementSettings.MoveForce * MainTransform.right *
+                    _rigidbody.AddForce(inverseVelocity.x * _movementSettings.MoveForce * _cashedTransform.right *
                                         _movementSettings.FrictionCoefficient * Time.deltaTime);
                 }
 
                 if (_inputMoveDirection.y == 0)
                 {
-                    _rigidbody.AddForce(inverseVelocity.z * _movementSettings.MoveForce * MainTransform.forward *
+                    _rigidbody.AddForce(inverseVelocity.z * _movementSettings.MoveForce * _cashedTransform.forward *
                                         _movementSettings.FrictionCoefficient * Time.deltaTime);
                 }
 
@@ -293,7 +292,7 @@ namespace Player
                     _currentPlayerInputForceMultiplier = WallRunningPlayerInputForceMultiplier;
                     _currentGravityForce = _movementSettings.WallRunningGravityForce;
                     var closestPoint = _wallChecker.Colliders[0].ClosestPoint(CurrentPosition);
-                    var dot = Vector3.Dot(MainTransform.right, closestPoint - CurrentPosition);
+                    var dot = Vector3.Dot(_cashedTransform.right, closestPoint - CurrentPosition);
                     StartWallRunning?.Invoke(dot < 0 ? WallDirection.Left : WallDirection.Right);
                     break;
                 case MovingState.DashAiming:

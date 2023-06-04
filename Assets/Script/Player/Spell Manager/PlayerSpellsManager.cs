@@ -6,9 +6,9 @@ using Spells.Spell.Interfaces;
 using Spells.Spell.Scriptable_Objects;
 using UnityEngine;
 
-namespace Player
+namespace Player.Spell_Manager
 {
-    public class PlayerSpellsManager
+    public class PlayerSpellsManager : IPlayerSpellsManager
     {
         private readonly Transform _spellSpawnObject;
         private readonly ICaster _player;
@@ -27,7 +27,7 @@ namespace Player
         }
 
         public bool IsSpellSelected => _spellsStorage.Count > 0;
-        private ISpell SelectedSpell => _spellsStorage[0];
+        public ISpell SelectedSpell => _spellsStorage[0];
 
         public ISpellAnimationInformation SelectedSpellAnimationInformation => SelectedSpell.SpellAnimationInformation;
 

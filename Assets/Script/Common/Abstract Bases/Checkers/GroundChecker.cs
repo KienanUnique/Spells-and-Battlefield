@@ -5,7 +5,7 @@ using Zenject;
 namespace Common.Abstract_Bases.Checkers
 {
     [RequireComponent(typeof(BoxCollider))]
-    public class GroundChecker : CheckerBase
+    public class GroundChecker : CheckerBase, IGroundChecker
     {
         private LayerMask _cashedGroundMask;
 

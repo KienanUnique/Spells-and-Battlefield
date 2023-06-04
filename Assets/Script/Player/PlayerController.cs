@@ -1,61 +1,56 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Character;
-using Common.Abstract_Bases.Checkers;
 using Interfaces;
-using Settings;
+using Player.Camera_Effects;
+using Player.Character;
+using Player.Event_Invoker_For_Animations;
+using Player.Look;
+using Player.Movement;
+using Player.Setup;
+using Player.Spell_Manager;
+using Player.Visual;
 using Spells.Continuous_Effect;
-using Spells.Factory;
 using Spells.Spell;
-using Spells.Spell.Scriptable_Objects;
 using Systems.Input_Manager;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
-using Zenject;
 
 namespace Player
 {
-    [RequireComponent(typeof(IdHolder))]
-    [RequireComponent(typeof(Rigidbody))]
-    public class PlayerController : MonoBehaviour, IPlayer, ICoroutineStarter
+    [RequireComponent(typeof(PlayerControllerSetup))]
+    public class PlayerController : MonoBehaviour, IPlayer, ICoroutineStarter, IInitializablePlayerController
     {
-        [Header("Camera")] [SerializeField] private Transform _cameraFollowObject;
-        [SerializeField] private Transform _objectToRotateHorizontally;
-        [SerializeField] private GameObject _cameraEffectsGameObject;
-        [SerializeField] private Camera _camera;
-
-        [Header("Animations")] [SerializeField]
-        private RigBuilder _rigBuilder;
-
-        [SerializeField] private Animator _characterAnimator;
-        [SerializeField] private PlayerEventInvokerForAnimations _playerEventInvokerForAnimations;
-
-        [Header("Checkers")] [SerializeField] private GroundChecker _groundChecker;
-        [SerializeField] private WallChecker _wallChecker;
-
-        [Header("Spells")] [SerializeField] private List<SpellScriptableObject> _startTestSpells;
-        [SerializeField] private Transform _spellSpawnObject;
-
-        private PlayerCameraEffects _playerCameraEffects;
-        private PlayerVisual _playerVisual;
-        private PlayerCharacter _playerCharacter;
-        private PlayerSpellsManager _playerSpellsManager;
-        private IPlayerInput _playerInput;
-        private PlayerMovement _playerMovement;
-        private PlayerLook _playerLook;
-        private IdHolder _idHolder;
-        private PlayerSettings _settings;
-        private ISpellObjectsFactory _spellObjectsFactory;
         private List<IDisableable> _itemsNeedDisabling;
+        private IIdHolder _idHolder;
+        private IPlayerLook _playerLook;
+        private IPlayerMovement _playerMovement;
+        private IPlayerInput _playerInput;
+        private IPlayerSpellsManager _playerSpellsManager;
+        private IPlayerCharacter _playerCharacter;
+        private IPlayerVisual _playerVisual;
+        private IPlayerCameraEffects _playerCameraEffects;
+        private IPlayerEventInvokerForAnimations _playerEventInvokerForAnimations;
 
-        [Inject]
-        private void Construct(IPlayerInput playerInput, PlayerSettings settings,
-            ISpellObjectsFactory spellObjectsFactory)
+        private ValueWithReactionOnChange<ControllerState> _currentControllerState;
+
+        public void Initialize(IPlayerControllerSetupData setupData)
         {
-            _playerInput = playerInput;
-            _settings = settings;
-            _spellObjectsFactory = spellObjectsFactory;
+            _itemsNeedDisabling = setupData.SetItemsNeedDisabling;
+            _idHolder = setupData.SetIDHolder;
+            _playerLook = setupData.SetPlayerLook;
+            _playerMovement = setupData.SetPlayerMovement;
+            _playerInput = setupData.SetPlayerInput;
+            _playerSpellsManager = setupData.SetPlayerSpellsManager;
+            _playerCharacter = setupData.SetPlayerCharacter;
+            _playerVisual = setupData.SetPlayerVisual;
+            _playerCameraEffects = setupData.SetPlayerCameraEffects;
+            _playerEventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
+
+            SubscribeOnEvents();
+
+            _currentControllerState.Value = ControllerState.Initialized;
         }
 
         public event Action DashCooldownFinished;
@@ -70,6 +65,12 @@ namespace Player
         public Transform MainTransform => _playerMovement.MainTransform;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
+
+        private enum ControllerState
+        {
+            NonInitialized,
+            Initialized,
+        }
 
 
         public void HandleHeal(int countOfHealthPoints)
@@ -114,43 +115,26 @@ namespace Player
 
         private void Awake()
         {
-            _idHolder = GetComponent<IdHolder>();
-            var thisRigidbody = GetComponent<Rigidbody>();
-
-            _itemsNeedDisabling = new List<IDisableable>();
-
-            _playerMovement = new PlayerMovement(thisRigidbody, _settings.Movement, _groundChecker, _wallChecker, this);
-            _playerCharacter = new PlayerCharacter(this, _settings.Character);
-            _itemsNeedDisabling.Add(_playerMovement);
-            _itemsNeedDisabling.Add(_playerCharacter);
-
-            _playerLook = new PlayerLook(_camera, _cameraFollowObject, _objectToRotateHorizontally, _settings.Look);
-            _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator);
-            _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
-            _playerSpellsManager =
-                new PlayerSpellsManager(_startTestSpells, _spellSpawnObject, this, _spellObjectsFactory);
-        }
-
-        private void Update()
-        {
-            _playerVisual.UpdateMovingData(_playerMovement.NormalizedVelocityDirectionXY,
-                _playerMovement.RatioOfCurrentVelocityToMaximumVelocity);
+            _currentControllerState = new ValueWithReactionOnChange<ControllerState>(ControllerState.NonInitialized);
         }
 
         private void OnEnable()
         {
+            if (_currentControllerState.Value == ControllerState.NonInitialized) return;
             SubscribeOnEvents();
-            _itemsNeedDisabling.ForEach(item => item.Enable());
         }
 
         private void OnDisable()
         {
             UnsubscribeFromEvents();
-            _itemsNeedDisabling.ForEach(item => item.Disable());
         }
 
         private void SubscribeOnEvents()
         {
+            _currentControllerState.AfterValueChanged += OnControllerStateChanged;
+
+            _itemsNeedDisabling.ForEach(item => item.Enable());
+
             _playerInput.JumpInputted += _playerMovement.TryJumpInputted;
             _playerInput.StartDashAimingInputted += _playerMovement.TryStartDashAiming;
             _playerInput.DashInputted += OnDashInputted;
@@ -176,6 +160,10 @@ namespace Player
 
         private void UnsubscribeFromEvents()
         {
+            _currentControllerState.AfterValueChanged -= OnControllerStateChanged;
+
+            _itemsNeedDisabling.ForEach(item => item.Disable());
+
             _playerInput.JumpInputted -= _playerMovement.TryJumpInputted;
             _playerInput.StartDashAimingInputted -= _playerMovement.TryStartDashAiming;
             _playerInput.DashInputted -= OnDashInputted;
@@ -197,6 +185,30 @@ namespace Player
 
             _playerCharacter.CharacterStateChanged -= OnCharacterStateChanged;
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
+        }
+
+        private void OnControllerStateChanged(ControllerState newState)
+        {
+            switch (newState)
+            {
+                case ControllerState.NonInitialized:
+                    break;
+                case ControllerState.Initialized:
+                    StartCoroutine(UpdateMovingDataCoroutine());
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+            }
+        }
+
+        private IEnumerator UpdateMovingDataCoroutine()
+        {
+            while (true)
+            {
+                _playerVisual.UpdateMovingData(_playerMovement.NormalizedVelocityDirectionXY,
+                    _playerMovement.RatioOfCurrentVelocityToMaximumVelocity);
+                yield return null;
+            }
         }
 
         private void OnHitPointsCountChanged(float newHitPointsCount) =>

@@ -2,7 +2,7 @@
 
 namespace Common.Abstract_Bases.Checkers
 {
-    public class WallChecker : CheckerBase
+    public class WallChecker : CheckerBase, IWallChecker
     {
         [SerializeField] private LayerMask _wallMask;
         protected override LayerMask NeedObjectsMask => _wallMask;

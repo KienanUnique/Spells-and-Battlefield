@@ -3,9 +3,9 @@ using DG.Tweening;
 using Settings;
 using UnityEngine;
 
-namespace Player
+namespace Player.Camera_Effects
 {
-    public class PlayerCameraEffects
+    public class PlayerCameraEffects : IPlayerCameraEffects
     {
         private const RotateMode CameraRotateMode = RotateMode.Fast;
 

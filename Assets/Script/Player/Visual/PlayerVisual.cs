@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-namespace Player
+namespace Player.Visual
 {
-    public class PlayerVisual
+    public class PlayerVisual : IPlayerVisual
     {
         private static readonly int AttackTriggerHash = Animator.StringToHash("Attack");
         private static readonly int MovingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
