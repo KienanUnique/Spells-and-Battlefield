@@ -3,6 +3,7 @@ using System.Collections;
 using Common;
 using Common.Abstract_Bases.Checkers;
 using Common.Abstract_Bases.Movement;
+using Common.Readonly_Transform;
 using Interfaces;
 using Settings;
 using UnityEngine;
@@ -43,6 +44,7 @@ namespace Player.Movement
             _movementSettings = movementSettings;
             _coroutineStarter = coroutineStarter;
             _cashedTransform = _rigidbody.transform;
+            MainTransform = new ReadonlyTransform(_cashedTransform);
 
             _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.OnGround);
             _currentPlayerInputForceMultiplier = NormalPlayerInputForceMultiplier;
@@ -74,8 +76,9 @@ namespace Player.Movement
 
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
+        public IReadonlyTransform MainTransform { get; }
         public Vector3 CurrentPosition => _rigidbody.position;
-        public Transform MainTransform => _cashedTransform;
+
         private bool IsGrounded => _groundChecker.IsColliding;
         private bool IsInContactWithWall => _wallChecker.IsColliding;
 

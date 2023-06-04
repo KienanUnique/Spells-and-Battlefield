@@ -11,7 +11,7 @@ namespace Enemies.State_Machine.Transitions
         private Transform _cashedTransform;
 
         private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
-        private Vector3 CurrentTargetPosition => CurrentTarget.MainTransform.position;
+        private Vector3 CurrentTargetPosition => CurrentTarget.MainTransform.Position;
 
         private enum TypeOfComparison
         {

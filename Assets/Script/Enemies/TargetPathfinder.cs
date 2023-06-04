@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Common;
+using Common.Readonly_Transform;
 using General_Settings_in_Scriptable_Objects;
 using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
@@ -12,7 +14,7 @@ namespace Enemies
         private readonly Seeker _seeker;
         private readonly TargetPathfinderSettingsSection _settings;
         private readonly ICoroutineStarter _coroutineStarter;
-        private readonly Transform _seekerObjectTransform;
+        private readonly IReadonlyTransform _seekerObjectTransform;
         private Path _currentPath;
         private int _currentWaypointIndex;
         private Coroutine _tryUpdateCurrentWaypointCoroutine;
@@ -22,15 +24,15 @@ namespace Enemies
             ICoroutineStarter coroutineStarter)
         {
             _seeker = seeker;
-            _seekerObjectTransform = _seeker.transform;
+            _seekerObjectTransform = new ReadonlyTransform(_seeker.transform);
             _settings = settings;
             _coroutineStarter = coroutineStarter;
         }
 
-        public void StartUpdatingPathForTarget(Transform target)
+        public void StartUpdatingPathForTarget(IReadonlyTransform targetPosition)
         {
             StopUpdatingPath();
-            _updatePathToTargetCoroutine = _coroutineStarter.StartCoroutine(UpdatePathToTarget(target));
+            _updatePathToTargetCoroutine = _coroutineStarter.StartCoroutine(UpdatePathToTarget(targetPosition));
             _tryUpdateCurrentWaypointCoroutine = _coroutineStarter.StartCoroutine(TryUpdateCurrentWaypoint());
         }
 
@@ -67,7 +69,7 @@ namespace Enemies
             {
                 if (_currentPath != null && _currentWaypointIndex < _currentPath.vectorPath.Count
                                          && Vector3.Distance(_currentPath.vectorPath[_currentWaypointIndex],
-                                             _seekerObjectTransform.position) <= _settings.NextWaypointDistance)
+                                             _seekerObjectTransform.Position) <= _settings.NextWaypointDistance)
                 {
                     _currentWaypointIndex++;
                 }
@@ -76,14 +78,14 @@ namespace Enemies
             }
         }
 
-        private IEnumerator UpdatePathToTarget(Transform target)
+        private IEnumerator UpdatePathToTarget(IReadonlyTransform targetPosition)
         {
             var waitForSeconds = new WaitForSeconds(_settings.UpdateDestinationCooldownSeconds);
             while (true)
             {
                 if (_seeker.IsDone())
                 {
-                    _seeker.StartPath(_seekerObjectTransform.position, target.position, OnPathComplete);
+                    _seeker.StartPath(_seekerObjectTransform.Position, targetPosition.Position, OnPathComplete);
                 }
 
                 yield return waitForSeconds;

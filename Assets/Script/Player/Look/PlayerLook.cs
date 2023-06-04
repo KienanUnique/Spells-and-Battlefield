@@ -1,3 +1,4 @@
+using Common.Readonly_Transform;
 using Settings;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ namespace Player.Look
 {
     public class PlayerLook : IPlayerLook
     {
-        private readonly Transform _cameraRootTransform;
+        private readonly IReadonlyTransform _cameraRootTransform;
         private readonly Transform _rotateObject;
         private readonly PlayerSettings.PlayerLookSettingsSection _lookSettings;
         private readonly Transform _cameraTransform;
@@ -13,7 +14,7 @@ namespace Player.Look
         private float _xRotation;
 
 
-        public PlayerLook(Camera camera, Transform cameraRootTransform, Transform rotateObject,
+        public PlayerLook(Camera camera, IReadonlyTransform cameraRootTransform, Transform rotateObject,
             PlayerSettings.PlayerLookSettingsSection lookSettings)
         {
             _cameraRootTransform = cameraRootTransform;
@@ -27,7 +28,7 @@ namespace Player.Look
 
         public void LookInputtedWith(Vector2 mouseLookDelta)
         {
-            _cameraTransform.position = _cameraRootTransform.position;
+            _cameraTransform.position = _cameraRootTransform.Position;
             _xRotation -= mouseLookDelta.y;
             _xRotation = Mathf.Clamp(_xRotation, _lookSettings.UpperLimit, _lookSettings.BottomLimit);
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Checkers;
+using Common.Readonly_Transform_Getter;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
@@ -24,7 +25,7 @@ namespace Player.Setup
     [RequireComponent(typeof(PlayerController))]
     public class PlayerControllerSetup : MonoBehaviour, ICoroutineStarter
     {
-        [Header("Camera")] [SerializeField] private Transform _cameraFollowObject;
+        [Header("Camera")] [SerializeField] private ReadonlyTransformGetter _cameraFollowObject;
         [SerializeField] private Transform _objectToRotateHorizontally;
         [SerializeField] private GameObject _cameraEffectsGameObject;
         [SerializeField] private Camera _camera;
@@ -39,7 +40,7 @@ namespace Player.Setup
         [SerializeField] private WallChecker _wallChecker;
 
         [Header("Spells")] [SerializeField] private List<SpellScriptableObject> _startTestSpells;
-        [SerializeField] private Transform _spellSpawnObject;
+        [SerializeField] private ReadonlyTransformGetter _spellSpawnObject;
 
         private IPlayerCameraEffects _playerCameraEffects;
         private IPlayerVisual _playerVisual;
@@ -78,11 +79,13 @@ namespace Player.Setup
             _playerMovement = playerMovement;
             _playerCharacter = playerCharacter;
 
-            _playerLook = new PlayerLook(_camera, _cameraFollowObject, _objectToRotateHorizontally, _settings.Look);
+            _playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
+                _settings.Look);
             _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator);
             _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
             _playerSpellsManager =
-                new PlayerSpellsManager(_startTestSpells, _spellSpawnObject, playerCaster, _spellObjectsFactory);
+                new PlayerSpellsManager(_startTestSpells, _spellSpawnObject.ReadonlyTransform, playerCaster,
+                    _spellObjectsFactory);
         }
 
         private void Start()

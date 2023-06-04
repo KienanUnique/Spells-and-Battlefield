@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Character;
+using Common.Readonly_Transform;
 using Enemies.Movement;
 using Enemies.Setup;
 using Enemies.State_Machine;
@@ -94,7 +95,7 @@ namespace Enemies.Controller
         }
 
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector => _targetFromTriggersSelector;
-        public void StartMovingToTarget(Transform target) => _enemyMovement.StartMovingToTarget(target);
+        public void StartMovingToTarget(IReadonlyTransform target) => _enemyMovement.StartFollowingPosition(target);
 
         public void StopMovingToTarget() => _enemyMovement.StopMovingToTarget();
 
@@ -180,7 +181,7 @@ namespace Enemies.Controller
             var cashedTransform = transform;
             var dropDirection = _targetFromTriggersSelector.CurrentTarget == null
                 ? cashedTransform.forward
-                : (_targetFromTriggersSelector.CurrentTarget.MainTransform.position - cashedTransform.position)
+                : (_targetFromTriggersSelector.CurrentTarget.MainTransform.Position - cashedTransform.position)
                 .normalized;
             var spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
             var pickableSpell = _itemsFactory.Create(_itemToDrop, spawnPosition, NeedCreatedItemsFallDown);

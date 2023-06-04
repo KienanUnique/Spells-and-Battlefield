@@ -23,7 +23,7 @@ namespace Enemies.Concrete_Types.Knight.Additional_States
 
             _knightController = controller;
 
-            _knightController.StartSwordAttack(CurrentTarget.MainTransform);
+            _knightController.StartSwordAttack(CurrentTarget);
         }
 
         protected override void SpecialExitAction()

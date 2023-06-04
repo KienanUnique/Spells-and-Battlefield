@@ -37,10 +37,10 @@ namespace Enemies.Concrete_Types.Knight
         protected override IEnemyCharacter Character => _knightCharacter;
 
 
-        public void StartSwordAttack(Transform target)
+        public void StartSwordAttack(IEnemyTarget target)
         {
             _knightVisual.StartAttackWithSwordAnimation();
-            _enemyMovement.StartMovingToTarget(target);
+            _enemyMovement.StartFollowingPosition(target.MainTransform);
         }
 
         public void StopSwordAttack()

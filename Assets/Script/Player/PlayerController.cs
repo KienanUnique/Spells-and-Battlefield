@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Character;
+using Common.Readonly_Transform;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
@@ -62,7 +63,7 @@ namespace Player
 
         public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
         public int Id => _idHolder.Id;
-        public Transform MainTransform => _playerMovement.MainTransform;
+        public IReadonlyTransform MainTransform => _playerMovement.MainTransform;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
 

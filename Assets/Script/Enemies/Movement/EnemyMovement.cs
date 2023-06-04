@@ -3,6 +3,7 @@ using System.Collections;
 using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Movement;
+using Common.Readonly_Transform;
 using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
 using Pathfinding;
@@ -29,7 +30,7 @@ namespace Enemies.Movement
             SubscribeOnEvents();
         }
 
-        public void StartMovingToTarget(Transform target)
+        public void StartFollowingPosition(IReadonlyTransform targetPosition)
         {
             if (_followPathCoroutine != null)
             {
@@ -37,7 +38,7 @@ namespace Enemies.Movement
             }
 
             _isMoving.Value = true;
-            _followPathCoroutine = _coroutineStarter.StartCoroutine(FollowPath(target));
+            _followPathCoroutine = _coroutineStarter.StartCoroutine(FollowPath(targetPosition));
         }
 
         public void StopMovingToTarget()
@@ -72,10 +73,10 @@ namespace Enemies.Movement
             MovingStateChanged?.Invoke(b);
         }
 
-        private IEnumerator FollowPath(Transform target)
+        private IEnumerator FollowPath(IReadonlyTransform targetPosition)
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
-            _targetPathfinder.StartUpdatingPathForTarget(target);
+            _targetPathfinder.StartUpdatingPathForTarget(targetPosition);
             var direction = Vector3.zero;
             while (true)
             {
@@ -89,7 +90,7 @@ namespace Enemies.Movement
                 }
                 else
                 {
-                    SetDirectionTowardsPoint(target.position, ref direction);
+                    SetDirectionTowardsPoint(targetPosition.Position, ref direction);
                 }
 
                 if (direction != Vector3.zero)

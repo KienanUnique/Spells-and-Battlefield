@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Common.Readonly_Transform;
 using Interfaces;
 using Spells.Factory;
 using Spells.Spell;
@@ -10,13 +11,13 @@ namespace Player.Spell_Manager
 {
     public class PlayerSpellsManager : IPlayerSpellsManager
     {
-        private readonly Transform _spellSpawnObject;
+        private readonly IReadonlyTransform _spellSpawnObject;
         private readonly ICaster _player;
         private readonly ISpellObjectsFactory _spellObjectsFactory;
 
         private readonly List<ISpell> _spellsStorage;
 
-        public PlayerSpellsManager(List<SpellScriptableObject> startTestSpells, Transform spellSpawnObject,
+        public PlayerSpellsManager(List<SpellScriptableObject> startTestSpells, IReadonlyTransform spellSpawnObject,
             ICaster player, ISpellObjectsFactory spellObjectsFactory)
         {
             _spellSpawnObject = spellSpawnObject;
@@ -34,7 +35,7 @@ namespace Player.Spell_Manager
         public void UseSelectedSpell(Quaternion direction)
         {
             _spellObjectsFactory.Create(SelectedSpell.SpellDataForSpellController,
-                SelectedSpell.SpellPrefabProvider, _player, _spellSpawnObject.position, direction);
+                SelectedSpell.SpellPrefabProvider, _player, _spellSpawnObject.Position, direction);
             _spellsStorage.RemoveAt(0);
         }
 
