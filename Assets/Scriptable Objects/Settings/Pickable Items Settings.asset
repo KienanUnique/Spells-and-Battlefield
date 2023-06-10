@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7aacc57b05241f397b8e710b4b8ec6e, type: 3}
   m_Name: Pickable Items Settings
   m_EditorClassIdentifier: 
-  _animationMinimumHeight: 1.6
-  _animationMaximumHeight: 2.6
-  _yAnimationDuration: 0.6
+  _animationMinimumHeight: 1
+  _animationMaximumHeight: 1.2
+  _yAnimationDuration: 1
   _rotateAnimationDuration: 1
-  _appearScaleAnimationDuration: 3
-  _disappearScaleAnimationDuration: 1
+  _appearScaleAnimationDuration: 0.5
+  _disappearScaleAnimationDuration: 0.5
   _dropForce: 10
   _sizeChangeEase: 23
   _rotatingEase: 1
