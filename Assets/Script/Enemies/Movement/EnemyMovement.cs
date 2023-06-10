@@ -51,6 +51,7 @@ namespace Enemies.Movement
 
             _isMoving.Value = false;
             _targetPathfinder.StopUpdatingPath();
+            _rigidbody.velocity = Vector3.zero;
         }
 
         public void AddForce(Vector3 force, ForceMode mode)
