@@ -63,7 +63,13 @@ namespace Player.Setup
             _spellObjectsFactory = spellObjectsFactory;
         }
 
-        private void Awake()
+        private void Start()
+        {
+            PrepareSetupData();
+            Setup();
+        }
+
+        private void PrepareSetupData()
         {
             var playerCaster = GetComponent<ICaster>();
             _idHolder = GetComponent<IdHolder>();
@@ -86,11 +92,6 @@ namespace Player.Setup
             _playerSpellsManager =
                 new PlayerSpellsManager(_startTestSpells, _spellSpawnObject.ReadonlyTransform, playerCaster,
                     _spellObjectsFactory);
-        }
-
-        private void Start()
-        {
-            Setup();
         }
 
         private void Setup()

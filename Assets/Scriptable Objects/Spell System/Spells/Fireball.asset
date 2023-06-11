@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be24e3d51e3c3724fa102db9aab6b01c, type: 3}
   m_Name: Fireball
   m_EditorClassIdentifier: 
+  _prefabProvider: {fileID: 11400000, guid: 3eac42da268645142bdf96a71c371773, type: 2}
   _cardInformation:
     _icon: {fileID: 21300000, guid: 2d0997ac1b1fd664e98202450e7ea2d7, type: 3}
     _title: Fireball
