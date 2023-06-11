@@ -1,11 +1,11 @@
-﻿using General_Settings_in_Scriptable_Objects.Sections;
+﻿using Settings.Sections.Movement;
 using UnityEngine;
 
 namespace Common.Abstract_Bases.Movement
 {
     public abstract class MovementBase : BaseWithDisabling, IMovementBase
     {
-        private const float StopVelocityMagnitude = 0.0001f;
+        protected const float StopVelocityMagnitude = 0.0001f;
 
         protected readonly Rigidbody _rigidbody;
         protected float _currentSpeedRatio = 1;
@@ -17,7 +17,7 @@ namespace Common.Abstract_Bases.Movement
             MovementSettings = movementSettings;
         }
 
-        private float CurrentMaximumSpeed => MovementSettings.MaximumSpeed * _currentSpeedRatio;
+        protected float CurrentMaximumSpeed => MovementSettings.MaximumSpeed * _currentSpeedRatio;
 
         public void MultiplySpeedRatioBy(float speedRatio)
         {
@@ -31,7 +31,7 @@ namespace Common.Abstract_Bases.Movement
             _rigidbody.velocity /= speedRatio;
         }
 
-        protected void TryLimitCurrentSpeed()
+        protected virtual void TryLimitCurrentSpeed()
         {
             if (_rigidbody.velocity.magnitude > CurrentMaximumSpeed)
             {
@@ -41,6 +41,11 @@ namespace Common.Abstract_Bases.Movement
             {
                 _rigidbody.velocity = Vector3.zero;
             }
+        }
+
+        protected void ApplyGravity(float gravityForce)
+        {
+            _rigidbody.AddForce(gravityForce * Vector3.down);
         }
     }
 }

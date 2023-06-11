@@ -1,6 +1,7 @@
 ﻿using System;
 using DG.Tweening;
 using General_Settings_in_Scriptable_Objects.Sections;
+using Settings.Sections.Movement;
 using UnityEngine;
 
 namespace Settings
@@ -48,18 +49,18 @@ namespace Settings
         }
 
         [Serializable]
-        public class PlayerMovementSettingsSection : MovementSettingsSection
+        public class PlayerMovementSettingsSection : MovementOnGroundSettingsSection
         {
             [SerializeField] private float _jumpForce = 800f;
             [SerializeField] private float _dashForce = 1500f;
-            [SerializeField] private float _normalGravityForce = 30;
             [SerializeField] private float _wallRunningGravityForce = 2;
             [SerializeField] private float _dashCooldownSeconds = 5f;
             [SerializeField] private float _dashSpeedLimitationsDisablingForSeconds = 0.3f;
+            [Range(0, 1f)] [SerializeField] private float _flyingFrictionCoefficient = 0.175f;
 
+            public float FlyingFrictionCoefficient => _flyingFrictionCoefficient;
             public float JumpForce => _jumpForce;
             public float DashForce => _dashForce;
-            public float NormalGravityForce => _normalGravityForce;
             public float WallRunningGravityForce => _wallRunningGravityForce;
             public float DashCooldownSeconds => _dashCooldownSeconds;
             public float DashSpeedLimitationsDisablingForSeconds => _dashSpeedLimitationsDisablingForSeconds;

@@ -21,4 +21,5 @@ MonoBehaviour:
   _movementSettings:
     _moveForce: 2500
     _maximumSpeed: 10
-    _frictionCoefficient: 0.4
+    _normalFrictionCoefficient: 0.7
+    _normalGravityForce: 100

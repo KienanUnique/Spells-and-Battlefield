@@ -46,13 +46,14 @@ namespace Player.Movement
             _cashedTransform = _rigidbody.transform;
             MainTransform = new ReadonlyTransform(_cashedTransform);
 
-            _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.OnGround);
-            _currentPlayerInputForceMultiplier = NormalPlayerInputForceMultiplier;
-            _currentGravityForce = _movementSettings.NormalGravityForce;
+            _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.NotInitialized);
 
             _coroutineStarter.StartCoroutine(HandleInputMovement());
             _coroutineStarter.StartCoroutine(UpdateRatioOfCurrentVelocityToMaximumVelocity());
+
             SubscribeOnEvents();
+
+            _currentMovingState.Value = MovingState.OnGround;
         }
 
         public event Action Land;
@@ -68,6 +69,7 @@ namespace Player.Movement
 
         private enum MovingState
         {
+            NotInitialized,
             OnGround,
             InAir,
             WallRunning,
@@ -154,7 +156,7 @@ namespace Player.Movement
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
             {
-                _rigidbody.AddForce(_currentGravityForce * Vector3.down);
+                ApplyGravity(_currentGravityForce);
 
                 _rigidbody.AddForce(_inputMoveDirection.x * _movementSettings.MoveForce * Time.deltaTime *
                                     _currentPlayerInputForceMultiplier * _currentSpeedRatio * _cashedTransform.right);
@@ -180,7 +182,7 @@ namespace Player.Movement
             }
         }
 
-        private IEnumerator ApplyFrictionContinuously()
+        private IEnumerator ApplyFrictionContinuously(float frictionCoefficient)
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
@@ -190,13 +192,13 @@ namespace Player.Movement
                 if (_inputMoveDirection.x == 0)
                 {
                     _rigidbody.AddForce(inverseVelocity.x * _movementSettings.MoveForce * _cashedTransform.right *
-                                        _movementSettings.FrictionCoefficient * Time.deltaTime);
+                                        frictionCoefficient * Time.deltaTime);
                 }
 
                 if (_inputMoveDirection.y == 0)
                 {
                     _rigidbody.AddForce(inverseVelocity.z * _movementSettings.MoveForce * _cashedTransform.forward *
-                                        _movementSettings.FrictionCoefficient * Time.deltaTime);
+                                        frictionCoefficient * Time.deltaTime);
                 }
 
                 yield return waitForFixedUpdate;
@@ -256,6 +258,11 @@ namespace Player.Movement
             switch (movingState)
             {
                 case MovingState.OnGround:
+                    if (_frictionCoroutine != null)
+                    {
+                        _coroutineStarter.StopCoroutine(_frictionCoroutine);
+                        _frictionCoroutine = null;
+                    }
                     break;
                 case MovingState.InAir when _frictionCoroutine != null:
                     _coroutineStarter.StopCoroutine(_frictionCoroutine);
@@ -267,6 +274,8 @@ namespace Player.Movement
                 case MovingState.DashAiming:
                     Dashed?.Invoke();
                     _coroutineStarter.StartCoroutine(WaitForDashCooldownWithTicking());
+                    break;
+                case MovingState.NotInitialized:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(movingState), movingState, null);
@@ -281,13 +290,18 @@ namespace Player.Movement
                     _currentCountOfAirJumps = 0;
                     _currentPlayerInputForceMultiplier = NormalPlayerInputForceMultiplier;
                     _currentGravityForce = _movementSettings.NormalGravityForce;
+                    _frictionCoroutine ??=
+                        _coroutineStarter.StartCoroutine(
+                            ApplyFrictionContinuously(_movementSettings.NormalFrictionCoefficient));
                     Land?.Invoke();
                     break;
                 case MovingState.InAir:
                     _currentCountOfAirJumps = 0;
                     _currentPlayerInputForceMultiplier = AirPlayerInputForceMultiplier;
                     _currentGravityForce = _movementSettings.NormalGravityForce;
-                    _frictionCoroutine ??= _coroutineStarter.StartCoroutine(ApplyFrictionContinuously());
+                    _frictionCoroutine ??=
+                        _coroutineStarter.StartCoroutine(
+                            ApplyFrictionContinuously(_movementSettings.FlyingFrictionCoefficient));
                     Fall?.Invoke();
                     break;
                 case MovingState.WallRunning:
@@ -302,6 +316,7 @@ namespace Player.Movement
                     _currentPlayerInputForceMultiplier = DashAimingPlayerInputForceMultiplier;
                     DashAiming?.Invoke();
                     break;
+                case MovingState.NotInitialized:
                 default:
                     throw new ArgumentOutOfRangeException(nameof(movingState), movingState, null);
             }

@@ -1,17 +1,17 @@
 using System;
 using System.Collections;
 using Common;
-using Common.Abstract_Bases;
 using Common.Abstract_Bases.Movement;
 using Common.Readonly_Transform;
 using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
 using Pathfinding;
+using Settings.Sections.Movement;
 using UnityEngine;
 
 namespace Enemies.Movement
 {
-    public sealed class EnemyMovement : MovementBase, IEnemyMovement
+    public class EnemyMovement : MovementBase, IEnemyMovement
     {
         private readonly ValueWithReactionOnChange<bool> _isMoving;
         private readonly TargetPathfinder _targetPathfinder;
@@ -19,6 +19,7 @@ namespace Enemies.Movement
         private Coroutine _followPathCoroutine;
         public event Action<bool> MovingStateChanged;
         public Vector3 CurrentPosition => _rigidbody.position;
+        protected virtual Vector3 VelocityForLimitations => _rigidbody.velocity;
 
         public EnemyMovement(ICoroutineStarter coroutineStarter, MovementSettingsSection movementSettings,
             TargetPathfinderSettingsSection targetPathfinderSettings, Seeker seeker, Rigidbody rigidbody) :
@@ -27,7 +28,7 @@ namespace Enemies.Movement
             _coroutineStarter = coroutineStarter;
             _isMoving = new ValueWithReactionOnChange<bool>(false);
             _targetPathfinder = new TargetPathfinder(seeker, targetPathfinderSettings, _coroutineStarter);
-            SubscribeOnEvents();
+            SubscribeOnThisEvents();
         }
 
         public void StartFollowingPosition(IReadonlyTransform targetPosition)
@@ -61,10 +62,20 @@ namespace Enemies.Movement
 
         protected override void SubscribeOnEvents()
         {
-            _isMoving.AfterValueChanged += OnIsMovingStatusChanged;
+            SubscribeOnThisEvents();
         }
 
         protected override void UnsubscribeFromEvents()
+        {
+            UnsubscribeFromThisEvents();
+        }
+
+        private void SubscribeOnThisEvents()
+        {
+            _isMoving.AfterValueChanged += OnIsMovingStatusChanged;
+        }
+
+        private void UnsubscribeFromThisEvents()
         {
             _isMoving.AfterValueChanged -= OnIsMovingStatusChanged;
         }
@@ -84,8 +95,7 @@ namespace Enemies.Movement
                 if (_targetPathfinder.TryGetNextWaypoint(out var waypointPosition))
                 {
                     SetDirectionTowardsPoint(waypointPosition, ref direction);
-                    _rigidbody.AddForce(
-                        MovementSettings.MoveForce * Time.deltaTime * _currentSpeedRatio * direction);
+                    _rigidbody.AddForce(MovementSettings.MoveForce * Time.deltaTime * _currentSpeedRatio * direction);
                     ApplyFriction(direction);
                     TryLimitCurrentSpeed();
                 }
@@ -112,8 +122,8 @@ namespace Enemies.Movement
 
         private void ApplyFriction(Vector3 needMoveDirection)
         {
-            var currentVelocity = _rigidbody.velocity;
-            var needFrictionDirection = Time.deltaTime * _currentSpeedRatio * MovementSettings.FrictionCoefficient *
+            var currentVelocity = VelocityForLimitations;
+            var needFrictionDirection = Time.deltaTime * _currentSpeedRatio *  MovementSettings.NormalFrictionCoefficient *
                                         MovementSettings.MoveForce * currentVelocity.magnitude *
                                         (needMoveDirection - currentVelocity.normalized);
             _rigidbody.AddForce(needFrictionDirection);

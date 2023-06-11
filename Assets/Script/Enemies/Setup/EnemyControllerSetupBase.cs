@@ -5,33 +5,34 @@ using Enemies.Movement;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Trigger;
-using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Pathfinding;
-using Pickable_Items;
 using Pickable_Items.Data_For_Creating.Scriptable_Object;
 using Pickable_Items.Factory;
 using Settings;
-using Spells.Spell.Scriptable_Objects;
 using UnityEngine;
 using Zenject;
 
 namespace Enemies.Setup
 {
+    [RequireComponent(typeof(Seeker))]
+    [RequireComponent(typeof(Rigidbody))]
     public abstract class EnemyControllerSetupBase<TController> : MonoBehaviour, ICoroutineStarter,
         IEnemyTriggersSettable
     {
-        [SerializeField] protected EnemyStateMachineAI _enemyStateMachineAI;
-        [SerializeField] protected PickableItemScriptableObjectBase _itemToDrop;
+        protected Seeker _seeker;
+        protected Rigidbody _thisRigidbody;
+        
+        [SerializeField] private EnemyStateMachineAI _enemyStateMachineAI;
+        [SerializeField] private PickableItemScriptableObjectBase _itemToDrop;
         [SerializeField] private List<EnemyTargetTrigger> _targetTriggers;
-        private EnemyMovement _enemyMovement;
         private List<IDisableable> _itemsNeedDisabling;
         private IdHolder _idHolder;
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableItemsFactory _itemsFactory;
         private EnemyTargetFromTriggersSelector _targetFromTriggersSelector;
-        protected abstract IEnemySettings EnemySettings { get; }
         protected abstract CharacterBase Character { get; }
+        protected abstract EnemyMovement Movement { get; }
 
         [Inject]
         private void Construct(GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory)
@@ -52,18 +53,17 @@ namespace Enemies.Setup
 
         private void Awake()
         {
-            SpecialAwakeAction();
             _idHolder = GetComponent<IdHolder>();
-            var seeker = GetComponent<Seeker>();
-            var thisRigidbody = GetComponent<Rigidbody>();
-            _enemyMovement = new EnemyMovement(this, EnemySettings.MovementSettings,
-                EnemySettings.TargetPathfinderSettingsSection, seeker, thisRigidbody);
+            _seeker = GetComponent<Seeker>();
+            _thisRigidbody = GetComponent<Rigidbody>();
             _targetFromTriggersSelector = new EnemyTargetFromTriggersSelector();
             _targetTriggers.ForEach(trigger => _targetFromTriggersSelector.AddTrigger(trigger));
+            
+            SpecialAwakeAction();
 
             _itemsNeedDisabling = new List<IDisableable>
             {
-                _enemyMovement,
+                Movement,
                 Character,
                 _targetFromTriggersSelector
             };
@@ -75,7 +75,7 @@ namespace Enemies.Setup
             var baseSetupData = new EnemyBaseSetupData(
                 _enemyStateMachineAI,
                 _itemToDrop,
-                _enemyMovement,
+                Movement,
                 _itemsNeedDisabling,
                 _idHolder,
                 _generalEnemySettings,
