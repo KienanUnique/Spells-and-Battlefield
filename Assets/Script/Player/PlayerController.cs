@@ -149,6 +149,7 @@ namespace Player
             _playerMovement.Fall += _playerVisual.PlayFallAnimation;
             _playerMovement.Land += _playerVisual.PlayLandAnimation;
             _playerMovement.StartWallRunning += OnStartWallRunning;
+            _playerMovement.WallRunningDirectionChanged += OnWallRunningDirectionChanged;
             _playerMovement.EndWallRunning += OnEndWallRunning;
             _playerMovement.DashAiming += OnDashAiming;
             _playerMovement.Dashed += OnDashed;
@@ -178,6 +179,7 @@ namespace Player
             _playerMovement.Fall -= _playerVisual.PlayFallAnimation;
             _playerMovement.Land -= _playerVisual.PlayLandAnimation;
             _playerMovement.StartWallRunning -= OnStartWallRunning;
+            _playerMovement.WallRunningDirectionChanged -= OnWallRunningDirectionChanged;
             _playerMovement.EndWallRunning -= OnEndWallRunning;
             _playerMovement.DashAiming -= OnDashAiming;
             _playerMovement.Dashed -= OnDashed;
@@ -233,6 +235,11 @@ namespace Player
         {
             _playerCameraEffects.Rotate(direction);
             _playerVisual.PlayLandAnimation();
+        }
+
+        private void OnWallRunningDirectionChanged(WallDirection direction)
+        {
+            _playerCameraEffects.Rotate(direction);
         }
 
         private void OnEndWallRunning()

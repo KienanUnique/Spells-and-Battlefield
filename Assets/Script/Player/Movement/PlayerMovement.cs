@@ -28,8 +28,10 @@ namespace Player.Movement
 
         private Vector2 _inputMoveDirection = Vector2.zero;
         private readonly ValueWithReactionOnChange<MovingState> _currentMovingState;
+        private readonly ValueWithReactionOnChange<WallDirection> _currentWallDirection;
         private int _currentCountOfAirJumps;
         private Coroutine _frictionCoroutine;
+        private Coroutine _wallRunningCalculationCoroutine;
         private float _currentPlayerInputForceMultiplier;
         private float _currentGravityForce;
         private bool _canDash = true;
@@ -47,6 +49,7 @@ namespace Player.Movement
             MainTransform = new ReadonlyTransform(_cashedTransform);
 
             _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.NotInitialized);
+            _currentWallDirection = new ValueWithReactionOnChange<WallDirection>(WallDirection.Right);
 
             _coroutineStarter.StartCoroutine(HandleInputMovement());
             _coroutineStarter.StartCoroutine(UpdateRatioOfCurrentVelocityToMaximumVelocity());
@@ -61,6 +64,7 @@ namespace Player.Movement
         public event Action AirJump;
         public event Action Fall;
         public event Action<WallDirection> StartWallRunning;
+        public event Action<WallDirection> WallRunningDirectionChanged;
         public event Action EndWallRunning;
         public event Action<float> DashCooldownTimerTick;
         public event Action DashCooldownFinished;
@@ -141,6 +145,7 @@ namespace Player.Movement
             _wallChecker.ContactStateChanged += OnWallContactStatusChanged;
             _currentMovingState.BeforeValueChanged += OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged += OnAfterMovingStateChanged;
+            _currentWallDirection.AfterValueChanged += OnWallDirectionChanged;
         }
 
         protected override void UnsubscribeFromEvents()
@@ -149,6 +154,7 @@ namespace Player.Movement
             _wallChecker.ContactStateChanged -= OnWallContactStatusChanged;
             _currentMovingState.BeforeValueChanged -= OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged -= OnAfterMovingStateChanged;
+            _currentWallDirection.AfterValueChanged -= OnWallDirectionChanged;
         }
 
         private IEnumerator HandleInputMovement()
@@ -228,6 +234,21 @@ namespace Player.Movement
             _speedLimitationEnabled = true;
         }
 
+        private IEnumerator CalculateCurrentWallDirectionContinuously()
+        {
+            var waitForFixedUpdate = new WaitForFixedUpdate();
+            while (true)
+            {
+                _currentWallDirection.Value = CalculateCurrentWallDirection();
+                yield return waitForFixedUpdate;
+            }
+        }
+
+        private void OnWallDirectionChanged(WallDirection newWallDirection)
+        {
+            WallRunningDirectionChanged?.Invoke(newWallDirection);
+        }
+
 
         private void OnGroundedStatusChanged(bool isGrounded)
         {
@@ -253,6 +274,13 @@ namespace Player.Movement
             }
         }
 
+        private WallDirection CalculateCurrentWallDirection()
+        {
+            var closestPoint = _wallChecker.Colliders[0].ClosestPoint(CurrentPosition);
+            var dot = Vector3.Dot(_cashedTransform.right, closestPoint - CurrentPosition);
+            return dot < 0 ? WallDirection.Left : WallDirection.Right;
+        }
+
         private void OnBeforeMovingStateChanged(MovingState movingState)
         {
             switch (movingState)
@@ -263,12 +291,15 @@ namespace Player.Movement
                         _coroutineStarter.StopCoroutine(_frictionCoroutine);
                         _frictionCoroutine = null;
                     }
+
                     break;
                 case MovingState.InAir when _frictionCoroutine != null:
                     _coroutineStarter.StopCoroutine(_frictionCoroutine);
                     _frictionCoroutine = null;
                     break;
                 case MovingState.WallRunning:
+                    _coroutineStarter.StopCoroutine(_wallRunningCalculationCoroutine);
+                    _wallRunningCalculationCoroutine = null;
                     EndWallRunning?.Invoke();
                     break;
                 case MovingState.DashAiming:
@@ -308,9 +339,10 @@ namespace Player.Movement
                     _currentCountOfAirJumps = 0;
                     _currentPlayerInputForceMultiplier = WallRunningPlayerInputForceMultiplier;
                     _currentGravityForce = _movementSettings.WallRunningGravityForce;
-                    var closestPoint = _wallChecker.Colliders[0].ClosestPoint(CurrentPosition);
-                    var dot = Vector3.Dot(_cashedTransform.right, closestPoint - CurrentPosition);
-                    StartWallRunning?.Invoke(dot < 0 ? WallDirection.Left : WallDirection.Right);
+                    _currentWallDirection.Value = CalculateCurrentWallDirection();
+                    StartWallRunning?.Invoke(_currentWallDirection.Value);
+                    _wallRunningCalculationCoroutine ??=
+                        _coroutineStarter.StartCoroutine(CalculateCurrentWallDirectionContinuously());
                     break;
                 case MovingState.DashAiming:
                     _currentPlayerInputForceMultiplier = DashAimingPlayerInputForceMultiplier;

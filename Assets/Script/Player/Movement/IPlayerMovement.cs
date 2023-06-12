@@ -12,6 +12,7 @@ namespace Player.Movement
         public event Action AirJump;
         public event Action Fall;
         public event Action<WallDirection> StartWallRunning;
+        public event Action<WallDirection> WallRunningDirectionChanged;
         public event Action EndWallRunning;
         public event Action<float> DashCooldownTimerTick;
         public event Action DashCooldownFinished;
