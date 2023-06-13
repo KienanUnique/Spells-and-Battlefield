@@ -13,13 +13,14 @@ namespace Enemies.Movement
 {
     public class EnemyMovement : MovementBase, IEnemyMovement
     {
+        private const RigidbodyConstraints RigidbodyConstraintsFreezeRotationAndPositionXY =
+            RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |
+            RigidbodyConstraints.FreezeRotation;
+
         private readonly ValueWithReactionOnChange<bool> _isMoving;
         private readonly TargetPathfinder _targetPathfinder;
         private readonly ICoroutineStarter _coroutineStarter;
         private Coroutine _followPathCoroutine;
-        public event Action<bool> MovingStateChanged;
-        public Vector3 CurrentPosition => _rigidbody.position;
-        protected virtual Vector3 VelocityForLimitations => _rigidbody.velocity;
 
         public EnemyMovement(ICoroutineStarter coroutineStarter, MovementSettingsSection movementSettings,
             TargetPathfinderSettingsSection targetPathfinderSettings, Seeker seeker, Rigidbody rigidbody) :
@@ -30,6 +31,10 @@ namespace Enemies.Movement
             _targetPathfinder = new TargetPathfinder(seeker, targetPathfinderSettings, _coroutineStarter);
             SubscribeOnThisEvents();
         }
+
+        public event Action<bool> MovingStateChanged;
+        public Vector3 CurrentPosition => _rigidbody.position;
+        protected virtual Vector3 VelocityForLimitations => _rigidbody.velocity;
 
         public void StartFollowingPosition(IReadonlyTransform targetPosition)
         {
@@ -53,6 +58,12 @@ namespace Enemies.Movement
             _isMoving.Value = false;
             _targetPathfinder.StopUpdatingPath();
             _rigidbody.velocity = Vector3.zero;
+        }
+
+        public void DisableMoving()
+        {
+            StopMovingToTarget();
+            _rigidbody.constraints = RigidbodyConstraintsFreezeRotationAndPositionXY;
         }
 
         public void AddForce(Vector3 force, ForceMode mode)
@@ -123,7 +134,8 @@ namespace Enemies.Movement
         private void ApplyFriction(Vector3 needMoveDirection)
         {
             var currentVelocity = VelocityForLimitations;
-            var needFrictionDirection = Time.deltaTime * _currentSpeedRatio *  MovementSettings.NormalFrictionCoefficient *
+            var needFrictionDirection = Time.deltaTime * _currentSpeedRatio *
+                                        MovementSettings.NormalFrictionCoefficient *
                                         MovementSettings.MoveForce * currentVelocity.magnitude *
                                         (needMoveDirection - currentVelocity.normalized);
             _rigidbody.AddForce(needFrictionDirection);

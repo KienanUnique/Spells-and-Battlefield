@@ -155,7 +155,7 @@ namespace Enemies.Controller
                     break;
                 case EnemyControllerState.Destroying:
                     _enemyStateMachineAI.StopStateMachine();
-                    _enemyMovement.StopMovingToTarget();
+                    _enemyMovement.DisableMoving();
                     EnemyVisual.PlayDieAnimation();
                     DropSpell();
                     StartCoroutine(DestroyAfterDelay());

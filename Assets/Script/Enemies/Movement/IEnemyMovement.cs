@@ -1,6 +1,4 @@
 ﻿using System;
-using Common;
-using Common.Abstract_Bases;
 using Common.Abstract_Bases.Movement;
 using Common.Readonly_Transform;
 using UnityEngine;
@@ -13,6 +11,7 @@ namespace Enemies.Movement
         public Vector3 CurrentPosition { get; }
         public void StartFollowingPosition(IReadonlyTransform target);
         public void StopMovingToTarget();
+        public void DisableMoving();
         public void AddForce(Vector3 force, ForceMode mode);
     }
 }
