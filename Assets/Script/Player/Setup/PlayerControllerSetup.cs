@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Common;
 using Common.Abstract_Bases.Checkers;
 using Common.Readonly_Transform_Getter;
@@ -11,7 +12,9 @@ using Player.Movement;
 using Player.Spell_Manager;
 using Player.Visual;
 using Settings;
+using Spells.Concrete_Types.Types;
 using Spells.Factory;
+using Spells.Spell;
 using Spells.Spell.Scriptable_Objects;
 using Systems.Input_Manager;
 using UnityEngine;
@@ -52,15 +55,17 @@ namespace Player.Setup
         private IIdHolder _idHolder;
         private PlayerSettings _settings;
         private ISpellObjectsFactory _spellObjectsFactory;
+        private SpellTypesSetting _spellTypesSetting;
         private List<IDisableable> _itemsNeedDisabling;
 
         [Inject]
         private void Construct(IPlayerInput playerInput, PlayerSettings settings,
-            ISpellObjectsFactory spellObjectsFactory)
+            ISpellObjectsFactory spellObjectsFactory, SpellTypesSetting spellTypesSetting)
         {
             _playerInput = playerInput;
             _settings = settings;
             _spellObjectsFactory = spellObjectsFactory;
+            _spellTypesSetting = spellTypesSetting;
         }
 
         private void Start()
@@ -75,23 +80,30 @@ namespace Player.Setup
             _idHolder = GetComponent<IdHolder>();
             var thisRigidbody = GetComponent<Rigidbody>();
 
-            _itemsNeedDisabling = new List<IDisableable>();
+            var playerSpellsManager =
+                new PlayerSpellsManager(_startTestSpells.Cast<ISpell>().ToList(), _spellSpawnObject.ReadonlyTransform,
+                    playerCaster, _spellObjectsFactory, _spellTypesSetting);
+            playerSpellsManager.AddSpell(_spellTypesSetting.LastChanceSpellType, _settings.SpellManager.LastChanceSpell);
 
             var playerMovement =
                 new PlayerMovement(thisRigidbody, _settings.Movement, _groundChecker, _wallChecker, this);
+            
             var playerCharacter = new PlayerCharacter(this, _settings.Character);
-            _itemsNeedDisabling.Add(playerMovement);
-            _itemsNeedDisabling.Add(playerCharacter);
+            
+            _itemsNeedDisabling = new List<IDisableable>
+            {
+                playerMovement,
+                playerCharacter,
+                playerSpellsManager
+            };
             _playerMovement = playerMovement;
             _playerCharacter = playerCharacter;
+            _playerSpellsManager = playerSpellsManager;
 
             _playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
                 _settings.Look);
             _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator);
             _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
-            _playerSpellsManager =
-                new PlayerSpellsManager(_startTestSpells, _spellSpawnObject.ReadonlyTransform, playerCaster,
-                    _spellObjectsFactory);
         }
 
         private void Setup()

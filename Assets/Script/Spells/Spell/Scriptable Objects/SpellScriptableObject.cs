@@ -18,9 +18,11 @@ namespace Spells.Spell.Scriptable_Objects
         [SerializeField] private SpellDataForSpellControllerProvider _dataForSpellController;
         [SerializeField] private SpellPrefabProviderScriptableObject _spellPrefabProvider;
         [SerializeField] private PickableCardPrefabProvider _cardPrefabProvider;
+        [SerializeField] private SpellTypeScriptableObject _type;
 
         public ISpellAnimationInformation SpellAnimationInformation => _animationInformation;
         public ISpellPrefabProvider SpellPrefabProvider => _spellPrefabProvider;
+        public ISpellType SpellType => _type.GetImplementationObject();
 
         public ISpellDataForSpellController SpellDataForSpellController =>
             _dataForSpellController.GetImplementationObject();

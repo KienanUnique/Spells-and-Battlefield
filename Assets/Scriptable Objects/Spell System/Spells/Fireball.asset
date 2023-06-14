@@ -26,3 +26,4 @@ MonoBehaviour:
     _nextSpellsOnFinish: []
   _spellPrefabProvider: {fileID: 11400000, guid: 2fa2bf13d9bbe744c8b38256cfb92887, type: 2}
   _cardPrefabProvider: {fileID: 11400000, guid: 3eac42da268645142bdf96a71c371773, type: 2}
+  _type: {fileID: 11400000, guid: f1e40f218d6aa044eb96fed18c41907b, type: 2}

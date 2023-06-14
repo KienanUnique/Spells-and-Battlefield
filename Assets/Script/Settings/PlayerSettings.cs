@@ -2,6 +2,8 @@
 using DG.Tweening;
 using General_Settings_in_Scriptable_Objects.Sections;
 using Settings.Sections.Movement;
+using Spells.Spell;
+using Spells.Spell.Scriptable_Objects;
 using UnityEngine;
 
 namespace Settings
@@ -14,11 +16,13 @@ namespace Settings
         [SerializeField] private PlayerLookSettingsSection _look;
         [SerializeField] private PlayerMovementSettingsSection _movement;
         [SerializeField] private CharacterSettingsSection _character;
+        [SerializeField] private PlayerSpellManagerSettingsSection _spellManager;
 
         public PlayerCameraEffectsSettingsSection CameraEffects => _cameraEffects;
         public PlayerLookSettingsSection Look => _look;
         public PlayerMovementSettingsSection Movement => _movement;
         public CharacterSettingsSection Character => _character;
+        public PlayerSpellManagerSettingsSection SpellManager => _spellManager;
 
         [Serializable]
         public class PlayerCameraEffectsSettingsSection
@@ -64,6 +68,14 @@ namespace Settings
             public float WallRunningGravityForce => _wallRunningGravityForce;
             public float DashCooldownSeconds => _dashCooldownSeconds;
             public float DashSpeedLimitationsDisablingForSeconds => _dashSpeedLimitationsDisablingForSeconds;
+        }
+
+        [Serializable]
+        public class PlayerSpellManagerSettingsSection
+        {
+            [SerializeField] private SpellScriptableObject _lastChanceSpell;
+
+            public ISpell LastChanceSpell => _lastChanceSpell;
         }
     }
 }

@@ -89,6 +89,42 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch To Spell Type 1"",
+                    ""type"": ""Button"",
+                    ""id"": ""669a2cf2-fdf6-4b4a-8c4d-9ad49ba6ce9d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch To Spell Type 2"",
+                    ""type"": ""Button"",
+                    ""id"": ""98f95d89-5479-44eb-8cae-bfc18ee06d42"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch To Spell Type 3"",
+                    ""type"": ""Button"",
+                    ""id"": ""a855ebcb-8983-41da-bbfb-77870b51cc51"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch To Last Chance Spell Type"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea194457-7249-4527-96a0-72b296495bd3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +248,50 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                     ""action"": ""Pause Game"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c8ae00d8-9f36-48c2-ad89-43ad436ae892"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Switch To Spell Type 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dfe11d48-8822-4bcb-84e7-d1cd2640c9a9"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Switch To Spell Type 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""458031a0-a1e8-4394-9693-32a558788029"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Switch To Spell Type 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e10521bb-3995-4faf-af73-3d18202f30da"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Switch To Last Chance Spell Type"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -272,6 +352,10 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         m_Character_Walk = m_Character.FindAction("Walk", throwIfNotFound: true);
         m_Character_Dash = m_Character.FindAction("Dash", throwIfNotFound: true);
         m_Character_PauseGame = m_Character.FindAction("Pause Game", throwIfNotFound: true);
+        m_Character_SwitchToSpellType1 = m_Character.FindAction("Switch To Spell Type 1", throwIfNotFound: true);
+        m_Character_SwitchToSpellType2 = m_Character.FindAction("Switch To Spell Type 2", throwIfNotFound: true);
+        m_Character_SwitchToSpellType3 = m_Character.FindAction("Switch To Spell Type 3", throwIfNotFound: true);
+        m_Character_SwitchToLastChanceSpellType = m_Character.FindAction("Switch To Last Chance Spell Type", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_ContinueGame = m_UI.FindAction("Continue Game", throwIfNotFound: true);
@@ -341,6 +425,10 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_Walk;
     private readonly InputAction m_Character_Dash;
     private readonly InputAction m_Character_PauseGame;
+    private readonly InputAction m_Character_SwitchToSpellType1;
+    private readonly InputAction m_Character_SwitchToSpellType2;
+    private readonly InputAction m_Character_SwitchToSpellType3;
+    private readonly InputAction m_Character_SwitchToLastChanceSpellType;
     public struct CharacterActions
     {
         private @MainControls m_Wrapper;
@@ -352,6 +440,10 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         public InputAction @Walk => m_Wrapper.m_Character_Walk;
         public InputAction @Dash => m_Wrapper.m_Character_Dash;
         public InputAction @PauseGame => m_Wrapper.m_Character_PauseGame;
+        public InputAction @SwitchToSpellType1 => m_Wrapper.m_Character_SwitchToSpellType1;
+        public InputAction @SwitchToSpellType2 => m_Wrapper.m_Character_SwitchToSpellType2;
+        public InputAction @SwitchToSpellType3 => m_Wrapper.m_Character_SwitchToSpellType3;
+        public InputAction @SwitchToLastChanceSpellType => m_Wrapper.m_Character_SwitchToLastChanceSpellType;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -382,6 +474,18 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                 @PauseGame.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnPauseGame;
                 @PauseGame.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnPauseGame;
                 @PauseGame.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnPauseGame;
+                @SwitchToSpellType1.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToSpellType1;
+                @SwitchToSpellType1.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToSpellType1;
+                @SwitchToSpellType1.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToSpellType1;
+                @SwitchToSpellType2.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToSpellType2;
+                @SwitchToSpellType2.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToSpellType2;
+                @SwitchToSpellType2.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToSpellType2;
+                @SwitchToSpellType3.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToSpellType3;
+                @SwitchToSpellType3.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToSpellType3;
+                @SwitchToSpellType3.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToSpellType3;
+                @SwitchToLastChanceSpellType.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToLastChanceSpellType;
+                @SwitchToLastChanceSpellType.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToLastChanceSpellType;
+                @SwitchToLastChanceSpellType.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSwitchToLastChanceSpellType;
             }
             m_Wrapper.m_CharacterActionsCallbackInterface = instance;
             if (instance != null)
@@ -407,6 +511,18 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                 @PauseGame.started += instance.OnPauseGame;
                 @PauseGame.performed += instance.OnPauseGame;
                 @PauseGame.canceled += instance.OnPauseGame;
+                @SwitchToSpellType1.started += instance.OnSwitchToSpellType1;
+                @SwitchToSpellType1.performed += instance.OnSwitchToSpellType1;
+                @SwitchToSpellType1.canceled += instance.OnSwitchToSpellType1;
+                @SwitchToSpellType2.started += instance.OnSwitchToSpellType2;
+                @SwitchToSpellType2.performed += instance.OnSwitchToSpellType2;
+                @SwitchToSpellType2.canceled += instance.OnSwitchToSpellType2;
+                @SwitchToSpellType3.started += instance.OnSwitchToSpellType3;
+                @SwitchToSpellType3.performed += instance.OnSwitchToSpellType3;
+                @SwitchToSpellType3.canceled += instance.OnSwitchToSpellType3;
+                @SwitchToLastChanceSpellType.started += instance.OnSwitchToLastChanceSpellType;
+                @SwitchToLastChanceSpellType.performed += instance.OnSwitchToLastChanceSpellType;
+                @SwitchToLastChanceSpellType.canceled += instance.OnSwitchToLastChanceSpellType;
             }
         }
     }
@@ -462,6 +578,10 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         void OnWalk(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnPauseGame(InputAction.CallbackContext context);
+        void OnSwitchToSpellType1(InputAction.CallbackContext context);
+        void OnSwitchToSpellType2(InputAction.CallbackContext context);
+        void OnSwitchToSpellType3(InputAction.CallbackContext context);
+        void OnSwitchToLastChanceSpellType(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

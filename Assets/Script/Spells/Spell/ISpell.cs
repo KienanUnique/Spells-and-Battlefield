@@ -9,5 +9,6 @@ namespace Spells.Spell
         public ISpellAnimationInformation SpellAnimationInformation { get; }
         public ISpellDataForSpellController SpellDataForSpellController { get; }
         public ISpellPrefabProvider SpellPrefabProvider { get; }
+        public ISpellType SpellType { get; }
     }
 }

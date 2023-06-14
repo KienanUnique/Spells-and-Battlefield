@@ -35,3 +35,5 @@ MonoBehaviour:
     _flyingFrictionCoefficient: 0.2
   _character:
     _maximumCountOfHitPoints: 30
+  _spellManager:
+    _lastChanceSpell: {fileID: 11400000, guid: 64f2c7c17c0f77446a5eacd00b9c1249, type: 2}

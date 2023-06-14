@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Common;
 using Common.Abstract_Bases.Character;
 using Common.Readonly_Transform;
@@ -14,7 +15,9 @@ using Player.Setup;
 using Player.Spell_Manager;
 using Player.Visual;
 using Spells.Continuous_Effect;
+using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
+using Spells.Spell.Interfaces;
 using Systems.Input_Manager;
 using UnityEngine;
 
@@ -60,19 +63,24 @@ namespace Player
         public event Action<float> HitPointsCountChanged;
         public event Action Dashed;
         public event Action DashAiming;
+        public event Action<ISpellType> SpellUsed;
+        public event Action<ISpellType> SpellTypeSlotsIsEmpty;
+        public event Action<ISpellType> SelectedSpellTypeChanged;
+        public event Action<ISpellType> NewSpellAdded;
 
         public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
         public int Id => _idHolder.Id;
         public IReadonlyTransform MainTransform => _playerMovement.MainTransform;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
+        public ISpellType SelectedType => _playerSpellsManager.SelectedType;
+        public ReadOnlyDictionary<ISpellType, ReadOnlyCollection<ISpell>> Spells => _playerSpellsManager.Spells;
 
         private enum ControllerState
         {
             NonInitialized,
             Initialized,
         }
-
 
         public void HandleHeal(int countOfHealthPoints)
         {
@@ -142,6 +150,7 @@ namespace Player
             _playerInput.UseSpellInputted += OnUseSpellInputted;
             _playerInput.MoveInputted += _playerMovement.MoveInputted;
             _playerInput.LookInputted += _playerLook.LookInputtedWith;
+            _playerInput.SelectSpellType += _playerSpellsManager.SelectSpellType;
 
             _playerEventInvokerForAnimations.CastSpellAnimationMoment += OnCastSpellEventInvokerForAnimationMoment;
 
@@ -158,6 +167,12 @@ namespace Player
 
             _playerCharacter.CharacterStateChanged += OnCharacterStateChanged;
             _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
+
+            _playerSpellsManager.NeedPlaySpellAnimation += OnNeedPlaySpellAnimation;
+            _playerSpellsManager.SpellUsed += OnSpellUsed;
+            _playerSpellsManager.SpellTypeSlotsIsEmpty += OnSpellCanNotBeUsed;
+            _playerSpellsManager.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
+            _playerSpellsManager.NewSpellAdded += OnNewSpellAdded;
         }
 
         private void UnsubscribeFromEvents()
@@ -172,6 +187,7 @@ namespace Player
             _playerInput.UseSpellInputted -= OnUseSpellInputted;
             _playerInput.MoveInputted -= _playerMovement.MoveInputted;
             _playerInput.LookInputted -= _playerLook.LookInputtedWith;
+            _playerInput.SelectSpellType -= _playerSpellsManager.SelectSpellType;
 
             _playerEventInvokerForAnimations.CastSpellAnimationMoment -= OnCastSpellEventInvokerForAnimationMoment;
 
@@ -188,6 +204,12 @@ namespace Player
 
             _playerCharacter.CharacterStateChanged -= OnCharacterStateChanged;
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
+
+            _playerSpellsManager.NeedPlaySpellAnimation -= OnNeedPlaySpellAnimation;
+            _playerSpellsManager.SpellUsed -= OnSpellUsed;
+            _playerSpellsManager.SpellTypeSlotsIsEmpty -= OnSpellCanNotBeUsed;
+            _playerSpellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
+            _playerSpellsManager.NewSpellAdded -= OnNewSpellAdded;
         }
 
         private void OnControllerStateChanged(ControllerState newState)
@@ -265,19 +287,37 @@ namespace Player
 
         private void OnUseSpellInputted()
         {
-            if (_playerSpellsManager.IsSpellSelected)
-            {
-                _playerVisual.PlayUseSpellAnimation(_playerSpellsManager.SelectedSpellAnimationInformation
-                    .CastAnimationAnimatorOverrideController);
-            }
+            _playerSpellsManager.TryCastSelectedSpell();
+        }
+
+        private void OnNeedPlaySpellAnimation(ISpellAnimationInformation spellAnimationInformation)
+        {
+            _playerVisual.PlayUseSpellAnimation(spellAnimationInformation.CastAnimationAnimatorOverrideController);
         }
 
         private void OnCastSpellEventInvokerForAnimationMoment()
         {
-            if (_playerSpellsManager.IsSpellSelected)
-            {
-                _playerSpellsManager.UseSelectedSpell(_playerLook.CameraRotation);
-            }
+            _playerSpellsManager.CreateSelectedSpell(_playerLook.CameraRotation);
+        }
+        
+        private void OnNewSpellAdded(ISpellType spellType)
+        {
+            NewSpellAdded?.Invoke(spellType);
+        }
+
+        private void OnSelectedSpellTypeChanged(ISpellType spellType)
+        {
+            SelectedSpellTypeChanged?.Invoke(spellType);
+        }
+
+        private void OnSpellCanNotBeUsed(ISpellType spellType)
+        {
+            SpellTypeSlotsIsEmpty?.Invoke(spellType);
+        }
+
+        private void OnSpellUsed(ISpellType spellType)
+        {
+            SpellUsed?.Invoke(spellType);
         }
     }
 }

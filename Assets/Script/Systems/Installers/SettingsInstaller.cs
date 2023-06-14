@@ -11,10 +11,10 @@ namespace Systems.Installers
         [SerializeField] private GroundLayerMaskSetting _groundLayerMaskSetting;
         [SerializeField] private PickableItemsSettings _pickableItemsSettings;
         [SerializeField] private UIAnimationSettings _uiAnimationSettings;
+        [SerializeField] private SpellTypesSetting _spellTypesSetting;
         [SerializeField] private PlayerSettings _playerSettings;
-        
-        [Header("Enemies")]
-        [SerializeField] private GeneralEnemySettings _generalEnemySettings;
+
+        [Header("Enemies")] [SerializeField] private GeneralEnemySettings _generalEnemySettings;
         [SerializeField] private KnightSettings _knightSettings;
 
         public override void InstallBindings()
@@ -60,6 +60,11 @@ namespace Systems.Installers
             Container
                 .Bind<UIAnimationSettings>()
                 .FromInstance(_uiAnimationSettings)
+                .AsSingle();
+
+            Container
+                .Bind<SpellTypesSetting>()
+                .FromInstance(_spellTypesSetting)
                 .AsSingle();
         }
     }

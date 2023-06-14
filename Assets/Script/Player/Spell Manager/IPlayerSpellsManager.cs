@@ -1,15 +1,17 @@
-﻿using Spells.Spell;
+﻿using System;
+using Spells.Implementations_Interfaces.Implementations;
+using Spells.Spell;
 using Spells.Spell.Interfaces;
 using UnityEngine;
 
 namespace Player.Spell_Manager
 {
-    public interface IPlayerSpellsManager
+    public interface IPlayerSpellsManager : IPlayerSpellsManagerInformation
     {
-        bool IsSpellSelected { get; }
-        ISpell SelectedSpell { get; }
-        ISpellAnimationInformation SelectedSpellAnimationInformation { get; }
-        void UseSelectedSpell(Quaternion direction);
-        void AddSpell(ISpell newSpell);
+        public event Action<ISpellAnimationInformation> NeedPlaySpellAnimation;
+        public void TryCastSelectedSpell();
+        public void CreateSelectedSpell(Quaternion direction);
+        public void SelectSpellType(ISpellType typeToSelect);
+        public void AddSpell(ISpell newSpell);
     }
 }
