@@ -1,7 +1,7 @@
 ﻿using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
-namespace Common
+namespace Common.Abstract_Bases
 {
     public abstract class PrefabProviderScriptableObjectBase : ScriptableObject, ISpellPrefabProvider
     {

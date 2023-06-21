@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Checkers;
+using Common.Abstract_Bases.Disableable;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;

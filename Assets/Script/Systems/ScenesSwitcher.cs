@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.Abstract_Bases;
 using UnityEngine.SceneManagement;
 
 namespace Systems

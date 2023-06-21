@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Common;
+using Common.Abstract_Bases;
 using Settings;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;

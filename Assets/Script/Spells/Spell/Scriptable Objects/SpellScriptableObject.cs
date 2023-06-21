@@ -31,5 +31,15 @@ namespace Spells.Spell.Scriptable_Objects
 
         public override IStrategyForPickableController StrategyForController =>
             new StrategyForSpellsForPickableController(this);
+
+        public new bool Equals(object x, object y)
+        {
+            return x.GetHashCode() == y.GetHashCode();
+        }
+
+        public int GetHashCode(object obj)
+        {
+            return obj.GetHashCode();
+        }
     }
 }

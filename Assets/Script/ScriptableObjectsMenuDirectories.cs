@@ -21,6 +21,7 @@
 
     public const string GeneralSettingsDirectory = SettingsDirectory + "General/";
     public const string ConcreteEnemiesSettingsDirectory = SettingsDirectory + "Concrete Enemies/";
+    public const string ConcreteUISettingsDirectory = SettingsDirectory + "Concrete UI/";
 
     #endregion
 

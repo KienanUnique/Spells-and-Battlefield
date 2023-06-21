@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.Abstract_Bases;
 
 namespace Enemies.Prefab_Provider
 {

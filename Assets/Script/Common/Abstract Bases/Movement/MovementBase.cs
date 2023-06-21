@@ -1,4 +1,5 @@
-﻿using Settings.Sections.Movement;
+﻿using Common.Abstract_Bases.Disableable;
+using Settings.Sections.Movement;
 using UnityEngine;
 
 namespace Common.Abstract_Bases.Movement

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Character;
+using Common.Abstract_Bases.Disableable;
 using Enemies.Movement;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
@@ -10,6 +11,7 @@ using Pathfinding;
 using Pickable_Items.Data_For_Creating.Scriptable_Object;
 using Pickable_Items.Factory;
 using Settings;
+using Settings.Enemy;
 using UnityEngine;
 using Zenject;
 

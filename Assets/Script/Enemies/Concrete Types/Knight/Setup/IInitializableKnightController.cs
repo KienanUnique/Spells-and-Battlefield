@@ -4,6 +4,7 @@ using Enemies.Concrete_Types.Knight.Visual;
 using Enemies.Setup;
 using Enemies.Trigger;
 using Settings;
+using Settings.Enemy;
 
 namespace Enemies.Concrete_Types.Knight.Setup
 {

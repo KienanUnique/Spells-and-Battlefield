@@ -5,6 +5,7 @@ using Enemies.Concrete_Types.Knight.Visual;
 using Enemies.Movement;
 using Enemies.Setup;
 using Settings;
+using Settings.Enemy;
 using UnityEngine;
 using Zenject;
 

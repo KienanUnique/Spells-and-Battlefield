@@ -1,5 +1,6 @@
 using Interfaces;
 using Player;
+using Player.Spell_Manager;
 using UnityEngine;
 using Zenject;
 
@@ -18,6 +19,11 @@ namespace Systems.Installers
         {
             Container
                 .Bind<IPlayerInformationProvider>()
+                .FromInstance(_player)
+                .AsSingle();
+            
+            Container
+                .Bind<IPlayerSpellsManagerInformation>()
                 .FromInstance(_player)
                 .AsSingle();
         }

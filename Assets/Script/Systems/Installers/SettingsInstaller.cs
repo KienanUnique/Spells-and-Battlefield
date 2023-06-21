@@ -1,4 +1,6 @@
 using Settings;
+using Settings.Enemy;
+using Settings.UI;
 using UnityEngine;
 using Zenject;
 
@@ -10,17 +12,20 @@ namespace Systems.Installers
     {
         [SerializeField] private GroundLayerMaskSetting _groundLayerMaskSetting;
         [SerializeField] private PickableItemsSettings _pickableItemsSettings;
-        [SerializeField] private UIAnimationSettings _uiAnimationSettings;
         [SerializeField] private SpellTypesSetting _spellTypesSetting;
         [SerializeField] private PlayerSettings _playerSettings;
 
         [Header("Enemies")] [SerializeField] private GeneralEnemySettings _generalEnemySettings;
         [SerializeField] private KnightSettings _knightSettings;
 
+        [Header("UI")] [SerializeField] private GeneralUIAnimationSettings _generalUIAnimationSettings;
+        [SerializeField] private SpellPanelSettings _spellPanelSettings;
+
         public override void InstallBindings()
         {
             BindGeneralSettings();
             BindEnemiesSettings();
+            BindUISettings();
             BindPlayerSettings();
         }
 
@@ -45,6 +50,20 @@ namespace Systems.Installers
                 .AsSingle();
         }
 
+        private void BindUISettings()
+        {
+            Container
+                .Bind<GeneralUIAnimationSettings>()
+                .FromInstance(_generalUIAnimationSettings)
+                .AsSingle();
+
+            Container
+                .Bind<SpellPanelSettings>()
+                .FromInstance(_spellPanelSettings)
+                .AsSingle();
+        }
+
+
         private void BindGeneralSettings()
         {
             Container
@@ -55,11 +74,6 @@ namespace Systems.Installers
             Container
                 .Bind<PickableItemsSettings>()
                 .FromInstance(_pickableItemsSettings)
-                .AsSingle();
-
-            Container
-                .Bind<UIAnimationSettings>()
-                .FromInstance(_uiAnimationSettings)
                 .AsSingle();
 
             Container

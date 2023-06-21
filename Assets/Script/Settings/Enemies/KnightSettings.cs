@@ -3,7 +3,7 @@ using General_Settings_in_Scriptable_Objects.Sections;
 using Settings.Sections.Movement;
 using UnityEngine;
 
-namespace Settings
+namespace Settings.Enemy
 {
     [CreateAssetMenu(fileName = "Knight Settings",
         menuName = ScriptableObjectsMenuDirectories.ConcreteEnemiesSettingsDirectory + "Knight Settings", order = 0)]

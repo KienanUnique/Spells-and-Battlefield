@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94cb181070ff4f119be4119c1aead575, type: 3}
+  m_Name: Spell Panel Settings
+  m_EditorClassIdentifier: 
+  _emptySlotIcon: {fileID: 21300000, guid: 626b9cddb29049e4cac50cd87b419945, type: 3}
+  _selectedGroupLocalScale: {x: 2, y: 2, z: 2}

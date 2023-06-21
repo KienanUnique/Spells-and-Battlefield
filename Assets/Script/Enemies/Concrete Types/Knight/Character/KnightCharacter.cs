@@ -2,6 +2,7 @@
 using Common.Abstract_Bases.Character;
 using Interfaces;
 using Settings;
+using Settings.Enemy;
 
 namespace Enemies.Concrete_Types.Knight.Character
 {

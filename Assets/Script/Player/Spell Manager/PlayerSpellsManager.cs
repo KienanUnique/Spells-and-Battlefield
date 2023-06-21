@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Common;
+using Common.Abstract_Bases;
+using Common.Abstract_Bases.Disableable;
+using Common.Collection_With_Reaction_On_Change;
 using Common.Readonly_Transform;
 using Interfaces;
 using ModestTree;
@@ -20,7 +23,7 @@ namespace Player.Spell_Manager
         private readonly IReadonlyTransform _spellSpawnObject;
         private readonly ICaster _player;
         private readonly ISpellObjectsFactory _spellObjectsFactory;
-        private readonly Dictionary<ISpellType, List<ISpell>> _spellsStorage;
+        private readonly Dictionary<ISpellType, ListWithReactionOnChange<ISpell>> _spellsStorage;
         private readonly ValueWithReactionOnChange<ISpellType> _selectedSpellType;
         private readonly ISpellType _lastChanceSpellType;
         private bool _isWaitingForAnimationFinish = false;
@@ -31,11 +34,15 @@ namespace Player.Spell_Manager
             _spellSpawnObject = spellSpawnObject;
             _player = player;
             _spellObjectsFactory = spellObjectsFactory;
-            _spellsStorage = new Dictionary<ISpellType, List<ISpell>>();
+            _spellsStorage = new Dictionary<ISpellType, ListWithReactionOnChange<ISpell>>();
             foreach (var type in spellTypesSetting.TypesListInOrder)
             {
-                _spellsStorage.Add(type, new List<ISpell>());
+                _spellsStorage.Add(type, new ListWithReactionOnChange<ISpell>());
             }
+
+            Spells = new ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>>(
+                _spellsStorage.ToDictionary(keyValuePair => keyValuePair.Key,
+                    keyValuePair => (IReadonlyListWithReactionOnChange<ISpell>) keyValuePair.Value));
 
             startTestSpells.ForEach(AddSpell);
             _selectedSpellType = new ValueWithReactionOnChange<ISpellType>(spellTypesSetting.TypesListInOrder[0]);
@@ -45,27 +52,23 @@ namespace Player.Spell_Manager
         }
 
         public event Action<ISpellAnimationInformation> NeedPlaySpellAnimation;
-        public event Action<ISpellType> SpellUsed;
-        public event Action<ISpellType> SpellTypeSlotsIsEmpty;
+        public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
-        public event Action<ISpellType> NewSpellAdded;
 
         public ISpellType SelectedType => _selectedSpellType.Value;
 
-        public ReadOnlyDictionary<ISpellType, ReadOnlyCollection<ISpell>> Spells =>
-            new ReadOnlyDictionary<ISpellType, ReadOnlyCollection<ISpell>>(
-                _spellsStorage.ToDictionary(kv => kv.Key, kv => new ReadOnlyCollection<ISpell>(kv.Value)));
+        public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells { get; }
 
-        private List<ISpell> SelectedSpellGroup => _spellsStorage[_selectedSpellType.Value];
+        private IList<ISpell> SelectedSpellGroup => _spellsStorage[_selectedSpellType.Value];
         private ISpell SelectedSpell => SelectedSpellGroup[0];
 
         public void TryCastSelectedSpell()
         {
             if (SelectedSpellGroup.IsEmpty())
             {
-                SpellTypeSlotsIsEmpty?.Invoke(_selectedSpellType.Value);
+                TryingToUseEmptySpellTypeGroup?.Invoke(_selectedSpellType.Value);
             }
-            else if(!_isWaitingForAnimationFinish)
+            else if (!_isWaitingForAnimationFinish)
             {
                 NeedPlaySpellAnimation?.Invoke(SelectedSpell.SpellAnimationInformation);
                 _isWaitingForAnimationFinish = true;
@@ -74,7 +77,6 @@ namespace Player.Spell_Manager
 
         public void CreateSelectedSpell(Quaternion direction)
         {
-            SpellUsed?.Invoke(SelectedSpell.SpellType);
             _spellObjectsFactory.Create(SelectedSpell.SpellDataForSpellController,
                 SelectedSpell.SpellPrefabProvider, _player, _spellSpawnObject.Position, direction);
             if (!Equals(_selectedSpellType.Value, _lastChanceSpellType))
@@ -98,13 +100,8 @@ namespace Player.Spell_Manager
             }
             else
             {
-                _spellsStorage.Add(spellType, new List<ISpell>
-                {
-                    newSpell
-                });
+                throw new UnrecognizedSpellTypeException();
             }
-
-            NewSpellAdded?.Invoke(spellType);
         }
 
         public void AddSpell(ISpell newSpell)
@@ -125,6 +122,13 @@ namespace Player.Spell_Manager
         private void OnSelectedSpellTypeChanged(ISpellType selectedSpellType)
         {
             SelectedSpellTypeChanged?.Invoke(_selectedSpellType.Value);
+        }
+    }
+
+    public class UnrecognizedSpellTypeException : Exception
+    {
+        public UnrecognizedSpellTypeException() : base("Unrecognized Spell Type Exception")
+        {
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Settings
+namespace Settings.Enemy
 {
     [CreateAssetMenu(fileName = "Enemy Settings",
         menuName = ScriptableObjectsMenuDirectories.GeneralSettingsDirectory + "Enemy Settings", order = 0)]

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Common;
 using Common.Abstract_Bases.Character;
+using Common.Abstract_Bases.Disableable;
+using Common.Collection_With_Reaction_On_Change;
 using Common.Readonly_Transform;
 using Interfaces;
 using Player.Camera_Effects;
@@ -63,10 +65,8 @@ namespace Player
         public event Action<float> HitPointsCountChanged;
         public event Action Dashed;
         public event Action DashAiming;
-        public event Action<ISpellType> SpellUsed;
-        public event Action<ISpellType> SpellTypeSlotsIsEmpty;
+        public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
-        public event Action<ISpellType> NewSpellAdded;
 
         public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
         public int Id => _idHolder.Id;
@@ -74,7 +74,7 @@ namespace Player
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
         public ISpellType SelectedType => _playerSpellsManager.SelectedType;
-        public ReadOnlyDictionary<ISpellType, ReadOnlyCollection<ISpell>> Spells => _playerSpellsManager.Spells;
+        public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells => _playerSpellsManager.Spells;
 
         private enum ControllerState
         {
@@ -169,10 +169,8 @@ namespace Player
             _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
 
             _playerSpellsManager.NeedPlaySpellAnimation += OnNeedPlaySpellAnimation;
-            _playerSpellsManager.SpellUsed += OnSpellUsed;
-            _playerSpellsManager.SpellTypeSlotsIsEmpty += OnSpellCanNotBeUsed;
+            _playerSpellsManager.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellCanNotBeUsed;
             _playerSpellsManager.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
-            _playerSpellsManager.NewSpellAdded += OnNewSpellAdded;
         }
 
         private void UnsubscribeFromEvents()
@@ -206,10 +204,8 @@ namespace Player
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
 
             _playerSpellsManager.NeedPlaySpellAnimation -= OnNeedPlaySpellAnimation;
-            _playerSpellsManager.SpellUsed -= OnSpellUsed;
-            _playerSpellsManager.SpellTypeSlotsIsEmpty -= OnSpellCanNotBeUsed;
+            _playerSpellsManager.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellCanNotBeUsed;
             _playerSpellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
-            _playerSpellsManager.NewSpellAdded -= OnNewSpellAdded;
         }
 
         private void OnControllerStateChanged(ControllerState newState)
@@ -299,25 +295,15 @@ namespace Player
         {
             _playerSpellsManager.CreateSelectedSpell(_playerLook.CameraRotation);
         }
-        
-        private void OnNewSpellAdded(ISpellType spellType)
-        {
-            NewSpellAdded?.Invoke(spellType);
-        }
 
         private void OnSelectedSpellTypeChanged(ISpellType spellType)
         {
             SelectedSpellTypeChanged?.Invoke(spellType);
         }
 
-        private void OnSpellCanNotBeUsed(ISpellType spellType)
+        private void OnTryingToUseEmptySpellCanNotBeUsed(ISpellType spellType)
         {
-            SpellTypeSlotsIsEmpty?.Invoke(spellType);
-        }
-
-        private void OnSpellUsed(ISpellType spellType)
-        {
-            SpellUsed?.Invoke(spellType);
+            TryingToUseEmptySpellTypeGroup?.Invoke(spellType);
         }
     }
 }

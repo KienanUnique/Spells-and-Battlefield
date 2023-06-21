@@ -1,4 +1,4 @@
-﻿namespace Common
+﻿namespace Common.Abstract_Bases.Disableable
 {
     public abstract class BaseWithDisabling : IDisableable
     {

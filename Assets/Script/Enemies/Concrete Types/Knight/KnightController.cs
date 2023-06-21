@@ -9,6 +9,7 @@ using Enemies.Visual;
 using General_Settings_in_Scriptable_Objects;
 using Interfaces;
 using Settings;
+using Settings.Enemy;
 using UnityEngine;
 
 namespace Enemies.Concrete_Types.Knight
