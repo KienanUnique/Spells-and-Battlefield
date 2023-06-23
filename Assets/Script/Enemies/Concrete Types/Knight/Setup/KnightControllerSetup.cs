@@ -1,13 +1,15 @@
-﻿using Common.Abstract_Bases.Character;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Common.Abstract_Bases.Character;
 using Enemies.Attack_Target_Selector;
 using Enemies.Concrete_Types.Knight.Character;
 using Enemies.Concrete_Types.Knight.Visual;
 using Enemies.Movement;
 using Enemies.Setup;
-using Settings;
 using Settings.Enemy;
 using UnityEngine;
 using Zenject;
+using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
 namespace Enemies.Concrete_Types.Knight.Setup
 {
@@ -25,6 +27,7 @@ namespace Enemies.Concrete_Types.Knight.Setup
             _knightSettings = knightSettings;
         }
 
+        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization => Enumerable.Empty<IInitializable>();
         protected override CharacterBase Character => _knightCharacter;
         protected override EnemyMovement Movement => _knightMovement;
 
@@ -40,7 +43,7 @@ namespace Enemies.Concrete_Types.Knight.Setup
             );
         }
 
-        protected override void SpecialAwakeAction()
+        protected override void SpecialPrepareAction()
         {
             _knightCharacter = new KnightCharacter(this, _knightSettings.KnightCharacterSettings);
             _knightMovement = new EnemyMovementWithGravity(this, _knightSettings.MovementSettings,

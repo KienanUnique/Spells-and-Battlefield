@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using Common;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Disableable;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Collection_With_Reaction_On_Change;
 using Common.Readonly_Transform;
 using Interfaces;
@@ -26,9 +27,8 @@ using UnityEngine;
 namespace Player
 {
     [RequireComponent(typeof(PlayerControllerSetup))]
-    public class PlayerController : MonoBehaviour, IPlayer, ICoroutineStarter, IInitializablePlayerController
+    public class PlayerController : InitializableMonoBehaviourBase, IPlayer, ICoroutineStarter, IInitializablePlayerController
     {
-        private List<IDisableable> _itemsNeedDisabling;
         private IIdHolder _idHolder;
         private IPlayerLook _playerLook;
         private IPlayerMovement _playerMovement;
@@ -39,11 +39,8 @@ namespace Player
         private IPlayerCameraEffects _playerCameraEffects;
         private IPlayerEventInvokerForAnimations _playerEventInvokerForAnimations;
 
-        private ValueWithReactionOnChange<ControllerState> _currentControllerState;
-
         public void Initialize(IPlayerControllerSetupData setupData)
         {
-            _itemsNeedDisabling = setupData.SetItemsNeedDisabling;
             _idHolder = setupData.SetIDHolder;
             _playerLook = setupData.SetPlayerLook;
             _playerMovement = setupData.SetPlayerMovement;
@@ -54,9 +51,8 @@ namespace Player
             _playerCameraEffects = setupData.SetPlayerCameraEffects;
             _playerEventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
 
-            SubscribeOnEvents();
-
-            _currentControllerState.Value = ControllerState.Initialized;
+            SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
+            SetInitializedStatus();
         }
 
         public event Action DashCooldownFinished;
@@ -75,12 +71,6 @@ namespace Player
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
         public ISpellType SelectedType => _playerSpellsManager.SelectedType;
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells => _playerSpellsManager.Spells;
-
-        private enum ControllerState
-        {
-            NonInitialized,
-            Initialized,
-        }
 
         public void HandleHeal(int countOfHealthPoints)
         {
@@ -122,27 +112,9 @@ namespace Player
             _playerMovement.DivideSpeedRatioBy(speedRatio);
         }
 
-        private void Awake()
+        protected override void SubscribeOnEvents()
         {
-            _currentControllerState = new ValueWithReactionOnChange<ControllerState>(ControllerState.NonInitialized);
-        }
-
-        private void OnEnable()
-        {
-            if (_currentControllerState.Value == ControllerState.NonInitialized) return;
-            SubscribeOnEvents();
-        }
-
-        private void OnDisable()
-        {
-            UnsubscribeFromEvents();
-        }
-
-        private void SubscribeOnEvents()
-        {
-            _currentControllerState.AfterValueChanged += OnControllerStateChanged;
-
-            _itemsNeedDisabling.ForEach(item => item.Enable());
+            InitializationStatusChanged += OnInitializationStatusChanged;
 
             _playerInput.JumpInputted += _playerMovement.TryJumpInputted;
             _playerInput.StartDashAimingInputted += _playerMovement.TryStartDashAiming;
@@ -173,11 +145,9 @@ namespace Player
             _playerSpellsManager.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
         }
 
-        private void UnsubscribeFromEvents()
+        protected override void UnsubscribeFromEvents()
         {
-            _currentControllerState.AfterValueChanged -= OnControllerStateChanged;
-
-            _itemsNeedDisabling.ForEach(item => item.Disable());
+            InitializationStatusChanged -= OnInitializationStatusChanged;
 
             _playerInput.JumpInputted -= _playerMovement.TryJumpInputted;
             _playerInput.StartDashAimingInputted -= _playerMovement.TryStartDashAiming;
@@ -208,17 +178,16 @@ namespace Player
             _playerSpellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
         }
 
-        private void OnControllerStateChanged(ControllerState newState)
+        private void OnInitializationStatusChanged(InitializationStatus newStatus)
         {
-            switch (newState)
+            switch (newStatus)
             {
-                case ControllerState.NonInitialized:
-                    break;
-                case ControllerState.Initialized:
+                case InitializationStatus.Initialized:
                     StartCoroutine(UpdateMovingDataCoroutine());
                     break;
+                case InitializationStatus.NonInitialized:
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+                    throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
             }
         }
 

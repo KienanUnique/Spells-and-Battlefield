@@ -11,13 +11,18 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
         private List<IDisableable> _itemsNeedDisabling;
 
         public event Action<InitializationStatus> InitializationStatusChanged;
-        
+
         public InitializationStatus CurrentInitializationStatus => _currentStatus.Value;
 
-        protected abstract void SubscribeOnEvents();
-        protected abstract void UnsubscribeFromEvents();
+        protected virtual void SubscribeOnEvents()
+        {
+        }
 
-        protected void Awake()
+        protected virtual void UnsubscribeFromEvents()
+        {
+        }
+
+        protected virtual void Awake()
         {
             _currentStatus = new ValueWithReactionOnChange<InitializationStatus>(InitializationStatus.NonInitialized);
             _itemsNeedDisabling = null;

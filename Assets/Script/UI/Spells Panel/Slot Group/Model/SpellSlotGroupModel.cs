@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common;
-using Common.Abstract_Bases;
 using Common.Abstract_Bases.Disableable;
 using Common.Collection_With_Reaction_On_Change;
 using ModestTree;
@@ -39,8 +37,10 @@ namespace UI.Spells_Panel.Slot_Group.Model
                 _slotObjects.Add(new ObjectWithUsageFlag<ISpellSlot>(slotObject, false));
             }
 
-            foreach (var spell in spellGroupToRepresent)
+            var countOfSpellsToShow = Math.Min(_slotObjects.Count, spellGroupToRepresent.Count);
+            for (var spellIndex = 0; spellIndex < countOfSpellsToShow; spellIndex++)
             {
+                var spell = spellGroupToRepresent[spellIndex];
                 AppearSlot(spell);
             }
         }
@@ -148,9 +148,8 @@ namespace UI.Spells_Panel.Slot_Group.Model
                     if (_slots.ElementAt(slotIndex).IsUsed)
                     {
                         var currentSpellController = _slotObjects.Find(slotObject =>
-                                slotObject.StoredObject.CurrentSlotInformation.CompareTo(
-                                    _slots.ElementAt(slotIndex)) == 0)
-                            .StoredObject;
+                            slotObject.StoredObject.CurrentSlotInformation.CompareTo(_slots.ElementAt(slotIndex)
+                                .StoredObject) == 0).StoredObject;
                         currentSpellController.MoveToSlot(_slots.ElementAt(slotIndex - 1).StoredObject);
                     }
                     else
@@ -227,9 +226,8 @@ namespace UI.Spells_Panel.Slot_Group.Model
                 if (_slots.ElementAt(slotIndex).IsUsed)
                 {
                     var currentSpellController = _slotObjects.Find(slotObject =>
-                            slotObject.StoredObject.CurrentSlotInformation.CompareTo(
-                                _slots.ElementAt(slotIndex)) == 0)
-                        .StoredObject;
+                        slotObject.StoredObject.CurrentSlotInformation.CompareTo(_slots.ElementAt(slotIndex)
+                            .StoredObject) == 0).StoredObject;
                     currentSpellController.MoveToSlot(_slots.ElementAt(slotIndex + 1).StoredObject);
                 }
                 else

@@ -21,9 +21,14 @@ namespace Systems.Installers
                 .Bind<IPlayerInformationProvider>()
                 .FromInstance(_player)
                 .AsSingle();
-            
+
             Container
                 .Bind<IPlayerSpellsManagerInformation>()
+                .FromInstance(_player)
+                .AsSingle();
+
+            Container
+                .Bind<IPlayerInitializationStatus>()
                 .FromInstance(_player)
                 .AsSingle();
         }

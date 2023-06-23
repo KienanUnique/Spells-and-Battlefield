@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using UnityEngine;
 
 namespace Common.Abstract_Bases.Checkers
 {
-    public abstract class CheckerBase : MonoBehaviour, IChecker
+    public abstract class CheckerBase : InitializableMonoBehaviourBase, IChecker
     {
         private ValueWithReactionOnChange<bool> _isCollidingWithReaction;
         private List<Collider> _colliders;
@@ -17,21 +18,23 @@ namespace Common.Abstract_Bases.Checkers
         protected abstract LayerMask NeedObjectsMask { get; }
         protected abstract void SpecialAwakeAction();
 
-        private void Awake()
-        {
-            _colliders = new List<Collider>();
-            _isCollidingWithReaction = new ValueWithReactionOnChange<bool>(false);
-            SpecialAwakeAction();
-        }
-
-        private void OnEnable()
+        protected override void SubscribeOnEvents()
         {
             _isCollidingWithReaction.AfterValueChanged += OnAfterGroundedStateChanged;
         }
 
-        private void OnDisable()
+        protected override void UnsubscribeFromEvents()
         {
             _isCollidingWithReaction.AfterValueChanged -= OnAfterGroundedStateChanged;
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _colliders = new List<Collider>();
+            _isCollidingWithReaction = new ValueWithReactionOnChange<bool>(false);
+            SpecialAwakeAction();
+            SetInitializedStatus();
         }
 
         private void OnTriggerEnter(Collider other)

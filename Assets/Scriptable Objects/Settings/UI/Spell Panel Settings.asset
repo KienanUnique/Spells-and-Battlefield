@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Spell Panel Settings
   m_EditorClassIdentifier: 
   _emptySlotIcon: {fileID: 21300000, guid: 626b9cddb29049e4cac50cd87b419945, type: 3}
-  _selectedGroupLocalScale: {x: 2, y: 2, z: 2}
+  _selectedGroupSizeDelta: {x: 2, y: 2}

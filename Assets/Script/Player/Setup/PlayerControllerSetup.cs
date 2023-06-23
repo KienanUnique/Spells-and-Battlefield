@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Common;
+using Common.Abstract_Bases;
 using Common.Abstract_Bases.Checkers;
 using Common.Abstract_Bases.Disableable;
 using Common.Readonly_Transform_Getter;
@@ -13,7 +13,6 @@ using Player.Movement;
 using Player.Spell_Manager;
 using Player.Visual;
 using Settings;
-using Spells.Concrete_Types.Types;
 using Spells.Factory;
 using Spells.Spell;
 using Spells.Spell.Scriptable_Objects;
@@ -21,13 +20,14 @@ using Systems.Input_Manager;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using Zenject;
+using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
 namespace Player.Setup
 {
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(PlayerController))]
-    public class PlayerControllerSetup : MonoBehaviour, ICoroutineStarter
+    public class PlayerControllerSetup : SetupMonoBehaviourBase, ICoroutineStarter
     {
         [Header("Camera")] [SerializeField] private ReadonlyTransformGetter _cameraFollowObject;
         [SerializeField] private Transform _objectToRotateHorizontally;
@@ -49,15 +49,14 @@ namespace Player.Setup
         private IPlayerCameraEffects _playerCameraEffects;
         private IPlayerVisual _playerVisual;
         private IPlayerCharacter _playerCharacter;
-        private IPlayerSpellsManager _playerSpellsManager;
         private IPlayerInput _playerInput;
-        private IPlayerMovement _playerMovement;
-        private IPlayerLook _playerLook;
         private IIdHolder _idHolder;
         private PlayerSettings _settings;
         private ISpellObjectsFactory _spellObjectsFactory;
         private SpellTypesSetting _spellTypesSetting;
         private List<IDisableable> _itemsNeedDisabling;
+        private ICaster _playerCaster;
+        private Rigidbody _thisRigidbody;
 
         [Inject]
         private void Construct(IPlayerInput playerInput, PlayerSettings settings,
@@ -69,56 +68,59 @@ namespace Player.Setup
             _spellTypesSetting = spellTypesSetting;
         }
 
-        private void Start()
-        {
-            PrepareSetupData();
-            Setup();
-        }
+        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
+            new List<IInitializable>
+            {
+                _cameraFollowObject, _spellSpawnObject, _wallChecker, _groundChecker
+            };
 
-        private void PrepareSetupData()
+        protected override void Prepare()
         {
-            var playerCaster = GetComponent<ICaster>();
+            _playerCaster = GetComponent<ICaster>();
             _idHolder = GetComponent<IdHolder>();
-            var thisRigidbody = GetComponent<Rigidbody>();
+            _thisRigidbody = GetComponent<Rigidbody>();
 
-            var playerSpellsManager =
-                new PlayerSpellsManager(_startTestSpells.Cast<ISpell>().ToList(), _spellSpawnObject.ReadonlyTransform,
-                    playerCaster, _spellObjectsFactory, _spellTypesSetting);
-            playerSpellsManager.AddSpell(_spellTypesSetting.LastChanceSpellType, _settings.SpellManager.LastChanceSpell);
-
-            var playerMovement =
-                new PlayerMovement(thisRigidbody, _settings.Movement, _groundChecker, _wallChecker, this);
-            
             var playerCharacter = new PlayerCharacter(this, _settings.Character);
-            
+
             _itemsNeedDisabling = new List<IDisableable>
             {
-                playerMovement,
                 playerCharacter,
-                playerSpellsManager
             };
-            _playerMovement = playerMovement;
-            _playerCharacter = playerCharacter;
-            _playerSpellsManager = playerSpellsManager;
 
-            _playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
-                _settings.Look);
+            _playerCharacter = playerCharacter;
+
+
             _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator);
             _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
         }
 
-        private void Setup()
+        protected override void Initialize()
         {
+            var playerMovement =
+                new PlayerMovement(_thisRigidbody, _settings.Movement, _groundChecker, _wallChecker, this);
+
+            var playerSpellsManager =
+                new PlayerSpellsManager(new List<ISpell>(_startTestSpells), _spellSpawnObject.ReadonlyTransform,
+                    _playerCaster, _spellObjectsFactory, _spellTypesSetting);
+            playerSpellsManager.AddSpell(_spellTypesSetting.LastChanceSpellType,
+                _settings.SpellManager.LastChanceSpell);
+
+            var playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
+                _settings.Look);
+
+            _itemsNeedDisabling.Add(playerMovement);
+            _itemsNeedDisabling.Add(playerSpellsManager);
+
             var controllerToSetup = GetComponent<IInitializablePlayerController>();
             var setupData = new PlayerControllerSetupData(
                 _playerEventInvokerForAnimations,
                 _playerCameraEffects,
                 _playerVisual,
                 _playerCharacter,
-                _playerSpellsManager,
+                playerSpellsManager,
                 _playerInput,
-                _playerMovement,
-                _playerLook,
+                playerMovement,
+                playerLook,
                 _idHolder,
                 _itemsNeedDisabling
             );

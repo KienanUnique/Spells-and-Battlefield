@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace UI.Spells_Panel.Slot_Information
 {
-    public interface ISlotInformation : IComparable
+    public interface ISlotInformation : IComparable<ISlotInformation>
     {
-        public Vector3 LocalScale { get; }
-        public Vector3 Position { get; }
+        public Vector2 SizeDelta { get; }
+        public Vector2 AnchoredPosition { get; }
     }
 }

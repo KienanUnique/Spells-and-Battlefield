@@ -54,12 +54,15 @@ namespace Common.Abstract_Bases
         private void OnInitializableObjectStatusChanged(InitializationStatus obj)
         {
             if (_wasInitialized) return;
-            if (_objectsToWaitBeforeInitialization.All(initializableObject =>
-                    initializableObject.CurrentInitializationStatus == InitializationStatus.Initialized))
+            if (IsAllRequiredObjectsInitialized())
             {
                 RunInitialization();
             }
         }
+
+        private bool IsAllRequiredObjectsInitialized() =>
+            _objectsToWaitBeforeInitialization.All(initializableObject =>
+                initializableObject.CurrentInitializationStatus == InitializationStatus.Initialized);
 
         private void RunInitialization()
         {
@@ -73,7 +76,7 @@ namespace Common.Abstract_Bases
 
         private void Start()
         {
-            if (!_needWaitOtherObjects)
+            if (!_needWaitOtherObjects || (_needWaitOtherObjects && IsAllRequiredObjectsInitialized()))
             {
                 RunInitialization();
             }

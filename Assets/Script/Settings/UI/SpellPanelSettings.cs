@@ -7,10 +7,10 @@ namespace Settings.UI
     public class SpellPanelSettings : ScriptableObject
     {
         [SerializeField] private Sprite _emptySlotIcon;
-        [SerializeField] private Vector3 _selectedGroupLocalScale;
+        [SerializeField] private Vector2 _selectedGroupSizeDelta;
 
-        public Vector3 SelectedGroupLocalScale => _selectedGroupLocalScale;
-        public Vector3 UnselectedGroupLocalScale => Vector3.one;
+        public Vector2 SelectedGroupSizeDelta => _selectedGroupSizeDelta;
+        public Vector2 UnselectedGroupSizeDelta => Vector2.one;
         public Sprite EmptySlotIcon => _emptySlotIcon;
     }
 }

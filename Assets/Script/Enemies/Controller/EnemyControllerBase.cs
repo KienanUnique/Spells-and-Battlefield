@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Disableable;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Readonly_Transform;
 using Enemies.Movement;
 using Enemies.Setup;
@@ -24,34 +25,30 @@ namespace Enemies.Controller
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Seeker))]
-    public abstract class EnemyControllerBase : MonoBehaviour, IEnemy, IEnemyStateMachineControllable,
+    public abstract class EnemyControllerBase : InitializableMonoBehaviourBase, IEnemy, IEnemyStateMachineControllable,
         ICoroutineStarter
     {
         private const bool NeedCreatedItemsFallDown = true;
         private IEnemyStateMachineAI _enemyStateMachineAI;
         private IPickableItemDataForCreating _itemToDrop;
         protected IEnemyMovement _enemyMovement;
-        private List<IDisableable> _itemsNeedDisabling;
         private IIdHolder _idHolder;
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableItemsFactory _itemsFactory;
         private IEnemyTargetFromTriggersSelector _targetFromTriggersSelector;
-        private ValueWithReactionOnChange<EnemyControllerState> _currentControllerState;
 
         protected void InitializeBase(IEnemyBaseSetupData setupData)
         {
             _enemyStateMachineAI = setupData.SetEnemyStateMachineAI;
             _itemToDrop = setupData.SetItemToDrop;
             _enemyMovement = setupData.SetEnemyMovement;
-            _itemsNeedDisabling = setupData.SetItemsNeedDisabling;
             _idHolder = setupData.SetIdHolder;
             _generalEnemySettings = setupData.SetGeneralEnemySettings;
             _itemsFactory = setupData.SetPickableItemsFactory;
             _targetFromTriggersSelector = setupData.SetTargetFromTriggersSelector;
 
-            SubscribeOnEvents();
-
-            _currentControllerState.Value = EnemyControllerState.Initialized;
+            SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
+            SetInitializedStatus();
         }
 
         public event Action<float> HitPointsCountChanged;
@@ -63,13 +60,6 @@ namespace Enemies.Controller
         public CharacterState CurrentCharacterState => Character.CurrentCharacterState;
         protected abstract IEnemyVisualBase EnemyVisual { get; }
         protected abstract IEnemyCharacter Character { get; }
-
-        private enum EnemyControllerState
-        {
-            NonInitialized,
-            Initialized,
-            Destroying
-        }
 
         public int CompareTo(object obj)
         {
@@ -111,57 +101,32 @@ namespace Enemies.Controller
             _enemyMovement.DivideSpeedRatioBy(speedRatio);
         }
 
-        private void OnEnable()
+        protected override void SubscribeOnEvents()
         {
-            if (_currentControllerState.Value == EnemyControllerState.Initialized)
-            {
-                SubscribeOnEvents();
-            }
-        }
-
-        private void OnDisable()
-        {
-            UnsubscribeFromEvents();
-        }
-
-        private void Awake()
-        {
-            _currentControllerState =
-                new ValueWithReactionOnChange<EnemyControllerState>(EnemyControllerState.NonInitialized);
-        }
-
-        protected virtual void SubscribeOnEvents()
-        {
-            _currentControllerState.AfterValueChanged += OnControllerStateChanged;
-            _itemsNeedDisabling.ForEach(item => item.Enable());
+            InitializationStatusChanged += OnInitializationStatusChanged;
             Character.CharacterStateChanged += OnCharacterStateChanged;
             Character.HitPointsCountChanged += OnHitPointsCountChanged;
             _enemyMovement.MovingStateChanged += EnemyVisual.UpdateMovingData;
         }
 
-        protected virtual void UnsubscribeFromEvents()
+        protected override void UnsubscribeFromEvents()
         {
-            _currentControllerState.AfterValueChanged -= OnControllerStateChanged;
-            _itemsNeedDisabling.ForEach(item => item.Disable());
+            InitializationStatusChanged -= OnInitializationStatusChanged;
             Character.CharacterStateChanged -= OnCharacterStateChanged;
             Character.HitPointsCountChanged -= OnHitPointsCountChanged;
             _enemyMovement.MovingStateChanged -= EnemyVisual.UpdateMovingData;
         }
 
-        private void OnControllerStateChanged(EnemyControllerState newState)
+        private void OnInitializationStatusChanged(InitializationStatus newStatus)
         {
-            switch (newState)
+            switch (newStatus)
             {
-                case EnemyControllerState.Initialized:
+                case InitializationStatus.Initialized:
                     _enemyStateMachineAI.StartStateMachine(this);
                     break;
-                case EnemyControllerState.Destroying:
-                    _enemyStateMachineAI.StopStateMachine();
-                    _enemyMovement.DisableMoving();
-                    EnemyVisual.PlayDieAnimation();
-                    DropSpell();
-                    StartCoroutine(DestroyAfterDelay());
-                    break;
+                case InitializationStatus.NonInitialized:
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
             }
         }
 
@@ -169,7 +134,11 @@ namespace Enemies.Controller
         {
             if (newState == CharacterState.Dead)
             {
-                _currentControllerState.Value = EnemyControllerState.Destroying;
+                _enemyStateMachineAI.StopStateMachine();
+                _enemyMovement.DisableMoving();
+                EnemyVisual.PlayDieAnimation();
+                DropSpell();
+                StartCoroutine(DestroyAfterDelay());
             }
 
             CharacterStateChanged?.Invoke(newState);

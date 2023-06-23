@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Disableable;
+using Player;
 using Player.Spell_Manager;
 using UI.Spells_Panel.Panel.Model;
 using UI.Spells_Panel.Panel.Presenter;
@@ -15,14 +16,17 @@ namespace UI.Spells_Panel.Panel.Setup
     public class SpellPanelSetup : SetupMonoBehaviourBase
     {
         [SerializeField] private List<SpellSlotGroupPresenter> _spellGroups;
-        private IPlayerSpellsManagerInformation _managerInformation;
+        private IPlayerSpellsManagerInformation _playerManagerInformation;
         private IInitializableSpellPanelPresenter _presenter;
+        private IPlayerInitializationStatus _playerInitializationStatus;
 
 
         [Inject]
-        private void Construct(IPlayerSpellsManagerInformation managerInformation)
+        private void Construct(IPlayerSpellsManagerInformation managerInformation,
+            IPlayerInitializationStatus playerInitializationStatus)
         {
-            _managerInformation = managerInformation;
+            _playerManagerInformation = managerInformation;
+            _playerInitializationStatus = playerInitializationStatus;
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization
@@ -38,6 +42,8 @@ namespace UI.Spells_Panel.Panel.Setup
                     }
                 }
 
+                initializableObjects.Add(_playerInitializationStatus);
+
                 return initializableObjects;
             }
         }
@@ -49,7 +55,7 @@ namespace UI.Spells_Panel.Panel.Setup
 
         protected override void Initialize()
         {
-            var model = new SpellPanelModel(new List<ISpellSlotGroup>(_spellGroups), _managerInformation);
+            var model = new SpellPanelModel(new List<ISpellSlotGroup>(_spellGroups), _playerManagerInformation);
             _presenter.Initialize(new List<IDisableable> {model});
         }
     }

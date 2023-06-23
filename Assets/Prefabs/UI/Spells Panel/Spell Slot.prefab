@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 6467662046923673963}
-  _transform: {fileID: 3336680369399368280}
+  _rectTransform: {fileID: 3336680369399368280}
 --- !u!114 &3308017241896275261
 MonoBehaviour:
   m_ObjectHideFlags: 0

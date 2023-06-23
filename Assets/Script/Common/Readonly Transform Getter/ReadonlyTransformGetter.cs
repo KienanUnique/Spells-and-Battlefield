@@ -1,15 +1,17 @@
-﻿using Common.Readonly_Transform;
-using UnityEngine;
+﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Common.Readonly_Transform;
 
 namespace Common.Readonly_Transform_Getter
 {
-    public class ReadonlyTransformGetter : MonoBehaviour, IReadonlyTransformGetter
+    public class ReadonlyTransformGetter : InitializableMonoBehaviourBase, IReadonlyTransformGetter
     {
         public IReadonlyTransform ReadonlyTransform { private set; get; }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             ReadonlyTransform = new ReadonlyTransform(transform);
+            SetInitializedStatus();
         }
     }
 }

@@ -57,6 +57,7 @@ MonoBehaviour:
   - {fileID: 4298390379988836912}
   - {fileID: 5005580714471220210}
   _spellsCountText: {fileID: 7538767410289710061}
+  _rectTransform: {fileID: 7538767409732492081}
 --- !u!114 &7538767409732492082
 MonoBehaviour:
   m_ObjectHideFlags: 0

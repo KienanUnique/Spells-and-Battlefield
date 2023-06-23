@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Disableable;
+using Player;
 using Player.Spell_Manager;
 using Settings.UI;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
@@ -21,16 +21,20 @@ namespace UI.Spells_Panel.Slot_Group.Setup
         [SerializeField] private SpellTypeScriptableObject _typeToRepresent;
         [SerializeField] private List<SpellSlotPresenter> _slots;
         [SerializeField] private TMP_Text _spellsCountText;
+        [SerializeField] private RectTransform _rectTransform;
         private IInitializableSpellSlotGroupPresenter _presenter;
         private List<IDisableable> _itemsNeedDisabling;
         private SpellPanelSettings _settings;
         private IPlayerSpellsManagerInformation _managerInformation;
+        private IPlayerInitializationStatus _playerInitializationStatus;
 
         [Inject]
-        public void Construct(SpellPanelSettings settings, IPlayerSpellsManagerInformation managerInformation)
+        public void Construct(SpellPanelSettings settings, IPlayerSpellsManagerInformation managerInformation,
+            IPlayerInitializationStatus playerInitializationStatus)
         {
             _settings = settings;
             _managerInformation = managerInformation;
+            _playerInitializationStatus = playerInitializationStatus;
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization
@@ -45,6 +49,8 @@ namespace UI.Spells_Panel.Slot_Group.Setup
                         initializableObjects.Add(initializableSlot);
                     }
                 }
+
+                initializableObjects.Add(_playerInitializationStatus);
 
                 return initializableObjects;
             }
@@ -69,7 +75,7 @@ namespace UI.Spells_Panel.Slot_Group.Setup
 
             var model = new SpellSlotGroupModel(slotsInformation, _slots, spellsGroupToRepresent, typeToRepresent);
 
-            var view = new SpellSlotGroupView(_spellsCountText, transform, _settings);
+            var view = new SpellSlotGroupView(_spellsCountText, _rectTransform, _settings);
 
             _itemsNeedDisabling.Add(model);
             _presenter.Initialize(model, view, _itemsNeedDisabling);

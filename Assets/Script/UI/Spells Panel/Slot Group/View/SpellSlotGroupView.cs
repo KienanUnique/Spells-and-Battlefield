@@ -7,13 +7,13 @@ namespace UI.Spells_Panel.Slot_Group.View
     public class SpellSlotGroupView : ISpellSlotGroupView
     {
         private readonly TMP_Text _spellsCountText;
-        private readonly Transform _transform;
+        private readonly RectTransform _rectTransform;
         private readonly SpellPanelSettings _settings;
 
-        public SpellSlotGroupView(TMP_Text spellsCountText, Transform transform, SpellPanelSettings settings)
+        public SpellSlotGroupView(TMP_Text spellsCountText, RectTransform rectTransform, SpellPanelSettings settings)
         {
             _spellsCountText = spellsCountText;
-            _transform = transform;
+            _rectTransform = rectTransform;
             _settings = settings;
         }
 
@@ -24,12 +24,12 @@ namespace UI.Spells_Panel.Slot_Group.View
 
         public void Select()
         {
-            _transform.localScale = _settings.SelectedGroupLocalScale;
+            _rectTransform.sizeDelta = _settings.SelectedGroupSizeDelta;
         }
 
         public void Unselect()
         {
-            _transform.localScale = _settings.UnselectedGroupLocalScale;
+            _rectTransform.sizeDelta = _settings.UnselectedGroupSizeDelta;
         }
     }
 }

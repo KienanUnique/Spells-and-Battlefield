@@ -10,11 +10,11 @@ namespace UI.Spells_Panel.Slot.Model
         public ISlotInformation CurrentSlotInformation { get; private set; }
         public bool IsVisible { get; private set; }
 
-        public SpellSlotModel()
+        public SpellSlotModel(ISlotInformation currentSlotInformation)
         {
             IsVisible = false;
             CurrentSpell = null;
-            CurrentSlotInformation = null;
+            CurrentSlotInformation = currentSlotInformation;
         }
 
         public void Appear(ISpell spell, ISlotInformation slot)

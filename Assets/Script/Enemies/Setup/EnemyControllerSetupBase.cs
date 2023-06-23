@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common;
+using Common.Abstract_Bases;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Disableable;
 using Enemies.Movement;
@@ -10,7 +11,6 @@ using Interfaces;
 using Pathfinding;
 using Pickable_Items.Data_For_Creating.Scriptable_Object;
 using Pickable_Items.Factory;
-using Settings;
 using Settings.Enemy;
 using UnityEngine;
 using Zenject;
@@ -19,12 +19,12 @@ namespace Enemies.Setup
 {
     [RequireComponent(typeof(Seeker))]
     [RequireComponent(typeof(Rigidbody))]
-    public abstract class EnemyControllerSetupBase<TController> : MonoBehaviour, ICoroutineStarter,
+    public abstract class EnemyControllerSetupBase<TController> : SetupMonoBehaviourBase, ICoroutineStarter,
         IEnemyTriggersSettable
     {
         protected Seeker _seeker;
         protected Rigidbody _thisRigidbody;
-        
+
         [SerializeField] private EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] private PickableItemScriptableObjectBase _itemToDrop;
         [SerializeField] private List<EnemyTargetTrigger> _targetTriggers;
@@ -51,17 +51,17 @@ namespace Enemies.Setup
         protected abstract void SetupConcreteController(IEnemyBaseSetupData baseSetupData,
             TController controllerToSetup);
 
-        protected abstract void SpecialAwakeAction();
+        protected abstract void SpecialPrepareAction();
 
-        private void Awake()
+        protected override void Prepare()
         {
             _idHolder = GetComponent<IdHolder>();
             _seeker = GetComponent<Seeker>();
             _thisRigidbody = GetComponent<Rigidbody>();
             _targetFromTriggersSelector = new EnemyTargetFromTriggersSelector();
             _targetTriggers.ForEach(trigger => _targetFromTriggersSelector.AddTrigger(trigger));
-            
-            SpecialAwakeAction();
+
+            SpecialPrepareAction();
 
             _itemsNeedDisabling = new List<IDisableable>
             {
@@ -71,7 +71,7 @@ namespace Enemies.Setup
             };
         }
 
-        private void Start()
+        protected override void Initialize()
         {
             var controllerToSetup = GetComponent<TController>();
             var baseSetupData = new EnemyBaseSetupData(
