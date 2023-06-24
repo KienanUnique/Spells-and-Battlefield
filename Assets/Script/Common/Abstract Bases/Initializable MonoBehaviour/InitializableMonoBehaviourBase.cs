@@ -14,46 +14,50 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
 
         public InitializationStatus CurrentInitializationStatus => _currentStatus.Value;
 
-        protected virtual void SubscribeOnEvents()
-        {
-        }
-
-        protected virtual void UnsubscribeFromEvents()
-        {
-        }
+        protected abstract void SubscribeOnEvents();
+        protected abstract void UnsubscribeFromEvents();
 
         protected virtual void Awake()
         {
             _currentStatus = new ValueWithReactionOnChange<InitializationStatus>(InitializationStatus.NonInitialized);
-            _itemsNeedDisabling = null;
         }
 
         protected virtual void OnEnable()
         {
-            _currentStatus.AfterValueChanged += OnInitializationStatusChanged;
             if (_currentStatus.Value != InitializationStatus.NonInitialized)
             {
-                SubscribeOnEvents();
-                _itemsNeedDisabling?.ForEach(item => item.Enable());
+                SubscribeOnBaseEvents();
             }
         }
 
         protected virtual void OnDisable()
         {
-            _currentStatus.AfterValueChanged -= OnInitializationStatusChanged;
-            UnsubscribeFromEvents();
-            _itemsNeedDisabling?.ForEach(item => item.Disable());
+            UnsubscribeFromBaseEvents();
         }
 
         protected void SetInitializedStatus()
         {
-            SubscribeOnEvents();
+            SubscribeOnBaseEvents();
             _currentStatus.Value = InitializationStatus.Initialized;
         }
 
         protected void SetItemsNeedDisabling(List<IDisableable> itemsNeedDisabling)
         {
             _itemsNeedDisabling = itemsNeedDisabling;
+        }
+        
+        private void SubscribeOnBaseEvents()
+        {
+            _currentStatus.AfterValueChanged += OnInitializationStatusChanged;
+            _itemsNeedDisabling?.ForEach(item => item.Enable());
+            SubscribeOnEvents();
+        }
+
+        private void UnsubscribeFromBaseEvents()
+        {
+            _currentStatus.AfterValueChanged -= OnInitializationStatusChanged;
+            _itemsNeedDisabling?.ForEach(item => item.Disable());
+            UnsubscribeFromEvents();
         }
 
         private void OnInitializationStatusChanged(InitializationStatus newStatus)

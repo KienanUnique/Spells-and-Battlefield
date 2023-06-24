@@ -1,10 +1,11 @@
 ﻿using Spells.Spell;
 using UI.Spells_Panel.Slot_Information;
 
-namespace UI.Spells_Panel.Slot_Controller
+namespace UI.Spells_Panel.Slot
 {
     public interface ISpellSlot
     {
+        public bool IsEmptySlot { get; }
         public ISlotInformation CurrentSlotInformation { get; }
         public ISpell CurrentSpell { get; }
         public void MoveToSlot(ISlotInformation slot);

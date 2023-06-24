@@ -9,15 +9,17 @@ namespace UI.Spells_Panel.Slot.Model
         public ISpell CurrentSpell { get; private set; }
         public ISlotInformation CurrentSlotInformation { get; private set; }
         public bool IsVisible { get; private set; }
+        public bool IsEmptySlot { get; private set; }
 
         public SpellSlotModel(ISlotInformation currentSlotInformation)
         {
             IsVisible = false;
             CurrentSpell = null;
             CurrentSlotInformation = currentSlotInformation;
+            IsEmptySlot = true;
         }
 
-        public void Appear(ISpell spell, ISlotInformation slot)
+        public void Appear(ISpell spell, ISlotInformation slot, bool isShowingEmptySlot)
         {
             if (IsVisible)
             {
@@ -27,6 +29,7 @@ namespace UI.Spells_Panel.Slot.Model
             IsVisible = true;
             CurrentSpell = spell;
             CurrentSlotInformation = slot;
+            IsEmptySlot = isShowingEmptySlot;
         }
 
         public void Disappear()
@@ -39,6 +42,7 @@ namespace UI.Spells_Panel.Slot.Model
             IsVisible = false;
             CurrentSpell = null;
             CurrentSlotInformation = null;
+            IsEmptySlot = true;
         }
 
         public void MoveToSlot(ISlotInformation slot)

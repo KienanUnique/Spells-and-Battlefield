@@ -7,7 +7,6 @@ using Spells.Spell;
 using UI.Spells_Panel.Slot.Model;
 using UI.Spells_Panel.Slot.Setup;
 using UI.Spells_Panel.Slot.View;
-using UI.Spells_Panel.Slot_Controller;
 using UI.Spells_Panel.Slot_Information;
 using UnityEngine;
 
@@ -29,6 +28,7 @@ namespace UI.Spells_Panel.Slot.Presenter
             SetInitializedStatus();
         }
 
+        public bool IsEmptySlot => _model.IsEmptySlot;
         public ISlotInformation CurrentSlotInformation => _model.CurrentSlotInformation;
         public ISpell CurrentSpell => _model.CurrentSpell;
 
@@ -40,13 +40,13 @@ namespace UI.Spells_Panel.Slot.Presenter
 
         public void AppearAsSlot(ISlotInformation slot, ISpell spellToRepresent)
         {
-            _model.Appear(spellToRepresent, slot);
+            _model.Appear(spellToRepresent, slot, false);
             _view.Appear(slot, spellToRepresent.CardInformation.Icon);
         }
 
         public void AppearAsEmptySlot(ISlotInformation slot)
         {
-            _model.Appear(null, slot);
+            _model.Appear(null, slot, true);
             _view.Appear(slot, _settings.EmptySlotIcon);
         }
 

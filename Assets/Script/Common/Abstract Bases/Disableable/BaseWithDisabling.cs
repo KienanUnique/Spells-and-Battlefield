@@ -2,7 +2,7 @@
 {
     public abstract class BaseWithDisabling : IDisableable
     {
-        private bool _isEnabled = true;
+        private bool _isEnabled = false;
 
         public void Enable()
         {

@@ -47,8 +47,6 @@ namespace Player.Spell_Manager
             startTestSpells.ForEach(AddSpell);
             _selectedSpellType = new ValueWithReactionOnChange<ISpellType>(spellTypesSetting.TypesListInOrder[0]);
             _lastChanceSpellType = spellTypesSetting.LastChanceSpellType;
-
-            SubscribeOnEvents();
         }
 
         public event Action<ISpellAnimationInformation> NeedPlaySpellAnimation;

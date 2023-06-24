@@ -5,7 +5,7 @@ namespace UI.Spells_Panel.Slot_Information
 {
     public interface ISlotInformation : IComparable<ISlotInformation>
     {
-        public Vector2 SizeDelta { get; }
-        public Vector2 AnchoredPosition { get; }
+        public Vector2 LocalScale { get; }
+        public Vector2 LocalPosition { get; }
     }
 }

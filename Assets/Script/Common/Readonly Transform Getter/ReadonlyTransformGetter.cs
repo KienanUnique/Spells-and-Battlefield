@@ -7,6 +7,14 @@ namespace Common.Readonly_Transform_Getter
     {
         public IReadonlyTransform ReadonlyTransform { private set; get; }
 
+        protected override void SubscribeOnEvents()
+        {
+        }
+
+        protected override void UnsubscribeFromEvents()
+        {
+        }
+
         protected override void Awake()
         {
             base.Awake();

@@ -29,7 +29,6 @@ namespace Enemies.Movement
             _coroutineStarter = coroutineStarter;
             _isMoving = new ValueWithReactionOnChange<bool>(false);
             _targetPathfinder = new TargetPathfinder(seeker, targetPathfinderSettings, _coroutineStarter);
-            SubscribeOnThisEvents();
         }
 
         public event Action<bool> MovingStateChanged;

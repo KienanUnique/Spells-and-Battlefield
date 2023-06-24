@@ -27,7 +27,6 @@ namespace Common.Abstract_Bases.Character
             _currentCountCountOfHitPoints =
                 new ValueWithReactionOnChange<float>(_characterSettings.MaximumCountOfHitPoints);
             _currentEffects = new List<IAppliedContinuousEffect>();
-            SubscribeOnEvents();
         }
 
         public event Action<CharacterState> CharacterStateChanged;

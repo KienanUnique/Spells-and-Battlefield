@@ -6,8 +6,9 @@ using Common.Collection_With_Reaction_On_Change;
 using ModestTree;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
-using UI.Spells_Panel.Slot_Controller;
+using UI.Spells_Panel.Slot;
 using UI.Spells_Panel.Slot_Information;
+using UnityEngine;
 
 namespace UI.Spells_Panel.Slot_Group.Model
 {
@@ -17,6 +18,7 @@ namespace UI.Spells_Panel.Slot_Group.Model
         private readonly List<ObjectWithUsageFlag<ISpellSlot>> _slotObjects;
         private readonly SortedSet<ObjectWithUsageFlag<ISlotInformation>> _slots;
 
+        // TODO: Add methods to check if slot is with empty image
         public SpellSlotGroupModel(IEnumerable<ISlotInformation> slotsInformation,
             IEnumerable<ISpellSlot> slotControllers, IReadonlyListWithReactionOnChange<ISpell> spellGroupToRepresent,
             ISpellType spellTypeToRepresent)
@@ -37,11 +39,19 @@ namespace UI.Spells_Panel.Slot_Group.Model
                 _slotObjects.Add(new ObjectWithUsageFlag<ISpellSlot>(slotObject, false));
             }
 
-            var countOfSpellsToShow = Math.Min(_slotObjects.Count, spellGroupToRepresent.Count);
-            for (var spellIndex = 0; spellIndex < countOfSpellsToShow; spellIndex++)
+            if (spellGroupToRepresent.IsEmpty())
             {
-                var spell = spellGroupToRepresent[spellIndex];
-                AppearSlot(spell);
+                DisappearAllSlotsAndShowEmpty();
+            }
+            else
+            {
+                // var countOfSpellsToShow = Math.Min(_slotObjects.Count, spellGroupToRepresent.Count);
+                // for (var spellIndex = 0; spellIndex < countOfSpellsToShow; spellIndex++)
+                // {
+                //     var spell = spellGroupToRepresent[spellIndex];
+                //     AppearSlot(spell);
+                // }
+                FillEmptySlots();
             }
         }
 
@@ -111,6 +121,16 @@ namespace UI.Spells_Panel.Slot_Group.Model
                 return;
             }
 
+            var frontSlotInformation = _slots.First();
+            var frontSlotObject = _slotObjects.First(slotObject =>
+                slotObject.StoredObject.CurrentSlotInformation == frontSlotInformation.StoredObject);
+            if (frontSlotObject.StoredObject.IsEmptySlot)
+            {
+                frontSlotObject.StoredObject.DisappearAndForgetSpell();
+                frontSlotObject.SetAsFree();
+                frontSlotInformation.SetAsFree();
+            }
+
             AppearSlot(args.Item);
         }
 
@@ -131,33 +151,49 @@ namespace UI.Spells_Panel.Slot_Group.Model
                 throw new InvalidOperationException();
             }
 
+            removedSlotObject.DisappearAndForgetSpell();
+            removedSlotObjectWithUsageFlag.SetAsFree();
+
             if (_spellGroupToRepresent.IsEmpty())
             {
                 DisappearAllSlotsAndShowEmpty();
             }
             else
             {
-                removedSlotObject.DisappearAndForgetSpell();
-                removedSlotObjectWithUsageFlag.SetAsFree();
-                var slotsList = _slots.ToList();
-                var removedItemIndex = slotsList.FindIndex(slot =>
-                    slot.StoredObject.CompareTo(removedSlotObject.CurrentSlotInformation) == 0);
-                int slotIndex;
-                for (slotIndex = removedItemIndex + 1; slotIndex < _slots.Count; slotIndex++)
+                for (var slotIndex = args.Index; slotIndex < _slots.Count - 1; slotIndex++)
                 {
-                    if (_slots.ElementAt(slotIndex).IsUsed)
+                    var nextSlot = _slots.ElementAt(slotIndex + 1);
+                    var currentSlot = _slots.ElementAt(slotIndex);
+                    if (nextSlot.IsUsed)
                     {
-                        var currentSpellController = _slotObjects.Find(slotObject =>
-                            slotObject.StoredObject.CurrentSlotInformation.CompareTo(_slots.ElementAt(slotIndex)
-                                .StoredObject) == 0).StoredObject;
-                        currentSpellController.MoveToSlot(_slots.ElementAt(slotIndex - 1).StoredObject);
+                        var nextSlotInformation = nextSlot.StoredObject;
+                        var nextSpellController = FindUsedSpellObjectInSlot(nextSlotInformation).StoredObject;
+                        nextSpellController.MoveToSlot(currentSlot.StoredObject);
+                        currentSlot.SetAsUsed();
+                        nextSlot.SetAsFree();
                     }
                     else
                     {
                         break;
                     }
                 }
+
+                FillEmptySlots();
             }
+        }
+
+        private ObjectWithUsageFlag<ISpellSlot> FindUsedSpellObjectInSlot(ISlotInformation slotInformationToSearch)
+        {
+            foreach (var slotObject in _slotObjects)
+            {
+                if (slotObject.IsUsed &&
+                    slotObject.StoredObject.CurrentSlotInformation.CompareTo(slotInformationToSearch) == 0)
+                {
+                    return slotObject;
+                }
+            }
+
+            throw new ArgumentException("Used slot object in this slot does not exist");
         }
 
         private void OnItemReplaced(ItemReplacedEventArgs<ISpell> args)
@@ -237,6 +273,34 @@ namespace UI.Spells_Panel.Slot_Group.Model
             }
         }
 
+        private void FillEmptySlots()
+        {
+            var firstEmptySlotIndex = _slots.ToList().FindIndex(slot => !slot.IsUsed);
+            for (var slotIndex = firstEmptySlotIndex; slotIndex < _slots.Count; slotIndex++)
+            {
+                var currentSlot = _slots.ElementAt(slotIndex);
+
+                if (currentSlot.IsUsed)
+                {
+                    throw new InvalidOperationException("Trying to fill already filled slot");
+                }
+
+                if (slotIndex < _spellGroupToRepresent.Count)
+                {
+                    Debug.Log("AppearSlot:");
+                    Debug.Log($"currentSlot.IsUsed: {currentSlot.IsUsed}");
+                    Debug.Log($"currentSlot.StoredObject.LocalScale: {currentSlot.StoredObject.LocalScale}");
+                    Debug.Log(
+                        $"_spellGroupToRepresent[slotIndex].CardInformation.Title: {_spellGroupToRepresent[slotIndex].CardInformation.Title}");
+                    AppearSlot(currentSlot, _spellGroupToRepresent[slotIndex]);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
         private void DisappearAllSlotsAndShowEmpty()
         {
             foreach (var slot in _slots)
@@ -284,7 +348,7 @@ namespace UI.Spells_Panel.Slot_Group.Model
         {
             public int Compare(ObjectWithUsageFlag<ISlotInformation> x, ObjectWithUsageFlag<ISlotInformation> y)
             {
-                return x.StoredObject.CompareTo(y.StoredObject);
+                return y.StoredObject.CompareTo(x.StoredObject);
             }
         }
     }

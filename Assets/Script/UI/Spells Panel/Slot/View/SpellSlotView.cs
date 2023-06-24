@@ -20,16 +20,16 @@ namespace UI.Spells_Panel.Slot.View
 
         public void Appear(ISlotInformation slot, Sprite sprite)
         {
-            _rectTransform.anchoredPosition = slot.AnchoredPosition;
-            _rectTransform.sizeDelta = slot.SizeDelta;
+            _rectTransform.localPosition = slot.LocalPosition;
+            _rectTransform.localScale = slot.LocalScale;
             _image.texture = sprite.texture;
             _rectTransform.gameObject.SetActive(true);
         }
 
         public void MoveToSlot(ISlotInformation slot)
         {
-            _rectTransform.anchoredPosition = slot.AnchoredPosition;
-            _rectTransform.sizeDelta = slot.SizeDelta;
+            _rectTransform.localPosition = slot.LocalPosition;
+            _rectTransform.localScale = slot.LocalScale;
         }
 
         public void Disappear()

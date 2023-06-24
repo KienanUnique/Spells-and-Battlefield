@@ -53,10 +53,10 @@ namespace Player.Movement
 
             _coroutineStarter.StartCoroutine(HandleInputMovement());
             _coroutineStarter.StartCoroutine(UpdateRatioOfCurrentVelocityToMaximumVelocity());
-
-            SubscribeOnEvents();
-
+            
+            OnBeforeMovingStateChanged(_currentMovingState.Value);
             _currentMovingState.Value = MovingState.OnGround;
+            OnAfterMovingStateChanged(_currentMovingState.Value);
         }
 
         public event Action Land;

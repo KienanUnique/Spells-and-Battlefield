@@ -34,7 +34,7 @@ namespace UI.Spells_Panel.Slot.Setup
         protected override void Prepare()
         {
             _controllerToSetup = GetComponent<IInitializableSpellSlotPresenter>();
-            var currentSlotInformation = new SlotInformation(_rectTransform.sizeDelta, _rectTransform.anchoredPosition);
+            var currentSlotInformation = new SlotInformation(_rectTransform.localScale, _rectTransform.localPosition);
             _model = new SpellSlotModel(currentSlotInformation);
             _view = new SpellSlotView(_image, _rectTransform, _settings);
         }

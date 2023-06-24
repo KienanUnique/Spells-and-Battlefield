@@ -24,12 +24,12 @@ namespace UI.Spells_Panel.Slot_Group.View
 
         public void Select()
         {
-            _rectTransform.sizeDelta = _settings.SelectedGroupSizeDelta;
+            //_rectTransform.sizeDelta = _settings.SelectedGroupSizeDelta;
         }
 
         public void Unselect()
         {
-            _rectTransform.sizeDelta = _settings.UnselectedGroupSizeDelta;
+            //_rectTransform.sizeDelta = _settings.UnselectedGroupSizeDelta;
         }
     }
 }

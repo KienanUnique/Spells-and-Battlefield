@@ -7,17 +7,17 @@ namespace UI.Spells_Panel.Slot_Information
     {
         public SlotInformation(Vector2 sizeDelta, Vector2 anchoredPosition)
         {
-            SizeDelta = sizeDelta;
-            AnchoredPosition = anchoredPosition;
+            LocalScale = sizeDelta;
+            LocalPosition = anchoredPosition;
         }
 
-        public Vector2 SizeDelta { get; }
-        public Vector2 AnchoredPosition { get; }
+        public Vector2 LocalScale { get; }
+        public Vector2 LocalPosition { get; }
 
         public int CompareTo(ISlotInformation other)
         {
-            var scaleComparison = SizeDelta.CompareTo(other.SizeDelta);
-            return scaleComparison != 0 ? scaleComparison : AnchoredPosition.CompareTo(other.AnchoredPosition);
+            var scaleComparison = LocalScale.CompareTo(other.LocalScale);
+            return scaleComparison != 0 ? scaleComparison : LocalPosition.CompareTo(other.LocalPosition);
         }
     }
 }
