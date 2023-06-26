@@ -6,7 +6,7 @@ using Player.Spell_Manager;
 using UI.Spells_Panel.Panel.Model;
 using UI.Spells_Panel.Panel.Presenter;
 using UI.Spells_Panel.Slot_Group;
-using UI.Spells_Panel.Slot_Group.Presenter;
+using UI.Spells_Panel.Slot_Group.Base.Presenter;
 using UnityEngine;
 using Zenject;
 using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
@@ -15,7 +15,7 @@ namespace UI.Spells_Panel.Panel.Setup
 {
     public class SpellPanelSetup : SetupMonoBehaviourBase
     {
-        [SerializeField] private List<SpellSlotGroupPresenter> _spellGroups;
+        [SerializeField] private List<SpellSlotGroupPresenterBase> _spellGroups;
         private IPlayerSpellsManagerInformation _playerManagerInformation;
         private IInitializableSpellPanelPresenter _presenter;
         private IPlayerInitializationStatus _playerInitializationStatus;

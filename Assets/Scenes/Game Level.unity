@@ -2211,7 +2211,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1746
+  m_Name: pb_Mesh-1858
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3362,11 +3362,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8250483114782198183, guid: 4d800deb0fca13f459e3517f54409907, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 213.453
+      value: 266.9145
       objectReference: {fileID: 0}
     - target: {fileID: 8250483114782198183, guid: 4d800deb0fca13f459e3517f54409907, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 64.0913
+      value: 75.7967
       objectReference: {fileID: 0}
     - target: {fileID: 8250483114782198183, guid: 4d800deb0fca13f459e3517f54409907, type: 3}
       propertyPath: m_LocalPosition.x
