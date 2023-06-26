@@ -2,6 +2,7 @@
 using System.Linq;
 using Common.Abstract_Bases;
 using Settings.UI;
+using Settings.UI.Spell_Panel;
 using UI.Spells_Panel.Slot.Model;
 using UI.Spells_Panel.Slot.View;
 using UI.Spells_Panel.Slot_Information;
@@ -36,7 +37,7 @@ namespace UI.Spells_Panel.Slot.Setup
             _controllerToSetup = GetComponent<IInitializableSpellSlotPresenter>();
             var currentSlotInformation = new SlotInformation(_rectTransform.localScale, _rectTransform.localPosition);
             _model = new SpellSlotModel(currentSlotInformation);
-            _view = new SpellSlotView(_image, _rectTransform, _settings);
+            _view = new SpellSlotView(_image, _rectTransform, _settings.SlotSection);
         }
 
         protected override void Initialize()

@@ -11,8 +11,8 @@ namespace UI.Spells_Panel.Slot_Information
             LocalPosition = anchoredPosition;
         }
 
-        public Vector2 LocalScale { get; }
-        public Vector2 LocalPosition { get; }
+        public Vector3 LocalScale { get; }
+        public Vector3 LocalPosition { get; }
 
         public int CompareTo(ISlotInformation other)
         {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common.Collection_With_Reaction_On_Change;
-using Settings.UI;
+using Settings.UI.Spell_Panel;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
@@ -31,7 +31,7 @@ namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Set
         }
 
         protected override IDefaultSpellSlotGroupView CreateView(RectTransform rectTransform,
-            SpellPanelSettings settings, int count)
+            SpellGroupSection settings, int count)
         {
             return new DefaultSpellSlotGroupView(_spellsCountText, rectTransform, settings, count);
         }

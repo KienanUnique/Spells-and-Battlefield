@@ -1,4 +1,5 @@
-﻿using Settings.UI;
+﻿using DG.Tweening;
+using Settings.UI.Spell_Panel;
 using UnityEngine;
 
 namespace UI.Spells_Panel.Slot_Group.Base.View
@@ -6,22 +7,34 @@ namespace UI.Spells_Panel.Slot_Group.Base.View
     public abstract class SpellSlotGroupViewBase : ISpellSlotGroupViewBase
     {
         private readonly RectTransform _rectTransform;
-        private readonly SpellPanelSettings _settings;
+        private readonly SpellGroupSection _settings;
+        private readonly Vector3 _defaultLocalScale;
+        private readonly GameObject _gameObject;
 
-        protected SpellSlotGroupViewBase(RectTransform rectTransform, SpellPanelSettings settings)
+        protected SpellSlotGroupViewBase(RectTransform rectTransform, SpellGroupSection settings)
         {
             _rectTransform = rectTransform;
             _settings = settings;
+            _defaultLocalScale = _rectTransform.localScale;
+            _gameObject = _rectTransform.gameObject;
         }
 
         public void Select()
         {
-            //_rectTransform.sizeDelta = _settings.SelectedGroupSizeDelta;
+            ChangeScaleWithAnimation(_settings.SelectedGroupScaleCoefficient);
         }
 
         public void Unselect()
         {
-            //_rectTransform.sizeDelta = _settings.UnselectedGroupSizeDelta;
+            ChangeScaleWithAnimation(_settings.UnselectedGroupScaleCoefficient);
+        }
+
+        private void ChangeScaleWithAnimation(float newScaleCoefficient)
+        {
+            _rectTransform.DOKill();
+            var newLocalScaleValue = _defaultLocalScale * newScaleCoefficient;
+            _rectTransform.DOScale(newLocalScaleValue, _settings.SelectionAnimationDuration)
+                .SetEase(_settings.SelectionAnimationEase).SetLink(_gameObject);
         }
     }
 }

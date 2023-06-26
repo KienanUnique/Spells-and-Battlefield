@@ -1,6 +1,7 @@
 using Settings;
 using Settings.Enemy;
 using Settings.UI;
+using Settings.UI.Spell_Panel;
 using UnityEngine;
 using Zenject;
 

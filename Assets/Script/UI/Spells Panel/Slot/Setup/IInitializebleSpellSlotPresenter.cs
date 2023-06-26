@@ -1,4 +1,5 @@
 ﻿using Settings.UI;
+using Settings.UI.Spell_Panel;
 using UI.Spells_Panel.Slot.Model;
 using UI.Spells_Panel.Slot.View;
 

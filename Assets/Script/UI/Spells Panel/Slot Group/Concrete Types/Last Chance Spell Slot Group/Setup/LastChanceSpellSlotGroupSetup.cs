@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using Common.Abstract_Bases.Disableable;
 using Common.Collection_With_Reaction_On_Change;
 using Settings;
-using Settings.UI;
+using Settings.UI.Spell_Panel;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using UI.Spells_Panel.Slot.Presenter;
-using UI.Spells_Panel.Slot_Group.Base.Model;
 using UI.Spells_Panel.Slot_Group.Base.Setup;
 using UI.Spells_Panel.Slot_Group.Concrete_Types.Last_Chance_Spell_Slot_Group.Model;
 using UI.Spells_Panel.Slot_Group.Concrete_Types.Last_Chance_Spell_Slot_Group.Presenter;
@@ -38,7 +36,7 @@ namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Last_Chance_Spell_Slot_Group
         }
 
         protected override ILastChanceSpellSlotGroupView CreateView(RectTransform rectTransform,
-            SpellPanelSettings settings, int count)
+            SpellGroupSection settings, int count)
         {
             return new LastChanceSpellSlotGroupView(rectTransform, settings);
         }

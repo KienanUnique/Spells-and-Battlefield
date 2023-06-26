@@ -5,6 +5,7 @@ using Common.Collection_With_Reaction_On_Change;
 using Player;
 using Player.Spell_Manager;
 using Settings.UI;
+using Settings.UI.Spell_Panel;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using UI.Spells_Panel.Slot.Presenter;
@@ -28,13 +29,13 @@ namespace UI.Spells_Panel.Slot_Group.Base.Setup
         private List<IDisableable> _itemsNeedDisabling;
         private IPlayerSpellsManagerInformation _managerInformation;
         private IPlayerInitializationStatus _playerInitializationStatus;
-        private SpellPanelSettings _settings;
+        private SpellGroupSection _settings;
 
         [Inject]
         public void Construct(SpellPanelSettings settings, IPlayerSpellsManagerInformation managerInformation,
             IPlayerInitializationStatus playerInitializationStatus)
         {
-            _settings = settings;
+            _settings = settings.GroupSection;
             _managerInformation = managerInformation;
             _playerInitializationStatus = playerInitializationStatus;
         }
@@ -65,7 +66,7 @@ namespace UI.Spells_Panel.Slot_Group.Base.Setup
             IEnumerable<SpellSlotPresenter> slots, IReadonlyListWithReactionOnChange<ISpell> spellsGroupToRepresent);
 
         protected abstract TView CreateView(RectTransform rectTransform,
-            SpellPanelSettings settings, int count);
+            SpellGroupSection settings, int count);
 
         protected override void Prepare()
         {

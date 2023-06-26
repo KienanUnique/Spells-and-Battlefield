@@ -2,12 +2,15 @@
 
 namespace Common
 {
-    public static class Vector2Extensions
+    public static class Vector3Extensions
     {
-        public static int CompareTo(this Vector2 thisVector, Vector2 otherVector)
+        public static int CompareTo(this Vector3 thisVector, Vector3 otherVector)
         {
             var xComparison = thisVector.x.CompareTo(otherVector.x);
-            return xComparison != 0 ? xComparison : thisVector.y.CompareTo(otherVector.y);
+            if (xComparison != 0) return xComparison;
+
+            var yComparison = thisVector.y.CompareTo(otherVector.y);
+            return yComparison != 0 ? yComparison : thisVector.z.CompareTo(otherVector.z);
         }
     }
 }

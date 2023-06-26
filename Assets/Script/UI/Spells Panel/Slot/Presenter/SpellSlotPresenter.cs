@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using Common;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Settings.UI;
+using Settings.UI.Spell_Panel;
 using Spells.Spell;
 using UI.Spells_Panel.Slot.Model;
 using UI.Spells_Panel.Slot.Setup;
@@ -17,14 +15,12 @@ namespace UI.Spells_Panel.Slot.Presenter
     {
         private ISpellSlotModel _model;
         private ISpellSlotView _view;
-        private SpellPanelSettings _settings;
 
         public void Initialize(ISpellSlotModel model, ISpellSlotView view, SpellPanelSettings settings)
         {
-            _settings = settings;
             _model = model;
             _view = view;
-            
+
             SetInitializedStatus();
         }
 
@@ -47,7 +43,7 @@ namespace UI.Spells_Panel.Slot.Presenter
         public void AppearAsEmptySlot(ISlotInformation slot)
         {
             _model.Appear(null, slot, true);
-            _view.Appear(slot, _settings.EmptySlotIcon);
+            _view.AppearAsEmptySlot(slot);
         }
 
         public void DisappearAndForgetSpell()
@@ -73,10 +69,14 @@ namespace UI.Spells_Panel.Slot.Presenter
                 case InitializationStatus.Initialized:
                     if (_model.IsVisible)
                     {
-                        _view.Appear(_model.CurrentSlotInformation,
-                            _model.CurrentSpell == null
-                                ? _settings.EmptySlotIcon
-                                : _model.CurrentSpell.CardInformation.Icon);
+                        if (_model.CurrentSpell == null)
+                        {
+                            _view.AppearAsEmptySlot(_model.CurrentSlotInformation);
+                        }
+                        else
+                        {
+                            _view.Appear(_model.CurrentSlotInformation, _model.CurrentSpell.CardInformation.Icon);
+                        }
                     }
                     else
                     {
