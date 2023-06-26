@@ -10,6 +10,7 @@ namespace Common.Abstract_Bases
     {
         private bool _wasInitialized;
         private bool _needWaitOtherObjects;
+        private bool _wasStartPhasePassed;
         private List<IInitializable> _objectsToWaitBeforeInitialization;
 
         protected abstract IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization { get; }
@@ -53,7 +54,7 @@ namespace Common.Abstract_Bases
 
         private void OnInitializableObjectStatusChanged(InitializationStatus obj)
         {
-            if (_wasInitialized) return;
+            if (_wasInitialized || !_wasStartPhasePassed) return;
             if (IsAllRequiredObjectsInitialized())
             {
                 RunInitialization();
@@ -80,6 +81,7 @@ namespace Common.Abstract_Bases
             {
                 RunInitialization();
             }
+            _wasStartPhasePassed = true;
         }
     }
 }

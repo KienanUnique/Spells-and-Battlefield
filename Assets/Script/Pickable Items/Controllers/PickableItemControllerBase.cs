@@ -151,7 +151,7 @@ namespace Pickable_Items.Controllers
                 {
                     visualObjectSequence.Append(_visualObjectTransform.DOMoveY(
                         hitGround.point.y + _pickableItemsSettings.AnimationMinimumHeight,
-                        _pickableItemsSettings.YAnimationDuration));
+                        _pickableItemsSettings.YAnimationDuration).SetLink(gameObject));
                 }
             }
 
