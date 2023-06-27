@@ -29,6 +29,14 @@ namespace UI.Spells_Panel.Slot_Group.Base.View
             ChangeScaleWithAnimation(_settings.UnselectedGroupScaleCoefficient);
         }
 
+        public void PlayEmptyAnimation()
+        {
+            _rectTransform.DOComplete();
+            _rectTransform.DOPunchScale(_settings.EmptyAnimationPunchStrength, _settings.EmptyAnimationDuration,
+                    _settings.EmptyAnimationPunchVibratoCount, _settings.EmptyAnimationPunchElasticity)
+                .SetLink(_gameObject);
+        }
+
         private void ChangeScaleWithAnimation(float newScaleCoefficient)
         {
             _rectTransform.DOKill();

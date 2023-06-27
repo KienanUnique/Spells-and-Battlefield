@@ -6,11 +6,6 @@ namespace UI.Spells_Panel.Slot.Model
 {
     public class SpellSlotModel : ISpellSlotModel
     {
-        public ISpell CurrentSpell { get; private set; }
-        public ISlotInformation CurrentSlotInformation { get; private set; }
-        public bool IsVisible { get; private set; }
-        public bool IsEmptySlot { get; private set; }
-
         public SpellSlotModel(ISlotInformation currentSlotInformation)
         {
             IsVisible = false;
@@ -18,6 +13,14 @@ namespace UI.Spells_Panel.Slot.Model
             CurrentSlotInformation = currentSlotInformation;
             IsEmptySlot = true;
         }
+
+        public ISpell CurrentSpell { get; private set; }
+
+        public ISlotInformation CurrentSlotInformation { get; private set; }
+
+        public bool IsVisible { get; private set; }
+
+        public bool IsEmptySlot { get; private set; }
 
         public void Appear(ISpell spell, ISlotInformation slot, bool isShowingEmptySlot)
         {

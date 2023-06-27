@@ -38,6 +38,11 @@ namespace UI.Spells_Panel.Slot_Group.Base.Presenter
             _view.Unselect();
         }
 
+        public void PlayAnimationOnTryingToUseEmptySpellTypeGroup()
+        {
+            _view.PlayEmptyAnimation();
+        }
+
         protected override void SubscribeOnEvents()
         {
             InitializationStatusChanged += OnInitializationStatusChanged;

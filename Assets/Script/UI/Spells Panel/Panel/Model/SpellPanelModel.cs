@@ -29,11 +29,18 @@ namespace UI.Spells_Panel.Panel.Model
         protected override void SubscribeOnEvents()
         {
             _managerInformation.SelectedSpellTypeChanged += SelectSpellTypeGroup;
+            _managerInformation.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellTypeGroup;
         }
 
         protected override void UnsubscribeFromEvents()
         {
             _managerInformation.SelectedSpellTypeChanged -= SelectSpellTypeGroup;
+            _managerInformation.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellTypeGroup;
+        }
+
+        private void OnTryingToUseEmptySpellTypeGroup(ISpellType spellType)
+        {
+            _spellsTypeGroups[spellType].PlayAnimationOnTryingToUseEmptySpellTypeGroup();
         }
 
         private void SelectSpellTypeGroup(ISpellType newSelectedSpellType)

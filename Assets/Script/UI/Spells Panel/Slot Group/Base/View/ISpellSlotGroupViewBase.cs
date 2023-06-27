@@ -4,5 +4,6 @@
     {
         public void Select();
         public void Unselect();
+        public void PlayEmptyAnimation();
     }
 }

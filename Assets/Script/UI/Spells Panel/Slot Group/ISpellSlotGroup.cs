@@ -8,5 +8,6 @@ namespace UI.Spells_Panel.Slot_Group
         public ISpellType Type { get; }
         public void Select();
         public void Unselect();
+        public void PlayAnimationOnTryingToUseEmptySpellTypeGroup();
     }
 }

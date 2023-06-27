@@ -12,5 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94cb181070ff4f119be4119c1aead575, type: 3}
   m_Name: Spell Panel Settings
   m_EditorClassIdentifier: 
-  _emptySlotIcon: {fileID: 21300000, guid: 626b9cddb29049e4cac50cd87b419945, type: 3}
-  _selectedGroupSizeDelta: {x: 2, y: 2}
+  _slotSection:
+    _emptySlotIcon: {fileID: 21300000, guid: 0525793900d728a42936791a8a6de63b, type: 3}
+    _scaleAnimationEase: 15
+    _scaleAnimationDuration: 0.3
+    _moveAnimationEase: 21
+    _moveAnimationDuration: 0.3
+    _scaleDuringMovingAnimationEase: 15
+  _groupSection:
+    _selectedGroupScaleCoefficient: 1.25
+    _selectionAnimationEase: 15
+    _selectionAnimationDuration: 0.3
+    _emptyAnimationPunchStrength: {x: 0.5, y: 0.5, z: 0}
+    _emptyAnimationDuration: 0.3
+    _emptyAnimationPunchVibratoCount: 3
+    _emptyAnimationPunchElasticity: 0

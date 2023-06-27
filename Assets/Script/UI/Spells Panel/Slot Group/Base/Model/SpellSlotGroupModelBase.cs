@@ -47,6 +47,7 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
             }
         }
 
+        public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public bool IsSelected { get; private set; }
         public ISpellType Type { get; }
 
