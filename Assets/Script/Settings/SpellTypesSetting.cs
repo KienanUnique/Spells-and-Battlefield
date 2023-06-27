@@ -13,6 +13,7 @@ namespace Settings
     {
         [SerializeField] private List<SpellTypeScriptableObject> _typesOrder;
         [SerializeField] private LastChanceSpellPlace _lastChanceSpellPlace;
+        [SerializeField] private LastChanceSpellType _lastChanceSpellType;
 
         private List<SpellTypeScriptableObject> _cachedTypesOrderScriptableObjects;
         private IReadOnlyList<ISpellType> _cachedTypesInOrder;
@@ -49,6 +50,6 @@ namespace Settings
             }
         }
 
-        public ISpellType LastChanceSpellType => new LastChanceSpellType();
+        public ISpellType LastChanceSpellType => _lastChanceSpellType;
     }
 }

@@ -18,6 +18,7 @@ namespace UI.Spells_Panel.Slot.Setup
     {
         [SerializeField] private RawImage _image;
         [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private Image _background;
         private IInitializableSpellSlotPresenter _controllerToSetup;
         private SpellPanelSettings _settings;
         private ISpellSlotModel _model;
@@ -37,7 +38,7 @@ namespace UI.Spells_Panel.Slot.Setup
             _controllerToSetup = GetComponent<IInitializableSpellSlotPresenter>();
             var currentSlotInformation = new SlotInformation(_rectTransform.localScale, _rectTransform.localPosition);
             _model = new SpellSlotModel(currentSlotInformation);
-            _view = new SpellSlotView(_image, _rectTransform, _settings.SlotSection);
+            _view = new SpellSlotView(_image, _rectTransform, _background, _settings.SlotSection);
         }
 
         protected override void Initialize()

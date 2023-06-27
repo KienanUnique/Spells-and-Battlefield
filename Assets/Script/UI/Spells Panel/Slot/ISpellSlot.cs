@@ -1,5 +1,6 @@
 ﻿using Spells.Spell;
 using UI.Spells_Panel.Slot_Information;
+using UnityEngine;
 
 namespace UI.Spells_Panel.Slot
 {
@@ -12,5 +13,6 @@ namespace UI.Spells_Panel.Slot
         public void AppearAsSlot(ISlotInformation slot, ISpell spellToRepresent);
         public void AppearAsEmptySlot(ISlotInformation slot);
         public void DisappearAndForgetSpell();
+        public void ChangeBackgroundColor(Color newBackgroundColor);
     }
 }

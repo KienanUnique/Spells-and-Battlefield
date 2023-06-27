@@ -52,6 +52,11 @@ namespace UI.Spells_Panel.Slot.Presenter
             _view.Disappear();
         }
 
+        public void ChangeBackgroundColor(Color newBackgroundColor)
+        {
+            _view.ChangeBackgroundColor(newBackgroundColor);
+        }
+
         protected override void SubscribeOnEvents()
         {
             InitializationStatusChanged += OnInitializationStatusChanged;

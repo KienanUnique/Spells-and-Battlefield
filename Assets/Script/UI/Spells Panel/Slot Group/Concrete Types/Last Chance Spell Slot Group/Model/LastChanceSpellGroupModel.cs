@@ -8,7 +8,7 @@ using UI.Spells_Panel.Slot_Information;
 
 namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Last_Chance_Spell_Slot_Group.Model
 {
-    public class LastChanceSpellGroupModel : SpellSlotGroupModelBaseBase, ILastChanceSpellGroupModelWithDisabling
+    public class LastChanceSpellGroupModel : SpellSlotGroupModelBase, ILastChanceSpellGroupModelWithDisabling
     {
         public LastChanceSpellGroupModel(IEnumerable<ISlotInformation> slotsInformation,
             IEnumerable<ISpellSlot> slotControllers, IReadonlyListWithReactionOnChange<ISpell> spellGroupToRepresent,

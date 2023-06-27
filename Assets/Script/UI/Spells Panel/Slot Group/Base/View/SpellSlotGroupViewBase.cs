@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using Settings.UI.Spell_Panel;
+using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace UI.Spells_Panel.Slot_Group.Base.View

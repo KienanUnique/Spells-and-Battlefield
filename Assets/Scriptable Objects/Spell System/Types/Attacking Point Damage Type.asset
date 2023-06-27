@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceebf1f7cbcc4b05b70702468c2eb885, type: 3}
   m_Name: Attacking Point Damage Type
   m_EditorClassIdentifier: 
-  _visualisationColor: {r: 0, g: 0.21038437, b: 1, a: 0}
+  _visualisationColor: {r: 0, g: 0.018793583, b: 1, a: 1}

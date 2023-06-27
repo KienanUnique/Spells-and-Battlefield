@@ -11,13 +11,13 @@ using UI.Spells_Panel.Slot_Information;
 
 namespace UI.Spells_Panel.Slot_Group.Base.Model
 {
-    public abstract class SpellSlotGroupModelBaseBase : BaseWithDisabling, ISpellSlotGroupModelBaseWithDisabling
+    public abstract class SpellSlotGroupModelBase : BaseWithDisabling, ISpellSlotGroupModelBaseWithDisabling
     {
         protected readonly IReadonlyListWithReactionOnChange<ISpell> _spellGroupToRepresent;
         protected readonly List<ObjectWithUsageFlag<ISpellSlot>> _slotObjects;
         protected readonly SortedSet<ObjectWithUsageFlag<ISlotInformation>> _slots;
 
-        protected SpellSlotGroupModelBaseBase(IEnumerable<ISlotInformation> slotsInformation,
+        protected SpellSlotGroupModelBase(IEnumerable<ISlotInformation> slotsInformation,
             IEnumerable<ISpellSlot> slotControllers, IReadonlyListWithReactionOnChange<ISpell> spellGroupToRepresent,
             ISpellType spellTypeToRepresent)
         {
@@ -35,6 +35,7 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
             foreach (var slotObject in slotControllers)
             {
                 _slotObjects.Add(new ObjectWithUsageFlag<ISpellSlot>(slotObject, false));
+                slotObject.ChangeBackgroundColor(spellTypeToRepresent.VisualisationColor);
             }
 
             if (spellGroupToRepresent.IsEmpty())
@@ -47,7 +48,6 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
             }
         }
 
-        public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public bool IsSelected { get; private set; }
         public ISpellType Type { get; }
 

@@ -11,7 +11,7 @@ using UI.Spells_Panel.Slot_Information;
 
 namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Model
 {
-    public class DefaultSpellSlotGroupModel : SpellSlotGroupModelBaseBase, IDefaultSpellSlotGroupModelWithDisabling
+    public class DefaultSpellSlotGroupModel : SpellSlotGroupModelBase, IDefaultSpellSlotGroupModelWithDisabling
     {
         public DefaultSpellSlotGroupModel(IEnumerable<ISlotInformation> slotsInformation,
             IEnumerable<ISpellSlot> slotControllers, IReadonlyListWithReactionOnChange<ISpell> spellGroupToRepresent,

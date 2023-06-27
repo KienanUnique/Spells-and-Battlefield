@@ -12,9 +12,11 @@ namespace UI.Spells_Panel.Slot.View
         private readonly RectTransform _rectTransform;
         private readonly SpellSlotSection _settings;
         private readonly GameObject _gameObject;
+        private readonly Image _background;
 
-        public SpellSlotView(RawImage image, RectTransform rectTransform, SpellSlotSection settings)
+        public SpellSlotView(RawImage image, RectTransform rectTransform, Image background, SpellSlotSection settings)
         {
+            _background = background;
             _image = image;
             _rectTransform = rectTransform;
             _settings = settings;
@@ -53,6 +55,12 @@ namespace UI.Spells_Panel.Slot.View
             _rectTransform.DOScale(Vector3.zero, _settings.ScaleAnimationDuration)
                 .SetEase(_settings.ScaleDuringMovingAnimationEase).SetLink(_gameObject)
                 .OnComplete(() => _gameObject.SetActive(false));
+        }
+
+        public void ChangeBackgroundColor(Color newBackgroundColor)
+        {
+            Debug.Log($"_background.color = {newBackgroundColor}");
+            _background.color = newBackgroundColor;
         }
     }
 }

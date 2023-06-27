@@ -9,5 +9,6 @@ namespace UI.Spells_Panel.Slot.View
         public void AppearAsEmptySlot(ISlotInformation slot);
         public void MoveToSlot(ISlotInformation slot);
         public void Disappear();
+        public void ChangeBackgroundColor(Color newBackgroundColor);
     }
 }
