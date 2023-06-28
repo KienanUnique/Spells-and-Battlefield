@@ -1,5 +1,4 @@
-﻿using Settings.UI;
-using Settings.UI.Spell_Panel;
+﻿using Settings.UI.Spell_Panel;
 using TMPro;
 using UI.Spells_Panel.Slot_Group.Base.View;
 using UnityEngine;

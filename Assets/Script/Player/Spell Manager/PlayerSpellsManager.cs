@@ -27,6 +27,8 @@ namespace Player.Spell_Manager
         private readonly ValueWithReactionOnChange<ISpellType> _selectedSpellType;
         private readonly ISpellType _lastChanceSpellType;
         private bool _isWaitingForAnimationFinish = false;
+        private ISpell _spellToCreate;
+        private IList<ISpell> _spellGroupFromWhichToCreateSpell;
 
         public PlayerSpellsManager(List<ISpell> startTestSpells, IReadonlyTransform spellSpawnObject,
             ICaster player, ISpellObjectsFactory spellObjectsFactory, SpellTypesSetting spellTypesSetting)
@@ -54,10 +56,8 @@ namespace Player.Spell_Manager
         public event Action<ISpellType> SelectedSpellTypeChanged;
 
         public ISpellType SelectedType => _selectedSpellType.Value;
-
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells { get; }
-
-        private IList<ISpell> SelectedSpellGroup => _spellsStorage[_selectedSpellType.Value];
+        private ListWithReactionOnChange<ISpell> SelectedSpellGroup => _spellsStorage[_selectedSpellType.Value];
         private ISpell SelectedSpell => SelectedSpellGroup[0];
 
         public void TryCastSelectedSpell()
@@ -68,18 +68,20 @@ namespace Player.Spell_Manager
             }
             else if (!_isWaitingForAnimationFinish)
             {
-                NeedPlaySpellAnimation?.Invoke(SelectedSpell.SpellAnimationInformation);
+                _spellGroupFromWhichToCreateSpell = SelectedSpellGroup;
+                _spellToCreate = SelectedSpell;
+                NeedPlaySpellAnimation?.Invoke(_spellToCreate.SpellAnimationInformation);
                 _isWaitingForAnimationFinish = true;
             }
         }
 
         public void CreateSelectedSpell(Quaternion direction)
         {
-            _spellObjectsFactory.Create(SelectedSpell.SpellDataForSpellController,
-                SelectedSpell.SpellPrefabProvider, _player, _spellSpawnObject.Position, direction);
+            _spellObjectsFactory.Create(_spellToCreate.SpellDataForSpellController,
+                _spellToCreate.SpellPrefabProvider, _player, _spellSpawnObject.Position, direction);
             if (!Equals(_selectedSpellType.Value, _lastChanceSpellType))
             {
-                SelectedSpellGroup.RemoveAt(0);
+                _spellGroupFromWhichToCreateSpell.RemoveAt(0);
             }
 
             _isWaitingForAnimationFinish = false;

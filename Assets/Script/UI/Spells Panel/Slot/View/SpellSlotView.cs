@@ -59,7 +59,6 @@ namespace UI.Spells_Panel.Slot.View
 
         public void ChangeBackgroundColor(Color newBackgroundColor)
         {
-            Debug.Log($"_background.color = {newBackgroundColor}");
             _background.color = newBackgroundColor;
         }
     }
