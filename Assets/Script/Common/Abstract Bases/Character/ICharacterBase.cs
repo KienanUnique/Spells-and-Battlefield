@@ -2,7 +2,7 @@
 
 namespace Common.Abstract_Bases.Character
 {
-    public interface ICharacterBase : IDamageable, IHealable, IContinuousEffectApplicable, ICharacterInformationProvider
+    public interface ICharacterBase : IDamageable, IHealable, IContinuousEffectApplicable, ICharacter
     {
     }
 }

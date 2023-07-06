@@ -14,7 +14,7 @@
     public const string SpellTriggerDirectory = SpellSystemDirectory + "Trigger/";
 
     #endregion
-    
+
     #region Settings
 
     private const string SettingsDirectory = RootDirectory + "Settings/";
@@ -22,6 +22,10 @@
     public const string GeneralSettingsDirectory = SettingsDirectory + "General/";
     public const string ConcreteEnemiesSettingsDirectory = SettingsDirectory + "Concrete Enemies/";
     public const string ConcreteUISettingsDirectory = SettingsDirectory + "Concrete UI/";
+    
+    public const string PuzzleDirectory = SettingsDirectory + "Puzzles/";
+    public const string PuzzleTriggersDirectory = PuzzleDirectory + "Triggers/";
+    public const string IdentifiersDirectory = PuzzleDirectory + "Identifiers/";
 
     #endregion
 
@@ -39,7 +43,7 @@
     public const string PickableItemsProvidersDirectory = PrefabProvidersDirectory + "Pickable Items/";
 
     #endregion
-    
+
     #region PickableItems
 
     public const string PickableItemsDirectory = RootDirectory + "Pickable Items/";

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 418d2f7c7dac49d89cad321e532618b5, type: 3}
+  m_Name: Pressure Plate Settings
+  m_EditorClassIdentifier: 
+  _animationDuration: 0.5
+  _animationEase: 12
+  _pressedScaleZ: 0.1
+  _unpressedScaleZ: 1

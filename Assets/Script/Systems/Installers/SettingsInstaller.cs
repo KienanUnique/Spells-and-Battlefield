@@ -1,5 +1,6 @@
 using Settings;
 using Settings.Enemy;
+using Settings.Puzzles.Triggers;
 using Settings.UI;
 using Settings.UI.Spell_Panel;
 using UnityEngine;
@@ -22,12 +23,23 @@ namespace Systems.Installers
         [Header("UI")] [SerializeField] private GeneralUIAnimationSettings _generalUIAnimationSettings;
         [SerializeField] private SpellPanelSettings _spellPanelSettings;
 
+        [Header("Puzzles")] [SerializeField] private PlateSettings _plateSettings;
+
         public override void InstallBindings()
         {
             BindGeneralSettings();
             BindEnemiesSettings();
             BindUISettings();
             BindPlayerSettings();
+            BindPuzzlesSettings();
+        }
+
+        private void BindPuzzlesSettings()
+        {
+            Container
+                .Bind<PlateSettings>()
+                .FromInstance(_plateSettings)
+                .AsSingle();
         }
 
         private void BindPlayerSettings()
