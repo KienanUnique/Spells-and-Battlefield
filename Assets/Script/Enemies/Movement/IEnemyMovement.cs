@@ -13,5 +13,7 @@ namespace Enemies.Movement
         public void StopMovingToTarget();
         public void DisableMoving();
         public void AddForce(Vector3 force, ForceMode mode);
+        public void StickToPlatform(Transform platformTransform);
+        public void UnstickFromPlatform();
     }
 }

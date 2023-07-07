@@ -4,6 +4,6 @@ namespace Puzzles.Triggers
 {
     public interface ITrigger
     {
-        public event Action Trigger;
+        public event Action Triggered;
     }
 }

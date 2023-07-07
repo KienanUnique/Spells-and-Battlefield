@@ -20,12 +20,12 @@ namespace Common.Abstract_Bases.Checkers
 
         protected override void SubscribeOnEvents()
         {
-            _isCollidingWithReaction.AfterValueChanged += OnAfterGroundedStateChanged;
+            _isCollidingWithReaction.AfterValueChanged += OnAfterCollidingStateChanged;
         }
 
         protected override void UnsubscribeFromEvents()
         {
-            _isCollidingWithReaction.AfterValueChanged -= OnAfterGroundedStateChanged;
+            _isCollidingWithReaction.AfterValueChanged -= OnAfterCollidingStateChanged;
         }
 
         protected override void Awake()
@@ -39,33 +39,29 @@ namespace Common.Abstract_Bases.Checkers
 
         private void OnTriggerEnter(Collider other)
         {
-            if (IsGroundCollider(other))
+            if (IsNeedCollider(other))
             {
                 _colliders.Add(other);
-                if (!IsColliding)
-                {
-                    _isCollidingWithReaction.Value = true;
-                }
+                _isCollidingWithReaction.Value = true;
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (!IsGroundCollider(other)) return;
-
+            if (!IsNeedCollider(other)) return;
             _colliders.Remove(other);
-            if (_colliders.Count == 0 && IsColliding)
+            if (_colliders.Count == 0)
             {
                 _isCollidingWithReaction.Value = false;
             }
         }
 
-        private void OnAfterGroundedStateChanged(bool newIsGrounded)
+        private void OnAfterCollidingStateChanged(bool isColliding)
         {
-            ContactStateChanged?.Invoke(newIsGrounded);
+            ContactStateChanged?.Invoke(isColliding);
         }
 
-        private bool IsGroundCollider(Collider colliderToCheck)
+        private bool IsNeedCollider(Collider colliderToCheck)
         {
             return (NeedObjectsMask.value & (1 << colliderToCheck.gameObject.layer)) > 0;
         }

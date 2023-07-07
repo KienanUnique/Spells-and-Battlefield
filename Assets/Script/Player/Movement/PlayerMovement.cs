@@ -25,6 +25,7 @@ namespace Player.Movement
         private readonly WallChecker _wallChecker;
         private readonly PlayerSettings.PlayerMovementSettingsSection _movementSettings;
         private readonly ICoroutineStarter _coroutineStarter;
+        private readonly Transform _originalParent;
 
         private Vector2 _inputMoveDirection = Vector2.zero;
         private readonly ValueWithReactionOnChange<MovingState> _currentMovingState;
@@ -46,6 +47,7 @@ namespace Player.Movement
             _movementSettings = movementSettings;
             _coroutineStarter = coroutineStarter;
             _cashedTransform = _rigidbody.transform;
+            _originalParent = _cashedTransform.parent;
             MainTransform = new ReadonlyTransform(_cashedTransform);
 
             _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.NotInitialized);
@@ -53,7 +55,7 @@ namespace Player.Movement
 
             _coroutineStarter.StartCoroutine(HandleInputMovement());
             _coroutineStarter.StartCoroutine(UpdateRatioOfCurrentVelocityToMaximumVelocity());
-            
+
             OnBeforeMovingStateChanged(_currentMovingState.Value);
             _currentMovingState.Value = MovingState.OnGround;
             OnAfterMovingStateChanged(_currentMovingState.Value);
@@ -137,6 +139,16 @@ namespace Player.Movement
         public void AddForce(Vector3 force, ForceMode mode)
         {
             _rigidbody.AddForce(force, mode);
+        }
+
+        public void StickToPlatform(Transform platformTransform)
+        {
+            _cashedTransform.SetParent(platformTransform);
+        }
+
+        public void UnstickFromPlatform()
+        {
+            _cashedTransform.SetParent(_originalParent);
         }
 
         protected override void SubscribeOnEvents()

@@ -26,6 +26,7 @@
     public const string PuzzleDirectory = SettingsDirectory + "Puzzles/";
     public const string PuzzleTriggersDirectory = PuzzleDirectory + "Triggers/";
     public const string IdentifiersDirectory = PuzzleDirectory + "Identifiers/";
+    public const string PuzzleMechanismsDirectory = PuzzleDirectory + "Mechanisms/";
 
     #endregion
 

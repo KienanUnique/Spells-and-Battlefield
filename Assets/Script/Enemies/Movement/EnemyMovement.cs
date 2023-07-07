@@ -20,6 +20,8 @@ namespace Enemies.Movement
         private readonly ValueWithReactionOnChange<bool> _isMoving;
         private readonly TargetPathfinder _targetPathfinder;
         private readonly ICoroutineStarter _coroutineStarter;
+        private readonly Transform _cachedTransform;
+        private readonly Transform _originalParent;
         private Coroutine _followPathCoroutine;
 
         public EnemyMovement(ICoroutineStarter coroutineStarter, MovementSettingsSection movementSettings,
@@ -27,6 +29,8 @@ namespace Enemies.Movement
             base(rigidbody, movementSettings)
         {
             _coroutineStarter = coroutineStarter;
+            _cachedTransform = _rigidbody.transform;
+            _originalParent = _cachedTransform.parent;
             _isMoving = new ValueWithReactionOnChange<bool>(false);
             _targetPathfinder = new TargetPathfinder(seeker, targetPathfinderSettings, _coroutineStarter);
         }
@@ -68,6 +72,16 @@ namespace Enemies.Movement
         public void AddForce(Vector3 force, ForceMode mode)
         {
             _rigidbody.AddForce(force, mode);
+        }
+
+        public void StickToPlatform(Transform platformTransform)
+        {
+            _cachedTransform.SetParent(platformTransform);
+        }
+
+        public void UnstickFromPlatform()
+        {
+            _cachedTransform.SetParent(_originalParent);
         }
 
         protected override void SubscribeOnEvents()

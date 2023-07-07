@@ -11,8 +11,7 @@ using UnityEngine;
 namespace Puzzles.Triggers.Concrete_Types.Plate
 {
     [RequireComponent(typeof(PressurePlateControllerSetup))]
-    public class PressurePlateController : InitializableMonoBehaviourBase, ITrigger,
-        IInitializablePressurePlateController
+    public class PressurePlateController : TriggerBase, IInitializablePressurePlateController
     {
         private IIdentifier _identifier;
         private List<Collider> _requiredObjectsOnPanel;
@@ -32,7 +31,7 @@ namespace Puzzles.Triggers.Concrete_Types.Plate
             ProcessPressingUp();
         }
 
-        public event Action Trigger;
+        public override event Action Triggered;
 
         protected override void SubscribeOnEvents()
         {
@@ -69,7 +68,7 @@ namespace Puzzles.Triggers.Concrete_Types.Plate
 
         private void ProcessPressingDown()
         {
-            Trigger?.Invoke();
+            Triggered?.Invoke();
             _plateTransform.DOComplete();
             _plateTransform.DOScaleY(_plateSettings.PressedScaleY, _plateSettings.AnimationDuration)
                 .SetEase(_plateSettings.AnimationEase).SetLink(gameObject);

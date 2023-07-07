@@ -112,6 +112,16 @@ namespace Player
             _playerMovement.DivideSpeedRatioBy(speedRatio);
         }
 
+        public void StickToPlatform(Transform platformTransform)
+        {
+            _playerMovement.StickToPlatform(platformTransform);
+        }
+
+        public void UnstickFromPlatform()
+        {
+            _playerMovement.UnstickFromPlatform();
+        }
+
         protected override void SubscribeOnEvents()
         {
             InitializationStatusChanged += OnInitializationStatusChanged;

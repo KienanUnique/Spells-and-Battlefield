@@ -1,5 +1,6 @@
 using Settings;
 using Settings.Enemy;
+using Settings.Puzzles.Mechanisms;
 using Settings.Puzzles.Triggers;
 using Settings.UI;
 using Settings.UI.Spell_Panel;
@@ -24,6 +25,7 @@ namespace Systems.Installers
         [SerializeField] private SpellPanelSettings _spellPanelSettings;
 
         [Header("Puzzles")] [SerializeField] private PlateSettings _plateSettings;
+        [SerializeField] private MovingPlatformWithStopsSettings _movingPlatformSettings;
 
         public override void InstallBindings()
         {
@@ -39,6 +41,11 @@ namespace Systems.Installers
             Container
                 .Bind<PlateSettings>()
                 .FromInstance(_plateSettings)
+                .AsSingle();
+
+            Container
+                .Bind<MovingPlatformWithStopsSettings>()
+                .FromInstance(_movingPlatformSettings)
                 .AsSingle();
         }
 

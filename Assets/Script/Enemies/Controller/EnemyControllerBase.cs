@@ -101,6 +101,16 @@ namespace Enemies.Controller
             _enemyMovement.DivideSpeedRatioBy(speedRatio);
         }
 
+        public void StickToPlatform(Transform platformTransform)
+        {
+            _enemyMovement.StickToPlatform(platformTransform);
+        }
+
+        public void UnstickFromPlatform()
+        {
+            _enemyMovement.UnstickFromPlatform();
+        }
+
         protected override void SubscribeOnEvents()
         {
             InitializationStatusChanged += OnInitializationStatusChanged;

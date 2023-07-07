@@ -29,5 +29,7 @@ namespace Player.Movement
         public void AddForce(Vector3 force, ForceMode mode);
         public void MultiplySpeedRatioBy(float speedRatio);
         public void DivideSpeedRatioBy(float speedRatio);
+        public void UnstickFromPlatform();
+        public void StickToPlatform(Transform platformTransform);
     }
 }
