@@ -25,7 +25,7 @@ namespace Systems.Installers
         [SerializeField] private SpellPanelSettings _spellPanelSettings;
 
         [Header("Puzzles")] [SerializeField] private PlateSettings _plateSettings;
-        [SerializeField] private MovingPlatformWithStopsSettings _movingPlatformSettings;
+        [SerializeField] private MovingPlatformsSettings _movingPlatformSettings;
 
         public override void InstallBindings()
         {
@@ -44,7 +44,7 @@ namespace Systems.Installers
                 .AsSingle();
 
             Container
-                .Bind<MovingPlatformWithStopsSettings>()
+                .Bind<MovingPlatformsSettings>()
                 .FromInstance(_movingPlatformSettings)
                 .AsSingle();
         }

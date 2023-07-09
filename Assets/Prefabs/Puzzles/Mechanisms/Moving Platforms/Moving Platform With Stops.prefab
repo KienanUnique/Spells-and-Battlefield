@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7416483315524201177
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174608, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446505250082174639, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+      propertyPath: m_Name
+      value: Moving Platform With Stops
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+--- !u!1 &3276786418946202742 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5446505250082174639, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+  m_PrefabInstance: {fileID: 7416483315524201177}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4273819457546896581 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6747250338305289756, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+  m_PrefabInstance: {fileID: 7416483315524201177}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3276786419907575766 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5446505251031241999, guid: e23c1d340ec336245b9528fc5ca69d96, type: 3}
+  m_PrefabInstance: {fileID: 7416483315524201177}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa40aa72baa1458981f7aa475456246d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1065458839136163694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276786418946202742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fabc386a98b4d8a8edfc7f57e4c7926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectToMove: {fileID: 4273819457546896581}
+  _waypointTransforms: []
+  _platformColliderTrigger: {fileID: 3276786419907575766}
+  _movementSpeed: 16
+  _moveNextTriggers: []
+  _movePreviousTriggers: []
+--- !u!114 &532546546721535737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276786418946202742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d8b8e39faa64cb0a9ebd1c709d2d990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

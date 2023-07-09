@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using DG.Tweening;
+using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
 using Puzzles.Triggers;
-using Puzzles.Triggers.Box_Collider_Trigger;
-using Settings.Puzzles.Mechanisms;
 using UnityEngine;
 
-namespace Puzzles.Mechanisms.Moving_Platform_With_Stops
+namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_With_Stops
 {
     [RequireComponent(typeof(MovingPlatformWithStopsControllerSetup))]
     public class MovingPlatformWithStopsController : MovingPlatformWithStickingBase,
@@ -14,27 +12,23 @@ namespace Puzzles.Mechanisms.Moving_Platform_With_Stops
     {
         private List<ITrigger> _moveNextTriggers;
         private List<ITrigger> _movePreviousTriggers;
-        private List<Vector3> _waypoints;
         private int _currentWaypoint;
-        private MovingPlatformWithStopsSettings _settings;
-        private float _movementSpeed;
 
-        public void Initialize(Transform objectToMove, List<ITrigger> moveNextTriggers,
-            List<ITrigger> movePreviousTriggers, List<Vector3> waypoints, float movementSpeed,
-            MovingPlatformWithStopsSettings settings, IColliderTrigger platformCollider)
+        public void Initialize(List<ITrigger> moveNextTriggers, List<ITrigger> movePreviousTriggers,
+            IMovingPlatformDataForControllerBase dataForControllerBase)
         {
-            base.Initialize(platformCollider, objectToMove);
             _moveNextTriggers = moveNextTriggers;
             _movePreviousTriggers = movePreviousTriggers;
-            _waypoints = waypoints;
-            _settings = settings;
-            _movementSpeed = movementSpeed;
+            _currentWaypoint = 0;
+            base.Initialize(dataForControllerBase);
             SetInitializedStatus();
-            _parentObjectToMove.position = waypoints.First();
         }
+
+        private int LastWaypointIndex => _waypoints.Count - 1;
 
         protected override void SubscribeOnEvents()
         {
+            base.SubscribeOnEvents();
             foreach (var trigger in _moveNextTriggers)
             {
                 trigger.Triggered += TryMoveToNextWaypoint;
@@ -44,11 +38,11 @@ namespace Puzzles.Mechanisms.Moving_Platform_With_Stops
             {
                 trigger.Triggered += TryMoveToPreviousWaypoint;
             }
-            base.SubscribeOnEvents();
         }
 
         protected override void UnsubscribeFromEvents()
         {
+            base.UnsubscribeFromEvents();
             foreach (var trigger in _moveNextTriggers)
             {
                 trigger.Triggered -= TryMoveToNextWaypoint;
@@ -58,28 +52,29 @@ namespace Puzzles.Mechanisms.Moving_Platform_With_Stops
             {
                 trigger.Triggered -= TryMoveToPreviousWaypoint;
             }
-            base.UnsubscribeFromEvents();
         }
 
         private void TryMoveToNextWaypoint()
         {
-            if (_currentWaypoint >= _waypoints.Count - 1) return;
+            if (_isTriggersDisabled || _currentWaypoint >= LastWaypointIndex) return;
             _currentWaypoint++;
             MoveToPosition(_waypoints[_currentWaypoint]);
         }
 
         private void TryMoveToPreviousWaypoint()
         {
-            if (_currentWaypoint <= 0) return;
+            if (_isTriggersDisabled || _currentWaypoint <= 0) return;
             _currentWaypoint--;
             MoveToPosition(_waypoints[_currentWaypoint]);
         }
 
-        private void MoveToPosition(Vector3 positionToMove)
+        private void MoveToPosition(Vector3 waypoint)
         {
+            _isTriggersDisabled = true;
             _parentObjectToMove.DOKill();
-            _parentObjectToMove.DOMove(positionToMove, _movementSpeed).SetSpeedBased()
-                .SetEase(_settings.MovementEase).SetLink(gameObject);
+            _parentObjectToMove.DOMove(waypoint, _movementSpeed)
+                .ApplyCustomSetupForMovingPlatforms(gameObject, _settings, _delayInSeconds)
+                .OnKill(() => _isTriggersDisabled = false);
         }
     }
 }

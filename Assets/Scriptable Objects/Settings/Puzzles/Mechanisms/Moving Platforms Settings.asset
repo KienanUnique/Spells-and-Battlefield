@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 854e1811826b435cb51e7e63891d56c7, type: 3}
-  m_Name: Moving Platform Settings
+  m_Name: Moving Platforms Settings
   m_EditorClassIdentifier: 
   _movementEase: 3
