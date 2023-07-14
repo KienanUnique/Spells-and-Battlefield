@@ -22,3 +22,4 @@ MonoBehaviour:
   _spellPanelSettings: {fileID: 11400000, guid: bccfab12f13b3bd4b8dff61041dd164a, type: 2}
   _plateSettings: {fileID: 11400000, guid: e675676fc85c3ba40a9918f4e6384503, type: 2}
   _movingPlatformSettings: {fileID: 11400000, guid: 4e04ef320d6feaa4399517e9787d36bd, type: 2}
+  _extendableObjectsSettings: {fileID: 11400000, guid: 72e84ecd95435b3438ce511041577f74, type: 2}

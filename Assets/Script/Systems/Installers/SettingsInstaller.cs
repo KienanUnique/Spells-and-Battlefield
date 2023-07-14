@@ -26,6 +26,7 @@ namespace Systems.Installers
 
         [Header("Puzzles")] [SerializeField] private PlateSettings _plateSettings;
         [SerializeField] private MovingPlatformsSettings _movingPlatformSettings;
+        [SerializeField] private ExtendableObjectsSettings _extendableObjectsSettings;
 
         public override void InstallBindings()
         {
@@ -46,6 +47,11 @@ namespace Systems.Installers
             Container
                 .Bind<MovingPlatformsSettings>()
                 .FromInstance(_movingPlatformSettings)
+                .AsSingle();
+            
+            Container
+                .Bind<ExtendableObjectsSettings>()
+                .FromInstance(_extendableObjectsSettings)
                 .AsSingle();
         }
 

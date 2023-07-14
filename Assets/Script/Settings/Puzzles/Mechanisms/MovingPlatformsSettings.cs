@@ -8,7 +8,7 @@ namespace Settings.Puzzles.Mechanisms
         fileName = "Moving Platforms Settings", order = 0)]
     public class MovingPlatformsSettings : ScriptableObject
     {
-        [SerializeField] private Ease _movementEase;
+        [SerializeField] private Ease _movementEase = Ease.OutSine;
         [SerializeField] private PathType _movementPathType = PathType.CatmullRom;
         public Ease MovementEase => _movementEase;
         public PathType MovementPathType => _movementPathType;
