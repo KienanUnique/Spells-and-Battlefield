@@ -2029,7 +2029,7 @@ GameObject:
   - component: {fileID: 8335751632240150303}
   - component: {fileID: 7758560344049107641}
   m_Layer: 0
-  m_Name: Target Selector
+  m_Name: Attack Target Selector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -31,8 +31,8 @@ namespace Common.Abstract_Bases
             if (other.TryGetComponent(out TRequiredObject requiredObject) &&
                 _requiredObjectsInside.Contains(requiredObject))
             {
-                RequiredObjectExitingDetected?.Invoke(requiredObject);
                 _requiredObjectsInside.Remove(requiredObject);
+                RequiredObjectExitingDetected?.Invoke(requiredObject);
             }
         }
     }
