@@ -3,7 +3,7 @@ using System.Linq;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Interfaces;
 using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
-using Puzzles.Triggers.Box_Collider_Trigger;
+using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
 using Settings.Puzzles.Mechanisms;
 using UnityEngine;
 

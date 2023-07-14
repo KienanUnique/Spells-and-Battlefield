@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
-using Puzzles.Triggers;
+using Puzzles.Mechanisms_Triggers;
 using UnityEngine;
 using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
@@ -8,8 +8,8 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
 {
     public class MovingPlatformWithStopsControllerSetup : MovingPlatformControllerSetupBase
     {
-        [SerializeField] private List<TriggerBase> _moveNextTriggers;
-        [SerializeField] private List<TriggerBase> _movePreviousTriggers;
+        [SerializeField] private List<MechanismsTriggerBase> _moveNextTriggers;
+        [SerializeField] private List<MechanismsTriggerBase> _movePreviousTriggers;
         private IInitializableMovingPlatformWithStopsController _controller;
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization
@@ -25,7 +25,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
 
         protected override void Initialize(IMovingPlatformDataForControllerBase dataForControllerBase)
         {
-            _controller.Initialize(new List<ITrigger>(_moveNextTriggers), new List<ITrigger>(_movePreviousTriggers),
+            _controller.Initialize(new List<IMechanismsTrigger>(_moveNextTriggers), new List<IMechanismsTrigger>(_movePreviousTriggers),
                 dataForControllerBase);
         }
 

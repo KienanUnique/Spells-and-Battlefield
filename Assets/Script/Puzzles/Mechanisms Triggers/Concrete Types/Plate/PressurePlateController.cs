@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using DG.Tweening;
 using ModestTree;
-using Puzzles.Triggers.Box_Collider_Trigger;
+using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
 using Settings.Puzzles.Triggers;
 using Settings.Puzzles.Triggers.Identifiers;
 using UnityEngine;
 
-namespace Puzzles.Triggers.Concrete_Types.Plate
+namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
 {
     [RequireComponent(typeof(PressurePlateControllerSetup))]
-    public class PressurePlateController : TriggerBase, IInitializablePressurePlateController
+    public class PressurePlateController : MechanismsTriggerBase, IInitializablePressurePlateController
     {
         private IIdentifier _identifier;
         private List<Collider> _requiredObjectsOnPanel;

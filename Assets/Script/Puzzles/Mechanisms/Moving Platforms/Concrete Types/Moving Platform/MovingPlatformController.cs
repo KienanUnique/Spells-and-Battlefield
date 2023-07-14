@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
 using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
-using Puzzles.Triggers;
+using Puzzles.Mechanisms_Triggers;
 using UnityEngine;
 
 namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform
@@ -9,10 +9,10 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform
     [RequireComponent(typeof(MovingPlatformControllerSetup))]
     public class MovingPlatformController : MovingPlatformWithStickingBase, IInitializableMovingPlatformController
     {
-        private List<ITrigger> _triggers;
+        private List<IMechanismsTrigger> _triggers;
         private bool _needMoveBackward;
 
-        public void Initialize(List<ITrigger> triggers, IMovingPlatformDataForControllerBase dataForControllerBase)
+        public void Initialize(List<IMechanismsTrigger> triggers, IMovingPlatformDataForControllerBase dataForControllerBase)
         {
             _triggers = triggers;
             base.Initialize(dataForControllerBase);

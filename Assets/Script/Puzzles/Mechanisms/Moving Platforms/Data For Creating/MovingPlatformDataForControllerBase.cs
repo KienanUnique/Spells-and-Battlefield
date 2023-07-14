@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Puzzles.Triggers.Box_Collider_Trigger;
+using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
 using Settings.Puzzles.Mechanisms;
 using UnityEngine;
 

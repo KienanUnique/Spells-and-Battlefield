@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases;
-using Puzzles.Triggers.Box_Collider_Trigger;
+using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
 using Settings.Puzzles.Triggers;
 using Settings.Puzzles.Triggers.Identifiers;
 using UnityEngine;
 using Zenject;
 using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
-namespace Puzzles.Triggers.Concrete_Types.Plate
+namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
 {
     public class PressurePlateControllerSetup : SetupMonoBehaviourBase
     {
