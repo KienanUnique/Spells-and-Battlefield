@@ -55,6 +55,11 @@ namespace Spells.Controllers
 
         private void OnTriggerEnter(Collider other)
         {
+            if (other.TryGetComponent<ISpellInteractable>(out var otherAsSpellInteractable))
+            {
+                otherAsSpellInteractable.InteractAsSpellType(_spellData.SpellType);
+            }
+
             if (!other.isTrigger && _controllerStatus == SpellControllerStatus.Active)
             {
                 _spellData.SpellAppliers.ForEach(spellApplier => spellApplier.CheckContact(other));

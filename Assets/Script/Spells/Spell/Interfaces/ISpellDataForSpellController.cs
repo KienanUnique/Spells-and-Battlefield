@@ -9,6 +9,7 @@ namespace Spells.Spell.Interfaces
         List<ISpell> NextSpellsOnFinish { get; }
         ISpellMovement SpellObjectMovement { get; }
         ISpellTrigger SpellMainTrigger { get; }
+        ISpellType SpellType { get; }
         List<ISpellApplier> SpellAppliers { get; }
     }
 }

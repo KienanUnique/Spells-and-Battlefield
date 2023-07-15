@@ -18,7 +18,7 @@ namespace Common
             throw new InvalidCastException();
         }
 
-        private void Start()
+        private void Awake()
         {
             Id = gameObject.GetInstanceID();
         }

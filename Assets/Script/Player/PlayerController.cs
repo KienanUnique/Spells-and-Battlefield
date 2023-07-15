@@ -27,7 +27,8 @@ using UnityEngine;
 namespace Player
 {
     [RequireComponent(typeof(PlayerControllerSetup))]
-    public class PlayerController : InitializableMonoBehaviourBase, IPlayer, ICoroutineStarter, IInitializablePlayerController
+    public class PlayerController : InitializableMonoBehaviourBase, IPlayer, ICoroutineStarter,
+        IInitializablePlayerController
     {
         private IIdHolder _idHolder;
         private IPlayerLook _playerLook;
@@ -70,7 +71,13 @@ namespace Player
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
         public ISpellType SelectedType => _playerSpellsManager.SelectedType;
-        public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells => _playerSpellsManager.Spells;
+
+        public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
+            _playerSpellsManager.Spells;
+
+        public void InteractAsSpellType(ISpellType spellType)
+        {
+        }
 
         public void HandleHeal(int countOfHealthPoints)
         {

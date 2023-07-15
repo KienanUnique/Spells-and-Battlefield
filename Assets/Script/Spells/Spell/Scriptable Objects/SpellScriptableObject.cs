@@ -25,7 +25,7 @@ namespace Spells.Spell.Scriptable_Objects
         public ISpellType SpellType => _type.GetImplementationObject();
 
         public ISpellDataForSpellController SpellDataForSpellController =>
-            _dataForSpellController.GetImplementationObject();
+            _dataForSpellController.GetImplementationObject(SpellType);
 
         public override IPickableItemPrefabProvider PickableItemPrefabProvider => _cardPrefabProvider;
 

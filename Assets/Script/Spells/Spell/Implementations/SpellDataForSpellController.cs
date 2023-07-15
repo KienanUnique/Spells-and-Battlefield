@@ -10,12 +10,13 @@ namespace Spells.Spell.Implementations
     public class SpellDataForSpellController : ISpellDataForSpellController
     {
         public SpellDataForSpellController(List<ISpell> nextSpellsOnFinish, ISpellMovement spellObjectMovement,
-            ISpellTrigger spellMainTrigger, List<ISpellApplier> spellAppliers)
+            ISpellTrigger spellMainTrigger, List<ISpellApplier> spellAppliers, ISpellType spellType)
         {
             NextSpellsOnFinish = nextSpellsOnFinish;
             SpellObjectMovement = spellObjectMovement;
             SpellMainTrigger = spellMainTrigger;
             SpellAppliers = spellAppliers;
+            SpellType = spellType;
         }
 
         public void Initialize(Rigidbody spellRigidbody, ICaster caster)
@@ -34,6 +35,7 @@ namespace Spells.Spell.Implementations
         public List<ISpell> NextSpellsOnFinish { get; }
         public ISpellMovement SpellObjectMovement { get; }
         public ISpellTrigger SpellMainTrigger { get; }
+        public ISpellType SpellType { get; }
         public List<ISpellApplier> SpellAppliers { get; }
     }
 }

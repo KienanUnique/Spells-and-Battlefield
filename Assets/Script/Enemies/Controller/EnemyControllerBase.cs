@@ -18,6 +18,7 @@ using Pickable_Items.Factory;
 using Settings;
 using Settings.Enemy;
 using Spells.Continuous_Effect;
+using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
 namespace Enemies.Controller
@@ -69,6 +70,10 @@ namespace Enemies.Controller
         public void AddForce(Vector3 force, ForceMode mode)
         {
             _enemyMovement.AddForce(force, mode);
+        }
+
+        public void InteractAsSpellType(ISpellType spellType)
+        {
         }
 
         public virtual void HandleHeal(int countOfHealthPoints)

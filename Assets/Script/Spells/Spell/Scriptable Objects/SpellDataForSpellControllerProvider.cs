@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Spells.Spell.Scriptable_Objects
 {
     [Serializable]
-    public class SpellDataForSpellControllerProvider : IImplementationObjectProvider<ISpellDataForSpellController>
+    public class SpellDataForSpellControllerProvider
     {
         [SerializeField] private SpellMovementScriptableObject _movement;
         [SerializeField] private List<SpellApplierScriptableObject> _appliers;
@@ -41,7 +41,8 @@ namespace Spells.Spell.Scriptable_Objects
         }
 
 
-        public ISpellDataForSpellController GetImplementationObject() => new SpellDataForSpellController(
-            NextSpellsOnFinish, SpellObjectMovement, SpellMainTrigger, SpellAppliers);
+        public ISpellDataForSpellController GetImplementationObject(ISpellType spellType) =>
+            new SpellDataForSpellController(NextSpellsOnFinish, SpellObjectMovement, SpellMainTrigger, SpellAppliers,
+                spellType);
     }
 }
