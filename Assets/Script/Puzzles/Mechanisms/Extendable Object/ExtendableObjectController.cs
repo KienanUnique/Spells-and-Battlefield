@@ -7,7 +7,7 @@ using Puzzles.Mechanisms_Triggers;
 using Settings.Puzzles.Mechanisms;
 using UnityEngine;
 
-namespace Puzzles.Mechanisms.Retractable_Platforms
+namespace Puzzles.Mechanisms.Extendable_Object
 {
     public class ExtendableObjectController : InitializableMonoBehaviourBase,
         IInitializableExtendableObjectController
@@ -22,7 +22,8 @@ namespace Puzzles.Mechanisms.Retractable_Platforms
         private float _animationDuration;
         private ValueWithReactionOnChange<ExtendableObjectState> _currentState;
 
-        public void Initialize(List<IMechanismsTrigger> triggers, ExtendableObjectState startState, Vector3 startPosition,
+        public void Initialize(List<IMechanismsTrigger> triggers, ExtendableObjectState startState,
+            Vector3 startPosition,
             Vector3 endPosition, float animationDuration, Transform objectToExtend, ExtendableObjectsSettings settings)
         {
             _objectToExtend = objectToExtend;
@@ -105,7 +106,8 @@ namespace Puzzles.Mechanisms.Retractable_Platforms
         private void MoveToState(float targetScaleZ, Vector3 targetPosition)
         {
             _objectToExtend.DOComplete();
-            _objectToExtend.DOScaleZ(targetScaleZ, _animationDuration).SetEase(_settings.AnimationEase).SetLink(gameObject);
+            _objectToExtend.DOScaleZ(targetScaleZ, _animationDuration).SetEase(_settings.AnimationEase)
+                .SetLink(gameObject);
             _objectToExtend.DOMove(targetPosition, _animationDuration).SetEase(_settings.AnimationEase)
                 .SetLink(gameObject);
         }

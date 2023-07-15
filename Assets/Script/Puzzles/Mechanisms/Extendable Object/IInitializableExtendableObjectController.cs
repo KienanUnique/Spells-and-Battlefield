@@ -3,7 +3,7 @@ using Puzzles.Mechanisms_Triggers;
 using Settings.Puzzles.Mechanisms;
 using UnityEngine;
 
-namespace Puzzles.Mechanisms.Retractable_Platforms
+namespace Puzzles.Mechanisms.Extendable_Object
 {
     public interface IInitializableExtendableObjectController
     {

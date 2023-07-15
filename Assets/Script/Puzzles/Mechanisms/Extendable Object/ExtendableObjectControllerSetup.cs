@@ -7,7 +7,7 @@ using UnityEngine;
 using Zenject;
 using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
-namespace Puzzles.Mechanisms.Retractable_Platforms
+namespace Puzzles.Mechanisms.Extendable_Object
 {
     public class ExtendableObjectControllerSetup : SetupMonoBehaviourBase
     {

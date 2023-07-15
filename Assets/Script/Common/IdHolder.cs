@@ -1,4 +1,3 @@
-using System;
 using Interfaces;
 using UnityEngine;
 
@@ -8,19 +7,14 @@ namespace Common
     {
         public int Id { get; private set; }
 
-        public int CompareTo(object obj)
-        {
-            if (obj is IIdHolder interactableObject)
-            {
-                return interactableObject.Id == Id ? 0 : 1;
-            }
-
-            throw new InvalidCastException();
-        }
-
         private void Awake()
         {
             Id = gameObject.GetInstanceID();
+        }
+
+        public bool Equals(IIdHolder other)
+        {
+            return other != null && other.Id.Equals(Id);
         }
     }
 }

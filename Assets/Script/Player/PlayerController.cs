@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Common;
 using Common.Abstract_Bases.Character;
-using Common.Abstract_Bases.Disableable;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Collection_With_Reaction_On_Change;
 using Common.Readonly_Transform;
@@ -99,9 +96,9 @@ namespace Player
             _playerSpellsManager.AddSpell(newSpell);
         }
 
-        public int CompareTo(object obj)
+        public bool Equals(IIdHolder other)
         {
-            return _idHolder.CompareTo(obj);
+            return _idHolder.Equals(other);
         }
 
         public void AddForce(Vector3 force, ForceMode mode)

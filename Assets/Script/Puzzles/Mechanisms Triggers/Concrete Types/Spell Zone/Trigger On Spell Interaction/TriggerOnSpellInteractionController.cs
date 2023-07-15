@@ -26,9 +26,9 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone.Trigger_On_Spell
             SpellTypeInteractionDetected?.Invoke(spellType);
         }
 
-        public int CompareTo(object obj)
+        public bool Equals(IIdHolder other)
         {
-            return _idHolder.CompareTo(obj);
+            return _idHolder.Equals(other);
         }
 
         protected override void SubscribeOnEvents()
