@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Readonly_Transform;
 using Interfaces;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Enemies.State_Machine.Transitions
         private Transform _cashedTransform;
 
         private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
-        private Vector3 CurrentTargetPosition => CurrentTarget.MainTransform.Position;
+        private Vector3 CurrentTargetPosition => ((IReadonlyTransform) CurrentTarget.MainRigidbody).Position;
 
         private enum TypeOfComparison
         {

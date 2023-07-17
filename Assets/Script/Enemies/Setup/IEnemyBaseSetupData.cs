@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Disableable;
+using Enemies.Look;
 using Enemies.Movement;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
@@ -24,5 +25,6 @@ namespace Enemies.Setup
         GeneralEnemySettings SetGeneralEnemySettings { get; }
         IPickableItemsFactory SetPickableItemsFactory { get; }
         IEnemyTargetFromTriggersSelector SetTargetFromTriggersSelector { get; }
+        IEnemyLook SetEnemyLook { get; }
     }
 }

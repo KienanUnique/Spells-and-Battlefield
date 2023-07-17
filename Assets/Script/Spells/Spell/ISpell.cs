@@ -7,7 +7,6 @@ namespace Spells.Spell
 {
     public interface ISpell : IPickableCardDataForCreating, IEqualityComparer
     {
-        public int GetInstanceID();
         public ISpellAnimationInformation SpellAnimationInformation { get; }
         public ISpellDataForSpellController SpellDataForSpellController { get; }
         public ISpellPrefabProvider SpellPrefabProvider { get; }

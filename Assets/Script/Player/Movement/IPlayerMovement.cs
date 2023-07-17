@@ -1,5 +1,6 @@
 ﻿using System;
 using Common;
+using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ namespace Player.Movement
         public Vector2 NormalizedVelocityDirectionXY { get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { get; }
         public Vector3 CurrentPosition { get; }
-        public IReadonlyTransform MainTransform { get; }
+        public IReadonlyRigidbody MainRigidbody { get; }
         public void TryJumpInputted();
         public void TryStartDashAiming();
         public void TryDash(Vector3 cameraForwardDirection);

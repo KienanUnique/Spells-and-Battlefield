@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Collection_With_Reaction_On_Change;
+using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Interfaces;
 using Player.Camera_Effects;
@@ -64,7 +65,7 @@ namespace Player
 
         public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
         public int Id => _idHolder.Id;
-        public IReadonlyTransform MainTransform => _playerMovement.MainTransform;
+        public IReadonlyRigidbody MainRigidbody => _playerMovement.MainRigidbody;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
         public ISpellType SelectedType => _playerSpellsManager.SelectedType;

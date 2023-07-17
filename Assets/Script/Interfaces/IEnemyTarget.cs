@@ -1,10 +1,9 @@
-﻿using Common;
-using Common.Readonly_Transform;
+﻿using Common.Readonly_Rigidbody;
 
 namespace Interfaces
 {
     public interface IEnemyTarget : IInteractableCharacter, IIdHolder
     {
-        public IReadonlyTransform MainTransform { get; }
+        public IReadonlyRigidbody MainRigidbody { get; }
     }
 }

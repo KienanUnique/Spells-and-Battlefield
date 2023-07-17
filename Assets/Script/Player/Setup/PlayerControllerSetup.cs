@@ -3,7 +3,7 @@ using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Checkers;
 using Common.Abstract_Bases.Disableable;
-using Common.Readonly_Transform_Getter;
+using Common.Readonly_Transform;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;

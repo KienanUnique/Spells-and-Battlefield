@@ -1,4 +1,5 @@
 ﻿using System;
+using Enemies.Look;
 using Enemies.Target_Selector_From_Triggers;
 using Interfaces;
 using UnityEngine;
@@ -8,8 +9,9 @@ namespace Enemies.State_Machine
     public class EnemyStateMachineAI : MonoBehaviour, IEnemyStateMachineAI
     {
         [SerializeField] private StateEnemyAI _firstStateEnemyAI;
-        private StateEnemyAI _currentStateEnemyAI;
+        private IStateEnemyAI _currentStateEnemyAI;
         private IEnemyStateMachineControllable _stateMachineControllable;
+        private IEnemyLook _enemyLook;
         private bool _isActive;
         private IEnemyTargetFromTriggersSelector _targetFromTriggersSelector;
 
@@ -29,16 +31,18 @@ namespace Enemies.State_Machine
             }
         }
 
-        public void StartStateMachine(IEnemyStateMachineControllable stateMachineControllable)
+        public void StartStateMachine(IEnemyStateMachineControllable stateMachineControllable, IEnemyLook enemyLook)
         {
             if (_isActive)
             {
                 throw new StateMachineAlreadyStartedException();
             }
 
+            _enemyLook = enemyLook;
             _stateMachineControllable = stateMachineControllable;
             _targetFromTriggersSelector = _stateMachineControllable.TargetFromTriggersSelector;
             _targetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
+            _enemyLook.StartLooking();
             TransitToState(_firstStateEnemyAI);
             _isActive = true;
         }
@@ -50,11 +54,12 @@ namespace Enemies.State_Machine
                 throw new StateMachineAlreadyStoppedException();
             }
 
+            _enemyLook.StopLooking();
             TransitToState(null);
             _isActive = false;
         }
 
-        private void TransitToState(StateEnemyAI nextStateEnemyAI)
+        private void TransitToState(IStateEnemyAI nextStateEnemyAI)
         {
             if (_currentStateEnemyAI != null)
             {
@@ -66,6 +71,7 @@ namespace Enemies.State_Machine
 
             if (_currentStateEnemyAI != null)
             {
+                _enemyLook.SetLookPointCalculator(_currentStateEnemyAI.LookPointCalculator);
                 SubscribeOnEvents();
                 _currentStateEnemyAI.Enter(_stateMachineControllable);
             }

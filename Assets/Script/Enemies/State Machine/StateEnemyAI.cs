@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using Enemies.Look_Point_Calculator;
 using UnityEngine;
 
 namespace Enemies.State_Machine
 {
-    public abstract class StateEnemyAI : MonoBehaviour
+    public abstract class StateEnemyAI : MonoBehaviour, IStateEnemyAI
     {
         [SerializeField] private List<TransitionEnemyAI> _transitions;
         private bool _isActivated = false;
 
-        public event Action<StateEnemyAI> NeedToSwitchToNextState;
+        public event Action<IStateEnemyAI> NeedToSwitchToNextState;
 
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
+
+        public abstract ILookPointCalculator LookPointCalculator { get; }
 
         public void Enter(IEnemyStateMachineControllable stateMachineControllable)
         {
@@ -85,7 +88,7 @@ namespace Enemies.State_Machine
             }
         }
 
-        private void OnNeedTransit(StateEnemyAI nextState)
+        private void OnNeedTransit(IStateEnemyAI nextState)
         {
             UnsubscribeFromTransitionEvents();
             NeedToSwitchToNextState?.Invoke(nextState);

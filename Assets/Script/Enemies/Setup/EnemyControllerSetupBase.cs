@@ -3,6 +3,8 @@ using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Disableable;
+using Common.Readonly_Rigidbody;
+using Enemies.Look;
 using Enemies.Movement;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
@@ -33,6 +35,7 @@ namespace Enemies.Setup
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableItemsFactory _itemsFactory;
         private EnemyTargetFromTriggersSelector _targetFromTriggersSelector;
+        private EnemyLook _enemyLook;
         protected abstract CharacterBase Character { get; }
         protected abstract EnemyMovement Movement { get; }
 
@@ -59,6 +62,8 @@ namespace Enemies.Setup
             _seeker = GetComponent<Seeker>();
             _thisRigidbody = GetComponent<Rigidbody>();
             _targetFromTriggersSelector = new EnemyTargetFromTriggersSelector();
+            _enemyLook = new EnemyLook(_thisRigidbody.transform, new ReadonlyRigidbody(_thisRigidbody),
+                _targetFromTriggersSelector, this);
             _targetTriggers.ForEach(trigger => _targetFromTriggersSelector.AddTrigger(trigger));
 
             SpecialPrepareAction();
@@ -67,7 +72,8 @@ namespace Enemies.Setup
             {
                 Movement,
                 Character,
-                _targetFromTriggersSelector
+                _targetFromTriggersSelector,
+                _enemyLook
             };
         }
 
@@ -82,7 +88,8 @@ namespace Enemies.Setup
                 _idHolder,
                 _generalEnemySettings,
                 _itemsFactory,
-                _targetFromTriggersSelector);
+                _targetFromTriggersSelector,
+                _enemyLook);
 
             SetupConcreteController(baseSetupData, controllerToSetup);
         }

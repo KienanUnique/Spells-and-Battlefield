@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Disableable;
+using Enemies.Look;
 using Enemies.Movement;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
@@ -17,16 +18,17 @@ namespace Enemies.Setup
         public EnemyBaseSetupData(IEnemyStateMachineAI enemyStateMachineAI, IPickableItemDataForCreating itemToDrop,
             IEnemyMovement enemyMovement, List<IDisableable> itemsNeedDisabling, IIdHolder idHolder,
             GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
-            IEnemyTargetFromTriggersSelector targetFromTriggersSelector)
+            IEnemyTargetFromTriggersSelector targetFromTriggersSelector, IEnemyLook enemyLook)
         {
-            this.SetEnemyStateMachineAI = enemyStateMachineAI;
-            this.SetItemToDrop = itemToDrop;
-            this.SetEnemyMovement = enemyMovement;
-            this.SetItemsNeedDisabling = itemsNeedDisabling;
-            this.SetIdHolder = idHolder;
-            this.SetGeneralEnemySettings = generalEnemySettings;
-            this.SetPickableItemsFactory = itemsFactory;
-            this.SetTargetFromTriggersSelector = targetFromTriggersSelector;
+            SetEnemyStateMachineAI = enemyStateMachineAI;
+            SetItemToDrop = itemToDrop;
+            SetEnemyMovement = enemyMovement;
+            SetItemsNeedDisabling = itemsNeedDisabling;
+            SetIdHolder = idHolder;
+            SetGeneralEnemySettings = generalEnemySettings;
+            SetPickableItemsFactory = itemsFactory;
+            SetTargetFromTriggersSelector = targetFromTriggersSelector;
+            SetEnemyLook = enemyLook;
         }
 
         public IEnemyStateMachineAI SetEnemyStateMachineAI { get; }
@@ -37,5 +39,6 @@ namespace Enemies.Setup
         public GeneralEnemySettings SetGeneralEnemySettings { get; }
         public IPickableItemsFactory SetPickableItemsFactory { get; }
         public IEnemyTargetFromTriggersSelector SetTargetFromTriggersSelector { get; }
+        public IEnemyLook SetEnemyLook { get; }
     }
 }

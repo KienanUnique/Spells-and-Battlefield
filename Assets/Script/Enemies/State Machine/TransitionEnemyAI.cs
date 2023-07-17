@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Enemies.State_Machine
 {
-    public abstract class TransitionEnemyAI : MonoBehaviour
+    public abstract class TransitionEnemyAI : MonoBehaviour, ITransitionEnemyAI
     {
         [SerializeField] private StateEnemyAI _targetStateEnemyAI;
         private Coroutine _currentCheckConditionsCoroutine;
 
-        public event Action<StateEnemyAI> NeedTransit;
+        public event Action<IStateEnemyAI> NeedTransit;
 
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
 

@@ -1,9 +1,8 @@
 ﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Common.Readonly_Transform;
 
-namespace Common.Readonly_Transform_Getter
+namespace Common.Readonly_Transform
 {
-    public class ReadonlyTransformGetter : InitializableMonoBehaviourBase, IReadonlyTransformGetter
+    public class ReadonlyTransformGetter : InitializableMonoBehaviourBase
     {
         public IReadonlyTransform ReadonlyTransform { private set; get; }
 

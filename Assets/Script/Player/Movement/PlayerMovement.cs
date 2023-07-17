@@ -3,6 +3,7 @@ using System.Collections;
 using Common;
 using Common.Abstract_Bases.Checkers;
 using Common.Abstract_Bases.Movement;
+using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Interfaces;
 using Settings;
@@ -48,7 +49,7 @@ namespace Player.Movement
             _coroutineStarter = coroutineStarter;
             _cashedTransform = _rigidbody.transform;
             _originalParent = _cashedTransform.parent;
-            MainTransform = new ReadonlyTransform(_cashedTransform);
+            MainRigidbody = new ReadonlyRigidbody(rigidbody);
 
             _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.NotInitialized);
             _currentWallDirection = new ValueWithReactionOnChange<WallDirection>(WallDirection.Right);
@@ -84,7 +85,7 @@ namespace Player.Movement
 
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
-        public IReadonlyTransform MainTransform { get; }
+        public IReadonlyRigidbody MainRigidbody { get; }
         public Vector3 CurrentPosition => _rigidbody.position;
 
         private bool IsGrounded => _groundChecker.IsColliding;

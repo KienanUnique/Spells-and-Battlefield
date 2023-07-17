@@ -4,6 +4,7 @@ using Common;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Readonly_Transform;
+using Enemies.Look;
 using Enemies.Movement;
 using Enemies.Setup;
 using Enemies.State_Machine;
@@ -27,9 +28,10 @@ namespace Enemies.Controller
         ICoroutineStarter
     {
         private const bool NeedCreatedItemsFallDown = true;
+        protected IEnemyMovement _enemyMovement;
+        private IEnemyLook _enemyLook;
         private IEnemyStateMachineAI _enemyStateMachineAI;
         private IPickableItemDataForCreating _itemToDrop;
-        protected IEnemyMovement _enemyMovement;
         private IIdHolder _idHolder;
         private GeneralEnemySettings _generalEnemySettings;
         private IPickableItemsFactory _itemsFactory;
@@ -44,6 +46,7 @@ namespace Enemies.Controller
             _generalEnemySettings = setupData.SetGeneralEnemySettings;
             _itemsFactory = setupData.SetPickableItemsFactory;
             _targetFromTriggersSelector = setupData.SetTargetFromTriggersSelector;
+            _enemyLook = setupData.SetEnemyLook;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -134,7 +137,7 @@ namespace Enemies.Controller
             switch (newStatus)
             {
                 case InitializationStatus.Initialized:
-                    _enemyStateMachineAI.StartStateMachine(this);
+                    _enemyStateMachineAI.StartStateMachine(this, _enemyLook);
                     break;
                 case InitializationStatus.NonInitialized:
                 default:
@@ -164,7 +167,7 @@ namespace Enemies.Controller
             var cashedTransform = transform;
             var dropDirection = _targetFromTriggersSelector.CurrentTarget == null
                 ? cashedTransform.forward
-                : (_targetFromTriggersSelector.CurrentTarget.MainTransform.Position - cashedTransform.position)
+                : (((IReadonlyTransform) _targetFromTriggersSelector.CurrentTarget.MainRigidbody).Position - cashedTransform.position)
                 .normalized;
             var spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
             var pickableSpell = _itemsFactory.Create(_itemToDrop, spawnPosition, NeedCreatedItemsFallDown);

@@ -41,7 +41,7 @@ namespace Enemies.Concrete_Types.Knight
         public void StartSwordAttack(IEnemyTarget target)
         {
             _knightVisual.StartAttackWithSwordAnimation();
-            _enemyMovement.StartFollowingPosition(target.MainTransform);
+            _enemyMovement.StartFollowingPosition(target.MainRigidbody);
         }
 
         public void StopSwordAttack()
