@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Enemies.Look
 {
-    public class EnemyLook : BaseWithDisabling, IEnemyLook
+    public class EnemyLook : IEnemyLook
     {
         private readonly Transform _transformToRotate;
         private readonly ICoroutineStarter _coroutineStarter;
@@ -34,7 +34,7 @@ namespace Enemies.Look
         public void SetLookPointCalculator(ILookPointCalculator lookPointCalculator)
         {
             if (lookPointCalculator == null) return;
-            
+
             lookPointCalculator.SetLookData(_thisRigidbody, _targetFromTriggersSelector.CurrentTarget);
             _lookPointCalculator = lookPointCalculator;
             TryStartLookingCoroutine();
@@ -44,14 +44,6 @@ namespace Enemies.Look
         {
             if (_lookCoroutine == null) return;
             _coroutineStarter.StopCoroutine(_lookCoroutine);
-        }
-
-        protected override void SubscribeOnEvents()
-        {
-        }
-
-        protected override void UnsubscribeFromEvents()
-        {
         }
 
         private void TryStartLookingCoroutine()
@@ -65,6 +57,7 @@ namespace Enemies.Look
             while (true)
             {
                 _transformToRotate.rotation = _lookPointCalculator.CalculateLookPointDirection();
+                yield return null;
             }
         }
     }

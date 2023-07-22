@@ -6,7 +6,9 @@ namespace Enemies.Look_Point_Calculator.Concrete_Types
     {
         public override Quaternion CalculateLookPointDirection()
         {
-            return Quaternion.LookRotation(_thisRigidbody.Velocity.normalized);
+            return _thisRigidbody.Velocity == Vector3.zero
+                ? _thisRigidbody.Rotation
+                : Quaternion.LookRotation(_thisRigidbody.Velocity);
         }
     }
 }

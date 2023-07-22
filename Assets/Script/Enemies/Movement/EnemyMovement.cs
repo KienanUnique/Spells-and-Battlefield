@@ -128,11 +128,6 @@ namespace Enemies.Movement
                     SetDirectionTowardsPoint(targetPosition.Position, ref direction);
                 }
 
-                if (direction != Vector3.zero)
-                {
-                    _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
-                }
-
                 yield return waitForFixedUpdate;
             }
         }

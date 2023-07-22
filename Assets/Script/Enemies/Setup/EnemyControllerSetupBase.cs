@@ -73,7 +73,6 @@ namespace Enemies.Setup
                 Movement,
                 Character,
                 _targetFromTriggersSelector,
-                _enemyLook
             };
         }
 
