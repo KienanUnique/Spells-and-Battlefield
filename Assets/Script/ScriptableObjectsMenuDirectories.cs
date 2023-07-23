@@ -1,6 +1,6 @@
 ﻿public static class ScriptableObjectsMenuDirectories
 {
-    private const string RootDirectory = "Spells and Battlefield/";
+    public const string RootDirectory = "Spells and Battlefield/";
 
     #region Spells
 

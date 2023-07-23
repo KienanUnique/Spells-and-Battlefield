@@ -16,8 +16,7 @@ MonoBehaviour:
   _cardInformation:
     _icon: {fileID: 21300000, guid: 42f6c722ead369b4b934a116b4324a4d, type: 3}
     _title: Heal
-  _animationInformation:
-    _castAnimationAnimatorOverrideController: {fileID: 22100000, guid: fafa660b8bafd8443b7400437ff0c012, type: 2}
+  _animationData: {fileID: 11400000, guid: a0970a440165e9d4f86996e9adddd37d, type: 2}
   _dataForSpellController:
     _movement: {fileID: 11400000, guid: da903162503c1b1418a8327a7a18e499, type: 2}
     _appliers:

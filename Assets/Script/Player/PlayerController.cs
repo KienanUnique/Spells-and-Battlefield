@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Common.Animation_Data;
 using Common.Collection_With_Reaction_On_Change;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
@@ -270,9 +271,9 @@ namespace Player
             _playerSpellsManager.TryCastSelectedSpell();
         }
 
-        private void OnNeedPlaySpellAnimation(ISpellAnimationInformation spellAnimationInformation)
+        private void OnNeedPlaySpellAnimation(IAnimationData spellAnimationData)
         {
-            _playerVisual.PlayUseSpellAnimation(spellAnimationInformation.CastAnimationAnimatorOverrideController);
+            _playerVisual.PlayUseSpellAnimation(spellAnimationData);
         }
 
         private void OnCastSpellEventInvokerForAnimationMoment()

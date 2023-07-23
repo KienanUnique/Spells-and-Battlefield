@@ -1,3 +1,4 @@
+using Common.Animation_Data;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -6,6 +7,7 @@ namespace Player.Visual
     public class PlayerVisual : IPlayerVisual
     {
         private static readonly int AttackTriggerHash = Animator.StringToHash("Attack");
+        private static readonly int UseSpellFloatSpeedHash = Animator.StringToHash("Use Spell Speed");
         private static readonly int MovingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
         private static readonly int MovingDirectionYFloatHash = Animator.StringToHash("Moving Direction Y");
 
@@ -26,9 +28,10 @@ namespace Player.Visual
             _characterAnimator = characterAnimator;
         }
 
-        public void PlayUseSpellAnimation(AnimatorOverrideController useSpellHandsAnimatorController)
+        public void PlayUseSpellAnimation(IAnimationData spellAnimationData)
         {
-            _characterAnimator.runtimeAnimatorController = useSpellHandsAnimatorController;
+            _characterAnimator.runtimeAnimatorController = spellAnimationData.AnimationAnimatorOverrideController;
+            _characterAnimator.SetFloat(UseSpellFloatSpeedHash, spellAnimationData.AnimationSpeed);
             _characterAnimator.SetTrigger(AttackTriggerHash);
         }
 

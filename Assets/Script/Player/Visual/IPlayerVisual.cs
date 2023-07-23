@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Common.Animation_Data;
+using UnityEngine;
 
 namespace Player.Visual
 {
     public interface IPlayerVisual
     {
-        void PlayUseSpellAnimation(AnimatorOverrideController useSpellHandsAnimatorController);
+        void PlayUseSpellAnimation(IAnimationData spellAnimationData);
         void PlayGroundJumpAnimation();
         void PlayFallAnimation();
         void PlayLandAnimation();

@@ -5,6 +5,7 @@ using System.Linq;
 using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Disableable;
+using Common.Animation_Data;
 using Common.Collection_With_Reaction_On_Change;
 using Common.Readonly_Transform;
 using Interfaces;
@@ -51,7 +52,7 @@ namespace Player.Spell_Manager
             _lastChanceSpellType = spellTypesSetting.LastChanceSpellType;
         }
 
-        public event Action<ISpellAnimationInformation> NeedPlaySpellAnimation;
+        public event Action<IAnimationData> NeedPlaySpellAnimation;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
 
@@ -70,7 +71,7 @@ namespace Player.Spell_Manager
             {
                 _spellGroupFromWhichToCreateSpell = SelectedSpellGroup;
                 _spellToCreate = SelectedSpell;
-                NeedPlaySpellAnimation?.Invoke(_spellToCreate.SpellAnimationInformation);
+                NeedPlaySpellAnimation?.Invoke(_spellToCreate.SpellAnimationData);
                 _isWaitingForAnimationFinish = true;
             }
         }

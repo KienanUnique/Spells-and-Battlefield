@@ -1,3 +1,4 @@
+using Common.Animation_Data;
 using Pickable_Items.Data_For_Creating.Scriptable_Object;
 using Pickable_Items.Prefab_Provider;
 using Pickable_Items.Prefab_Provider.Concrete_Types;
@@ -14,13 +15,13 @@ namespace Spells.Spell.Scriptable_Objects
         menuName = ScriptableObjectsMenuDirectories.SpellSystemDirectory + "Spell", order = 0)]
     public class SpellScriptableObject : PickableCardScriptableObjectBase, ISpell
     {
-        [SerializeField] private SpellAnimationInformation _animationInformation;
+        [SerializeField] private AnimationData _animationData;
         [SerializeField] private SpellDataForSpellControllerProvider _dataForSpellController;
         [SerializeField] private SpellPrefabProviderScriptableObject _spellPrefabProvider;
         [SerializeField] private PickableCardPrefabProvider _cardPrefabProvider;
         [SerializeField] private SpellTypeScriptableObject _type;
 
-        public ISpellAnimationInformation SpellAnimationInformation => _animationInformation;
+        public IAnimationData SpellAnimationData => _animationData;
         public ISpellPrefabProvider SpellPrefabProvider => _spellPrefabProvider;
         public ISpellType SpellType => _type.GetImplementationObject();
 
