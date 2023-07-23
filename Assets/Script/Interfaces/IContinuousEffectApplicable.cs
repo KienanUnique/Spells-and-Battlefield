@@ -1,4 +1,4 @@
-﻿using Spells.Continuous_Effect;
+﻿using Common.Mechanic_Effects.Continuous_Effect;
 
 namespace Interfaces
 {

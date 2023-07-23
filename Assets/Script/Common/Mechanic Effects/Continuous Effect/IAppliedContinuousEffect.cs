@@ -1,7 +1,7 @@
 ﻿using System;
 using Interfaces;
 
-namespace Spells.Continuous_Effect
+namespace Common.Mechanic_Effects.Continuous_Effect
 {
     public interface IAppliedContinuousEffect
     {

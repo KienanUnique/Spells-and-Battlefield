@@ -3,6 +3,7 @@ using System.Collections;
 using Common;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Common.Mechanic_Effects.Continuous_Effect;
 using Common.Readonly_Transform;
 using Enemies.Look;
 using Enemies.Movement;
@@ -15,7 +16,6 @@ using Pathfinding;
 using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
 using Settings.Enemy;
-using Spells.Continuous_Effect;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 

@@ -1,31 +1,29 @@
 ﻿using System.Collections.Generic;
-using Spells.Abstract_Types.Implementation_Bases.Implementations;
-using Spells.Abstract_Types.Scriptable_Objects.Parts;
-using Spells.Continuous_Effect;
-using Spells.Implementations_Interfaces.Implementations;
+using Common.Mechanic_Effects.Continuous_Effect;
+using Common.Mechanic_Effects.Scriptable_Objects;
 using UnityEngine;
 
-namespace Spells.Concrete_Types.Mechanics
+namespace Common.Mechanic_Effects.Concrete_Types
 {
     [CreateAssetMenu(fileName = "Continuous Mechanic",
-        menuName = ScriptableObjectsMenuDirectories.SpellMechanicDirectory + "Continuous Mechanic", order = 0)]
-    public class ContinuousMechanic : SpellContinuousMechanicEffectScriptableObject
+        menuName = ScriptableObjectsMenuDirectories.MechanicsDirectory + "Continuous Mechanic", order = 0)]
+    public class ContinuousMechanic : ContinuousMechanicEffectScriptableObject
     {
-        [SerializeField] private List<SpellMechanicEffectScriptableObject> _mechanicEffects;
+        [SerializeField] private List<MechanicEffectScriptableObject> _mechanicEffects;
         [SerializeField] private float _cooldownInSeconds;
         [SerializeField] private float _durationInSeconds;
         [SerializeField] private bool _needIgnoreCooldown;
 
-        public override ISpellMechanicEffect GetImplementationObject()
+        public override IMechanicEffect GetImplementationObject()
         {
-            var spellMechanicEffects = new List<ISpellMechanicEffect>();
+            var spellMechanicEffects = new List<IMechanicEffect>();
             _mechanicEffects.ForEach(effectScriptableObject =>
                 spellMechanicEffects.Add(effectScriptableObject.GetImplementationObject()));
             return new ContinuousMechanicImplementation(new ContinuousEffect(_cooldownInSeconds, spellMechanicEffects,
                 _durationInSeconds, _needIgnoreCooldown));
         }
 
-        private class ContinuousMechanicImplementation : SpellContinuousMechanicEffectImplementationBase
+        private class ContinuousMechanicImplementation : ContinuousMechanicEffectImplementationBase
         {
             public ContinuousMechanicImplementation(IContinuousEffect effect) : base(effect)
             {

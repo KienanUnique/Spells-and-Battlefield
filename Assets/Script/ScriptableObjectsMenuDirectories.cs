@@ -8,10 +8,15 @@
 
     public const string SpellAppliersDirectory = SpellSystemDirectory + "Spell Appliers/";
     public const string SpellObjectsProvidersDirectory = SpellSystemDirectory + "Spell Objects Providers/";
-    public const string SpellMechanicDirectory = SpellSystemDirectory + "Mechanic/";
     public const string SpellMovementDirectory = SpellSystemDirectory + "Movement/";
     public const string SpellTargetSelectorDirectory = SpellSystemDirectory + "Target Selector/";
     public const string SpellTriggerDirectory = SpellSystemDirectory + "Trigger/";
+
+    #endregion
+
+    #region Mechanics
+
+    public const string MechanicsDirectory = RootDirectory + "Mechanics/";
 
     #endregion
 
@@ -22,7 +27,7 @@
     public const string GeneralSettingsDirectory = SettingsDirectory + "General/";
     public const string ConcreteEnemiesSettingsDirectory = SettingsDirectory + "Concrete Enemies/";
     public const string ConcreteUISettingsDirectory = SettingsDirectory + "Concrete UI/";
-    
+
     public const string PuzzleDirectory = SettingsDirectory + "Puzzles/";
     public const string PuzzleTriggersDirectory = PuzzleDirectory + "Triggers/";
     public const string IdentifiersDirectory = PuzzleDirectory + "Identifiers/";

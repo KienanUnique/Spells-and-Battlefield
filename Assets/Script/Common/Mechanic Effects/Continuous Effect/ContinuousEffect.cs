@@ -2,22 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using Interfaces;
-using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
-namespace Spells.Continuous_Effect
+namespace Common.Mechanic_Effects.Continuous_Effect
 {
     public class ContinuousEffect : IContinuousEffect
     {
         private readonly float _cooldownInSeconds;
         private readonly float _durationInSeconds;
-        private readonly List<ISpellMechanicEffect> _mechanics;
+        private readonly List<IMechanicEffect> _mechanics;
         private readonly bool _needIgnoreCooldown;
         private Coroutine _effectCoroutine;
-        private ISpellInteractable _target;
+        private IInteractable _target;
         private ICoroutineStarter _coroutineStarter;
 
-        public ContinuousEffect(float cooldownInSeconds, List<ISpellMechanicEffect> mechanics, float durationInSeconds,
+        public ContinuousEffect(float cooldownInSeconds, List<IMechanicEffect> mechanics, float durationInSeconds,
             bool needIgnoreCooldown)
         {
             _cooldownInSeconds = cooldownInSeconds;
@@ -46,7 +45,7 @@ namespace Spells.Continuous_Effect
             _effectCoroutine = null;
             foreach (var mechanic in _mechanics)
             {
-                if (mechanic is ISpellMechanicEffectWithRollback mechanicEffectWithRollback)
+                if (mechanic is IMechanicEffectWithRollback mechanicEffectWithRollback)
                 {
                     mechanicEffectWithRollback.Rollback();
                 }
@@ -55,7 +54,7 @@ namespace Spells.Continuous_Effect
             EffectEnded?.Invoke(this);
         }
 
-        public void SetTarget(ISpellInteractable target)
+        public void SetTarget(IInteractable target)
         {
             _target = target;
         }

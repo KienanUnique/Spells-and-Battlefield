@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
+using Common.Mechanic_Effects.Continuous_Effect;
 using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
-using Spells.Continuous_Effect;
 using UnityEngine;
 
 namespace Common.Abstract_Bases.Character

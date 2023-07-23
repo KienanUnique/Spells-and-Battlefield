@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Common.Mechanic_Effects;
+using Common.Mechanic_Effects.Scriptable_Objects;
 using Interfaces;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
@@ -12,13 +14,13 @@ namespace Spells.Concrete_Types.Appliers
         menuName = ScriptableObjectsMenuDirectories.SpellAppliersDirectory + "Default Spell Applier", order = 0)]
     public class DefaultSpellApplier : SpellApplierScriptableObject
     {
-        [SerializeField] private List<SpellMechanicEffectScriptableObject> _spellMechanicEffects;
+        [SerializeField] private List<MechanicEffectScriptableObject> _spellMechanicEffects;
         [SerializeField] private SpellTargetSelectorScriptableObject _targetSelector;
         [SerializeField] private SpellTriggerScriptableObject _spellTrigger;
 
         public override ISpellApplier GetImplementationObject()
         {
-            var iSpellMechanicsList = new List<ISpellMechanicEffect>();
+            var iSpellMechanicsList = new List<IMechanicEffect>();
             _spellMechanicEffects.ForEach(spellMechanicEffect =>
                 iSpellMechanicsList.Add(spellMechanicEffect.GetImplementationObject()));
             return new DefaultSpellApplierImplementation(iSpellMechanicsList, _targetSelector.GetImplementationObject(),
@@ -27,11 +29,11 @@ namespace Spells.Concrete_Types.Appliers
 
         private class DefaultSpellApplierImplementation : SpellApplierImplementationBase
         {
-            private readonly List<ISpellMechanicEffect> _spellMechanicEffects;
+            private readonly List<IMechanicEffect> _spellMechanicEffects;
             private readonly ISpellTargetSelector _targetSelector;
             private readonly ISpellTrigger _spellTrigger;
 
-            public DefaultSpellApplierImplementation(List<ISpellMechanicEffect> spellMechanicEffects,
+            public DefaultSpellApplierImplementation(List<IMechanicEffect> spellMechanicEffects,
                 ISpellTargetSelector targetSelector, ISpellTrigger spellTrigger)
             {
                 _spellMechanicEffects = spellMechanicEffects;
@@ -70,7 +72,7 @@ namespace Spells.Concrete_Types.Appliers
             {
                 foreach (var effect in _spellMechanicEffects)
                 {
-                    if (effect is ISpellMechanicEffectWithRollback effectWithRollback)
+                    if (effect is IMechanicEffectWithRollback effectWithRollback)
                     {
                         effectWithRollback.Rollback();
                     }
@@ -89,7 +91,8 @@ namespace Spells.Concrete_Types.Appliers
             private void HandleSpellEffect()
             {
                 var selectedTargets = _targetSelector.SelectTargets();
-                _spellMechanicEffects.ForEach(mechanicEffect => mechanicEffect.ApplyEffectToTargets(selectedTargets));
+                _spellMechanicEffects.ForEach(mechanicEffect =>
+                    mechanicEffect.ApplyEffectToTargets(new List<IInteractable>(selectedTargets)));
             }
         }
     }
