@@ -24,12 +24,14 @@ namespace Pickable_Items.Controllers
         private Rigidbody _rigidbody;
         private ValueWithReactionOnChange<ControllerStates> _currentControllerState;
         private IStrategyForPickableController _strategyForPickableController;
+        private GameObject _doTweenLinkGameObject;
 
         protected void Initialize(IPickableItemControllerBaseSetupData setupData)
         {
             _pickerTrigger = setupData.SetPickerTrigger;
             _groundChecker = setupData.SetGroundChecker;
             _visualObjectTransform = setupData.SetVisualObjectTransform;
+            _doTweenLinkGameObject = _visualObjectTransform.gameObject;
             _pickableItemsSettings = setupData.SetPickableItemsSettings;
             _groundLayerMaskSetting = setupData.SetGroundLayerMaskSetting;
             _pickableItemsSettings = setupData.SetPickableItemsSettings;
@@ -130,7 +132,7 @@ namespace Pickable_Items.Controllers
         {
             _visualObjectTransform.DOScale(Vector3.zero, _pickableItemsSettings.DisappearScaleAnimationDuration)
                 .SetEase(_pickableItemsSettings.SizeChangeEase)
-                .SetLink(gameObject)
+                .SetLink(_doTweenLinkGameObject)
                 .OnComplete(OnPickupAnimationFinished);
         }
 
@@ -151,7 +153,7 @@ namespace Pickable_Items.Controllers
                 {
                     visualObjectSequence.Append(_visualObjectTransform.DOMoveY(
                         hitGround.point.y + _pickableItemsSettings.AnimationMinimumHeight,
-                        _pickableItemsSettings.YAnimationDuration).SetLink(gameObject));
+                        _pickableItemsSettings.YAnimationDuration).SetLink(_doTweenLinkGameObject));
                 }
             }
 
@@ -160,13 +162,13 @@ namespace Pickable_Items.Controllers
                     _pickableItemsSettings.YAnimationDuration)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(_pickableItemsSettings.YMovingEase)
-                .SetLink(gameObject));
+                .SetLink(_doTweenLinkGameObject));
             _visualObjectTransform
                 .DORotate(new Vector3(0, 360, 0), _pickableItemsSettings.RotateAnimationDuration,
                     RotateMode.FastBeyond360)
                 .SetEase(_pickableItemsSettings.RotatingEase)
                 .SetLoops(-1, LoopType.Restart)
-                .SetLink(gameObject);
+                .SetLink(_doTweenLinkGameObject);
         }
 
 
@@ -174,7 +176,7 @@ namespace Pickable_Items.Controllers
         {
             _visualObjectTransform.DOScale(Vector3.one, _pickableItemsSettings.AppearScaleAnimationDuration)
                 .SetEase(_pickableItemsSettings.SizeChangeEase)
-                .SetLink(gameObject);
+                .SetLink(_doTweenLinkGameObject);
         }
 
 
