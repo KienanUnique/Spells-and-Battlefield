@@ -53350,9 +53350,9 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.6333333
-    functionName: InvokeAttackWithSwordAnimationMomentStart
+    functionName: InvokeAnimationUseActionMomentEvent
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11500000, guid: 7cb43afeaf2e41c8be424e7dcb38d087, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

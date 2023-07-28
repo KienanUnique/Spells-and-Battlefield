@@ -6,10 +6,8 @@ namespace Player.Character
 {
     public class PlayerCharacter : CharacterBase, IPlayerCharacter
     {
-        private const string NamePrefix = "Player";
-
         public PlayerCharacter(ICoroutineStarter coroutineStarter, CharacterSettingsSection characterSettings) :
-            base(coroutineStarter, characterSettings, NamePrefix)
+            base(coroutineStarter, characterSettings)
         {
         }
     }

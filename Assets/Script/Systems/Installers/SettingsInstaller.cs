@@ -19,7 +19,6 @@ namespace Systems.Installers
         [SerializeField] private PlayerSettings _playerSettings;
 
         [Header("Enemies")] [SerializeField] private GeneralEnemySettings _generalEnemySettings;
-        [SerializeField] private KnightSettings _knightSettings;
 
         [Header("UI")] [SerializeField] private GeneralUIAnimationSettings _generalUIAnimationSettings;
         [SerializeField] private SpellPanelSettings _spellPanelSettings;
@@ -68,11 +67,6 @@ namespace Systems.Installers
             Container
                 .Bind<GeneralEnemySettings>()
                 .FromInstance(_generalEnemySettings)
-                .AsSingle();
-
-            Container
-                .Bind<KnightSettings>()
-                .FromInstance(_knightSettings)
                 .AsSingle();
         }
 

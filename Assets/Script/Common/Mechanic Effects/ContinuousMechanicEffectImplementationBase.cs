@@ -24,7 +24,7 @@ namespace Common.Mechanic_Effects
             }
         }
 
-        public virtual void ApplyEffectToTargets(List<IInteractable> targets)
+        public virtual void ApplyEffectToTargets(IReadOnlyCollection<IInteractable> targets)
         {
             foreach (var target in targets)
             {

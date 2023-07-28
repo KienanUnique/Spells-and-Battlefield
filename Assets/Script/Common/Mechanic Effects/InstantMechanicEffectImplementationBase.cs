@@ -8,9 +8,12 @@ namespace Common.Mechanic_Effects
     {
         public abstract void ApplyEffectToTarget(IInteractable target);
 
-        public virtual void ApplyEffectToTargets(List<IInteractable> targets)
+        public virtual void ApplyEffectToTargets(IReadOnlyCollection<IInteractable> targets)
         {
-            targets.ForEach(target => ApplyEffectToTarget(target));
+            foreach (var interactableTarget in targets)
+            {
+                ApplyEffectToTarget(interactableTarget);
+            }
         }
     }
 }

@@ -4,7 +4,6 @@ using Common.Abstract_Bases.Disableable;
 using Common.Mechanic_Effects.Continuous_Effect;
 using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
-using UnityEngine;
 
 namespace Common.Abstract_Bases.Character
 {
@@ -12,17 +11,14 @@ namespace Common.Abstract_Bases.Character
     {
         protected readonly ValueWithReactionOnChange<float> _currentCountCountOfHitPoints;
         protected readonly ICoroutineStarter _coroutineStarter;
-        private readonly List<IAppliedContinuousEffect> _currentEffects;
-        private readonly CharacterSettingsSection _characterSettings;
-        private readonly string _namePrefix;
-        private readonly ValueWithReactionOnChange<CharacterState> _currentState;
+        protected readonly List<IAppliedContinuousEffect> _currentEffects;
+        protected readonly CharacterSettingsSection _characterSettings;
+        protected readonly ValueWithReactionOnChange<CharacterState> _currentState;
 
-        protected CharacterBase(ICoroutineStarter coroutineStarter, CharacterSettingsSection characterSettings,
-            string namePrefix)
+        protected CharacterBase(ICoroutineStarter coroutineStarter, CharacterSettingsSection characterSettings)
         {
             _coroutineStarter = coroutineStarter;
             _characterSettings = characterSettings;
-            _namePrefix = namePrefix;
             _currentState = new ValueWithReactionOnChange<CharacterState>(CharacterState.Alive);
             _currentCountCountOfHitPoints =
                 new ValueWithReactionOnChange<float>(_characterSettings.MaximumCountOfHitPoints);
@@ -37,7 +33,7 @@ namespace Common.Abstract_Bases.Character
         public float HitPointCountRatio =>
             _currentCountCountOfHitPoints.Value / _characterSettings.MaximumCountOfHitPoints;
 
-        public void HandleHeal(int countOfHitPoints)
+        public virtual void HandleHeal(int countOfHitPoints)
         {
             if (_currentState.Value == CharacterState.Dead) return;
             _currentCountCountOfHitPoints.Value += countOfHitPoints;
@@ -45,12 +41,9 @@ namespace Common.Abstract_Bases.Character
             {
                 _currentCountCountOfHitPoints.Value = _characterSettings.MaximumCountOfHitPoints;
             }
-
-            Debug.Log(
-                $"{_namePrefix}: Handle_Heal<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints.Value}>, Current_State<{_currentState.Value.ToString()}>");
         }
 
-        public void HandleDamage(int countOfHitPoints)
+        public virtual void HandleDamage(int countOfHitPoints)
         {
             if (_currentState.Value == CharacterState.Dead) return;
             _currentCountCountOfHitPoints.Value -= countOfHitPoints;
@@ -59,12 +52,9 @@ namespace Common.Abstract_Bases.Character
                 _currentState.Value = CharacterState.Dead;
                 _currentCountCountOfHitPoints.Value = 0;
             }
-
-            Debug.Log(
-                $"{_namePrefix}: Handle_Damage<{countOfHitPoints}> --> Hp_Left<{_currentCountCountOfHitPoints.Value}>, Current_State<{_currentState.Value.ToString()}>");
         }
 
-        public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
+        public virtual void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {
             if (_currentState.Value == CharacterState.Dead) return;
             _currentEffects.Add(effect);

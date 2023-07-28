@@ -17,7 +17,7 @@ namespace Common.Mechanic_Effects.Concrete_Types
             {
             }
 
-            public void ApplyEffectToTargets(List<IInteractable> targets)
+            public void ApplyEffectToTargets(IReadOnlyCollection<IInteractable> targets)
             {
             }
 

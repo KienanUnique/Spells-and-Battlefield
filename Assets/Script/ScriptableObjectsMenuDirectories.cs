@@ -20,12 +20,20 @@
 
     #endregion
 
+    #region Enemies
+
+    public const string EnemiesDirectory = RootDirectory + "Enemies/";
+    public const string StatesDataDirectory = EnemiesDirectory + "States Data/";
+    public const string EnemyMovementProvidersDirectory = EnemiesDirectory + "Movement Providers/";
+    public const string EnemyCharacterProvidersDirectory = EnemiesDirectory + "Character Providers/";
+
+    #endregion
+
     #region Settings
 
     private const string SettingsDirectory = RootDirectory + "Settings/";
 
     public const string GeneralSettingsDirectory = SettingsDirectory + "General/";
-    public const string ConcreteEnemiesSettingsDirectory = SettingsDirectory + "Concrete Enemies/";
     public const string ConcreteUISettingsDirectory = SettingsDirectory + "Concrete UI/";
 
     public const string PuzzleDirectory = SettingsDirectory + "Puzzles/";
@@ -43,10 +51,7 @@
 
     #region PrefabProviders
 
-    private const string PrefabProvidersDirectory = RootDirectory + "Prefab Providers/";
-
-    public const string EnemiesPrefabProvidersDirectory = PrefabProvidersDirectory + "Enemies/";
-    public const string PickableItemsProvidersDirectory = PrefabProvidersDirectory + "Pickable Items/";
+    public const string PickableItemsProvidersDirectory = RootDirectory + "Pickable Items/";
 
     #endregion
 

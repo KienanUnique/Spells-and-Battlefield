@@ -1,4 +1,5 @@
 ﻿using Enemies;
+using Enemies.Character;
 
 namespace Interfaces
 {

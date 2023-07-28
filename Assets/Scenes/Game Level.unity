@@ -259,9 +259,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4742384829614247474}
-  - {fileID: 1636275440}
-  - {fileID: 1737455421}
-  - {fileID: 1118890473}
+  - {fileID: 2120910905}
+  - {fileID: 1106345283}
+  - {fileID: 348591754}
   m_Father: {fileID: 301102286}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -353,7 +353,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1820
+  m_Name: pb_Mesh-1936
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1105,6 +1105,11 @@ Transform:
   m_Father: {fileID: 797855707}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &348591754 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7055320062413825570, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
+  m_PrefabInstance: {fileID: 1118890472}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &360076573
 GameObject:
   m_ObjectHideFlags: 0
@@ -1418,7 +1423,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1790
+  m_Name: pb_Mesh-1906
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2170,6 +2175,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 245c36a0a69c48358714ad8aa6222e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1106345283 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7055320062413825570, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
+  m_PrefabInstance: {fileID: 1737455420}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1109136848 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
@@ -2238,11 +2248,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
---- !u!4 &1118890473 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7055320062413825570, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
-  m_PrefabInstance: {fileID: 1118890472}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1120916343
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2920,7 +2925,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1934
+  m_Name: pb_Mesh-2050
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3224,11 +3229,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
---- !u!4 &1636275440 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7055320062413825570, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
-  m_PrefabInstance: {fileID: 1636275439}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1676414154 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8250483114782198183, guid: 4d800deb0fca13f459e3517f54409907, type: 3}
@@ -3389,11 +3389,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
---- !u!4 &1737455421 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7055320062413825570, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
-  m_PrefabInstance: {fileID: 1737455420}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1807984799
 GameObject:
   m_ObjectHideFlags: 0
@@ -3622,6 +3617,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3239662561255247508, guid: 57ddd040b9af3c8459be71dcc8a0583e, type: 3}
   m_PrefabInstance: {fileID: 2117922264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2120910905 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7055320062413825570, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
+  m_PrefabInstance: {fileID: 1636275439}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &78191380984877693 stripped
 Transform:

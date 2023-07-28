@@ -1,50 +1,41 @@
 ﻿using System;
-using Enemies.Look;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Enemies.Look_Point_Calculator;
+using Enemies.State_Machine.States;
 using Enemies.Target_Selector_From_Triggers;
 using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine
 {
-    public class EnemyStateMachineAI : MonoBehaviour, IEnemyStateMachineAI
+    public class EnemyStateMachineAI : InitializableMonoBehaviourBase, IEnemyStateMachineAI,
+        IInitializableEnemyStateMachineAI
     {
         [SerializeField] private StateEnemyAI _firstStateEnemyAI;
         private IStateEnemyAI _currentStateEnemyAI;
         private IEnemyStateMachineControllable _stateMachineControllable;
-        private IEnemyLook _enemyLook;
         private bool _isActive;
-        private IEnemyTargetFromTriggersSelector _targetFromTriggersSelector;
 
-        private void OnEnable()
+        public void Initialize(IEnemyStateMachineControllable stateMachineControllable)
         {
-            if (_isActive)
-            {
-                SubscribeOnEvents();
-            }
+            _stateMachineControllable = stateMachineControllable;
+            SetInitializedStatus();
         }
 
-        private void OnDisable()
-        {
-            if (_isActive)
-            {
-                UnsubscribeFromEvents();
-            }
-        }
+        public event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
 
-        public void StartStateMachine(IEnemyStateMachineControllable stateMachineControllable, IEnemyLook enemyLook)
+        private IEnemyTargetFromTriggersSelector TargetFromTriggersSelector =>
+            _stateMachineControllable.TargetFromTriggersSelector;
+
+        public void StartStateMachine()
         {
             if (_isActive)
             {
                 throw new StateMachineAlreadyStartedException();
             }
-
-            _enemyLook = enemyLook;
-            _stateMachineControllable = stateMachineControllable;
-            _targetFromTriggersSelector = _stateMachineControllable.TargetFromTriggersSelector;
-            _targetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
-            _enemyLook.StartLooking();
-            TransitToState(_firstStateEnemyAI);
+            
             _isActive = true;
+            TransitToState(_firstStateEnemyAI);
         }
 
         public void StopStateMachine()
@@ -53,17 +44,16 @@ namespace Enemies.State_Machine
             {
                 throw new StateMachineAlreadyStoppedException();
             }
-
-            _enemyLook.StopLooking();
-            TransitToState(null);
+            
             _isActive = false;
+            TransitToState(null);
         }
 
         private void TransitToState(IStateEnemyAI nextStateEnemyAI)
         {
             if (_currentStateEnemyAI != null)
             {
-                UnsubscribeFromEvents();
+                UnsubscribeFromCurrentStateEvents();
                 _currentStateEnemyAI.Exit();
             }
 
@@ -71,9 +61,9 @@ namespace Enemies.State_Machine
 
             if (_currentStateEnemyAI != null)
             {
-                _enemyLook.SetLookPointCalculator(_currentStateEnemyAI.LookPointCalculator);
-                SubscribeOnEvents();
-                _currentStateEnemyAI.Enter(_stateMachineControllable);
+                NeedChangeLookPointCalculator?.Invoke(_currentStateEnemyAI.LookPointCalculator);
+                SubscribeOnCurrentStateEvents();
+                _currentStateEnemyAI.Enter();
             }
         }
 
@@ -82,16 +72,28 @@ namespace Enemies.State_Machine
             TransitToState(_currentStateEnemyAI);
         }
 
-        private void SubscribeOnEvents()
+        protected override void SubscribeOnEvents()
         {
-            _targetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
+            if (!_isActive) return;
+            SubscribeOnCurrentStateEvents();
+        }
+        
+        protected override void UnsubscribeFromEvents()
+        {
+            UnsubscribeFromCurrentStateEvents();
+        }
+
+        private void SubscribeOnCurrentStateEvents()
+        {
+            TargetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
+            if (_currentStateEnemyAI == null) return;
             _currentStateEnemyAI.NeedToSwitchToNextState += TransitToState;
         }
 
-
-        private void UnsubscribeFromEvents()
+        private void UnsubscribeFromCurrentStateEvents()
         {
-            _targetFromTriggersSelector.CurrentTargetChanged -= OnCurrentTargetFromTriggersChanged;
+            TargetFromTriggersSelector.CurrentTargetChanged -= OnCurrentTargetFromTriggersChanged;
+            if (_currentStateEnemyAI == null) return;
             _currentStateEnemyAI.NeedToSwitchToNextState -= TransitToState;
         }
 
