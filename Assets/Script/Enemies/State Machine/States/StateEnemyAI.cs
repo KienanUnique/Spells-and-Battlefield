@@ -19,6 +19,7 @@ namespace Enemies.State_Machine.States
         }
 
         public event Action<IStateEnemyAI> NeedToSwitchToNextState;
+        public abstract event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
 
         public abstract ILookPointCalculator LookPointCalculator { get; }
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }

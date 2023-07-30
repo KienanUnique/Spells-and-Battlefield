@@ -4,7 +4,7 @@ namespace Common.Animation_Data
 {
     public interface IAnimationData
     {
-        float AnimationSpeed { get; }
-        AnimatorOverrideController AnimationAnimatorOverrideController { get; }
+        public float AnimationSpeed { get; }
+        public AnimatorOverrideController AnimationAnimatorOverrideController { get; }
     }
 }

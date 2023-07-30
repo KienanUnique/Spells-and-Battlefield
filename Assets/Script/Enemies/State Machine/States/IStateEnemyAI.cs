@@ -6,7 +6,8 @@ namespace Enemies.State_Machine.States
     public interface IStateEnemyAI
     {
         public event Action<IStateEnemyAI> NeedToSwitchToNextState;
-        public ILookPointCalculator LookPointCalculator { get; } 
+        public event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
+        public ILookPointCalculator LookPointCalculator { get; }
         public void Enter();
         public void Exit();
     }

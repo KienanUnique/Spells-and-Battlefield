@@ -1,3 +1,5 @@
+using Enemies.Look_Point_Calculator;
+using Enemies.Look_Point_Calculator.Concrete_Types;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces.Implementations;
@@ -12,7 +14,7 @@ namespace Spells.Concrete_Types.Movements
         [SerializeField] private float _speed;
         [SerializeField] private float _radius;
 
-        public override ISpellMovement GetImplementationObject() =>
+        public override ISpellMovementWithLookPointCalculator GetImplementationObject() =>
             new RotatingAroundCasterMovementImplementation(_speed, _radius);
 
         private class RotatingAroundCasterMovementImplementation : SpellMovementImplementationBase
@@ -45,6 +47,11 @@ namespace Spells.Concrete_Types.Movements
 
                 _spellRigidbodyTransform.RotateAround(fromCastObjectPosition, _spellRigidbodyTransform.up,
                     _speed * Time.fixedDeltaTime);
+            }
+
+            public override ILookPointCalculator GetLookPointCalculator()
+            {
+                return new FollowVelocityDirectionLookPointCalculator();
             }
         }
     }

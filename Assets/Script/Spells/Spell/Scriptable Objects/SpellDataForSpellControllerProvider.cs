@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Enemies.Look_Point_Calculator;
 using Spells.Abstract_Types.Scriptable_Objects;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces.Implementations;
@@ -27,7 +28,7 @@ namespace Spells.Spell.Scriptable_Objects
             }
         }
 
-        private ISpellMovement SpellObjectMovement => _movement.GetImplementationObject();
+        private ISpellMovementWithLookPointCalculator SpellObjectMovement => _movement.GetImplementationObject();
         private ISpellTrigger SpellMainTrigger => _mainTrigger.GetImplementationObject();
 
         private List<ISpellApplier> SpellAppliers
@@ -39,6 +40,8 @@ namespace Spells.Spell.Scriptable_Objects
                 return iSpellAppliersList;
             }
         }
+
+        public ILookPointCalculator LookPointCalculator => SpellObjectMovement.GetLookPointCalculator();
 
 
         public ISpellDataForSpellController GetImplementationObject(ISpellType spellType) =>

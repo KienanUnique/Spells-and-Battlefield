@@ -104,6 +104,7 @@ namespace Enemies.Controller
 
         public void StartPlayingActionAnimation(IAnimationData animationData)
         {
+            Debug.Log("StartPlayingActionAnimation");
             _visual.StartPlayingActionAnimation(animationData);
         }
 
@@ -179,6 +180,7 @@ namespace Enemies.Controller
 
         private void OnAnimationUseActionMomentTrigger()
         {
+            Debug.Log("OnAnimationUseActionMomentTrigger");
             AnimationUseActionMomentTrigger?.Invoke();
         }
 

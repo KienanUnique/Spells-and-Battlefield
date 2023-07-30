@@ -37,11 +37,14 @@ namespace Enemies.Visual
                 new List<KeyValuePair<AnimationClip, AnimationClip>>(animationData.AnimationAnimatorOverrideController
                     .overridesCount);
             _baseAnimatorOverrideController.GetOverrides(originalOverrides);
+            PrintAnimationsData(originalOverrides);
 
             var newOverrides =
                 new List<KeyValuePair<AnimationClip, AnimationClip>>(animationData.AnimationAnimatorOverrideController
                     .overridesCount);
             animationData.AnimationAnimatorOverrideController.GetOverrides(newOverrides);
+            Debug.Log("=================");
+            PrintAnimationsData(newOverrides);
 
             foreach (var animationOverride in
                      newOverrides.Where(clipOverride => clipOverride.Value != null))
@@ -60,6 +63,16 @@ namespace Enemies.Visual
             ApplyRuntimeAnimatorController(needController);
             _characterAnimator.SetFloat(ActionFloatAnimationSpeedHash, animationData.AnimationSpeed);
             _characterAnimator.SetBool(ActionBoolHash, true);
+        }
+
+        private void PrintAnimationsData(List<KeyValuePair<AnimationClip, AnimationClip>> animations)
+        {
+            foreach (var keyValuePair in animations)
+            {
+                Debug.Log(keyValuePair.Value != null
+                    ? $"{keyValuePair.Key.name} {keyValuePair.Value.name}"
+                    : $"{keyValuePair.Key.name} null");
+            }
         }
 
         public void StopPlayingActionAnimation()

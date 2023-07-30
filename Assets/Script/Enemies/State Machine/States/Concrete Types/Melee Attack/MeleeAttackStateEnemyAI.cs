@@ -1,4 +1,5 @@
-﻿using Enemies.Attack_Target_Selector;
+﻿using System;
+using Enemies.Attack_Target_Selector;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
 using Interfaces;
@@ -10,6 +11,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
     {
         [SerializeField] private AttackTargetSelectorFromZone _damageTargetSelector;
         [SerializeField] private MeleeAttackStateData _data;
+        public override event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
         public override ILookPointCalculator LookPointCalculator => new FollowTargetLookPointCalculator();
         private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
 

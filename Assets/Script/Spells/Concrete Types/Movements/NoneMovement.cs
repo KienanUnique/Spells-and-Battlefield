@@ -1,3 +1,5 @@
+using Enemies.Look_Point_Calculator;
+using Enemies.Look_Point_Calculator.Concrete_Types;
 using Interfaces;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces.Implementations;
@@ -9,9 +11,9 @@ namespace Spells.Concrete_Types.Movements
         menuName = ScriptableObjectsMenuDirectories.SpellMovementDirectory + "None Movement", order = 0)]
     public class NoneMovement : SpellMovementScriptableObject
     {
-        public override ISpellMovement GetImplementationObject() => new NoneMovementImplementation();
+        public override ISpellMovementWithLookPointCalculator GetImplementationObject() => new NoneMovementImplementation();
 
-        private class NoneMovementImplementation : ISpellMovement
+        private class NoneMovementImplementation : ISpellMovementWithLookPointCalculator
         {
             public void Initialize(Rigidbody spellRigidbody, ICaster caster)
             {
@@ -19,6 +21,11 @@ namespace Spells.Concrete_Types.Movements
 
             public void UpdatePosition()
             {
+            }
+
+            public ILookPointCalculator GetLookPointCalculator()
+            {
+                return new KeepLookDirectionLookPointCalculator();
             }
         }
     }

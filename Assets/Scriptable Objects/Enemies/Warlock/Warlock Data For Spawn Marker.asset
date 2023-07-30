@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea349b29e923443ebe377fc6f8d14070, type: 3}
+  m_Name: Warlock Data For Spawn Marker
+  m_EditorClassIdentifier: 
+  _prefabProvider: {fileID: 11400000, guid: 21664ded4eb1a734f85a1c90242b5d67, type: 2}
+  _settings: {fileID: 11400000, guid: 61b382f8f596c364bb9e22bb849cbc15, type: 2}

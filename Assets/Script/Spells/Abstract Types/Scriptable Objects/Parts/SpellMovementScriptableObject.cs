@@ -3,7 +3,7 @@ using Spells.Implementations_Interfaces.Implementations;
 
 namespace Spells.Abstract_Types.Scriptable_Objects.Parts
 {
-    public abstract class SpellMovementScriptableObject : ImplementationObjectProviderScriptableObject<ISpellMovement>
+    public abstract class SpellMovementScriptableObject : ImplementationObjectProviderScriptableObject<ISpellMovementWithLookPointCalculator>
     {
     }
 }

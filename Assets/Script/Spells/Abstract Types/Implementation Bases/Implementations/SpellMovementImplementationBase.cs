@@ -1,3 +1,4 @@
+using Enemies.Look_Point_Calculator;
 using Interfaces;
 using Spells.Implementations_Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 namespace Spells.Abstract_Types.Implementation_Bases.Implementations
 {
-    public abstract class SpellMovementImplementationBase : SpellImplementationBase, ISpellMovement
+    public abstract class SpellMovementImplementationBase : SpellImplementationBase, ISpellMovementWithLookPointCalculator
     {
         protected Transform _spellRigidbodyTransform;
 
@@ -16,5 +17,6 @@ namespace Spells.Abstract_Types.Implementation_Bases.Implementations
         }
 
         public abstract void UpdatePosition();
+        public abstract ILookPointCalculator GetLookPointCalculator();
     }
 }
