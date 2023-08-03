@@ -3,11 +3,11 @@ using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Checkers;
 using Common.Abstract_Bases.Disableable;
+using Common.Event_Invoker_For_Action_Animations;
 using Common.Readonly_Transform;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
-using Player.Event_Invoker_For_Animations;
 using Player.Look;
 using Player.Movement;
 using Player.Spell_Manager;
@@ -38,7 +38,7 @@ namespace Player.Setup
         private RigBuilder _rigBuilder;
 
         [SerializeField] private Animator _characterAnimator;
-        [SerializeField] private PlayerEventInvokerForAnimations _playerEventInvokerForAnimations;
+        [SerializeField] private EventInvokerForActionAnimations _eventInvokerForAnimations;
 
         [Header("Checkers")] [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private WallChecker _wallChecker;
@@ -90,7 +90,7 @@ namespace Player.Setup
             _playerCharacter = playerCharacter;
 
 
-            _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator);
+            _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator, _settings.Visual);
             _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
         }
 
@@ -113,7 +113,7 @@ namespace Player.Setup
 
             var controllerToSetup = GetComponent<IInitializablePlayerController>();
             var setupData = new PlayerControllerSetupData(
-                _playerEventInvokerForAnimations,
+                _eventInvokerForAnimations,
                 _playerCameraEffects,
                 _playerVisual,
                 _playerCharacter,

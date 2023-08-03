@@ -18,12 +18,12 @@ namespace Enemies.State_Machine.States.Concrete_Types
                 return;
             }
 
-            StateMachineControllable.StartFollowingObject(CurrentTarget.MainRigidbody);
+            StateMachineControllable.StartFollowingPosition(CurrentTarget.MainRigidbody);
         }
 
         protected override void SpecialExitAction()
         {
-            StateMachineControllable.StopFollowingObject();
+            StateMachineControllable.StopMovingToTarget();
         }
     }
 }

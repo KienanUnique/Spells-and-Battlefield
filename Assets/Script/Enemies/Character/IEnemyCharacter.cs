@@ -1,13 +1,8 @@
-﻿using System.Collections.Generic;
-using Common.Abstract_Bases.Character;
-using Common.Mechanic_Effects;
-using Interfaces;
+﻿using Common.Abstract_Bases.Character;
 
 namespace Enemies.Character
 {
-    public interface IEnemyCharacter : ICharacterBase
+    public interface IEnemyCharacter : ICharacterBase, IEnemyTargetsEffectsApplier
     {
-        public void ApplyEffectsToTargets(IReadOnlyCollection<IEnemyTarget> targets,
-            IReadOnlyCollection<IMechanicEffect> mechanicEffects);
     }
 }

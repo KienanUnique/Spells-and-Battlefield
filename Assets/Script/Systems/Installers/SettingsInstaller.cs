@@ -1,5 +1,5 @@
 using Settings;
-using Settings.Enemy;
+using Settings.Enemies;
 using Settings.Puzzles.Mechanisms;
 using Settings.Puzzles.Triggers;
 using Settings.UI;

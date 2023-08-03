@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using Common.Animation_Data;
-using Common.Mechanic_Effects;
-using Common.Readonly_Transform;
+﻿using Common.Event_Invoker_For_Action_Animations;
+using Enemies.Character;
+using Enemies.Look;
+using Enemies.Movement;
 using Enemies.Target_Selector_From_Triggers;
-using Interfaces;
+using Enemies.Visual;
 
 namespace Enemies.State_Machine
 {
-    public interface IEnemyStateMachineControllable
+    public interface IEnemyStateMachineControllable : IEventInvokerForActionAnimations, IEnemyActionAnimationPlayer,
+        IEnemyTargetsEffectsApplier, IEnemyMovementForStateMachine, IEnemyLookForStateMachine
     {
-        public event Action AnimationUseActionMomentTrigger;
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; }
-        public void StartFollowingObject(IReadonlyTransform target);
-        public void StopFollowingObject();
-        public void StartPlayingActionAnimation(IAnimationData animationData);
-        public void StopPlayingActionAnimation();
-        public void ApplyEffectsToTargets(IReadOnlyCollection<IEnemyTarget> targets,
-            IReadOnlyCollection<IMechanicEffect> mechanicEffects);
     }
 }

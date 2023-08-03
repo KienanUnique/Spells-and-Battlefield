@@ -53349,10 +53349,24 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.6333333
-    functionName: InvokeAnimationUseActionMomentEvent
+  - time: 0
+    functionName: InvokeActionAnimationStart
     data: 
-    objectReferenceParameter: {fileID: 11500000, guid: 7cb43afeaf2e41c8be424e7dcb38d087, type: 3}
+    objectReferenceParameter: {fileID: 11500000, guid: 9a4fdceef0184de0acacd32238f2c91c, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.6333333
+    functionName: InvokeActionAnimationKeyMomentTrigger
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: 9a4fdceef0184de0acacd32238f2c91c, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.4333333
+    functionName: InvokeActionAnimationEnd
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: 9a4fdceef0184de0acacd32238f2c91c, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

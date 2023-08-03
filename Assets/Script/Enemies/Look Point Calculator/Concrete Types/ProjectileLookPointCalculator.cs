@@ -11,19 +11,18 @@ namespace Enemies.Look_Point_Calculator.Concrete_Types
             _projectileSpeed = projectileSpeed;
         }
 
-        public override Quaternion CalculateLookPointDirection()
+        public override Vector3 CalculateLookPointDirection()
         {
             if (_isTargetNull)
             {
-                return Quaternion.identity;
+                return DefaultRotation;
             }
 
             var direction =
                 (TargetRigidbody.Position + TargetRigidbody.Velocity *
-                    Vector3.Distance(TargetRigidbody.Position, _thisRigidbody.Position) / _projectileSpeed)
-                - _thisRigidbody.Position;
-            direction.Normalize();
-            return Quaternion.LookRotation(direction);
+                    Vector3.Distance(TargetRigidbody.Position, CurrentPosition) / _projectileSpeed)
+                - CurrentPosition;
+            return direction.normalized;
         }
     }
 }

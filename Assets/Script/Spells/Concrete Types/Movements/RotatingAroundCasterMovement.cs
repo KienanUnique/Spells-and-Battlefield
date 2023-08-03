@@ -51,7 +51,7 @@ namespace Spells.Concrete_Types.Movements
 
             public override ILookPointCalculator GetLookPointCalculator()
             {
-                return new FollowVelocityDirectionLookPointCalculator();
+                return new KeepLookDirectionLookPointCalculator();
             }
         }
     }

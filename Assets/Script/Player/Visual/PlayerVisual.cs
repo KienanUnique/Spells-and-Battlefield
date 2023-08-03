@@ -1,10 +1,12 @@
+using Common.Abstract_Bases.Visual;
 using Common.Animation_Data;
+using Settings;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 namespace Player.Visual
 {
-    public class PlayerVisual : IPlayerVisual
+    public class PlayerVisual : VisualBase, IPlayerVisual
     {
         private static readonly int AttackTriggerHash = Animator.StringToHash("Attack");
         private static readonly int UseSpellFloatSpeedHash = Animator.StringToHash("Use Spell Speed");
@@ -20,17 +22,21 @@ namespace Player.Visual
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
 
         private readonly RigBuilder _rigBuilder;
-        private readonly Animator _characterAnimator;
+        private readonly PlayerSettings.PlayerVisualSettingsSection _settings;
 
-        public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator)
+        public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator,
+            PlayerSettings.PlayerVisualSettingsSection settings) :
+            base(characterAnimator)
         {
             _rigBuilder = rigBuilder;
-            _characterAnimator = characterAnimator;
+            _settings = settings;
         }
 
         public void PlayUseSpellAnimation(IAnimationData spellAnimationData)
         {
-            _characterAnimator.runtimeAnimatorController = spellAnimationData.AnimationAnimatorOverrideController;
+            ApplyAnimationOverride(new AnimatorOverrideController(_characterAnimator.runtimeAnimatorController),
+                _settings.EmptyUseSpellAnimation,
+                spellAnimationData.Clip);
             _characterAnimator.SetFloat(UseSpellFloatSpeedHash, spellAnimationData.AnimationSpeed);
             _characterAnimator.SetTrigger(AttackTriggerHash);
         }

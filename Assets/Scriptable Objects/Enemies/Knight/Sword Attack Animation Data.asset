@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c534bb7355f948e982f907b9ee74dd4e, type: 3}
   m_Name: Sword Attack Animation Data
   m_EditorClassIdentifier: 
-  _animationAnimatorOverrideController: {fileID: 22100000, guid: becd06bef458ce44cb3a6ca4d931a30b, type: 2}
+  _animation: {fileID: 7400000, guid: a92dd9e710bcee741bf2221f43b5ea18, type: 2}
   _animationSpeed: 1.5

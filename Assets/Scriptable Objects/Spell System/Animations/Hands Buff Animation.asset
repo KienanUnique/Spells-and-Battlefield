@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c534bb7355f948e982f907b9ee74dd4e, type: 3}
   m_Name: Hands Buff Animation
   m_EditorClassIdentifier: 
-  _animationAnimatorOverrideController: {fileID: 22100000, guid: fafa660b8bafd8443b7400437ff0c012, type: 2}
+  _animation: {fileID: 7400000, guid: c4de049e569339644b2de4b5f27bd68d, type: 2}
   _animationSpeed: 1

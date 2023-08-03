@@ -4,6 +4,7 @@ using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Disableable;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Common.Event_Invoker_For_Action_Animations;
 using Common.Readonly_Rigidbody;
 using Enemies.Character;
 using Enemies.Controller;
@@ -16,12 +17,11 @@ using Enemies.State_Machine.Transitions;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Trigger;
 using Enemies.Visual;
-using Enemies.Visual.Event_Invoker_For_Animations;
 using Interfaces;
 using Pathfinding;
 using Pickable_Items.Data_For_Creating.Scriptable_Object;
 using Pickable_Items.Factory;
-using Settings.Enemy;
+using Settings.Enemies;
 using UnityEngine;
 using Zenject;
 using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
@@ -38,7 +38,7 @@ namespace Enemies.Setup
         [SerializeField] private EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] private PickableItemScriptableObjectBase _itemToDrop;
         [SerializeField] private List<EnemyTargetTrigger> _localTargetTriggers;
-        [SerializeField] private EnemyEventInvokerForAnimations _eventInvokerForAnimations;
+        [SerializeField] private EventInvokerForActionAnimations _eventInvokerForAnimations;
         [SerializeField] private Animator _characterAnimator;
 
         private Seeker _seeker;
@@ -96,7 +96,8 @@ namespace Enemies.Setup
 
             _targetFromTriggersSelector = new EnemyTargetFromTriggersSelector();
 
-            _enemyLook = new EnemyLook(_thisRigidbody.transform, new ReadonlyRigidbody(_thisRigidbody),
+            var thisReadonlyRigidbody = new ReadonlyRigidbody(_thisRigidbody);
+            _enemyLook = new EnemyLook(_thisRigidbody.transform, thisReadonlyRigidbody, thisReadonlyRigidbody,
                 _targetFromTriggersSelector, this);
             _states = _enemyStateMachineAI.GetComponents<IInitializableStateEnemyAI>();
             _transitions = _enemyStateMachineAI.GetComponents<IInitializableTransitionEnemyAI>();
@@ -104,13 +105,14 @@ namespace Enemies.Setup
 
         protected override void Initialize()
         {
-            _enemyVisual = new EnemyVisual(_characterAnimator, _settings.BaseAnimatorOverrideController);
+            _enemyVisual = new EnemyVisual(_characterAnimator, _settings.BaseAnimatorOverrideController,
+                _generalEnemySettings.EmptyActionAnimationClip);
 
             var movementSetupData = new EnemyMovementSetupData(_thisRigidbody, _seeker, this);
             _enemyMovement = _settings.MovementProvider.GetImplementationObject(movementSetupData);
 
             _enemyCharacter = _settings.CharacterProvider.GetImplementationObject(this);
-            
+
             _targetFromTriggersSelector.AddTriggers(_externalTargetTriggers);
             _targetFromTriggersSelector.AddTriggers(_localTargetTriggers);
 
@@ -118,7 +120,8 @@ namespace Enemies.Setup
             {
                 _enemyMovement,
                 _enemyCharacter,
-                _targetFromTriggersSelector
+                _targetFromTriggersSelector,
+                _enemyLook
             };
 
             var baseSetupData = new EnemyControllerSetupData(

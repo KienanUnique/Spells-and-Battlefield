@@ -4,11 +4,11 @@ namespace Enemies.Look_Point_Calculator.Concrete_Types
 {
     public class FollowVelocityDirectionLookPointCalculator : LookPointCalculatorBase
     {
-        public override Quaternion CalculateLookPointDirection()
+        public override Vector3 CalculateLookPointDirection()
         {
             return _thisRigidbody.Velocity == Vector3.zero
-                ? _thisRigidbody.Rotation
-                : Quaternion.LookRotation(_thisRigidbody.Velocity);
+                ? DefaultRotation
+                : CurrentVelocity.normalized;
         }
     }
 }

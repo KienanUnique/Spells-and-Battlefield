@@ -1107,7 +1107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3230479117297305822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cb43afeaf2e41c8be424e7dcb38d087, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a4fdceef0184de0acacd32238f2c91c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3349535234091113722
@@ -1834,6 +1834,7 @@ MonoBehaviour:
   - {fileID: 2245860688038419852}
   _eventInvokerForAnimations: {fileID: 1895434027491113387}
   _characterAnimator: {fileID: 8178268488639399966}
+  _emptyActionAnimationClip: {fileID: 0}
   _thisRigidbody: {fileID: 4773416566356749375}
 --- !u!1 &4829227311415161147
 GameObject:

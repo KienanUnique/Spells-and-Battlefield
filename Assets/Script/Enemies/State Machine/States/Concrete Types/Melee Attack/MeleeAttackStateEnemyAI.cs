@@ -23,15 +23,14 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
             }
 
             SubscribeOnLocalEvents();
-            StateMachineControllable.StartPlayingActionAnimation(_data.AnimationData);
-            StateMachineControllable.StartFollowingObject(CurrentTarget.MainRigidbody);
+            StateMachineControllable.StartFollowingPosition(CurrentTarget.MainRigidbody);
+            Attack();
         }
 
         protected override void SpecialExitAction()
         {
             UnsubscribeFromLocalEvents();
-            StateMachineControllable.StopFollowingObject();
-            StateMachineControllable.StopPlayingActionAnimation();
+            StateMachineControllable.StopMovingToTarget();
         }
 
         protected override void SubscribeOnEvents()
@@ -51,18 +50,30 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
 
         private void SubscribeOnLocalEvents()
         {
-            StateMachineControllable.AnimationUseActionMomentTrigger += OnAnimationUseActionMomentTrigger;
+            StateMachineControllable.ActionAnimationEnd += OnActionAnimationEnd;
+            StateMachineControllable.ActionAnimationKeyMomentTrigger += OnActionAnimationKeyMomentTrigger;
         }
 
         private void UnsubscribeFromLocalEvents()
         {
-            StateMachineControllable.AnimationUseActionMomentTrigger -= OnAnimationUseActionMomentTrigger;
+            StateMachineControllable.ActionAnimationEnd -= OnActionAnimationEnd;
+            StateMachineControllable.ActionAnimationKeyMomentTrigger -= OnActionAnimationKeyMomentTrigger;
         }
 
-        private void OnAnimationUseActionMomentTrigger()
+        private void OnActionAnimationEnd()
+        {
+            Attack();
+        }
+
+        private void OnActionAnimationKeyMomentTrigger()
         {
             StateMachineControllable.ApplyEffectsToTargets(_damageTargetSelector.GetTargetsInCollider(),
                 _data.HitMechanicEffects);
+        }
+
+        private void Attack()
+        {
+            StateMachineControllable.PlayActionAnimation(_data.AnimationData);
         }
     }
 }

@@ -1,30 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Abstract_Bases.Disableable;
 using Interfaces;
 using Spells.Spell;
-using UnityEngine;
 
-namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
+namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.
+    Spells_With_Cooldown_Selector
 {
-    [Serializable]
-    public class SpellsWithCooldownSelector : BaseWithDisabling
+    public class SpellsWithCooldownSelectorImplementation : SpellSelectorBase
     {
-        [SerializeField] private List<SpellWithCooldown> _spellsToUseInPriorityOrder;
+        private readonly List<ISpellWithCooldown> _spellsToUseInPriorityOrder;
+        private ISpellWithCooldown _selectedSpell;
 
-        private SpellWithCooldown _selectedSpell;
-
-        public void Initialize(ICoroutineStarter coroutineStarter)
+        public SpellsWithCooldownSelectorImplementation(List<ISpellWithCooldown> spellsToUseInPriorityOrder)
         {
+            _spellsToUseInPriorityOrder = spellsToUseInPriorityOrder;
+        }
+
+        public override void Initialize(ICoroutineStarter coroutineStarter)
+        {
+            base.Initialize(coroutineStarter);
             _spellsToUseInPriorityOrder.ForEach(spell => spell.SetCoroutineStarter(coroutineStarter));
             SelectMostPrioritizedReadyToUseSpell();
         }
 
-        public bool CanUseSpell => _selectedSpell != default;
-        public event Action CanUseSpellsAgain;
+        public override bool CanUseSpell => _selectedSpell != default;
+        public override event Action CanUseSpellsAgain;
 
-        public ISpell GetSelectedSpellAndStartCooldownTimer()
+        public override ISpell Pop()
         {
             var oldSelectedSpell = _selectedSpell.GetSpellAndStartCooldownTimer();
             SelectMostPrioritizedReadyToUseSpell();
@@ -51,10 +54,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         {
             var canUseSpellsBefore = CanUseSpell;
             _selectedSpell = _spellsToUseInPriorityOrder.FirstOrDefault(spell => spell.CanUse);
-            Debug.Log($"===============================");
-            Debug.Log($"canUseSpellsBefore {canUseSpellsBefore}");
-            Debug.Log($"CanUseSpell {CanUseSpell}");
-            Debug.Log($"_selectedSpell {_selectedSpell == null}");
             if (!canUseSpellsBefore && CanUseSpell)
             {
                 CanUseSpellsAgain?.Invoke();

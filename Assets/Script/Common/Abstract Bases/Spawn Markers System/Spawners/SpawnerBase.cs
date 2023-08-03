@@ -15,6 +15,7 @@ namespace Common.Abstract_Bases.Spawn_Markers_System.Spawners
         {
             _markers = new List<TSpawnMarker>();
             _markers.AddRange(GetComponentsInChildren<TSpawnMarker>());
+            _markers.RemoveAll(marker => marker.IsDisabled);
         }
 
         private void Start()

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c534bb7355f948e982f907b9ee74dd4e, type: 3}
   m_Name: Hands Pulsar Animation
   m_EditorClassIdentifier: 
-  _animationAnimatorOverrideController: {fileID: 22100000, guid: 488dfc76f72f36448bc8f54cefbe5296, type: 2}
+  _animation: {fileID: 7400000, guid: fd65eb0bfef72c84a9c63c77b278597e, type: 2}
   _animationSpeed: 2.5

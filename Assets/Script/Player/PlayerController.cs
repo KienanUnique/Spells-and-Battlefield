@@ -5,13 +5,12 @@ using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animation_Data;
 using Common.Collection_With_Reaction_On_Change;
+using Common.Event_Invoker_For_Action_Animations;
 using Common.Mechanic_Effects.Continuous_Effect;
 using Common.Readonly_Rigidbody;
-using Common.Readonly_Transform;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
-using Player.Event_Invoker_For_Animations;
 using Player.Look;
 using Player.Movement;
 using Player.Setup;
@@ -19,7 +18,6 @@ using Player.Spell_Manager;
 using Player.Visual;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
-using Spells.Spell.Interfaces;
 using Systems.Input_Manager;
 using UnityEngine;
 
@@ -37,7 +35,7 @@ namespace Player
         private IPlayerCharacter _playerCharacter;
         private IPlayerVisual _playerVisual;
         private IPlayerCameraEffects _playerCameraEffects;
-        private IPlayerEventInvokerForAnimations _playerEventInvokerForAnimations;
+        private IEventInvokerForActionAnimations _eventInvokerForAnimations;
 
         public void Initialize(IPlayerControllerSetupData setupData)
         {
@@ -49,7 +47,7 @@ namespace Player
             _playerCharacter = setupData.SetPlayerCharacter;
             _playerVisual = setupData.SetPlayerVisual;
             _playerCameraEffects = setupData.SetPlayerCameraEffects;
-            _playerEventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
+            _eventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -140,7 +138,7 @@ namespace Player
             _playerInput.LookInputted += _playerLook.LookInputtedWith;
             _playerInput.SelectSpellType += _playerSpellsManager.SelectSpellType;
 
-            _playerEventInvokerForAnimations.CastSpellAnimationMoment += OnCastSpellEventInvokerForAnimationMoment;
+            _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger += OnCastSpellEventInvokerForAnimationMoment;
 
             _playerMovement.GroundJump += _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.Fall += _playerVisual.PlayFallAnimation;
@@ -173,7 +171,7 @@ namespace Player
             _playerInput.LookInputted -= _playerLook.LookInputtedWith;
             _playerInput.SelectSpellType -= _playerSpellsManager.SelectSpellType;
 
-            _playerEventInvokerForAnimations.CastSpellAnimationMoment -= OnCastSpellEventInvokerForAnimationMoment;
+            _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger -= OnCastSpellEventInvokerForAnimationMoment;
 
             _playerMovement.GroundJump -= _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.Fall -= _playerVisual.PlayFallAnimation;

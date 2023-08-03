@@ -4,9 +4,9 @@ namespace Enemies.Look_Point_Calculator.Concrete_Types
 {
     public class KeepLookDirectionLookPointCalculator : LookPointCalculatorBase
     {
-        public override Quaternion CalculateLookPointDirection()
+        public override Vector3 CalculateLookPointDirection()
         {
-            return _thisRigidbody.Rotation;
+            return DefaultRotation;
         }
     }
 }

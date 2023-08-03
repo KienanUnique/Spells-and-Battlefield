@@ -11,7 +11,6 @@ namespace Enemies.State_Machine.States.Concrete_Types
 
         protected override void SpecialEnterAction()
         {
-            StateMachineControllable.StopFollowingObject();
         }
 
         protected override void SpecialExitAction()

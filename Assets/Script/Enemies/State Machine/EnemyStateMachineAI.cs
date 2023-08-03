@@ -33,7 +33,7 @@ namespace Enemies.State_Machine
             {
                 throw new StateMachineAlreadyStartedException();
             }
-            
+
             _isActive = true;
             TransitToState(_firstStateEnemyAI);
         }
@@ -44,7 +44,7 @@ namespace Enemies.State_Machine
             {
                 throw new StateMachineAlreadyStoppedException();
             }
-            
+
             _isActive = false;
             TransitToState(null);
         }
@@ -77,7 +77,7 @@ namespace Enemies.State_Machine
             if (!_isActive) return;
             SubscribeOnCurrentStateEvents();
         }
-        
+
         protected override void UnsubscribeFromEvents()
         {
             UnsubscribeFromCurrentStateEvents();
@@ -88,6 +88,7 @@ namespace Enemies.State_Machine
             TargetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
             if (_currentStateEnemyAI == null) return;
             _currentStateEnemyAI.NeedToSwitchToNextState += TransitToState;
+            _currentStateEnemyAI.NeedChangeLookPointCalculator += OnNeedChangeLookPointCalculator;
         }
 
         private void UnsubscribeFromCurrentStateEvents()
@@ -95,6 +96,12 @@ namespace Enemies.State_Machine
             TargetFromTriggersSelector.CurrentTargetChanged -= OnCurrentTargetFromTriggersChanged;
             if (_currentStateEnemyAI == null) return;
             _currentStateEnemyAI.NeedToSwitchToNextState -= TransitToState;
+            _currentStateEnemyAI.NeedChangeLookPointCalculator -= OnNeedChangeLookPointCalculator;
+        }
+
+        private void OnNeedChangeLookPointCalculator(ILookPointCalculator newLookPointCalculator)
+        {
+            NeedChangeLookPointCalculator?.Invoke(newLookPointCalculator);
         }
 
         private class StateMachineAlreadyStartedException : Exception

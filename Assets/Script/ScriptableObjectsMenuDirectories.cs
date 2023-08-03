@@ -23,9 +23,11 @@
     #region Enemies
 
     public const string EnemiesDirectory = RootDirectory + "Enemies/";
-    public const string StatesDataDirectory = EnemiesDirectory + "States Data/";
     public const string EnemyMovementProvidersDirectory = EnemiesDirectory + "Movement Providers/";
     public const string EnemyCharacterProvidersDirectory = EnemiesDirectory + "Character Providers/";
+
+    public const string StatesDataDirectory = EnemiesDirectory + "States Data/";
+    public const string EnemyUseSpellStateSpellsSelectors = StatesDataDirectory + "Spells Selectors/";
 
     #endregion
 

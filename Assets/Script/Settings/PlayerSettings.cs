@@ -17,12 +17,14 @@ namespace Settings
         [SerializeField] private PlayerMovementSettingsSection _movement;
         [SerializeField] private CharacterSettingsSection _character;
         [SerializeField] private PlayerSpellManagerSettingsSection _spellManager;
+        [SerializeField] private PlayerVisualSettingsSection _visual;
 
         public PlayerCameraEffectsSettingsSection CameraEffects => _cameraEffects;
         public PlayerLookSettingsSection Look => _look;
         public PlayerMovementSettingsSection Movement => _movement;
         public CharacterSettingsSection Character => _character;
         public PlayerSpellManagerSettingsSection SpellManager => _spellManager;
+        public PlayerVisualSettingsSection Visual => _visual;
 
         [Serializable]
         public class PlayerCameraEffectsSettingsSection
@@ -76,6 +78,13 @@ namespace Settings
             [SerializeField] private SpellScriptableObject _lastChanceSpell;
 
             public ISpell LastChanceSpell => _lastChanceSpell;
+        }
+
+        [Serializable]
+        public class PlayerVisualSettingsSection
+        {
+            [SerializeField] private AnimationClip _emptyUseSpellAnimation;
+            public AnimationClip EmptyUseSpellAnimation => _emptyUseSpellAnimation;
         }
     }
 }

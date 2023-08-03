@@ -2,6 +2,7 @@
 using System.Collections;
 using Common;
 using Common.Abstract_Bases.Movement;
+using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Enemies.Movement.Setup_Data;
 using General_Settings_in_Scriptable_Objects.Sections;
@@ -29,6 +30,7 @@ namespace Enemies.Movement
             base(setupData.Rigidbody, movementSettings)
         {
             _coroutineStarter = setupData.CoroutineStarter;
+            ReadonlyRigidbody = new ReadonlyRigidbody(_rigidbody);
             _cachedTransform = _rigidbody.transform;
             _originalParent = _cachedTransform.parent;
             _isMoving = new ValueWithReactionOnChange<bool>(false);
@@ -39,6 +41,7 @@ namespace Enemies.Movement
         public event Action<bool> MovingStateChanged;
         public Vector3 CurrentPosition => _rigidbody.position;
         protected virtual Vector3 VelocityForLimitations => _rigidbody.velocity;
+        public IReadonlyRigidbody ReadonlyRigidbody { get; }
 
         public void StartFollowingPosition(IReadonlyTransform targetPosition)
         {

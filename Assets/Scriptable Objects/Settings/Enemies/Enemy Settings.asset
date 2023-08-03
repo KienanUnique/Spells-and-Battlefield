@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _delayInSecondsBeforeDestroy: 5
   _spawnSpellOffset: {x: 0, y: 3, z: 0}
+  _emptyActionAnimationClip: {fileID: 7400000, guid: b353e27c8fab29c468966464a505b6f6, type: 2}

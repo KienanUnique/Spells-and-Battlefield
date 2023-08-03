@@ -1,23 +1,20 @@
 ﻿using System.Collections.Generic;
-using Common;
 using Common.Abstract_Bases.Disableable;
+using Common.Event_Invoker_For_Action_Animations;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
-using Player.Event_Invoker_For_Animations;
 using Player.Look;
 using Player.Movement;
 using Player.Spell_Manager;
 using Player.Visual;
-using Settings;
-using Spells.Factory;
 using Systems.Input_Manager;
 
 namespace Player.Setup
 {
     public class PlayerControllerSetupData : IPlayerControllerSetupData
     {
-        public PlayerControllerSetupData(IPlayerEventInvokerForAnimations playerEventInvokerForAnimations,
+        public PlayerControllerSetupData(IEventInvokerForActionAnimations playerEventInvokerForAnimations,
             IPlayerCameraEffects playerCameraEffects, IPlayerVisual playerVisual, IPlayerCharacter playerCharacter,
             IPlayerSpellsManager playerSpellsManager, IPlayerInput playerInput, IPlayerMovement playerMovement,
             IPlayerLook playerLook, IIdHolder idHolder, List<IDisableable> itemsNeedDisabling)
@@ -43,6 +40,6 @@ namespace Player.Setup
         public IPlayerCharacter SetPlayerCharacter { get; }
         public IPlayerVisual SetPlayerVisual { get; }
         public IPlayerCameraEffects SetPlayerCameraEffects { get; }
-        public IPlayerEventInvokerForAnimations SetPlayerEventInvokerForAnimations { get; }
+        public IEventInvokerForActionAnimations SetPlayerEventInvokerForAnimations { get; }
     }
 }
