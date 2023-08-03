@@ -1205,14 +1205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transitions:
   - {fileID: 6547898392109559484}
-  _spellsSelector:
-    _spellsToUseInPriorityOrder:
-    - _spell: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-      _cooldownSeconds: 15
-    - _spell: {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
-      _cooldownSeconds: 10
-    - _spell: {fileID: 11400000, guid: 64f2c7c17c0f77446a5eacd00b9c1249, type: 2}
-      _cooldownSeconds: 2
+  _spellsSelectorProvider: {fileID: 11400000, guid: 18fb265c630b1b44ba6e4924f1ae85c0, type: 2}
   _enemyController: {fileID: 2342827156696725659}
   _spellSpawnObjectReadonlyTransformGetter: {fileID: 1124876562946862783}
   _spellAimPointReadonlyTransformGetter: {fileID: 8893019228434104273}

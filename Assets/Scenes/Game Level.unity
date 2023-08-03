@@ -2364,7 +2364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6093150385468070801, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
       propertyPath: m_RootOrder
@@ -3104,38 +3104,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 64f2c7c17c0f77446a5eacd00b9c1249, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
-    - target: {fileID: 846477161179582523, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
-      propertyPath: _startTestSpells.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
     - target: {fileID: 974464277607573819, guid: 00687cb79b481b84fb718eee436ee6cf, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -3195,7 +3163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6093150385468070801, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
       propertyPath: m_RootOrder
@@ -3359,7 +3327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6093150385468070801, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
       propertyPath: m_RootOrder
@@ -4718,7 +4686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6093150385468070801, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
       propertyPath: m_RootOrder

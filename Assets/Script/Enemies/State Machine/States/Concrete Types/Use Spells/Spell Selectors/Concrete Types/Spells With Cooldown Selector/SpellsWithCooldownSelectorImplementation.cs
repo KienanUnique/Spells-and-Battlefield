@@ -12,14 +12,10 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
         private readonly List<ISpellWithCooldown> _spellsToUseInPriorityOrder;
         private ISpellWithCooldown _selectedSpell;
 
-        public SpellsWithCooldownSelectorImplementation(List<ISpellWithCooldown> spellsToUseInPriorityOrder)
+        public SpellsWithCooldownSelectorImplementation(ICoroutineStarter coroutineStarter,
+            List<ISpellWithCooldown> spellsToUseInPriorityOrder) : base(coroutineStarter)
         {
             _spellsToUseInPriorityOrder = spellsToUseInPriorityOrder;
-        }
-
-        public override void Initialize(ICoroutineStarter coroutineStarter)
-        {
-            base.Initialize(coroutineStarter);
             _spellsToUseInPriorityOrder.ForEach(spell => spell.SetCoroutineStarter(coroutineStarter));
             SelectMostPrioritizedReadyToUseSpell();
         }

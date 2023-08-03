@@ -60,10 +60,9 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         {
             base.Awake();
             _currentLookPointCalculator = new FollowTargetLookPointCalculator();
-            _spellsSelector = _spellsSelectorProvider.GetImplementationObject();
+            _spellsSelector = _spellsSelectorProvider.GetImplementationObject(this);
             _spellSpawnObject = _spellSpawnObjectReadonlyTransformGetter.ReadonlyTransform;
             _spellAimPoint = _spellAimPointReadonlyTransformGetter.ReadonlyTransform;
-            _spellsSelector.Initialize(this);
         }
 
         protected override void SubscribeOnEvents()

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9472882101460f8fa986f807d791ba, type: 3}
+  m_Name: Warlock Spells With Cooldown Selector
+  m_EditorClassIdentifier: 
+  _spellsToUseInPriorityOrder:
+  - _spell: {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
+    _cooldownSeconds: 20
+  - _spell: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+    _cooldownSeconds: 10
+  - _spell: {fileID: 11400000, guid: 64f2c7c17c0f77446a5eacd00b9c1249, type: 2}
+    _cooldownSeconds: 4
