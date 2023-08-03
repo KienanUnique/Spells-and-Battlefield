@@ -14,8 +14,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
         [SerializeField] private List<SpellScriptableObject> _spellsToUseInPriorityOrder;
         public override ISpellSelector GetImplementationObject(ICoroutineStarter coroutineStarter)
         {
-            return new DisposableSpellsSelectorImplementation(coroutineStarter,
-                new Queue<ISpell>(_spellsToUseInPriorityOrder));
+            return new DisposableSpellsSelectorImplementation(new Queue<ISpell>(_spellsToUseInPriorityOrder));
         }
     }
 }

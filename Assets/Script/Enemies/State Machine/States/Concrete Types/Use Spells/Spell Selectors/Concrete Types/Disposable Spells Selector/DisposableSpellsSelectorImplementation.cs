@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Interfaces;
 using ModestTree;
 using Spells.Spell;
 
@@ -11,8 +10,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
     {
         private readonly Queue<ISpell> _spellsToUseInPriorityOrder;
 
-        public DisposableSpellsSelectorImplementation(ICoroutineStarter coroutineStarter,
-            Queue<ISpell> spellsToUseInPriorityOrder) : base(coroutineStarter)
+        public DisposableSpellsSelectorImplementation(Queue<ISpell> spellsToUseInPriorityOrder)
         {
             _spellsToUseInPriorityOrder = spellsToUseInPriorityOrder;
         }

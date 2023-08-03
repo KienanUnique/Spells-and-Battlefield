@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Interfaces;
 using Spells.Spell;
 
 namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.
@@ -12,11 +11,9 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
         private readonly List<ISpellWithCooldown> _spellsToUseInPriorityOrder;
         private ISpellWithCooldown _selectedSpell;
 
-        public SpellsWithCooldownSelectorImplementation(ICoroutineStarter coroutineStarter,
-            List<ISpellWithCooldown> spellsToUseInPriorityOrder) : base(coroutineStarter)
+        public SpellsWithCooldownSelectorImplementation(List<ISpellWithCooldown> spellsToUseInPriorityOrder)
         {
             _spellsToUseInPriorityOrder = spellsToUseInPriorityOrder;
-            _spellsToUseInPriorityOrder.ForEach(spell => spell.SetCoroutineStarter(coroutineStarter));
             SelectMostPrioritizedReadyToUseSpell();
         }
 

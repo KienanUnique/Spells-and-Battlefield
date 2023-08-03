@@ -2,24 +2,26 @@
 using System.Collections;
 using Interfaces;
 using Spells.Spell;
-using Spells.Spell.Scriptable_Objects;
 using UnityEngine;
 
-namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.Spells_With_Cooldown_Selector
+namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.
+    Spells_With_Cooldown_Selector
 {
-    [Serializable]
     public class SpellWithCooldown : ISpellWithCooldown
     {
-        [SerializeField] private SpellScriptableObject _spell;
-        [SerializeField] private float _cooldownSeconds;
+        private readonly ISpellWithCooldownData _data;
+        private readonly ICoroutineStarter _coroutineStarter;
 
-        private ICoroutineStarter _coroutineStarter;
-
-        public bool CanUse { get; private set; } = true;
+        public SpellWithCooldown(ISpellWithCooldownData data, ICoroutineStarter coroutineStarter)
+        {
+            _data = data;
+            _coroutineStarter = coroutineStarter;
+            CanUse = true;
+        }
 
         public event Action CanUseAgain;
 
-        public void SetCoroutineStarter(ICoroutineStarter coroutineStarter) => _coroutineStarter = coroutineStarter;
+        public bool CanUse { get; private set; }
 
         public ISpell GetSpellAndStartCooldownTimer()
         {
@@ -29,13 +31,13 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
             }
 
             _coroutineStarter.StartCoroutine(DisableSpellForCooldown());
-            return _spell;
+            return _data.Spell;
         }
 
         private IEnumerator DisableSpellForCooldown()
         {
             CanUse = false;
-            yield return new WaitForSeconds(_cooldownSeconds);
+            yield return new WaitForSeconds(_data.CooldownSeconds);
             CanUse = true;
             CanUseAgain?.Invoke();
         }
