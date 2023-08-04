@@ -1,6 +1,7 @@
 using Common.Abstract_Bases.Visual;
 using Common.Animation_Data;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace Enemies.Visual
 {
@@ -13,8 +14,9 @@ namespace Enemies.Visual
         private readonly AnimatorOverrideController _baseAnimatorOverrideController;
         private readonly AnimationClip _emptyActionAnimationClip;
 
-        public EnemyVisual(Animator characterAnimator, AnimatorOverrideController baseAnimatorOverrideController,
-            AnimationClip emptyActionAnimationClip) : base(characterAnimator)
+        public EnemyVisual(RigBuilder rigBuilder, Animator characterAnimator,
+            AnimatorOverrideController baseAnimatorOverrideController,
+            AnimationClip emptyActionAnimationClip) : base(rigBuilder, characterAnimator)
         {
             _baseAnimatorOverrideController = baseAnimatorOverrideController;
             _emptyActionAnimationClip = emptyActionAnimationClip;
@@ -28,6 +30,7 @@ namespace Enemies.Visual
 
         public void PlayDieAnimation()
         {
+            _rigBuilder.enabled = false;
             _characterAnimator.SetTrigger(DieTriggerHash);
         }
 

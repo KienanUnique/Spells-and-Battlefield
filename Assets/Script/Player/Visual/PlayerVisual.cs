@@ -20,15 +20,12 @@ namespace Player.Visual
         private static readonly int FallTriggerHash = Animator.StringToHash("Fall");
         private static readonly int LandTriggerHash = Animator.StringToHash("Land");
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
-
-        private readonly RigBuilder _rigBuilder;
         private readonly PlayerSettings.PlayerVisualSettingsSection _settings;
 
         public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator,
             PlayerSettings.PlayerVisualSettingsSection settings) :
-            base(characterAnimator)
+            base(rigBuilder, characterAnimator)
         {
-            _rigBuilder = rigBuilder;
             _settings = settings;
         }
 

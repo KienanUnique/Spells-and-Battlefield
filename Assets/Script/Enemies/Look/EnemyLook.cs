@@ -15,19 +15,29 @@ namespace Enemies.Look
         private readonly ICoroutineStarter _coroutineStarter;
         private readonly IReadonlyRigidbody _thisRigidbody;
         private readonly IReadonlyEnemyTargetFromTriggersSelector _targetFromTriggersSelector;
+        private readonly Transform _transformToRotateForIK;
+        private readonly IReadonlyTransform _thisIKCenterPoint;
+        private readonly float _needDistanceFromIKCenterPoint;
+        private Vector3 _cachedLookXZ;
         private IReadonlyTransform _thisPositionReferencePoint;
         private ILookPointCalculator _lookPointCalculator;
         private Coroutine _lookCoroutine;
+        private Vector3 _needDirection;
 
         public EnemyLook(Transform transformToRotate, IReadonlyRigidbody thisRigidbody,
             IReadonlyTransform thisPositionReferencePoint,
-            IReadonlyEnemyTargetFromTriggersSelector targetFromTriggersSelector, ICoroutineStarter coroutineStarter)
+            IReadonlyEnemyTargetFromTriggersSelector targetFromTriggersSelector, ICoroutineStarter coroutineStarter,
+            Transform transformToRotateForIK, IReadonlyTransform thisIKCenterPoint, float needDistanceFromIKCenterPoint)
         {
             _transformToRotate = transformToRotate;
             _coroutineStarter = coroutineStarter;
             _thisRigidbody = thisRigidbody;
             _thisPositionReferencePoint = thisPositionReferencePoint;
             _targetFromTriggersSelector = targetFromTriggersSelector;
+            _transformToRotateForIK = transformToRotateForIK;
+            _thisIKCenterPoint = thisIKCenterPoint;
+            _cachedLookXZ = Vector3.zero;
+            _needDistanceFromIKCenterPoint = needDistanceFromIKCenterPoint;
         }
 
         public IReadonlyTransform ThisPositionReferencePointForLook => _thisPositionReferencePoint;
@@ -80,10 +90,20 @@ namespace Enemies.Look
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
             {
-                _transformToRotate.rotation =
-                    Quaternion.LookRotation(_lookPointCalculator.CalculateLookPointDirection());
+                HandleLookPoint(_lookPointCalculator.CalculateLookPointDirection());
                 yield return waitForFixedUpdate;
             }
+        }
+
+        private void HandleLookPoint(Vector3 lookRotation)
+        {
+            _cachedLookXZ.x = lookRotation.x;
+            _cachedLookXZ.z = lookRotation.z;
+            _transformToRotate.rotation = Quaternion.LookRotation(_cachedLookXZ);
+
+            _needDirection = Vector3.Reflect(lookRotation, _thisIKCenterPoint.Up);
+            _transformToRotateForIK.position =
+                _needDistanceFromIKCenterPoint * _needDirection + _thisIKCenterPoint.Position;
         }
 
         private void OnCurrentTargetChanged(IEnemyTarget newTarget)

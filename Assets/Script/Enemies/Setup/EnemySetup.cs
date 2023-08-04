@@ -6,6 +6,7 @@ using Common.Abstract_Bases.Disableable;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Readonly_Rigidbody;
+using Common.Readonly_Transform;
 using Enemies.Character;
 using Enemies.Controller;
 using Enemies.Look;
@@ -23,6 +24,7 @@ using Pickable_Items.Data_For_Creating.Scriptable_Object;
 using Pickable_Items.Factory;
 using Settings.Enemies;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using Zenject;
 using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
@@ -40,6 +42,10 @@ namespace Enemies.Setup
         [SerializeField] private List<EnemyTargetTrigger> _localTargetTriggers;
         [SerializeField] private EventInvokerForActionAnimations _eventInvokerForAnimations;
         [SerializeField] private Animator _characterAnimator;
+        [SerializeField] private Transform _transformToRotateForIK;
+        [SerializeField] private RigBuilder _rigBuilder;
+        [SerializeField] private ReadonlyTransformGetter _thisIKCenterPoint;
+        [SerializeField] [Min(0.1f)] private float _needDistanceFromIKCenterPoint = 3f;
 
         private Seeker _seeker;
         public Rigidbody _thisRigidbody;
@@ -83,7 +89,7 @@ namespace Enemies.Setup
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization => new List<IInitializable>
-            {_externalDependenciesInitializationWaiter};
+            {_externalDependenciesInitializationWaiter, _thisIKCenterPoint};
 
         protected override void Prepare()
         {
@@ -96,16 +102,18 @@ namespace Enemies.Setup
 
             _targetFromTriggersSelector = new EnemyTargetFromTriggersSelector();
 
-            var thisReadonlyRigidbody = new ReadonlyRigidbody(_thisRigidbody);
-            _enemyLook = new EnemyLook(_thisRigidbody.transform, thisReadonlyRigidbody, thisReadonlyRigidbody,
-                _targetFromTriggersSelector, this);
             _states = _enemyStateMachineAI.GetComponents<IInitializableStateEnemyAI>();
             _transitions = _enemyStateMachineAI.GetComponents<IInitializableTransitionEnemyAI>();
         }
 
         protected override void Initialize()
         {
-            _enemyVisual = new EnemyVisual(_characterAnimator, _settings.BaseAnimatorOverrideController,
+            var thisReadonlyRigidbody = new ReadonlyRigidbody(_thisRigidbody);
+            _enemyLook = new EnemyLook(_thisRigidbody.transform, thisReadonlyRigidbody, thisReadonlyRigidbody,
+                _targetFromTriggersSelector, this, _transformToRotateForIK, _thisIKCenterPoint.ReadonlyTransform,
+                _needDistanceFromIKCenterPoint);
+
+            _enemyVisual = new EnemyVisual(_rigBuilder, _characterAnimator, _settings.BaseAnimatorOverrideController,
                 _generalEnemySettings.EmptyActionAnimationClip);
 
             var movementSetupData = new EnemyMovementSetupData(_thisRigidbody, _seeker, this);

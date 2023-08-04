@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace Common.Abstract_Bases.Visual
 {
     public abstract class VisualBase
     {
         protected readonly Animator _characterAnimator;
+        protected readonly RigBuilder _rigBuilder;
 
-        protected VisualBase(Animator characterAnimator)
+        protected VisualBase(RigBuilder rigBuilder, Animator characterAnimator)
         {
+            _rigBuilder = rigBuilder;
             _characterAnimator = characterAnimator;
         }
 

@@ -14,7 +14,7 @@ namespace Enemies.Look_Point_Calculator
         protected IReadonlyRigidbody TargetRigidbody => _target.MainRigidbody;
         protected Vector3 CurrentPosition => _thisPositionReferencePoint.Position;
         protected Vector3 CurrentVelocity => _thisRigidbody.Velocity;
-        protected Vector3 DefaultRotation => _thisRigidbody.Rotation.eulerAngles;
+        protected Vector3 DefaultRotation => _thisRigidbody.Forward;
 
         public abstract Vector3 CalculateLookPointDirection();
 
