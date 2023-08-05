@@ -99,7 +99,11 @@ namespace Enemies.Look
         {
             _cachedLookXZ.x = lookRotation.x;
             _cachedLookXZ.z = lookRotation.z;
-            _transformToRotate.rotation = Quaternion.LookRotation(_cachedLookXZ);
+
+            if (_cachedLookXZ != Vector3.zero)
+            {
+                _transformToRotate.rotation = Quaternion.LookRotation(_cachedLookXZ);
+            }
 
             _needDirection = Vector3.Reflect(lookRotation, _thisIKCenterPoint.Up);
             _transformToRotateForIK.position =

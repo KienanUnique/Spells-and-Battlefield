@@ -73,9 +73,9 @@ namespace Enemies.Controller
         public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
         public IReadonlyTransform ThisPositionReferencePointForLook => _look.ThisPositionReferencePointForLook;
 
-        public void StartKeepingTransformOnDistance(IReadonlyTransform target, IEnemyDataForMoving dataForMoving)
+        public void StartKeepingCurrentTargetOnDistance(IEnemyDataForMoving dataForMoving)
         {
-            _movement.StartKeepingTransformOnDistance(target, dataForMoving);
+            _movement.StartKeepingCurrentTargetOnDistance(dataForMoving);
         }
 
         public void StopMoving()

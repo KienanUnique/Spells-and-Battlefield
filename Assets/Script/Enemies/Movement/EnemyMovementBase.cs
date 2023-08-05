@@ -6,6 +6,7 @@ using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Enemies.Movement.Enemy_Data_For_Moving;
 using Enemies.Movement.Setup_Data;
+using Enemies.Target_Selector_From_Triggers;
 using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
 using Settings.Sections.Movement;
@@ -24,7 +25,10 @@ namespace Enemies.Movement
         private readonly TargetPathfinder _targetPathfinder;
         private readonly Transform _cachedTransform;
         private readonly Transform _originalParent;
+        private readonly IReadonlyEnemyTargetFromTriggersSelector _targetSelector;
         private Coroutine _followPathCoroutine;
+        private IEnemyDataForMoving _currentDataForMoving;
+        private bool _needMove;
 
         protected EnemyMovementBase(IEnemyMovementSetupData setupData,
             MovementSettingsSection movementSettings, TargetPathfinderSettingsSection targetPathfinderSettings) :
@@ -37,24 +41,33 @@ namespace Enemies.Movement
             _isMoving = new ValueWithReactionOnChange<bool>(false);
             _targetPathfinder =
                 new TargetPathfinder(setupData.Seeker, targetPathfinderSettings, _coroutineStarter);
+            _targetSelector = setupData.TargetSelector;
         }
 
         public event Action<bool> MovingStateChanged;
         public Vector3 CurrentPosition => _rigidbody.position;
-        protected virtual Vector3 VelocityForLimitations => _rigidbody.velocity;
         public IReadonlyRigidbody ReadonlyRigidbody { get; }
+        protected virtual Vector3 VelocityForLimitations => _rigidbody.velocity;
+        private IEnemyTarget CurrentTarget => _targetSelector.CurrentTarget;
 
-        public void StartKeepingTransformOnDistance(IReadonlyTransform target, IEnemyDataForMoving dataForMoving)
+        public void StartKeepingCurrentTargetOnDistance(IEnemyDataForMoving dataForMoving)
         {
+            _currentDataForMoving = dataForMoving;
+
             if (_followPathCoroutine != null)
             {
                 StopMoving();
             }
 
-            _isMoving.Value = true;
-            _followPathCoroutine =
-                _coroutineStarter.StartCoroutine(KeepingTransformOnDistance(target,
-                    dataForMoving.NeedDistanceFromTarget));
+            _needMove = true;
+
+            if (CurrentTarget != null)
+            {
+                _isMoving.Value = true;
+                _followPathCoroutine =
+                    _coroutineStarter.StartCoroutine(KeepingTransformOnDistance(CurrentTarget.MainRigidbody,
+                        dataForMoving.NeedDistanceFromTarget));
+            }
         }
 
         public void StopMoving()
@@ -65,6 +78,7 @@ namespace Enemies.Movement
                 _followPathCoroutine = null;
             }
 
+            _needMove = false;
             _isMoving.Value = false;
             _targetPathfinder.StopUpdatingPath();
             _rigidbody.velocity = Vector3.zero;
@@ -103,12 +117,24 @@ namespace Enemies.Movement
 
         private void SubscribeOnThisEvents()
         {
+            _targetSelector.CurrentTargetChanged += OnCurrentTargetChanged;
             _isMoving.AfterValueChanged += OnIsMovingStatusChanged;
         }
 
         private void UnsubscribeFromThisEvents()
         {
+            _targetSelector.CurrentTargetChanged -= OnCurrentTargetChanged;
             _isMoving.AfterValueChanged -= OnIsMovingStatusChanged;
+        }
+
+        private void OnCurrentTargetChanged(IEnemyTarget newTarget)
+        {
+            if (!_needMove)
+            {
+                return;
+            }
+
+            StartKeepingCurrentTargetOnDistance(_currentDataForMoving);
         }
 
         private void OnIsMovingStatusChanged(bool b)

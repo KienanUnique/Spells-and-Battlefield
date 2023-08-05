@@ -2,7 +2,6 @@
 using Enemies.Attack_Target_Selector;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
@@ -13,17 +12,11 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
         [SerializeField] private MeleeAttackStateData _data;
         public override event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
         public override ILookPointCalculator LookPointCalculator => new FollowTargetLookPointCalculator();
-        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
 
         protected override void SpecialEnterAction()
         {
-            if (CurrentTarget == null)
-            {
-                return;
-            }
-
             SubscribeOnLocalEvents();
-            StateMachineControllable.StartKeepingTransformOnDistance(CurrentTarget.MainRigidbody, _data.DataForMoving);
+            StateMachineControllable.StartKeepingCurrentTargetOnDistance(_data.DataForMoving);
             Attack();
         }
 

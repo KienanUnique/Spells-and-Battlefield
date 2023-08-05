@@ -36,14 +36,12 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         public override event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
         public override ILookPointCalculator LookPointCalculator => _currentLookPointCalculator;
         private Quaternion SpellSpawnDirection => StateMachineControllable.ReadonlyRigidbody.Rotation;
-        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
 
         protected override void SpecialEnterAction()
         {
             _previousThisPositionReferencePointTransform = StateMachineControllable.ThisPositionReferencePointForLook;
             StateMachineControllable.ChangeThisPositionReferencePointTransform(_spellAimPoint);
-            StateMachineControllable.StartKeepingTransformOnDistance(CurrentTarget.MainRigidbody,
-                _useSpellsStateData.DataForMoving);
+            StateMachineControllable.StartKeepingCurrentTargetOnDistance(_useSpellsStateData.DataForMoving);
             SubscribeOnLocalEvents();
             if (_spellsSelector.CanUseSpell && !_isWaitingForAnimationFinish)
             {

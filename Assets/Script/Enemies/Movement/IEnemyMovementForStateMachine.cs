@@ -7,7 +7,7 @@ namespace Enemies.Movement
     public interface IEnemyMovementForStateMachine
     {
         public IReadonlyRigidbody ReadonlyRigidbody { get; }
-        public void StartKeepingTransformOnDistance(IReadonlyTransform target, IEnemyDataForMoving dataForMoving);
+        public void StartKeepingCurrentTargetOnDistance(IEnemyDataForMoving dataForMoving);
         public void StopMoving();
     }
 }

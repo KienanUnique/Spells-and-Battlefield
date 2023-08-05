@@ -116,7 +116,8 @@ namespace Enemies.Setup
             _enemyVisual = new EnemyVisual(_rigBuilder, _characterAnimator, _settings.BaseAnimatorOverrideController,
                 _generalEnemySettings.EmptyActionAnimationClip);
 
-            var movementSetupData = new EnemyMovementSetupData(_thisRigidbody, _seeker, this);
+            var movementSetupData =
+                new EnemyMovementSetupData(_thisRigidbody, _targetFromTriggersSelector, _seeker, this);
             _enemyMovement = _settings.MovementProvider.GetImplementationObject(movementSetupData);
 
             _enemyCharacter = _settings.CharacterProvider.GetImplementationObject(this);

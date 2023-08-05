@@ -67,25 +67,33 @@ namespace Enemies.State_Machine
             }
         }
 
-        private void OnCurrentTargetFromTriggersChanged(IEnemyTarget obj)
+        private void OnCurrentTargetFromTriggersChanged(IEnemyTarget newTarget)
         {
-            TransitToState(_currentStateEnemyAI);
+            if (newTarget != null)
+            {
+                TransitToState(_currentStateEnemyAI ?? _firstStateEnemyAI);
+            }
+            else
+            {
+                TransitToState(null);
+            }
         }
 
         protected override void SubscribeOnEvents()
         {
             if (!_isActive) return;
+            TargetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
             SubscribeOnCurrentStateEvents();
         }
 
         protected override void UnsubscribeFromEvents()
         {
+            TargetFromTriggersSelector.CurrentTargetChanged -= OnCurrentTargetFromTriggersChanged;
             UnsubscribeFromCurrentStateEvents();
         }
 
         private void SubscribeOnCurrentStateEvents()
         {
-            TargetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
             if (_currentStateEnemyAI == null) return;
             _currentStateEnemyAI.NeedToSwitchToNextState += TransitToState;
             _currentStateEnemyAI.NeedChangeLookPointCalculator += OnNeedChangeLookPointCalculator;
@@ -93,7 +101,6 @@ namespace Enemies.State_Machine
 
         private void UnsubscribeFromCurrentStateEvents()
         {
-            TargetFromTriggersSelector.CurrentTargetChanged -= OnCurrentTargetFromTriggersChanged;
             if (_currentStateEnemyAI == null) return;
             _currentStateEnemyAI.NeedToSwitchToNextState -= TransitToState;
             _currentStateEnemyAI.NeedChangeLookPointCalculator -= OnNeedChangeLookPointCalculator;
