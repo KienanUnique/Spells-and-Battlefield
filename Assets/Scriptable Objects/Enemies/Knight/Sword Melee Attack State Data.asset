@@ -15,3 +15,4 @@ MonoBehaviour:
   _hitMechanicEffects:
   - {fileID: 11400000, guid: 7d90f6fa5a57eca4dab8ee87c61511f0, type: 2}
   _animationData: {fileID: 11400000, guid: d9a0a2607016f844082b68408075389c, type: 2}
+  _dataForMoving: {fileID: 11400000, guid: c4f5a8c07e3ab4241adbf4463f4fe9e1, type: 2}

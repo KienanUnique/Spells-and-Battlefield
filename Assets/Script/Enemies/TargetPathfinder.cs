@@ -29,10 +29,13 @@ namespace Enemies
             _coroutineStarter = coroutineStarter;
         }
 
-        public void StartUpdatingPathForTarget(IReadonlyTransform targetPosition)
+        public void StartUpdatingPathForKeepingTransformOnDistance(IReadonlyTransform targetPosition,
+            float needDistance)
         {
             StopUpdatingPath();
-            _updatePathToTargetCoroutine = _coroutineStarter.StartCoroutine(UpdatePathToTarget(targetPosition));
+            _updatePathToTargetCoroutine =
+                _coroutineStarter.StartCoroutine(
+                    UpdatePathToKeepTransformOnDistance(targetPosition, needDistance));
             _tryUpdateCurrentWaypointCoroutine = _coroutineStarter.StartCoroutine(TryUpdateCurrentWaypoint());
         }
 
@@ -78,18 +81,25 @@ namespace Enemies
             }
         }
 
-        private IEnumerator UpdatePathToTarget(IReadonlyTransform targetPosition)
+        private IEnumerator UpdatePathToKeepTransformOnDistance(IReadonlyTransform target, float needDistance)
         {
             var waitForSeconds = new WaitForSeconds(_settings.UpdateDestinationCooldownSeconds);
             while (true)
             {
                 if (_seeker.IsDone())
                 {
-                    _seeker.StartPath(_seekerObjectTransform.Position, targetPosition.Position, OnPathComplete);
+                    _seeker.StartPath(_seekerObjectTransform.Position, CalculateNeedPosition(target, needDistance),
+                        OnPathComplete);
                 }
 
                 yield return waitForSeconds;
             }
+        }
+
+        private Vector3 CalculateNeedPosition(IReadonlyTransform target, float needDistance)
+        {
+            var offsetVector = (_seekerObjectTransform.Position - target.Position).normalized * needDistance;
+            return target.Position + offsetVector;
         }
 
         private void OnPathComplete(Path path)

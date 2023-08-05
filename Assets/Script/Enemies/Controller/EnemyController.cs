@@ -13,6 +13,7 @@ using Enemies.Character;
 using Enemies.Look;
 using Enemies.Look_Point_Calculator;
 using Enemies.Movement;
+using Enemies.Movement.Enemy_Data_For_Moving;
 using Enemies.Setup;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
@@ -72,14 +73,14 @@ namespace Enemies.Controller
         public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
         public IReadonlyTransform ThisPositionReferencePointForLook => _look.ThisPositionReferencePointForLook;
 
-        public void StartFollowingPosition(IReadonlyTransform target)
+        public void StartKeepingTransformOnDistance(IReadonlyTransform target, IEnemyDataForMoving dataForMoving)
         {
-            _movement.StartFollowingPosition(target);
+            _movement.StartKeepingTransformOnDistance(target, dataForMoving);
         }
 
-        public void StopMovingToTarget()
+        public void StopMoving()
         {
-            _movement.StopMovingToTarget();
+            _movement.StopMoving();
         }
 
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;

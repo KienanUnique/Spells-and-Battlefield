@@ -14,7 +14,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 {
     public class UseSpellsStateEnemyAI : StateEnemyAI, ICoroutineStarter
     {
-        [SerializeField] private SpellsSelectorProvider _spellsSelectorProvider;
+        [SerializeField] private UseSpellsStateData _useSpellsStateData;
         [SerializeField] private EnemyController _enemyController;
         [SerializeField] private ReadonlyTransformGetter _spellSpawnObjectReadonlyTransformGetter;
         [SerializeField] private ReadonlyTransformGetter _spellAimPointReadonlyTransformGetter;
@@ -36,11 +36,14 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         public override event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
         public override ILookPointCalculator LookPointCalculator => _currentLookPointCalculator;
         private Quaternion SpellSpawnDirection => StateMachineControllable.ReadonlyRigidbody.Rotation;
+        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
 
         protected override void SpecialEnterAction()
         {
             _previousThisPositionReferencePointTransform = StateMachineControllable.ThisPositionReferencePointForLook;
             StateMachineControllable.ChangeThisPositionReferencePointTransform(_spellAimPoint);
+            StateMachineControllable.StartKeepingTransformOnDistance(CurrentTarget.MainRigidbody,
+                _useSpellsStateData.DataForMoving);
             SubscribeOnLocalEvents();
             if (_spellsSelector.CanUseSpell && !_isWaitingForAnimationFinish)
             {
@@ -53,6 +56,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
             UnsubscribeFromLocalEvents();
             StateMachineControllable.ChangeThisPositionReferencePointTransform(
                 _previousThisPositionReferencePointTransform);
+            StateMachineControllable.StopMoving();
             _isWaitingForAnimationFinish = false;
         }
 
@@ -60,7 +64,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         {
             base.Awake();
             _currentLookPointCalculator = new FollowTargetLookPointCalculator();
-            _spellsSelector = _spellsSelectorProvider.GetImplementationObject(this);
+            _spellsSelector = _useSpellsStateData.GetSpellSelector(this);
             _spellSpawnObject = _spellSpawnObjectReadonlyTransformGetter.ReadonlyTransform;
             _spellAimPoint = _spellAimPointReadonlyTransformGetter.ReadonlyTransform;
         }

@@ -4,6 +4,7 @@ using Common;
 using Common.Abstract_Bases.Movement;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
+using Enemies.Movement.Enemy_Data_For_Moving;
 using Enemies.Movement.Setup_Data;
 using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
@@ -43,18 +44,20 @@ namespace Enemies.Movement
         protected virtual Vector3 VelocityForLimitations => _rigidbody.velocity;
         public IReadonlyRigidbody ReadonlyRigidbody { get; }
 
-        public void StartFollowingPosition(IReadonlyTransform targetPosition)
+        public void StartKeepingTransformOnDistance(IReadonlyTransform target, IEnemyDataForMoving dataForMoving)
         {
             if (_followPathCoroutine != null)
             {
-                StopMovingToTarget();
+                StopMoving();
             }
 
             _isMoving.Value = true;
-            _followPathCoroutine = _coroutineStarter.StartCoroutine(FollowPath(targetPosition));
+            _followPathCoroutine =
+                _coroutineStarter.StartCoroutine(KeepingTransformOnDistance(target,
+                    dataForMoving.NeedDistanceFromTarget));
         }
 
-        public void StopMovingToTarget()
+        public void StopMoving()
         {
             if (_followPathCoroutine != null)
             {
@@ -69,7 +72,7 @@ namespace Enemies.Movement
 
         public void DisableMoving()
         {
-            StopMovingToTarget();
+            StopMoving();
             _rigidbody.constraints = RigidbodyConstraintsFreezeRotationAndPositionXY;
         }
 
@@ -113,10 +116,10 @@ namespace Enemies.Movement
             MovingStateChanged?.Invoke(b);
         }
 
-        private IEnumerator FollowPath(IReadonlyTransform targetPosition)
+        private IEnumerator KeepingTransformOnDistance(IReadonlyTransform targetPosition, float needDistance)
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
-            _targetPathfinder.StartUpdatingPathForTarget(targetPosition);
+            _targetPathfinder.StartUpdatingPathForKeepingTransformOnDistance(targetPosition, needDistance);
             var direction = Vector3.zero;
             while (true)
             {

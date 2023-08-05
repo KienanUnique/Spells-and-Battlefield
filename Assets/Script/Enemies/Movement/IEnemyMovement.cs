@@ -1,7 +1,5 @@
 ﻿using System;
 using Common.Abstract_Bases.Movement;
-using Common.Readonly_Rigidbody;
-using Common.Readonly_Transform;
 using UnityEngine;
 
 namespace Enemies.Movement
@@ -14,12 +12,5 @@ namespace Enemies.Movement
         public void AddForce(Vector3 force, ForceMode mode);
         public void StickToPlatform(Transform platformTransform);
         public void UnstickFromPlatform();
-    }
-
-    public interface IEnemyMovementForStateMachine
-    {
-        public IReadonlyRigidbody ReadonlyRigidbody { get; }
-        public void StartFollowingPosition(IReadonlyTransform target);
-        public void StopMovingToTarget();
     }
 }

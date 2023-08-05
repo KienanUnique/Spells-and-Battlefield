@@ -23,14 +23,14 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
             }
 
             SubscribeOnLocalEvents();
-            StateMachineControllable.StartFollowingPosition(CurrentTarget.MainRigidbody);
+            StateMachineControllable.StartKeepingTransformOnDistance(CurrentTarget.MainRigidbody, _data.DataForMoving);
             Attack();
         }
 
         protected override void SpecialExitAction()
         {
             UnsubscribeFromLocalEvents();
-            StateMachineControllable.StopMovingToTarget();
+            StateMachineControllable.StopMoving();
         }
 
         protected override void SubscribeOnEvents()

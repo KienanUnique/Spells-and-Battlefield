@@ -1043,6 +1043,7 @@ MonoBehaviour:
   _transitions:
   - {fileID: 1444693098799265098}
   - {fileID: 1147730886}
+  _dataForMoving: {fileID: 11400000, guid: c4f5a8c07e3ab4241adbf4463f4fe9e1, type: 2}
 --- !u!114 &1444693098799265098
 MonoBehaviour:
   m_ObjectHideFlags: 0

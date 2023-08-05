@@ -1335,7 +1335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transitions:
   - {fileID: 6547898392109559484}
-  _spellsSelectorProvider: {fileID: 11400000, guid: 18fb265c630b1b44ba6e4924f1ae85c0, type: 2}
+  _useSpellsStateData: {fileID: 11400000, guid: 4a8e6e0ffd1779341bbcabd40107779a, type: 2}
   _enemyController: {fileID: 2342827156696725659}
   _spellSpawnObjectReadonlyTransformGetter: {fileID: 1124876562946862783}
   _spellAimPointReadonlyTransformGetter: {fileID: 8893019228434104273}

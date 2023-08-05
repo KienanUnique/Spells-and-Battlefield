@@ -2,6 +2,7 @@
 using Common.Animation_Data;
 using Common.Mechanic_Effects;
 using Common.Mechanic_Effects.Scriptable_Objects;
+using Enemies.Movement.Enemy_Data_For_Moving;
 using UnityEngine;
 
 namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
@@ -12,6 +13,9 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
     {
         [SerializeField] private List<MechanicEffectScriptableObject> _hitMechanicEffects;
         [SerializeField] private AnimationData _animationData;
+        [SerializeField] private EnemyDataForMoving _dataForMoving;
+
+        public IEnemyDataForMoving DataForMoving => _dataForMoving;
 
         public AnimationData AnimationData => _animationData;
 
