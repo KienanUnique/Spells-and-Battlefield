@@ -1306,7 +1306,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 085f88a4b51c28540b4739662a54682a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transitions: []
+  _transitionManager:
+    _singleSubManagers: []
+    _conjunctionSubManagers: []
+    _disjunctionSubManagers: []
 --- !u!114 &6547898392109559484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1319,7 +1322,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63c4a590c58d4673bb6943db3eb2ee5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetStateEnemyAI: {fileID: 583975316282976070}
   _needState: 1
 --- !u!114 &2427962119334499236
 MonoBehaviour:
@@ -1333,8 +1335,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6681a5d3494f447397b704c125408d99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transitions:
-  - {fileID: 6547898392109559484}
+  _transitionManager:
+    _singleSubManagers:
+    - _nextState: {fileID: 583975316282976070}
+      _condition: {fileID: 6547898392109559484}
+    _conjunctionSubManagers: []
+    _disjunctionSubManagers: []
   _useSpellsStateData: {fileID: 11400000, guid: 4a8e6e0ffd1779341bbcabd40107779a, type: 2}
   _enemyController: {fileID: 2342827156696725659}
   _spellSpawnObjectReadonlyTransformGetter: {fileID: 1124876562946862783}

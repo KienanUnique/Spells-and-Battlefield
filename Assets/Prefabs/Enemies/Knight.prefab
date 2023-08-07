@@ -988,12 +988,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1831345642227826427}
   - component: {fileID: 6049343359790611563}
-  - component: {fileID: 2243583179496549633}
-  - component: {fileID: 1444693098799265098}
   - component: {fileID: 4546137287824208936}
-  - component: {fileID: 4182069047947455970}
   - component: {fileID: 1147730887}
   - component: {fileID: 1147730886}
+  - component: {fileID: 4456813416636164007}
+  - component: {fileID: 3703067096898767848}
+  - component: {fileID: 3843991235069755057}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -1027,38 +1027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 033e4a504a4bbf44f9b4337cbba85021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _firstStateEnemyAI: {fileID: 2243583179496549633}
---- !u!114 &2243583179496549633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2939621951735458862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14b572055c263b840a378d571ff82788, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _transitions:
-  - {fileID: 1444693098799265098}
-  - {fileID: 1147730886}
-  _dataForMoving: {fileID: 11400000, guid: c4f5a8c07e3ab4241adbf4463f4fe9e1, type: 2}
---- !u!114 &1444693098799265098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2939621951735458862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c71710120cd2ae41b89511fdb41b175, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _targetStateEnemyAI: {fileID: 4546137287824208936}
-  _transitionDistance: 1
-  _typeOfComparison: 1
+  _firstStateEnemyAI: {fileID: 3843991235069755057}
 --- !u!114 &4546137287824208936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1071,26 +1040,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8680f0f81b2d4f1f9715bff8fe522e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transitions:
-  - {fileID: 4182069047947455970}
-  - {fileID: 1147730886}
+  _transitionManager:
+    _singleSubManagers:
+    - _nextState: {fileID: 3843991235069755057}
+      _condition: {fileID: 3703067096898767848}
+    - _nextState: {fileID: 1147730887}
+      _condition: {fileID: 1147730886}
+    _conjunctionSubManagers: []
+    _disjunctionSubManagers: []
   _damageTargetSelector: {fileID: 7758560344049107641}
   _data: {fileID: 11400000, guid: 263738e87442c0144910101ad0b2e877, type: 2}
---- !u!114 &4182069047947455970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2939621951735458862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c71710120cd2ae41b89511fdb41b175, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _targetStateEnemyAI: {fileID: 2243583179496549633}
-  _transitionDistance: 2
-  _typeOfComparison: 0
 --- !u!114 &1147730887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1103,7 +1062,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 085f88a4b51c28540b4739662a54682a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transitions: []
+  _transitionManager:
+    _singleSubManagers: []
+    _conjunctionSubManagers: []
+    _disjunctionSubManagers: []
 --- !u!114 &1147730886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1116,8 +1078,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63c4a590c58d4673bb6943db3eb2ee5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetStateEnemyAI: {fileID: 1147730887}
   _needState: 1
+--- !u!114 &4456813416636164007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939621951735458862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c71710120cd2ae41b89511fdb41b175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transitionDistance: 1.5
+  _typeOfComparison: 1
+--- !u!114 &3703067096898767848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939621951735458862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c71710120cd2ae41b89511fdb41b175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transitionDistance: 2.5
+  _typeOfComparison: 0
+--- !u!114 &3843991235069755057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939621951735458862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b572055c263b840a378d571ff82788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transitionManager:
+    _singleSubManagers:
+    - _nextState: {fileID: 1147730887}
+      _condition: {fileID: 1147730886}
+    - _nextState: {fileID: 4546137287824208936}
+      _condition: {fileID: 4456813416636164007}
+    _conjunctionSubManagers: []
+    _disjunctionSubManagers: []
+  _dataForMoving: {fileID: 11400000, guid: c4f5a8c07e3ab4241adbf4463f4fe9e1, type: 2}
 --- !u!1 &3210493083063265427
 GameObject:
   m_ObjectHideFlags: 0

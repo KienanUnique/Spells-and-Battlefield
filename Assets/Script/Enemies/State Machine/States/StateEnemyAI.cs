@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common.Abstract_Bases.Disableable;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Enemies.Look_Point_Calculator;
-using Enemies.State_Machine.Transitions;
+using Enemies.State_Machine.Transition_Manager;
 using UnityEngine;
 
 namespace Enemies.State_Machine.States
 {
     public abstract class StateEnemyAI : InitializableMonoBehaviourBase, IStateEnemyAI, IInitializableStateEnemyAI
     {
-        [SerializeField] private List<TransitionEnemyAI> _transitions;
+        [SerializeField] private MainTransitionManagerEnemyAI _transitionManager;
         private bool _isActivated = false;
 
         public void Initialize(IEnemyStateMachineControllable stateMachineControllable)
         {
             StateMachineControllable = stateMachineControllable;
+            SetItemsNeedDisabling(new List<IDisableable> {_transitionManager});
             SetInitializedStatus();
         }
 
         public event Action<IStateEnemyAI> NeedToSwitchToNextState;
-        public abstract event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
+        public event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
 
+        public int StateID => this.GetInstanceID();
         public abstract ILookPointCalculator LookPointCalculator { get; }
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
         protected bool IsActivated => _isActivated;
@@ -38,10 +41,7 @@ namespace Enemies.State_Machine.States
 
             SubscribeOnTransitionEvents();
 
-            foreach (var transition in _transitions)
-            {
-                transition.StartCheckingConditions();
-            }
+            _transitionManager.StartCheckingConditions();
         }
 
         public void Exit()
@@ -51,10 +51,7 @@ namespace Enemies.State_Machine.States
                 throw new TryingDeactivateNotActivatedStateException();
             }
 
-            foreach (var transition in _transitions)
-            {
-                transition.StopCheckingConditions();
-            }
+            _transitionManager.StopCheckingConditions();
 
             SpecialExitAction();
 
@@ -76,20 +73,19 @@ namespace Enemies.State_Machine.States
             UnsubscribeFromTransitionEvents();
         }
 
+        protected virtual void ChangeLookPointCalculator(ILookPointCalculator lookPointCalculator)
+        {
+            NeedChangeLookPointCalculator?.Invoke(lookPointCalculator);
+        }
+
         private void SubscribeOnTransitionEvents()
         {
-            foreach (var transition in _transitions)
-            {
-                transition.NeedTransit += OnNeedTransit;
-            }
+            _transitionManager.NeedTransit += OnNeedTransit;
         }
 
         private void UnsubscribeFromTransitionEvents()
         {
-            foreach (var transition in _transitions)
-            {
-                transition.NeedTransit -= OnNeedTransit;
-            }
+            _transitionManager.NeedTransit -= OnNeedTransit;
         }
 
         private void OnNeedTransit(IStateEnemyAI nextState)

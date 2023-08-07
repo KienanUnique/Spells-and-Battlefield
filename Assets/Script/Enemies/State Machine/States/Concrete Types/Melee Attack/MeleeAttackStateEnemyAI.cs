@@ -1,5 +1,4 @@
-﻿using System;
-using Enemies.Attack_Target_Selector;
+﻿using Enemies.Attack_Target_Selector;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
 using UnityEngine;
@@ -10,7 +9,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
     {
         [SerializeField] private AttackTargetSelectorFromZone _damageTargetSelector;
         [SerializeField] private MeleeAttackStateData _data;
-        public override event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
         public override ILookPointCalculator LookPointCalculator => new FollowTargetLookPointCalculator();
 
         protected override void SpecialEnterAction()

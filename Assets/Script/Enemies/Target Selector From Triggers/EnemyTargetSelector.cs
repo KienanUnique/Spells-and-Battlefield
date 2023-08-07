@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases.Disableable;
 using Interfaces;
@@ -11,7 +10,7 @@ namespace Enemies.Target_Selector_From_Triggers
     {
         private readonly HashSet<IEnemyTarget> _targets = new HashSet<IEnemyTarget>();
         private readonly List<Trigger.IEnemyTargetTrigger> _triggers = new List<Trigger.IEnemyTargetTrigger>();
-        public event Action<IEnemyTarget> CurrentTargetChanged;
+        public event IReadonlyEnemyTargetFromTriggersSelector.CurrentTargetChangedEventHandler CurrentTargetChanged;
         public IEnemyTarget CurrentTarget { get; private set; }
 
         public void AddTrigger(Trigger.IEnemyTargetTrigger trigger)
@@ -52,15 +51,16 @@ namespace Enemies.Target_Selector_From_Triggers
             }
         }
 
-        private void HandleNewDetectedTarget(IEnemyTarget target)
+        private void HandleNewDetectedTarget(IEnemyTarget newTarget)
         {
             if (_targets.IsEmpty())
             {
-                CurrentTarget = target;
-                CurrentTargetChanged?.Invoke(CurrentTarget);
+                var oldTarget = CurrentTarget;
+                CurrentTarget = newTarget;
+                CurrentTargetChanged?.Invoke(oldTarget, newTarget);
             }
 
-            _targets.Add(target);
+            _targets.Add(newTarget);
         }
 
         private void OnTargetInTriggerLost(IEnemyTarget target)
@@ -75,8 +75,8 @@ namespace Enemies.Target_Selector_From_Triggers
 
             if (target == CurrentTarget)
             {
-                CurrentTarget = _targets.IsEmpty() ? null : _targets.First();
-                CurrentTargetChanged?.Invoke(CurrentTarget);
+                var nextTarget = _targets.IsEmpty() ? null : _targets.First();
+                CurrentTargetChanged?.Invoke(CurrentTarget, nextTarget);
             }
         }
     }

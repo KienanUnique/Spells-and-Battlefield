@@ -110,7 +110,7 @@ namespace Enemies.Look
                 _needDistanceFromIKCenterPoint * _needDirection + _thisIKCenterPoint.Position;
         }
 
-        private void OnCurrentTargetChanged(IEnemyTarget newTarget)
+        private void OnCurrentTargetChanged(IEnemyTarget oldTarget, IEnemyTarget newTarget)
         {
             _lookPointCalculator.UpdateTarget(newTarget);
         }

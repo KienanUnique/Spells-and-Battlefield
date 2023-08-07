@@ -127,7 +127,7 @@ namespace Enemies.Movement
             _isMoving.AfterValueChanged -= OnIsMovingStatusChanged;
         }
 
-        private void OnCurrentTargetChanged(IEnemyTarget newTarget)
+        private void OnCurrentTargetChanged(IEnemyTarget oldTarget, IEnemyTarget newTarget)
         {
             if (!_needMove)
             {

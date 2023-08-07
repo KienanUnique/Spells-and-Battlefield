@@ -18,7 +18,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
         }
 
         public override bool CanUseSpell => _selectedSpell != default;
-        public override event Action CanUseSpellsAgain;
 
         public override ISpell Pop()
         {
@@ -49,7 +48,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
             _selectedSpell = _spellsToUseInPriorityOrder.FirstOrDefault(spell => spell.CanUse);
             if (!canUseSpellsBefore && CanUseSpell)
             {
-                CanUseSpellsAgain?.Invoke();
+                InvokeCanUseSpellsAgain();
             }
         }
     }

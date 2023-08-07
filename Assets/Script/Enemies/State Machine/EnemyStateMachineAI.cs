@@ -35,6 +35,7 @@ namespace Enemies.State_Machine
             }
 
             _isActive = true;
+            SubscribeOnTargetSelectorEvents();
             TransitToState(_firstStateEnemyAI);
         }
 
@@ -46,6 +47,7 @@ namespace Enemies.State_Machine
             }
 
             _isActive = false;
+            UnsubscribeFromTargetSelectorEvents();
             TransitToState(null);
         }
 
@@ -67,7 +69,7 @@ namespace Enemies.State_Machine
             }
         }
 
-        private void OnCurrentTargetFromTriggersChanged(IEnemyTarget newTarget)
+        private void OnCurrentTargetFromTriggersChanged(IEnemyTarget oldTarget, IEnemyTarget newTarget)
         {
             if (newTarget != null)
             {
@@ -82,14 +84,24 @@ namespace Enemies.State_Machine
         protected override void SubscribeOnEvents()
         {
             if (!_isActive) return;
-            TargetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
+            SubscribeOnTargetSelectorEvents();
             SubscribeOnCurrentStateEvents();
         }
 
         protected override void UnsubscribeFromEvents()
         {
-            TargetFromTriggersSelector.CurrentTargetChanged -= OnCurrentTargetFromTriggersChanged;
+            UnsubscribeFromTargetSelectorEvents();
             UnsubscribeFromCurrentStateEvents();
+        }
+
+        private void SubscribeOnTargetSelectorEvents()
+        {
+            TargetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
+        }
+
+        private void UnsubscribeFromTargetSelectorEvents()
+        {
+            TargetFromTriggersSelector.CurrentTargetChanged -= OnCurrentTargetFromTriggersChanged;
         }
 
         private void SubscribeOnCurrentStateEvents()

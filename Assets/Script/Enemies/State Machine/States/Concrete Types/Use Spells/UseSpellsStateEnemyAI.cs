@@ -1,5 +1,4 @@
-﻿using System;
-using Common.Readonly_Transform;
+﻿using Common.Readonly_Transform;
 using Enemies.Controller;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
@@ -33,7 +32,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
             _spellObjectsFactory = spellObjectsFactory;
         }
 
-        public override event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
         public override ILookPointCalculator LookPointCalculator => _currentLookPointCalculator;
         private Quaternion SpellSpawnDirection => StateMachineControllable.ReadonlyRigidbody.Rotation;
 
@@ -82,6 +80,12 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
             UnsubscribeFromLocalEvents();
         }
 
+        protected override void ChangeLookPointCalculator(ILookPointCalculator newCalculator)
+        {
+            _currentLookPointCalculator = newCalculator;
+            base.ChangeLookPointCalculator(_currentLookPointCalculator);
+        }
+
         private void SubscribeOnLocalEvents()
         {
             _spellsSelector.Enable();
@@ -103,7 +107,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
             if (!_spellsSelector.CanUseSpell)
             {
                 _currentLookPointCalculator = new FollowTargetLookPointCalculator();
-                NeedChangeLookPointCalculator?.Invoke(_currentLookPointCalculator);
+                ChangeLookPointCalculator(_currentLookPointCalculator);
             }
 
             _isWaitingForAnimationFinish = false;
@@ -133,12 +137,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         {
             _spellObjectsFactory.Create(_cachedSpell.SpellDataForSpellController,
                 _cachedSpell.SpellPrefabProvider, _enemyController, _spellSpawnObject.Position, SpellSpawnDirection);
-        }
-
-        private void ChangeLookPointCalculator(ILookPointCalculator newCalculator)
-        {
-            _currentLookPointCalculator = newCalculator;
-            NeedChangeLookPointCalculator?.Invoke(newCalculator);
         }
     }
 }

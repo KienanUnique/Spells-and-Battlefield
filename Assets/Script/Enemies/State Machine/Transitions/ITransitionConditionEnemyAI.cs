@@ -1,11 +1,11 @@
 ﻿using System;
-using Enemies.State_Machine.States;
 
 namespace Enemies.State_Machine.Transitions
 {
-    public interface ITransitionEnemyAI
+    public interface ITransitionConditionEnemyAI
     {
-        public event Action<IStateEnemyAI> NeedTransit;
+        public event Action ConditionCompleted;
+        public bool IsConditionCompleted { get; }
         public void StartCheckingConditions();
         public void StopCheckingConditions();
     }

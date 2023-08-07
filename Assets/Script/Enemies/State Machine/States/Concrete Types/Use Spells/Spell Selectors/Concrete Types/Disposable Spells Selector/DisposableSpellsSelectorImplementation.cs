@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ModestTree;
 using Spells.Spell;
 
@@ -16,7 +15,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
         }
 
         public override bool CanUseSpell => !_spellsToUseInPriorityOrder.IsEmpty();
-        public override event Action CanUseSpellsAgain;
 
         public override ISpell Pop()
         {
