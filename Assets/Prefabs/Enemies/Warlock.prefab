@@ -1310,11 +1310,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transitionManager:
+    _needTransitAfterAction: 0
     _afterActionNextState: {fileID: 0}
     _singleSubManagers: []
     _conjunctionSubManagers: []
     _disjunctionSubManagers: []
-  _needTransitAfterAction: 0
 --- !u!114 &6547898392109559484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1341,6 +1341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transitionManager:
+    _needTransitAfterAction: 0
     _afterActionNextState: {fileID: 0}
     _singleSubManagers:
     - _nextState: {fileID: 583975316282976070}
@@ -1351,7 +1352,6 @@ MonoBehaviour:
       - {fileID: 8494981037482184549}
       - {fileID: 6092596008813570972}
     _disjunctionSubManagers: []
-  _needTransitAfterAction: 0
   _useSpellsStateData: {fileID: 11400000, guid: 4a8e6e0ffd1779341bbcabd40107779a, type: 2}
   _enemyController: {fileID: 2342827156696725659}
   _spellSpawnObjectReadonlyTransformGetter: {fileID: 1124876562946862783}
@@ -1369,11 +1369,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transitionManager:
+    _needTransitAfterAction: 1
     _afterActionNextState: {fileID: 2427962119334499236}
     _singleSubManagers: []
     _conjunctionSubManagers: []
     _disjunctionSubManagers: []
-  _needTransitAfterAction: 1
   _useSpellsStateData: {fileID: 11400000, guid: d0df34badf2c57a47977e207a48cee09, type: 2}
   _enemyController: {fileID: 2342827156696725659}
   _spellSpawnObjectReadonlyTransformGetter: {fileID: 1124876562946862783}

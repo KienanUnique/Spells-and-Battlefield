@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common;
 using Common.Abstract_Bases.Disableable;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Enemies.Look_Point_Calculator;
@@ -11,68 +12,64 @@ namespace Enemies.State_Machine.States
     public abstract class StateEnemyAI : InitializableMonoBehaviourBase, IStateEnemyAI, IInitializableStateEnemyAI
     {
         [SerializeField] private MainTransitionManagerEnemyAI _transitionManager;
-        [SerializeField] private bool _needTransitAfterAction;
-        private bool _isActivated = false;
+        private IStateEnemyAI _cachedNextState;
+        private ValueWithReactionOnChange<StateEnemyAIStatus> _currentStateStatus;
 
         public void Initialize(IEnemyStateMachineControllable stateMachineControllable)
         {
             StateMachineControllable = stateMachineControllable;
+            _currentStateStatus = new ValueWithReactionOnChange<StateEnemyAIStatus>(StateEnemyAIStatus.NonActive);
             SetItemsNeedDisabling(new List<IDisableable> {_transitionManager});
+            SpecialInitializeAction();
             SetInitializedStatus();
         }
+
 
         public event Action<IStateEnemyAI> NeedToSwitchToNextState;
         public event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
         public int StateID => this.GetInstanceID();
         public abstract ILookPointCalculator LookPointCalculator { get; }
-        protected bool NeedTransitAfterAction => _needTransitAfterAction;
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
-        protected bool IsActivated => _isActivated;
+        protected StateEnemyAIStatus CurrentStatus => _currentStateStatus.Value;
+
+        protected enum StateEnemyAIStatus
+        {
+            NonActive,
+            Active,
+            Exiting
+        }
 
         public void Enter()
         {
-            if (_isActivated)
-            {
-                throw new StateIsAlreadyActivatedException();
-            }
-
-            _isActivated = true;
-
-            SpecialEnterAction();
-
-            SubscribeOnTransitionEvents();
-
-            _transitionManager.StartCheckingConditions();
+            _currentStateStatus.Value = StateEnemyAIStatus.Active;
         }
 
         public void Exit()
         {
-            if (!_isActivated)
-            {
-                throw new TryingDeactivateNotActivatedStateException();
-            }
-
-            _transitionManager.StopCheckingConditions();
-
-            SpecialExitAction();
-
-            _isActivated = false;
+            _currentStateStatus.Value = StateEnemyAIStatus.NonActive;
         }
 
-        protected abstract void SpecialEnterAction();
-        protected abstract void SpecialExitAction();
+        protected virtual void SpecialInitializeAction()
+        {
+        }
 
         protected override void SubscribeOnEvents()
         {
-            if (!_isActivated) return;
-            SubscribeOnTransitionEvents();
+            _currentStateStatus.AfterValueChanged += OnAfterStateStatus;
+            if (CurrentStatus == StateEnemyAIStatus.Active)
+            {
+                SubscribeOnTransitionEvents();
+            }
         }
 
 
         protected override void UnsubscribeFromEvents()
         {
+            _currentStateStatus.AfterValueChanged -= OnAfterStateStatus;
             UnsubscribeFromTransitionEvents();
         }
+
+        protected abstract void SpecialReactionOnStateStatusChange(StateEnemyAIStatus newStatus);
 
         protected virtual void ChangeLookPointCalculator(ILookPointCalculator lookPointCalculator)
         {
@@ -81,10 +78,33 @@ namespace Enemies.State_Machine.States
 
         protected void HandleCompletedAction()
         {
-            if (_needTransitAfterAction)
+            _transitionManager.HandleCompletedAction();
+        }
+
+        protected void HandleExitFromState()
+        {
+            NeedToSwitchToNextState?.Invoke(_cachedNextState);
+        }
+
+        private void OnAfterStateStatus(StateEnemyAIStatus newStatus)
+        {
+            switch (newStatus)
             {
-                _transitionManager.OnNeedTransitNextStateAfterAction();
+                case StateEnemyAIStatus.Active:
+                    SubscribeOnTransitionEvents();
+                    _transitionManager.StartCheckingConditions();
+                    break;
+                case StateEnemyAIStatus.Exiting:
+                    UnsubscribeFromTransitionEvents();
+                    _transitionManager.StopCheckingConditions();
+                    break;
+                case StateEnemyAIStatus.NonActive:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
             }
+
+            SpecialReactionOnStateStatusChange(newStatus);
         }
 
         private void SubscribeOnTransitionEvents()
@@ -99,22 +119,8 @@ namespace Enemies.State_Machine.States
 
         private void OnNeedTransit(IStateEnemyAI nextState)
         {
-            UnsubscribeFromTransitionEvents();
-            NeedToSwitchToNextState?.Invoke(nextState);
-        }
-
-        private class StateIsAlreadyActivatedException : Exception
-        {
-            public StateIsAlreadyActivatedException() : base("State is already activated")
-            {
-            }
-        }
-
-        private class TryingDeactivateNotActivatedStateException : Exception
-        {
-            public TryingDeactivateNotActivatedStateException() : base("Can't deactivate not active state")
-            {
-            }
+            _cachedNextState = nextState;
+            _currentStateStatus.Value = StateEnemyAIStatus.Exiting;
         }
     }
 }

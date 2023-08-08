@@ -1,4 +1,5 @@
-﻿using Enemies.Attack_Target_Selector;
+﻿using System;
+using Enemies.Attack_Target_Selector;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
 using UnityEngine;
@@ -9,25 +10,13 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
     {
         [SerializeField] private AttackTargetSelectorFromZone _damageTargetSelector;
         [SerializeField] private MeleeAttackStateData _data;
+        private bool _isWaitingForAnimationFinish;
         public override ILookPointCalculator LookPointCalculator => new FollowTargetLookPointCalculator();
-
-        protected override void SpecialEnterAction()
-        {
-            SubscribeOnLocalEvents();
-            StateMachineControllable.StartKeepingCurrentTargetOnDistance(_data.DataForMoving);
-            Attack();
-        }
-
-        protected override void SpecialExitAction()
-        {
-            UnsubscribeFromLocalEvents();
-            StateMachineControllable.StopMoving();
-        }
 
         protected override void SubscribeOnEvents()
         {
             base.SubscribeOnEvents();
-            if (IsActivated)
+            if (CurrentStatus == StateEnemyAIStatus.Active)
             {
                 SubscribeOnLocalEvents();
             }
@@ -37,6 +26,32 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
         {
             base.UnsubscribeFromEvents();
             UnsubscribeFromLocalEvents();
+        }
+
+        protected override void SpecialReactionOnStateStatusChange(StateEnemyAIStatus newStatus)
+        {
+            switch (newStatus)
+            {
+                case StateEnemyAIStatus.NonActive:
+                    UnsubscribeFromLocalEvents();
+                    StateMachineControllable.StopMoving();
+                    break;
+                case StateEnemyAIStatus.Active:
+                    _isWaitingForAnimationFinish = false;
+                    SubscribeOnLocalEvents();
+                    StateMachineControllable.StartKeepingCurrentTargetOnDistance(_data.DataForMoving);
+                    Attack();
+                    break;
+                case StateEnemyAIStatus.Exiting:
+                    if (!_isWaitingForAnimationFinish)
+                    {
+                        HandleExitFromState();
+                    }
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
+            }
         }
 
         private void SubscribeOnLocalEvents()
@@ -53,13 +68,16 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
 
         private void OnActionAnimationEnd()
         {
-            if (NeedTransitAfterAction)
+            _isWaitingForAnimationFinish = false;
+            switch (CurrentStatus)
             {
-                HandleCompletedAction();
-            }
-            else
-            {
-                Attack();
+                case StateEnemyAIStatus.Exiting:
+                    HandleExitFromState();
+                    break;
+                case StateEnemyAIStatus.Active:
+                    HandleCompletedAction();
+                    Attack();
+                    break;
             }
         }
 
@@ -71,7 +89,11 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
 
         private void Attack()
         {
-            StateMachineControllable.PlayActionAnimation(_data.AnimationData);
+            if (CurrentStatus == StateEnemyAIStatus.Active)
+            {
+                _isWaitingForAnimationFinish = true;
+                StateMachineControllable.PlayActionAnimation(_data.AnimationData);
+            }
         }
     }
 }
