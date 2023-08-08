@@ -1,5 +1,5 @@
 ﻿using System;
-using Enemies.State_Machine.Transitions;
+using Enemies.State_Machine.Transition_Conditions;
 using UnityEngine;
 
 namespace Enemies.State_Machine.Transition_Manager.Sub_Managers.Sub_Manager_Concrete_Types

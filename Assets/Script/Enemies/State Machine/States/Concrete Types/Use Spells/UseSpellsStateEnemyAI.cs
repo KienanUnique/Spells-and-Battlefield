@@ -1,4 +1,5 @@
-﻿using Common.Readonly_Transform;
+﻿using System;
+using Common.Readonly_Transform;
 using Enemies.Controller;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
@@ -11,7 +12,7 @@ using Zenject;
 
 namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 {
-    public class UseSpellsStateEnemyAI : StateEnemyAI, ICoroutineStarter
+    public class UseSpellsStateEnemyAI : StateEnemyAI, ICoroutineStarter, IReadonlySpellSelector
     {
         [SerializeField] private UseSpellsStateData _useSpellsStateData;
         [SerializeField] private EnemyController _enemyController;
@@ -25,6 +26,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         private IReadonlyTransform _spellSpawnObject;
         private IReadonlyTransform _spellAimPoint;
         private IReadonlyTransform _previousThisPositionReferencePointTransform;
+        private bool _wasSpellCasted;
 
         [Inject]
         private void Construct(ISpellObjectsFactory spellObjectsFactory)
@@ -32,19 +34,22 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
             _spellObjectsFactory = spellObjectsFactory;
         }
 
+        public event Action CanUseSpellsAgain;
+        public bool CanUseSpell => _spellsSelector.CanUseSpell;
         public override ILookPointCalculator LookPointCalculator => _currentLookPointCalculator;
         private Quaternion SpellSpawnDirection => StateMachineControllable.ReadonlyRigidbody.Rotation;
 
         protected override void SpecialEnterAction()
         {
+            _isWaitingForAnimationFinish = false;
+            _wasSpellCasted = false;
             _previousThisPositionReferencePointTransform = StateMachineControllable.ThisPositionReferencePointForLook;
             StateMachineControllable.ChangeThisPositionReferencePointTransform(_spellAimPoint);
             StateMachineControllable.StartKeepingCurrentTargetOnDistance(_useSpellsStateData.DataForMoving);
+
             SubscribeOnLocalEvents();
-            if (_spellsSelector.CanUseSpell && !_isWaitingForAnimationFinish)
-            {
-                TryCastSelectedSpell();
-            }
+
+            TryCastSelectedSpell();
         }
 
         protected override void SpecialExitAction()
@@ -68,6 +73,8 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         protected override void SubscribeOnEvents()
         {
             base.SubscribeOnEvents();
+            _spellsSelector.CanUseSpellsAgain += OnCanUseSpellsAgain;
+
             if (IsActivated)
             {
                 SubscribeOnLocalEvents();
@@ -77,6 +84,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         protected override void UnsubscribeFromEvents()
         {
             base.UnsubscribeFromEvents();
+            _spellsSelector.CanUseSpellsAgain -= OnCanUseSpellsAgain;
             UnsubscribeFromLocalEvents();
         }
 
@@ -89,7 +97,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         private void SubscribeOnLocalEvents()
         {
             _spellsSelector.Enable();
-            _spellsSelector.CanUseSpellsAgain += OnCanUseSpellsAgain;
             StateMachineControllable.ActionAnimationEnd += OnActionAnimationEnd;
             StateMachineControllable.ActionAnimationKeyMomentTrigger += OnActionAnimationKeyMomentTrigger;
         }
@@ -97,13 +104,21 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         private void UnsubscribeFromLocalEvents()
         {
             _spellsSelector.Disable();
-            _spellsSelector.CanUseSpellsAgain -= OnCanUseSpellsAgain;
             StateMachineControllable.ActionAnimationEnd -= OnActionAnimationEnd;
             StateMachineControllable.ActionAnimationKeyMomentTrigger -= OnActionAnimationKeyMomentTrigger;
         }
 
         private void OnActionAnimationEnd()
         {
+            if (IsActivated)
+            {
+                HandleCompletedAction();
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+
             if (!_spellsSelector.CanUseSpell)
             {
                 _currentLookPointCalculator = new FollowTargetLookPointCalculator();
@@ -121,12 +136,19 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 
         private void OnCanUseSpellsAgain()
         {
-            TryCastSelectedSpell();
+            CanUseSpellsAgain?.Invoke();
+            if (IsActivated)
+            {
+                TryCastSelectedSpell();
+            }
         }
 
         private void TryCastSelectedSpell()
         {
-            if (_isWaitingForAnimationFinish || !_spellsSelector.CanUseSpell) return;
+            if (_isWaitingForAnimationFinish || !_spellsSelector.CanUseSpell ||
+                (_wasSpellCasted && NeedTransitAfterAction)) return;
+
+            _wasSpellCasted = true;
             _isWaitingForAnimationFinish = true;
             _cachedSpell = _spellsSelector.Pop();
             ChangeLookPointCalculator(_cachedSpell.LookPointCalculator);

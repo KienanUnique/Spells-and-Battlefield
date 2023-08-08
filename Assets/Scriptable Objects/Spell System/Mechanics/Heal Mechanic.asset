@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 028c5d271fcc4294999b28a8f215d5d3, type: 3}
   m_Name: Heal Mechanic
   m_EditorClassIdentifier: 
-  _healPoints: 5
+  _healPoints: 15

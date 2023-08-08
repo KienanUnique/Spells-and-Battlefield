@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Enemies.State_Machine.Transitions;
+using Enemies.State_Machine.Transition_Conditions;
 using UnityEngine;
 
 namespace Enemies.State_Machine.Transition_Manager.Sub_Managers

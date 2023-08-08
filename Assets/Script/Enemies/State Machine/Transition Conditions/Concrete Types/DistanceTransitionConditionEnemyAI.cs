@@ -4,7 +4,7 @@ using Common;
 using Interfaces;
 using UnityEngine;
 
-namespace Enemies.State_Machine.Transitions.Concrete_Types
+namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
 {
     public class DistanceTransitionConditionEnemyAI : TransitionConditionEnemyAIBase
     {
@@ -16,12 +16,6 @@ namespace Enemies.State_Machine.Transitions.Concrete_Types
 
         private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
         private Vector3 CurrentTargetPosition => CurrentTarget.MainRigidbody.Position;
-
-        private enum TypeOfComparison
-        {
-            IsMore,
-            IsLess
-        }
 
         public override bool IsConditionCompleted => _isConditionCompleted.Value;
 

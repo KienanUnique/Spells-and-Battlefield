@@ -1,4 +1,4 @@
-﻿namespace Enemies.State_Machine.Transitions
+﻿namespace Enemies.State_Machine.Transition_Conditions
 {
     public interface IInitializableTransitionEnemyAI
     {

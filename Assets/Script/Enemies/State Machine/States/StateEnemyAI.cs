@@ -11,6 +11,7 @@ namespace Enemies.State_Machine.States
     public abstract class StateEnemyAI : InitializableMonoBehaviourBase, IStateEnemyAI, IInitializableStateEnemyAI
     {
         [SerializeField] private MainTransitionManagerEnemyAI _transitionManager;
+        [SerializeField] private bool _needTransitAfterAction;
         private bool _isActivated = false;
 
         public void Initialize(IEnemyStateMachineControllable stateMachineControllable)
@@ -22,9 +23,9 @@ namespace Enemies.State_Machine.States
 
         public event Action<IStateEnemyAI> NeedToSwitchToNextState;
         public event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
-
         public int StateID => this.GetInstanceID();
         public abstract ILookPointCalculator LookPointCalculator { get; }
+        protected bool NeedTransitAfterAction => _needTransitAfterAction;
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
         protected bool IsActivated => _isActivated;
 
@@ -76,6 +77,14 @@ namespace Enemies.State_Machine.States
         protected virtual void ChangeLookPointCalculator(ILookPointCalculator lookPointCalculator)
         {
             NeedChangeLookPointCalculator?.Invoke(lookPointCalculator);
+        }
+
+        protected void HandleCompletedAction()
+        {
+            if (_needTransitAfterAction)
+            {
+                _transitionManager.OnNeedTransitNextStateAfterAction();
+            }
         }
 
         private void SubscribeOnTransitionEvents()

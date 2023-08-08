@@ -5,10 +5,14 @@ using Spells.Spell;
 
 namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
 {
-    public interface ISpellSelector : IDisableable
+    public interface ISpellSelector : IReadonlySpellSelector, IDisableable
     {
-        bool CanUseSpell { get; }
-        event Action CanUseSpellsAgain;
-        ISpell Pop();
+        public ISpell Pop();
+    }
+
+    public interface IReadonlySpellSelector
+    {
+        public bool CanUseSpell { get; }
+        public event Action CanUseSpellsAgain;
     }
 }

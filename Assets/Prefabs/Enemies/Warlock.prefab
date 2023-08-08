@@ -1260,6 +1260,9 @@ GameObject:
   - component: {fileID: 583975316282976070}
   - component: {fileID: 6547898392109559484}
   - component: {fileID: 2427962119334499236}
+  - component: {fileID: 8124862480083203323}
+  - component: {fileID: 8494981037482184549}
+  - component: {fileID: 6092596008813570972}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -1307,9 +1310,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transitionManager:
+    _afterActionNextState: {fileID: 0}
     _singleSubManagers: []
     _conjunctionSubManagers: []
     _disjunctionSubManagers: []
+  _needTransitAfterAction: 0
 --- !u!114 &6547898392109559484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1336,15 +1341,70 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transitionManager:
+    _afterActionNextState: {fileID: 0}
     _singleSubManagers:
     - _nextState: {fileID: 583975316282976070}
       _condition: {fileID: 6547898392109559484}
-    _conjunctionSubManagers: []
+    _conjunctionSubManagers:
+    - _nextState: {fileID: 8124862480083203323}
+      _conditions:
+      - {fileID: 8494981037482184549}
+      - {fileID: 6092596008813570972}
     _disjunctionSubManagers: []
+  _needTransitAfterAction: 0
   _useSpellsStateData: {fileID: 11400000, guid: 4a8e6e0ffd1779341bbcabd40107779a, type: 2}
   _enemyController: {fileID: 2342827156696725659}
   _spellSpawnObjectReadonlyTransformGetter: {fileID: 1124876562946862783}
   _spellAimPointReadonlyTransformGetter: {fileID: 8893019228434104273}
+--- !u!114 &8124862480083203323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683518522327841033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6681a5d3494f447397b704c125408d99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transitionManager:
+    _afterActionNextState: {fileID: 2427962119334499236}
+    _singleSubManagers: []
+    _conjunctionSubManagers: []
+    _disjunctionSubManagers: []
+  _needTransitAfterAction: 1
+  _useSpellsStateData: {fileID: 11400000, guid: d0df34badf2c57a47977e207a48cee09, type: 2}
+  _enemyController: {fileID: 2342827156696725659}
+  _spellSpawnObjectReadonlyTransformGetter: {fileID: 1124876562946862783}
+  _spellAimPointReadonlyTransformGetter: {fileID: 8893019228434104273}
+--- !u!114 &8494981037482184549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683518522327841033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e5730e978124f6587e3a1aa3e4e3551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _needRatioOfHealthPoints: 0.4
+  _typeOfComparison: 1
+--- !u!114 &6092596008813570972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683518522327841033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 721aca30ab404229aebd9837d0a36afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _useSpellStateToCheck: {fileID: 8124862480083203323}
 --- !u!1 &3705842027180608582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1975,7 +2035,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4693423325618152249}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
   m_Name: 

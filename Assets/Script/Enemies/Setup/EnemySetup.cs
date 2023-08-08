@@ -14,7 +14,7 @@ using Enemies.Movement;
 using Enemies.Movement.Setup_Data;
 using Enemies.State_Machine;
 using Enemies.State_Machine.States;
-using Enemies.State_Machine.Transitions;
+using Enemies.State_Machine.Transition_Conditions;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Trigger;
 using Enemies.Visual;

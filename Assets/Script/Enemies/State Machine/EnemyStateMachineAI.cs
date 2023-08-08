@@ -12,6 +12,7 @@ namespace Enemies.State_Machine
         IInitializableEnemyStateMachineAI
     {
         [SerializeField] private StateEnemyAI _firstStateEnemyAI;
+        
         private IStateEnemyAI _currentStateEnemyAI;
         private IEnemyStateMachineControllable _stateMachineControllable;
         private bool _isActive;

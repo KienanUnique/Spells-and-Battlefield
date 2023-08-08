@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ae85dfc9344780974bf0b7b1e78647, type: 3}
+  m_Name: Warlock Disposable Heal Spells Selector
+  m_EditorClassIdentifier: 
+  _spellsToUseInPriorityOrder:
+  - {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
+  - {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}

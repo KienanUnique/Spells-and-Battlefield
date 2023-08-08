@@ -53,7 +53,14 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
 
         private void OnActionAnimationEnd()
         {
-            Attack();
+            if (NeedTransitAfterAction)
+            {
+                HandleCompletedAction();
+            }
+            else
+            {
+                Attack();
+            }
         }
 
         private void OnActionAnimationKeyMomentTrigger()

@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 
-namespace Enemies.State_Machine.Transitions
+namespace Enemies.State_Machine.Transition_Conditions
 {
     public abstract class TransitionConditionEnemyAIBase : InitializableMonoBehaviourBase, ITransitionConditionEnemyAI,
         IInitializableTransitionEnemyAI
@@ -22,6 +22,10 @@ namespace Enemies.State_Machine.Transitions
         {
             IsEnabled = true;
             HandleStartCheckingConditions();
+            if (IsConditionCompleted)
+            {
+                InvokeConditionCompletedEvent();
+            }
         }
 
         public void StopCheckingConditions()
@@ -32,6 +36,7 @@ namespace Enemies.State_Machine.Transitions
 
         protected abstract void HandleStartCheckingConditions();
         protected abstract void HandleStopCheckingConditions();
+
         protected void InvokeConditionCompletedEvent()
         {
             ConditionCompleted?.Invoke();

@@ -9,9 +9,12 @@ namespace Enemies.State_Machine.Transition_Manager
     [Serializable]
     public class MainTransitionManagerEnemyAI : TransitionManagerEnemyAIBase
     {
+        [Space] [Header("Or")] [SerializeField]
+        private StateEnemyAI _afterActionNextState;
+
         [Header("Single")] [SerializeField] private List<SingleTransitionSubManagerEnemyAI> _singleSubManagers;
 
-        [Header("And")] [SerializeField]
+        [Space] [Header("And")] [SerializeField]
         private List<ConjunctionMultipleTransitionSubManagerEnemyAI> _conjunctionSubManagers;
 
         [Space] [Header("Or")] [SerializeField]
@@ -30,6 +33,11 @@ namespace Enemies.State_Machine.Transition_Manager
         }
 
         public override event Action<IStateEnemyAI> NeedTransit;
+
+        public void OnNeedTransitNextStateAfterAction()
+        {
+            TransitNextState(_afterActionNextState);
+        }
 
         protected override void SubscribeOnEvents()
         {
@@ -69,7 +77,7 @@ namespace Enemies.State_Machine.Transition_Manager
         {
             foreach (var subManager in AllSubManagers)
             {
-                subManager.NeedTransit += OnNeedTransit;
+                subManager.NeedTransit += TransitNextState;
             }
         }
 
@@ -77,12 +85,13 @@ namespace Enemies.State_Machine.Transition_Manager
         {
             foreach (var subManager in AllSubManagers)
             {
-                subManager.NeedTransit -= OnNeedTransit;
+                subManager.NeedTransit -= TransitNextState;
             }
         }
 
-        private void OnNeedTransit(IStateEnemyAI nextState)
+        private void TransitNextState(IStateEnemyAI nextState)
         {
+            UnsubscribeFromTransitionEvents();
             NeedTransit?.Invoke(nextState);
         }
     }

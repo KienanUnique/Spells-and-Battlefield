@@ -2,7 +2,7 @@
 using Interfaces;
 using UnityEngine;
 
-namespace Enemies.State_Machine.Transitions.Concrete_Types
+namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
 {
     public class TargetStateChangedTransitionConditionEnemyAI : TransitionConditionEnemyAIBase
     {
@@ -12,7 +12,8 @@ namespace Enemies.State_Machine.Transitions.Concrete_Types
         private IEnemyTarget CurrentTarget =>
             StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
 
-        public override bool IsConditionCompleted => CurrentTarget.CurrentCharacterState == _needState;
+        public override bool IsConditionCompleted =>
+            CurrentTarget != null && CurrentTarget.CurrentCharacterState == _needState;
 
         protected override void HandleStartCheckingConditions()
         {
