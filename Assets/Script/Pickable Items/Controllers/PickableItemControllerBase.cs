@@ -142,6 +142,7 @@ namespace Pickable_Items.Controllers
             _rigidbody.velocity = Vector3.zero;
 
             var visualObjectSequence = DOTween.Sequence();
+            visualObjectSequence.SetLink(_doTweenLinkGameObject);
             var cashedTransform = transform;
             if (_needFallDown)
             {
