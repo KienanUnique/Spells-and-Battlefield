@@ -1,39 +1,25 @@
 ﻿using Common.Abstract_Bases.Factories;
-using UI.Popup_Text.Prefab_Provider;
+using Common.Abstract_Bases.Factories.Object_Pool;
+using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
+using UI.Popup_Text.Data_For_Activation;
 using UnityEngine;
 using Zenject;
+using IPrefabProvider = Common.IPrefabProvider;
 
 namespace UI.Popup_Text.Factory
 {
-    public class PopupTextFactory : ObjectPoolingFactoryWithInstantiatorBase<IPopupTextController>,
-        IPopupTextFactory
+    public class PopupTextFactory : ObjectPoolingFactoryWithInstantiatorBase<IPopupTextController,
+        IPopupTextControllerDataForActivation>, IPopupTextFactory
     {
-        private readonly IPopupTextPrefabProvider _prefabProvider;
-        private readonly Vector3 _defaultSpawnPosition;
-
         public PopupTextFactory(IInstantiator instantiator, Transform parentTransform, int needItemsCount,
-            IPopupTextPrefabProvider prefabProvider, Vector3 defaultSpawnPosition) : base(instantiator, parentTransform,
-            needItemsCount)
+            IPrefabProvider prefabProvider, IPositionDataForInstantiation defaultPositionDataForInstantiation) : base(
+            instantiator, parentTransform, needItemsCount, prefabProvider, defaultPositionDataForInstantiation)
         {
-            _prefabProvider = prefabProvider;
-            _defaultSpawnPosition = defaultSpawnPosition;
         }
 
-        public IPopupTextController Create(string textToShow, Vector3 startPosition)
+        public void Create(string textToShow, Vector3 startPosition)
         {
-            var getItem = GetItem();
-            getItem.Popup(textToShow, startPosition);
-            return getItem;
-        }
-
-        protected override IPopupTextController InstantiateItem()
-        {
-            return InstantiatePrefabForComponent<IPopupTextController>(_prefabProvider, _defaultSpawnPosition,
-                Quaternion.identity);
-        }
-
-        protected override void HandleReleaseItem(IPopupTextController item)
-        {
+            Create(new PopupTextControllerDataForActivation(textToShow, startPosition, Quaternion.identity));
         }
     }
 }

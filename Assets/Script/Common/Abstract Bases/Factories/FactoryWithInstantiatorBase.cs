@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
+using UnityEngine;
 using Zenject;
 
 namespace Common.Abstract_Bases.Factories
@@ -14,6 +15,19 @@ namespace Common.Abstract_Bases.Factories
             _parentTransform = parentTransform;
         }
 
+        protected GameObject InstantiatePrefab(IPrefabProvider prefabProvider,
+            IPositionDataForInstantiation positionDataForInstantiation)
+        {
+            return InstantiatePrefab(prefabProvider.Prefab, positionDataForInstantiation);
+        }
+
+        protected GameObject InstantiatePrefab(GameObject prefab,
+            IPositionDataForInstantiation positionDataForInstantiation)
+        {
+            return InstantiatePrefab(prefab, positionDataForInstantiation.SpawnPosition,
+                positionDataForInstantiation.SpawnRotation);
+        }
+
         protected GameObject InstantiatePrefab(IPrefabProvider prefabProvider, Vector3 spawnPosition,
             Quaternion spawnRotation)
         {
@@ -23,6 +37,19 @@ namespace Common.Abstract_Bases.Factories
         protected GameObject InstantiatePrefab(GameObject prefab, Vector3 spawnPosition, Quaternion spawnRotation)
         {
             return _instantiator.InstantiatePrefab(prefab, spawnPosition, spawnRotation, _parentTransform);
+        }
+
+        protected TComponent InstantiatePrefabForComponent<TComponent>(IPrefabProvider prefab,
+            IPositionDataForInstantiation positionDataForInstantiation)
+        {
+            return InstantiatePrefabForComponent<TComponent>(prefab.Prefab, positionDataForInstantiation);
+        }
+
+        protected TComponent InstantiatePrefabForComponent<TComponent>(GameObject prefab,
+            IPositionDataForInstantiation positionDataForInstantiation)
+        {
+            return InstantiatePrefabForComponent<TComponent>(prefab, positionDataForInstantiation.SpawnPosition,
+                positionDataForInstantiation.SpawnRotation);
         }
 
         protected TComponent InstantiatePrefabForComponent<TComponent>(IPrefabProvider prefabProvider,

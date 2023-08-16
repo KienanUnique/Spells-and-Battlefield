@@ -2,7 +2,6 @@
 using Common.Abstract_Bases.Character;
 using Common.Mechanic_Effects;
 using Interfaces;
-using UnityEngine;
 
 namespace Enemies.Character
 {
@@ -15,21 +14,6 @@ namespace Enemies.Character
             base(coroutineStarter, characterSettings)
         {
             _name = characterSettings.Name;
-        }
-
-
-        public override void HandleHeal(int countOfHitPoints)
-        {
-            base.HandleHeal(countOfHitPoints);
-            Debug.Log(
-                $"{_name}: Handle_Heal<{countOfHitPoints}> --> Hp_Left<{_hitPointsCalculator.CurrentCountOfHitPoints}>, Current_State<{_currentState.Value.ToString()}>");
-        }
-
-        public override void HandleDamage(int countOfHitPoints)
-        {
-            base.HandleDamage(countOfHitPoints);
-            Debug.Log(
-                $"{_name}: Handle_Damage<{countOfHitPoints}> --> Hp_Left<{_hitPointsCalculator.CurrentCountOfHitPoints}>, Current_State<{_currentState.Value.ToString()}>");
         }
 
         public void ApplyEffectsToTargets(IReadOnlyCollection<IEnemyTarget> targets,

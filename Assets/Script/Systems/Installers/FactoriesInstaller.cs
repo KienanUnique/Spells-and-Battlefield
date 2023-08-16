@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Common.Abstract_Bases.Factories;
-using Common.Readonly_Transform;
+using Common.Abstract_Bases.Factories.Object_Pool;
+using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
 using Enemies.Spawn.Factory;
 using Pickable_Items.Factory;
 using Spells.Factory;
@@ -23,6 +23,8 @@ namespace Systems.Installers
         [Header("Popup Text")] [SerializeField]
         private Transform _popupTextParent;
 
+        [SerializeField] private SerializablePositionDataForInstantiation _defaultSpawnPosition;
+
         [Min(1)] [SerializeField] private int _needPopupTextObjectPooledObjectsCount;
         [SerializeField] private PopupTextPrefabProvider _damageTextPrefabProvider;
         [SerializeField] private PopupTextPrefabProvider _healTextPrefabProvider;
@@ -44,7 +46,7 @@ namespace Systems.Installers
         {
             var textFactory = new PopupHitPointsChangeTextFactory(Container,
                 _popupTextParent, _needPopupTextObjectPooledObjectsCount, _healTextPrefabProvider,
-                _damageTextPrefabProvider, Vector3.zero);
+                _damageTextPrefabProvider, _defaultSpawnPosition);
 
             _objectPoolingFactories.Add(textFactory);
 

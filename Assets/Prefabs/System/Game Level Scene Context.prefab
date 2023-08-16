@@ -111,6 +111,8 @@ MonoBehaviour:
   _spellsParent: {fileID: 0}
   _pickableItemsParent: {fileID: 0}
   _popupTextParent: {fileID: 0}
+  _defaultSpawnPosition:
+    _defaultSpawnPosition: {fileID: 0}
   _needPopupTextObjectPooledObjectsCount: 15
   _damageTextPrefabProvider: {fileID: 11400000, guid: 7b7d631834b23b543bcc58a8c99404a7, type: 2}
   _healTextPrefabProvider: {fileID: 11400000, guid: 77b69c2cb86148f4d8592053e408228e, type: 2}

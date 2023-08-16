@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96a63daad6484ecf8a34679e985641e2, type: 3}
   m_Name: Popup Text Settings
   m_EditorClassIdentifier: 
-  _animationDurationInSeconds: 15
+  _animationDurationInSeconds: 2
   _moveMinimumRadius: 3
   _moveMaximumRadius: 4
   _movementEase: 3
+  _scaleEase: 21

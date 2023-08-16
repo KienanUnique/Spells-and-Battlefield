@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections;
-using Common.Abstract_Bases.Factories;
+using Common.Abstract_Bases.Factories.Object_Pool;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Readonly_Transform;
 using DG.Tweening;
 using Settings.UI;
 using TMPro;
+using UI.Popup_Text.Data_For_Activation;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace UI.Popup_Text
 {
     public class PopupTextController : InitializableMonoBehaviourBase, IInitializablePopupTextController,
-        IPopupTextController, IObjectPoolItem
+        IPopupTextController
     {
         private TMP_Text _textComponent;
         private Transform _mainTransform;
@@ -28,15 +29,14 @@ namespace UI.Popup_Text
             _mainTransform = mainTransform;
             _settings = settings;
             _cameraTransform = cameraTransform;
-            SetInitializedStatus();
             gameObject.SetActive(false);
+            SetInitializedStatus();
         }
 
-        public event Action<IObjectPoolItem> NeedRelease;
+        public event Action<IObjectPoolItem<IPopupTextControllerDataForActivation>> Deactivated;
         public bool IsUsed { get; private set; }
-        private float HalfAnimationDurationInSeconds => _settings.AnimationDurationInSeconds / 2;
 
-        public void Popup(string textToShow, Vector3 startPosition)
+        public void Activate(IPopupTextControllerDataForActivation dataForActivation)
         {
             if (IsUsed)
             {
@@ -45,28 +45,40 @@ namespace UI.Popup_Text
 
             IsUsed = true;
 
-            _textComponent.text = textToShow;
-            _mainTransform.position = startPosition;
+            _textComponent.text = dataForActivation.TextToShow;
 
+            _mainTransform.localScale = Vector3.zero;
+            _mainTransform.SetPositionAndRotation(dataForActivation.SpawnPosition, dataForActivation.SpawnRotation);
             gameObject.SetActive(true);
 
             _lookAtCameraCoroutine = StartCoroutine(LookAtCameraCoroutine());
 
+            if (_mainTransform == null)
+            {
+            }
+
             var needSequence = DOTween.Sequence();
-            needSequence.Join(_mainTransform
-                .DOMove(CalculatePositionToMove(_cameraTransform.Position), _settings.AnimationDurationInSeconds)
-                .SetEase(_settings.MovementEase).SetLink(_mainTransform.gameObject));
+            needSequence.SetLink(_mainTransform.gameObject);
             needSequence.Append(_mainTransform.DOScale(Vector3.one, HalfAnimationDurationInSeconds)
-                .SetEase(_settings.ScaleEase).SetLink(_mainTransform.gameObject));
+                .SetEase(_settings.ScaleEase));
             needSequence.Append(_mainTransform.DOScale(Vector3.zero, HalfAnimationDurationInSeconds)
-                .SetEase(_settings.ScaleEase).SetLink(_mainTransform.gameObject));
+                .SetEase(_settings.ScaleEase));
             needSequence.OnComplete(OnPopupAnimationComplete);
+
+            _mainTransform
+                .DOMove(CalculatePositionToMove(_cameraTransform.Position), _settings.AnimationDurationInSeconds)
+                .SetEase(_settings.MovementEase).SetLink(_mainTransform.gameObject);
         }
+
+        private float HalfAnimationDurationInSeconds => _settings.AnimationDurationInSeconds / 2;
 
         private IEnumerator LookAtCameraCoroutine()
         {
-            _mainTransform.LookAt(_cameraTransform.Position);
-            yield return null;
+            while (true)
+            {
+                _mainTransform.LookAt(_cameraTransform.Position);
+                yield return null;
+            }
         }
 
         protected override void SubscribeOnEvents()
@@ -80,11 +92,10 @@ namespace UI.Popup_Text
         private void OnPopupAnimationComplete()
         {
             _mainTransform.DOKill();
-            _mainTransform.localScale = Vector3.zero;
             StopCoroutine(_lookAtCameraCoroutine);
             IsUsed = false;
             gameObject.SetActive(false);
-            NeedRelease?.Invoke(this);
+            Deactivated?.Invoke(this);
         }
 
         private Vector3 CalculatePositionToMove(Vector3 cameraPosition)
@@ -92,11 +103,13 @@ namespace UI.Popup_Text
             var circleCenter = _mainTransform.position;
             var circleNormalVector = (circleCenter - cameraPosition).normalized;
 
-            var randomAngle = Random.Range(0f, 2f * Mathf.PI);
+            var circleNormal = Vector3.Cross(circleNormalVector, Vector3.up).normalized;
+
+            var randomAngle = Random.Range(0f, Mathf.PI);
             var randomRadius = Random.Range(_settings.MoveMinimumRadius, _settings.MoveMaximumRadius);
 
             return circleCenter + randomRadius *
-                (Mathf.Cos(randomAngle) * circleNormalVector + Mathf.Sin(randomAngle) * Vector3.up);
+                (Mathf.Cos(randomAngle) * circleNormal + Mathf.Sin(randomAngle) * Vector3.up);
         }
     }
 }
