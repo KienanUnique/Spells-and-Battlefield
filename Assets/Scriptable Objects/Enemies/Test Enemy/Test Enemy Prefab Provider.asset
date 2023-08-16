@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70bad942430348fba41365074ba79760, type: 3}
+  m_Name: Test Enemy Prefab Provider
+  m_EditorClassIdentifier: 
+  _knightPrefab: {fileID: 5545080400783213636, guid: d60e924d9de45fa4d8c3c98f3921e938, type: 3}

@@ -57,6 +57,7 @@ namespace Player.Setup
         private List<IDisableable> _itemsNeedDisabling;
         private ICaster _playerCaster;
         private Rigidbody _thisRigidbody;
+        private IReadonlyTransform _cameraTransform;
 
         [Inject]
         private void Construct(IPlayerInput playerInput, PlayerSettings settings,
@@ -92,6 +93,8 @@ namespace Player.Setup
 
             _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator, _settings.Visual);
             _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
+
+            _cameraTransform = new ReadonlyTransform(_camera.transform);
         }
 
         protected override void Initialize()
@@ -122,7 +125,8 @@ namespace Player.Setup
                 playerMovement,
                 playerLook,
                 _idHolder,
-                _itemsNeedDisabling
+                _itemsNeedDisabling,
+                _cameraTransform
             );
             controllerToSetup.Initialize(setupData);
         }

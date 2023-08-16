@@ -22,6 +22,7 @@ namespace Systems.Installers
 
         [Header("UI")] [SerializeField] private GeneralUIAnimationSettings _generalUIAnimationSettings;
         [SerializeField] private SpellPanelSettings _spellPanelSettings;
+        [SerializeField] private PopupTextSettings _popupTextSettings;
 
         [Header("Puzzles")] [SerializeField] private PlateSettings _plateSettings;
         [SerializeField] private MovingPlatformsSettings _movingPlatformSettings;
@@ -47,7 +48,7 @@ namespace Systems.Installers
                 .Bind<MovingPlatformsSettings>()
                 .FromInstance(_movingPlatformSettings)
                 .AsSingle();
-            
+
             Container
                 .Bind<ExtendableObjectsSettings>()
                 .FromInstance(_extendableObjectsSettings)
@@ -80,6 +81,10 @@ namespace Systems.Installers
             Container
                 .Bind<SpellPanelSettings>()
                 .FromInstance(_spellPanelSettings)
+                .AsSingle();
+            Container
+                .Bind<PopupTextSettings>()
+                .FromInstance(_popupTextSettings)
                 .AsSingle();
         }
 

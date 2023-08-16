@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using Common;
+using DG.Tweening;
 using Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,8 @@ namespace UI.Bar
             _playerCharacter.HitPointsCountChanged -= OnPlayerHitPointsCountChanged;
         }
 
-        private void OnPlayerHitPointsCountChanged(float obj) =>
+        private void OnPlayerHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
+            TypeOfHitPointsChange typeOfHitPointsChange) =>
             UpdateValue(_playerCharacter.HitPointCountRatio);
 
         private void UpdateValue(float newValueRatio)

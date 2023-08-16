@@ -23,6 +23,7 @@ using Pathfinding;
 using Pickable_Items.Data_For_Creating.Scriptable_Object;
 using Pickable_Items.Factory;
 using Settings.Enemies;
+using UI.Popup_Text.Factory;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using Zenject;
@@ -46,6 +47,7 @@ namespace Enemies.Setup
         [SerializeField] private RigBuilder _rigBuilder;
         [SerializeField] private ReadonlyTransformGetter _thisIKCenterPoint;
         [SerializeField] [Min(0.1f)] private float _needDistanceFromIKCenterPoint = 3f;
+        [SerializeField] private ReadonlyTransformGetter _popupTextHitPointsChangeAppearCenterPoint;
 
         private Seeker _seeker;
         public Rigidbody _thisRigidbody;
@@ -64,12 +66,15 @@ namespace Enemies.Setup
         private EnemyController _controller;
         private IInitializableStateEnemyAI[] _states;
         private IInitializableTransitionEnemyAI[] _transitions;
+        private IPopupHitPointsChangeTextFactory _popupHitPointsChangeTextFactory;
 
         [Inject]
-        private void Construct(GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory)
+        private void Construct(GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
+            IPopupHitPointsChangeTextFactory popupHitPointsChangeTextFactory)
         {
             _generalEnemySettings = generalEnemySettings;
             _itemsFactory = itemsFactory;
+            _popupHitPointsChangeTextFactory = popupHitPointsChangeTextFactory;
         }
 
         public void SetDataForInitialization(IEnemySettings settings,
@@ -145,7 +150,9 @@ namespace Enemies.Setup
                 _enemyLook,
                 _eventInvokerForAnimations,
                 _enemyVisual,
-                _enemyCharacter);
+                _enemyCharacter,
+                _popupHitPointsChangeTextFactory,
+                _popupTextHitPointsChangeAppearCenterPoint.ReadonlyTransform);
 
             _enemyStateMachineAI.Initialize(_controller);
 

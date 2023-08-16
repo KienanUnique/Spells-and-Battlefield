@@ -13,6 +13,7 @@ namespace Systems
 {
     [RequireComponent(typeof(InGameInputManager))]
     [RequireComponent(typeof(TimeController))]
+    [RequireComponent(typeof(SceneStarter))]
     public class GameController : Singleton<GameController>
     {
         [SerializeField] private InGameManagerUI _inGameManagerUI;

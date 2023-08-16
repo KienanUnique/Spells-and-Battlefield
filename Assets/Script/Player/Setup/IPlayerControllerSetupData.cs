@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
 using Common.Event_Invoker_For_Action_Animations;
+using Common.Readonly_Transform;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
@@ -24,5 +25,6 @@ namespace Player.Setup
         public IPlayerVisual SetPlayerVisual { get; }
         public IPlayerCameraEffects SetPlayerCameraEffects { get; }
         public IEventInvokerForActionAnimations SetPlayerEventInvokerForAnimations { get; }
+        public IReadonlyTransform SetCameraTransform { get; }
     }
 }

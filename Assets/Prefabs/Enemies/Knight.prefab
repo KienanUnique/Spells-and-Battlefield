@@ -886,6 +886,49 @@ Transform:
   m_Father: {fileID: 2666540091567220192}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2401199422458272293
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 372168616811248857}
+  - component: {fileID: 9222820761270048107}
+  m_Layer: 0
+  m_Name: Popup Text Hit Points Change Appear Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &372168616811248857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2401199422458272293}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.03, y: 1.3087783, z: 0.017}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4773416566356749363}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9222820761270048107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2401199422458272293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582b6128dc944c159da5cb3a3f0d3ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2452979717323012041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,6 +1084,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transitionManager:
+    _needTransitAfterAction: 0
+    _afterActionNextState: {fileID: 0}
     _singleSubManagers:
     - _nextState: {fileID: 3843991235069755057}
       _condition: {fileID: 3703067096898767848}
@@ -1063,6 +1108,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transitionManager:
+    _needTransitAfterAction: 0
+    _afterActionNextState: {fileID: 0}
     _singleSubManagers: []
     _conjunctionSubManagers: []
     _disjunctionSubManagers: []
@@ -1120,6 +1167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transitionManager:
+    _needTransitAfterAction: 0
+    _afterActionNextState: {fileID: 0}
     _singleSubManagers:
     - _nextState: {fileID: 1147730887}
       _condition: {fileID: 1147730886}
@@ -1867,6 +1916,7 @@ Transform:
   - {fileID: 8922198185627265758}
   - {fileID: 1951656331930342561}
   - {fileID: 5737268904998905445}
+  - {fileID: 372168616811248857}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1974,6 +2024,7 @@ MonoBehaviour:
   _rigBuilder: {fileID: 3234913087363775050}
   _thisIKCenterPoint: {fileID: 3794248164729571245}
   _needDistanceFromIKCenterPoint: 3
+  _popupTextHitPointsChangeAppearCenterPoint: {fileID: 9222820761270048107}
   _thisRigidbody: {fileID: 4773416566356749375}
 --- !u!95 &6691309429120615332
 Animator:

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
 using Common.Event_Invoker_For_Action_Animations;
+using Common.Readonly_Transform;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
@@ -17,7 +18,8 @@ namespace Player.Setup
         public PlayerControllerSetupData(IEventInvokerForActionAnimations playerEventInvokerForAnimations,
             IPlayerCameraEffects playerCameraEffects, IPlayerVisual playerVisual, IPlayerCharacter playerCharacter,
             IPlayerSpellsManager playerSpellsManager, IPlayerInput playerInput, IPlayerMovement playerMovement,
-            IPlayerLook playerLook, IIdHolder idHolder, List<IDisableable> itemsNeedDisabling)
+            IPlayerLook playerLook, IIdHolder idHolder, List<IDisableable> itemsNeedDisabling,
+            IReadonlyTransform cameraTransform)
         {
             SetPlayerEventInvokerForAnimations = playerEventInvokerForAnimations;
             SetPlayerCameraEffects = playerCameraEffects;
@@ -29,6 +31,7 @@ namespace Player.Setup
             SetPlayerLook = playerLook;
             SetIDHolder = idHolder;
             SetItemsNeedDisabling = itemsNeedDisabling;
+            SetCameraTransform = cameraTransform;
         }
 
         public List<IDisableable> SetItemsNeedDisabling { get; }
@@ -41,5 +44,6 @@ namespace Player.Setup
         public IPlayerVisual SetPlayerVisual { get; }
         public IPlayerCameraEffects SetPlayerCameraEffects { get; }
         public IEventInvokerForActionAnimations SetPlayerEventInvokerForAnimations { get; }
+        public IReadonlyTransform SetCameraTransform { get; }
     }
 }

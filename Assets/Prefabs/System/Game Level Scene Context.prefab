@@ -110,4 +110,7 @@ MonoBehaviour:
   _enemiesParent: {fileID: 0}
   _spellsParent: {fileID: 0}
   _pickableItemsParent: {fileID: 0}
-  _pickableSpellPrefab: {fileID: 4960876760894594233, guid: e5081c11df2aa0745a2264b49c70b283, type: 3}
+  _popupTextParent: {fileID: 0}
+  _needPopupTextObjectPooledObjectsCount: 15
+  _damageTextPrefabProvider: {fileID: 11400000, guid: 7b7d631834b23b543bcc58a8c99404a7, type: 2}
+  _healTextPrefabProvider: {fileID: 11400000, guid: 77b69c2cb86148f4d8592053e408228e, type: 2}

@@ -1,5 +1,48 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &67472592819343114
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3057059972061305756}
+  - component: {fileID: 466906644819066052}
+  m_Layer: 0
+  m_Name: Popup Text Hit Points Change Appear Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3057059972061305756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67472592819343114}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.02, y: 1.79, z: 0.011333334}
+  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
+  m_Children: []
+  m_Father: {fileID: 4693423325618152248}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &466906644819066052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67472592819343114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582b6128dc944c159da5cb3a3f0d3ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &96510503177995851
 GameObject:
   m_ObjectHideFlags: 0
@@ -1876,6 +1919,7 @@ Transform:
   - {fileID: 4037896154921039504}
   - {fileID: 3240255687697187532}
   - {fileID: 4111533701779420249}
+  - {fileID: 3057059972061305756}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1983,6 +2027,7 @@ MonoBehaviour:
   _rigBuilder: {fileID: 466582622939805502}
   _thisIKCenterPoint: {fileID: 7453517508591818135}
   _needDistanceFromIKCenterPoint: 3
+  _popupTextHitPointsChangeAppearCenterPoint: {fileID: 466906644819066052}
   _thisRigidbody: {fileID: 7166206672531240523}
 --- !u!95 &187948494797428274
 Animator:

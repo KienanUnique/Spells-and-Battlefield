@@ -4,6 +4,5 @@ namespace Enemies.Character
 {
     public interface IDisableableEnemyCharacter : IEnemyCharacter, IDisableable
     {
-        
     }
 }

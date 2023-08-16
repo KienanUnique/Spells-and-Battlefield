@@ -68,7 +68,8 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
             StateMachineControllable.HitPointsCountChanged -= OnHitPointsCountChanged;
         }
 
-        private void OnHitPointsCountChanged(float obj)
+        private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
+            TypeOfHitPointsChange typeOfHitPointsChange)
         {
             if (IsConditionCompleted)
             {

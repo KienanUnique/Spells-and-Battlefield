@@ -54,6 +54,7 @@
     #region PrefabProviders
 
     public const string PickableItemsProvidersDirectory = RootDirectory + "Pickable Items/";
+    public const string PopupTextProvidersDirectory = RootDirectory + "Popup Texts/";
 
     #endregion
 

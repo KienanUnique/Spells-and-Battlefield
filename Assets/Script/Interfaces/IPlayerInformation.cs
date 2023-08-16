@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Readonly_Transform;
 using Player.Spell_Manager;
 
 namespace Interfaces
@@ -9,5 +10,6 @@ namespace Interfaces
         public event Action<float> DashCooldownTimerTick;
         public event Action Dashed;
         public event Action DashAiming;
+        public IReadonlyTransform CameraTransform { get; }
     }
 }

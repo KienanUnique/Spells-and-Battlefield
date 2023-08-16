@@ -17,9 +17,9 @@ MonoBehaviour:
   _spellTypesSetting: {fileID: 11400000, guid: d315a969b1b5c3945a75b93397177ef2, type: 2}
   _playerSettings: {fileID: 11400000, guid: 4228318d54c7bc0459c17d466d500aea, type: 2}
   _generalEnemySettings: {fileID: 11400000, guid: aecfa3bb47d13344a9cae947558288cb, type: 2}
-  _knightSettings: {fileID: 11400000, guid: 3e27a310e29c72241a67292e46f52a1b, type: 2}
   _generalUIAnimationSettings: {fileID: 11400000, guid: 56bf131e31d75194e8f15a3f4bb5ed31, type: 2}
   _spellPanelSettings: {fileID: 11400000, guid: bccfab12f13b3bd4b8dff61041dd164a, type: 2}
+  _popupTextSettings: {fileID: 11400000, guid: b2fdcb0e8e52b2447864c66b0859fe82, type: 2}
   _plateSettings: {fileID: 11400000, guid: e675676fc85c3ba40a9918f4e6384503, type: 2}
   _movingPlatformSettings: {fileID: 11400000, guid: 4e04ef320d6feaa4399517e9787d36bd, type: 2}
   _extendableObjectsSettings: {fileID: 11400000, guid: 72e84ecd95435b3438ce511041577f74, type: 2}

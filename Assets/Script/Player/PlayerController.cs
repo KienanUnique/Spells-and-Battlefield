@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using Common;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animation_Data;
@@ -8,6 +9,7 @@ using Common.Collection_With_Reaction_On_Change;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Mechanic_Effects.Continuous_Effect;
 using Common.Readonly_Rigidbody;
+using Common.Readonly_Transform;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
@@ -48,6 +50,7 @@ namespace Player
             _playerVisual = setupData.SetPlayerVisual;
             _playerCameraEffects = setupData.SetPlayerCameraEffects;
             _eventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
+            CameraTransform = setupData.SetCameraTransform;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -56,7 +59,7 @@ namespace Player
         public event Action DashCooldownFinished;
         public event Action<float> DashCooldownTimerTick;
         public event Action<CharacterState> CharacterStateChanged;
-        public event Action<float> HitPointsCountChanged;
+        public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
         public event Action Dashed;
         public event Action DashAiming;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
@@ -68,6 +71,7 @@ namespace Player
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
         public ISpellType SelectedType => _playerSpellsManager.SelectedType;
+        public IReadonlyTransform CameraTransform { get; private set; }
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
             _playerSpellsManager.Spells;
@@ -76,9 +80,9 @@ namespace Player
         {
         }
 
-        public void HandleHeal(int countOfHealthPoints)
+        public void HandleHeal(int countOfHitPoints)
         {
-            _playerCharacter.HandleHeal(countOfHealthPoints);
+            _playerCharacter.HandleHeal(countOfHitPoints);
         }
 
         public void HandleDamage(int countOfHealthPoints)
@@ -215,8 +219,9 @@ namespace Player
             }
         }
 
-        private void OnHitPointsCountChanged(float newHitPointsCount) =>
-            HitPointsCountChanged?.Invoke(newHitPointsCount);
+        private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
+            TypeOfHitPointsChange typeOfHitPointsChange) =>
+            HitPointsCountChanged?.Invoke(hitPointsLeft, hitPointsChangeValue, typeOfHitPointsChange);
 
         private void OnDashCooldownTimerTick(float cooldownRatio) => DashCooldownTimerTick?.Invoke(cooldownRatio);
         private void OnDashCooldownFinished() => DashCooldownFinished?.Invoke();

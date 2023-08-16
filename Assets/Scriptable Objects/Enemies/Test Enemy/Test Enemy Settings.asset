@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d7d99b7a2c4d74a60bb462addf8ee7, type: 3}
+  m_Name: Test Enemy Settings
+  m_EditorClassIdentifier: 
+  _movementProvider: {fileID: 11400000, guid: bde6fe943bc8c7046982850a0cabefd8, type: 2}
+  _characterProvider: {fileID: 11400000, guid: d48bfd1b561d5d04caac5bfcf2a1c88d, type: 2}
+  _baseAnimatorOverrideController: {fileID: 22100000, guid: 100ee2665c011f8499615f1b064a0a20, type: 2}

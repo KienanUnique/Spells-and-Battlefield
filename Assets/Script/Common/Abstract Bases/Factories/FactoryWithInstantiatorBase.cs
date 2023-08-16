@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-namespace Common.Abstract_Bases
+namespace Common.Abstract_Bases.Factories
 {
     public abstract class FactoryWithInstantiatorBase
     {

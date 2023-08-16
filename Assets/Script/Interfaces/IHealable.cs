@@ -2,6 +2,6 @@
 {
     public interface IHealable
     {
-        public void HandleHeal(int countOfHealthPoints);
+        public void HandleHeal(int countOfHitPoints);
     }
 }

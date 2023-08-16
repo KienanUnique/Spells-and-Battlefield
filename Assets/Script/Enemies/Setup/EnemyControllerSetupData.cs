@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
 using Common.Event_Invoker_For_Action_Animations;
+using Common.Readonly_Transform;
 using Enemies.Character;
 using Enemies.Look;
 using Enemies.Movement;
@@ -11,6 +12,7 @@ using Interfaces;
 using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
 using Settings.Enemies;
+using UI.Popup_Text.Factory;
 
 namespace Enemies.Setup
 {
@@ -21,7 +23,7 @@ namespace Enemies.Setup
             GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
             IEnemyTargetFromTriggersSelector targetFromTriggersSelector, IEnemyLook look,
             IEventInvokerForActionAnimations eventInvokerForAnimations, IEnemyVisual visual,
-            IEnemyCharacter character)
+            IEnemyCharacter character, IPopupHitPointsChangeTextFactory setPopupHitPointsChangeTextFactory, IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint)
         {
             SetStateMachineAI = stateMachineAI;
             SetItemToDrop = itemToDrop;
@@ -35,6 +37,8 @@ namespace Enemies.Setup
             SetEventInvokerForAnimations = eventInvokerForAnimations;
             SetVisual = visual;
             SetCharacter = character;
+            SetPopupHitPointsChangeTextFactory = setPopupHitPointsChangeTextFactory;
+            SetPopupTextHitPointsChangeAppearCenterPoint = setPopupTextHitPointsChangeAppearCenterPoint;
         }
 
         public IEnemyStateMachineAI SetStateMachineAI { get; }
@@ -44,10 +48,12 @@ namespace Enemies.Setup
         public IIdHolder SetIdHolder { get; }
         public GeneralEnemySettings SetGeneralEnemySettings { get; }
         public IPickableItemsFactory SetPickableItemsFactory { get; }
+        public IPopupHitPointsChangeTextFactory SetPopupHitPointsChangeTextFactory { get; }
         public IEnemyTargetFromTriggersSelector SetTargetFromTriggersSelector { get; }
         public IEnemyLook SetLook { get; }
         public IEventInvokerForActionAnimations SetEventInvokerForAnimations { get; }
         public IEnemyVisual SetVisual { get; }
         public IEnemyCharacter SetCharacter { get; }
+        public IReadonlyTransform SetPopupTextHitPointsChangeAppearCenterPoint { get; }
     }
 }

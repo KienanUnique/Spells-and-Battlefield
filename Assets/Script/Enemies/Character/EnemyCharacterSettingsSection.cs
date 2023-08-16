@@ -1,5 +1,6 @@
 ﻿using System;
 using General_Settings_in_Scriptable_Objects.Sections;
+using Settings.Sections;
 using UnityEngine;
 
 namespace Enemies.Character

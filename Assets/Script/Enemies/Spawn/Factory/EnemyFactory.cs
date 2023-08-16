@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases;
+using Common.Abstract_Bases.Factories;
 using Enemies.Setup;
 using Enemies.Trigger;
 using UnityEngine;

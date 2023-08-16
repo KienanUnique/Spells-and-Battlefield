@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Common;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animation_Data;
@@ -23,6 +24,7 @@ using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
 using Settings.Enemies;
 using Spells.Implementations_Interfaces.Implementations;
+using UI.Popup_Text.Factory;
 using UnityEngine;
 
 namespace Enemies.Controller
@@ -42,6 +44,8 @@ namespace Enemies.Controller
         private IEventInvokerForActionAnimations _eventInvokerForAnimations;
         private IEnemyVisual _visual;
         private IEnemyCharacter _character;
+        private IPopupHitPointsChangeTextFactory _popupHitPointsChangeTextFactory;
+        private IReadonlyTransform _popupTextHitPointsChangeAppearCenterPoint;
 
         public void Initialize(IEnemyBaseSetupData setupData)
         {
@@ -51,11 +55,13 @@ namespace Enemies.Controller
             _idHolder = setupData.SetIdHolder;
             _generalEnemySettings = setupData.SetGeneralEnemySettings;
             _itemsFactory = setupData.SetPickableItemsFactory;
+            _popupHitPointsChangeTextFactory = setupData.SetPopupHitPointsChangeTextFactory;
             _targetFromTriggersSelector = setupData.SetTargetFromTriggersSelector;
             _look = setupData.SetLook;
             _eventInvokerForAnimations = setupData.SetEventInvokerForAnimations;
             _visual = setupData.SetVisual;
             _character = setupData.SetCharacter;
+            _popupTextHitPointsChangeAppearCenterPoint = setupData.SetPopupTextHitPointsChangeAppearCenterPoint;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -64,7 +70,7 @@ namespace Enemies.Controller
         public event Action ActionAnimationKeyMomentTrigger;
         public event Action ActionAnimationStart;
         public event Action ActionAnimationEnd;
-        public event Action<float> HitPointsCountChanged;
+        public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
         public event Action<CharacterState> CharacterStateChanged;
 
         public float HitPointCountRatio => _character.HitPointCountRatio;
@@ -100,9 +106,9 @@ namespace Enemies.Controller
         {
         }
 
-        public void HandleHeal(int countOfHealthPoints)
+        public void HandleHeal(int countOfHitPoints)
         {
-            _character.HandleHeal(countOfHealthPoints);
+            _character.HandleHeal(countOfHitPoints);
         }
 
         public void HandleDamage(int countOfHealthPoints)
@@ -224,8 +230,13 @@ namespace Enemies.Controller
             ActionAnimationKeyMomentTrigger?.Invoke();
         }
 
-        private void OnHitPointsCountChanged(float newHitPointsCount) =>
-            HitPointsCountChanged?.Invoke(newHitPointsCount);
+        private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
+            TypeOfHitPointsChange typeOfHitPointsChange)
+        {
+            _popupHitPointsChangeTextFactory.Create(typeOfHitPointsChange, hitPointsChangeValue,
+                _popupTextHitPointsChangeAppearCenterPoint.Position);
+            HitPointsCountChanged?.Invoke(hitPointsLeft, hitPointsChangeValue, typeOfHitPointsChange);
+        }
 
         private void DropSpell()
         {

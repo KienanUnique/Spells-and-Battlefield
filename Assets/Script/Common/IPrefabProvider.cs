@@ -4,6 +4,6 @@ namespace Common
 {
     public interface IPrefabProvider
     {
-        public GameObject Prefab { get; }
+        GameObject Prefab { get; }
     }
 }

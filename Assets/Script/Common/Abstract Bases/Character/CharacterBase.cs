@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
 using Common.Mechanic_Effects.Continuous_Effect;
-using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
+using Settings.Sections;
 
 namespace Common.Abstract_Bases.Character
 {
     public abstract class CharacterBase : BaseWithDisabling, ICharacterBase
     {
-        protected readonly ValueWithReactionOnChange<float> _currentCountCountOfHitPoints;
+        protected readonly HitPointsCalculator _hitPointsCalculator;
         protected readonly ICoroutineStarter _coroutineStarter;
         protected readonly List<IAppliedContinuousEffect> _currentEffects;
         protected readonly CharacterSettingsSection _characterSettings;
@@ -20,38 +20,26 @@ namespace Common.Abstract_Bases.Character
             _coroutineStarter = coroutineStarter;
             _characterSettings = characterSettings;
             _currentState = new ValueWithReactionOnChange<CharacterState>(CharacterState.Alive);
-            _currentCountCountOfHitPoints =
-                new ValueWithReactionOnChange<float>(_characterSettings.MaximumCountOfHitPoints);
+            _hitPointsCalculator = new HitPointsCalculator(_characterSettings.MaximumCountOfHitPoints);
             _currentEffects = new List<IAppliedContinuousEffect>();
         }
 
         public event Action<CharacterState> CharacterStateChanged;
-        public event Action<float> HitPointsCountChanged;
+        public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
 
         public CharacterState CurrentCharacterState => _currentState.Value;
-
-        public float HitPointCountRatio =>
-            _currentCountCountOfHitPoints.Value / _characterSettings.MaximumCountOfHitPoints;
+        public float HitPointCountRatio => _hitPointsCalculator.HitPointCountRatio;
 
         public virtual void HandleHeal(int countOfHitPoints)
         {
             if (_currentState.Value == CharacterState.Dead) return;
-            _currentCountCountOfHitPoints.Value += countOfHitPoints;
-            if (_currentCountCountOfHitPoints.Value > _characterSettings.MaximumCountOfHitPoints)
-            {
-                _currentCountCountOfHitPoints.Value = _characterSettings.MaximumCountOfHitPoints;
-            }
+            _hitPointsCalculator.HandleHeal(countOfHitPoints);
         }
 
         public virtual void HandleDamage(int countOfHitPoints)
         {
             if (_currentState.Value == CharacterState.Dead) return;
-            _currentCountCountOfHitPoints.Value -= countOfHitPoints;
-            if (_currentCountCountOfHitPoints.Value <= 0)
-            {
-                _currentState.Value = CharacterState.Dead;
-                _currentCountCountOfHitPoints.Value = 0;
-            }
+            _hitPointsCalculator.HandleDamage(countOfHitPoints);
         }
 
         public virtual void ApplyContinuousEffect(IAppliedContinuousEffect effect)
@@ -65,15 +53,26 @@ namespace Common.Abstract_Bases.Character
         protected sealed override void SubscribeOnEvents()
         {
             _currentState.AfterValueChanged += OnCharacterStateChanged;
-            _currentCountCountOfHitPoints.AfterValueChanged += OnHitPointsCountChanged;
+            _hitPointsCalculator.HitPointsCountChanged += OnHitPointsCountChanged;
             _currentEffects.ForEach(effect => effect.EffectEnded += OnEffectEnded);
         }
 
         protected sealed override void UnsubscribeFromEvents()
         {
             _currentState.AfterValueChanged -= OnCharacterStateChanged;
-            _currentCountCountOfHitPoints.AfterValueChanged -= OnHitPointsCountChanged;
+            _hitPointsCalculator.HitPointsCountChanged -= OnHitPointsCountChanged;
             _currentEffects.ForEach(effect => effect.EffectEnded -= OnEffectEnded);
+        }
+
+        private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
+            TypeOfHitPointsChange typeOfHitPointsChange)
+        {
+            if (_hitPointsCalculator.CurrentCountOfHitPoints == 0)
+            {
+                _currentState.Value = CharacterState.Dead;
+            }
+
+            HitPointsCountChanged?.Invoke(hitPointsLeft, hitPointsChangeValue, typeOfHitPointsChange);
         }
 
         private void OnEffectEnded(IContinuousEffect obj)
@@ -98,7 +97,56 @@ namespace Common.Abstract_Bases.Character
             CharacterStateChanged?.Invoke(newState);
         }
 
-        private void OnHitPointsCountChanged(float newHitPointsCount) =>
-            HitPointsCountChanged?.Invoke(newHitPointsCount);
+        protected class HitPointsCalculator
+        {
+            private readonly int _maximumCountOfHitPoints;
+
+            public float HitPointCountRatio => 1.0f * CurrentCountOfHitPoints / _maximumCountOfHitPoints;
+            public int CurrentCountOfHitPoints { get; private set; }
+
+            public HitPointsCalculator(int maximumCountOfHitPoints)
+            {
+                _maximumCountOfHitPoints = maximumCountOfHitPoints;
+                CurrentCountOfHitPoints = _maximumCountOfHitPoints;
+            }
+
+            public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
+
+            public void HandleDamage(int countOfHitPoints)
+            {
+                if (countOfHitPoints <= 0)
+                {
+                    return;
+                }
+
+                var oldCountOfHitPoints = CurrentCountOfHitPoints;
+                CurrentCountOfHitPoints -= countOfHitPoints;
+                if (CurrentCountOfHitPoints < 0)
+                {
+                    CurrentCountOfHitPoints = 0;
+                }
+
+                HitPointsCountChanged?.Invoke(CurrentCountOfHitPoints, oldCountOfHitPoints - CurrentCountOfHitPoints,
+                    TypeOfHitPointsChange.Damage);
+            }
+
+            public void HandleHeal(int countOfHitPoints)
+            {
+                if (countOfHitPoints >= _maximumCountOfHitPoints)
+                {
+                    return;
+                }
+
+                var oldCountOfHitPoints = CurrentCountOfHitPoints;
+                CurrentCountOfHitPoints += countOfHitPoints;
+                if (CurrentCountOfHitPoints > _maximumCountOfHitPoints)
+                {
+                    CurrentCountOfHitPoints = _maximumCountOfHitPoints;
+                }
+
+                HitPointsCountChanged?.Invoke(CurrentCountOfHitPoints, CurrentCountOfHitPoints - oldCountOfHitPoints,
+                    TypeOfHitPointsChange.Heal);
+            }
+        }
     }
 }
