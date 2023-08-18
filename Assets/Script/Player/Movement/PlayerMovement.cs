@@ -4,7 +4,6 @@ using Common;
 using Common.Abstract_Bases.Checkers;
 using Common.Abstract_Bases.Movement;
 using Common.Readonly_Rigidbody;
-using Common.Readonly_Transform;
 using Interfaces;
 using Settings;
 using UnityEngine;
@@ -97,7 +96,11 @@ namespace Player.Movement
                 _currentMovingState.Value == MovingState.WallRunning ||
                 (_currentMovingState.Value == MovingState.InAir && _currentCountOfAirJumps < MaxCountOfAirJumps))
             {
+                var newVelocity = _rigidbody.velocity;
+                newVelocity.y = 0;
+                _rigidbody.velocity = newVelocity;
                 _rigidbody.AddForce(_movementSettings.JumpForce * Vector3.up);
+
                 if (_currentMovingState.Value == MovingState.InAir ||
                     _currentMovingState.Value == MovingState.WallRunning)
                 {
