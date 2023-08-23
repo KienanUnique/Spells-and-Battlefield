@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Common.Abstract_Bases.Spawn_Markers_System.Spawners;
 using Enemies.Spawn.Factory;
 using Enemies.Spawn.Marker;
@@ -25,8 +24,7 @@ namespace Enemies.Spawn
             var targetTriggers = new List<IEnemyTargetTrigger>(_triggerList);
             foreach (var marker in _markers)
             {
-                _enemyFactory.Create(marker.DataForSpawn.PrefabProvider, marker.DataForSpawn.Settings, targetTriggers,
-                    marker.Position, marker.Rotation);
+                _enemyFactory.Create(marker.DataForSpawn, targetTriggers, marker.Position, marker.Rotation);
             }
         }
     }

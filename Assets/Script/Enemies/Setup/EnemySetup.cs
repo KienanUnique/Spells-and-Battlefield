@@ -20,7 +20,7 @@ using Enemies.Trigger;
 using Enemies.Visual;
 using Interfaces;
 using Pathfinding;
-using Pickable_Items.Data_For_Creating.Scriptable_Object;
+using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
 using Settings.Enemies;
 using UI.Popup_Text.Factory;
@@ -39,7 +39,6 @@ namespace Enemies.Setup
         IEnemyDataForInitializationSettable
     {
         [SerializeField] private EnemyStateMachineAI _enemyStateMachineAI;
-        [SerializeField] private PickableItemScriptableObjectBase _itemToDrop;
         [SerializeField] private List<EnemyTargetTrigger> _localTargetTriggers;
         [SerializeField] private EventInvokerForActionAnimations _eventInvokerForAnimations;
         [SerializeField] private Animator _characterAnimator;
@@ -67,6 +66,7 @@ namespace Enemies.Setup
         private IInitializableStateEnemyAI[] _states;
         private IInitializableTransitionEnemyAI[] _transitions;
         private IPopupHitPointsChangeTextFactory _popupHitPointsChangeTextFactory;
+        private IPickableItemDataForCreating _itemToDrop;
 
         [Inject]
         private void Construct(GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
@@ -77,11 +77,12 @@ namespace Enemies.Setup
             _popupHitPointsChangeTextFactory = popupHitPointsChangeTextFactory;
         }
 
-        public void SetDataForInitialization(IEnemySettings settings,
+        public void SetDataForInitialization(IEnemySettings settings, IPickableItemDataForCreating itemToDrop,
             List<IEnemyTargetTrigger> targetTriggers)
         {
             _settings = settings;
             _externalTargetTriggers = targetTriggers;
+            _itemToDrop = itemToDrop;
 
             if (_externalDependenciesInitializationWaiter == null)
             {

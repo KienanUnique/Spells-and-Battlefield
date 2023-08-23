@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Common.Abstract_Bases;
 using Common.Abstract_Bases.Factories;
-using Enemies.Setup;
+using Enemies.Spawn.Data_For_Spawn;
 using Enemies.Trigger;
 using UnityEngine;
 using Zenject;
@@ -15,13 +14,15 @@ namespace Enemies.Spawn.Factory
         {
         }
 
-        public void Create(IEnemyPrefabProvider enemyPrefabProvider, IEnemySettings settings,
-            List<IEnemyTargetTrigger> enemyTargetTriggers, Vector3 spawnPosition, Quaternion spawnRotation)
+        public void Create(IEnemyDataForSpawnMarker dataForSpawnMarker, List<IEnemyTargetTrigger> enemyTargetTriggers,
+            Vector3 spawnPosition,
+            Quaternion spawnRotation)
         {
             var enemyTriggersSettable = InstantiatePrefabForComponent<IEnemyDataForInitializationSettable>(
-                enemyPrefabProvider,
+                dataForSpawnMarker.PrefabProvider,
                 spawnPosition, spawnRotation);
-            enemyTriggersSettable.SetDataForInitialization(settings, enemyTargetTriggers);
+            enemyTriggersSettable.SetDataForInitialization(dataForSpawnMarker.Settings, dataForSpawnMarker.ItemToDrop,
+                enemyTargetTriggers);
         }
     }
 }

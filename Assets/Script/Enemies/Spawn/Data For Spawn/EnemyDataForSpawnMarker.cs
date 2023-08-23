@@ -1,5 +1,7 @@
 ﻿using Enemies.Prefab_Provider;
 using Enemies.Setup;
+using Pickable_Items.Data_For_Creating;
+using Pickable_Items.Data_For_Creating.Scriptable_Object;
 using UnityEngine;
 
 namespace Enemies.Spawn.Data_For_Spawn
@@ -11,8 +13,10 @@ namespace Enemies.Spawn.Data_For_Spawn
     {
         [SerializeField] private EnemyPrefabProvider _prefabProvider;
         [SerializeField] private EnemySettings _settings;
+        [SerializeField] private PickableItemScriptableObjectBase _itemToDrop;
 
         public IEnemySettings Settings => _settings;
         public IEnemyPrefabProvider PrefabProvider => _prefabProvider;
+        public IPickableItemDataForCreating ItemToDrop => _itemToDrop;
     }
 }
