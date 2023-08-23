@@ -12,6 +12,14 @@ namespace Common.Abstract_Bases
         protected event Action<TRequiredObject> RequiredObjectExitingDetected;
         protected IReadOnlyCollection<TRequiredObject> GetRequiredObjectsInCollider() => _requiredObjectsInside;
 
+        protected virtual void OnRequiredObjectEnteringDetected()
+        {
+        }
+
+        protected virtual void OnRequiredObjectExitingDetected()
+        {
+        }
+
         private void Awake()
         {
             _requiredObjectsInside = new List<TRequiredObject>();
@@ -22,6 +30,7 @@ namespace Common.Abstract_Bases
             if (other.TryGetComponent(out TRequiredObject requiredObject))
             {
                 _requiredObjectsInside.Add(requiredObject);
+                OnRequiredObjectEnteringDetected();
                 RequiredObjectEnteringDetected?.Invoke(requiredObject);
             }
         }
@@ -32,6 +41,7 @@ namespace Common.Abstract_Bases
                 _requiredObjectsInside.Contains(requiredObject))
             {
                 _requiredObjectsInside.Remove(requiredObject);
+                OnRequiredObjectExitingDetected();
                 RequiredObjectExitingDetected?.Invoke(requiredObject);
             }
         }

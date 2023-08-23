@@ -4,6 +4,7 @@ using Common.Abstract_Bases;
 using Common.Abstract_Bases.Character;
 using Interfaces;
 using Systems.Input_Manager;
+using Systems.Level_Finish_Zone;
 using Systems.Time_Controller;
 using UI;
 using UnityEngine;
@@ -25,11 +26,13 @@ namespace Systems
         private IPlayerInformationProvider _playerInformationProvider;
         private InGameInputManager _inGameMenuInput;
         private ITimeController _timeController;
+        private ILevelFinishZone _levelFinishZone;
 
         [Inject]
-        private void Construct(IPlayerInformationProvider playerInformationProvider)
+        private void Construct(IPlayerInformationProvider playerInformationProvider, ILevelFinishZone levelFinishZone)
         {
             _playerInformationProvider = playerInformationProvider;
+            _levelFinishZone = levelFinishZone;
         }
 
         protected override void SpecialAwakeAction()
@@ -108,12 +111,14 @@ namespace Systems
         private void SubscribeOnPlayingEvents()
         {
             _playerInformationProvider.CharacterStateChanged += OnPlayerStateChanged;
+            _levelFinishZone.PlayerEnterFinishZone += OnPlayerEnterFinishZone;
             _inGameMenuInput.GamePause += OnOpenMenuInputted;
         }
 
         private void UnsubscribeFromPlayingEvents()
         {
             _playerInformationProvider.CharacterStateChanged -= OnPlayerStateChanged;
+            _levelFinishZone.PlayerEnterFinishZone -= OnPlayerEnterFinishZone;
             _inGameMenuInput.GamePause -= OnOpenMenuInputted;
         }
 
@@ -199,6 +204,11 @@ namespace Systems
             {
                 _currentGameState.Value = GameState.GameOver;
             }
+        }
+        
+        private void OnPlayerEnterFinishZone()
+        {
+            OnRestartRequested(); // TODO: Implement level finish
         }
 
         private void OnOpenMenuInputted()

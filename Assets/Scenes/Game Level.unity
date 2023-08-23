@@ -2056,6 +2056,7 @@ Transform:
   - {fileID: 833139231}
   - {fileID: 301102286}
   - {fileID: 1397094336}
+  - {fileID: 2118204716327897473}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3979,6 +3980,79 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 845146c990f902a4a8c1dcd08fd3a0b7, type: 3}
+--- !u!1001 &2118204716327897472
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 797855707}
+    m_Modifications:
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 21.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -112.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5576589996714645743, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+      propertyPath: m_Name
+      value: Level Finish Zone
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+--- !u!4 &2118204716327897473 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3856348410075919289, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+  m_PrefabInstance: {fileID: 2118204716327897472}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2118204716327897474 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3624779364188719659, guid: cf6d2df105ff6b64a83abf3826cfc5ee, type: 3}
+  m_PrefabInstance: {fileID: 2118204716327897472}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 918e1772187f4d8f999be2d9ad331412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2222749327654987067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5293,6 +5367,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 171742677}
     m_Modifications:
+    - target: {fileID: 1708283641, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
+      propertyPath: _finishZone
+      value: 
+      objectReference: {fileID: 2118204716327897474}
     - target: {fileID: 1619584736600135485, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
       propertyPath: _player
       value: 

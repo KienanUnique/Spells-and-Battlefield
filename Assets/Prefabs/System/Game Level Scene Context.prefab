@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1619584736600135485}
   - component: {fileID: 6921710625290566928}
   - component: {fileID: 4819919980478210988}
+  - component: {fileID: 1708283641}
   m_Layer: 0
   m_Name: Game Level Scene Context
   m_TagString: Untagged
@@ -52,6 +53,7 @@ MonoBehaviour:
   - {fileID: 6921710625290566928}
   - {fileID: 1619584736600135485}
   - {fileID: 4819919980478210988}
+  - {fileID: 1708283641}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -116,3 +118,16 @@ MonoBehaviour:
   _needPopupTextObjectPooledObjectsCount: 15
   _damageTextPrefabProvider: {fileID: 11400000, guid: 7b7d631834b23b543bcc58a8c99404a7, type: 2}
   _healTextPrefabProvider: {fileID: 11400000, guid: 77b69c2cb86148f4d8592053e408228e, type: 2}
+--- !u!114 &1708283641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8945726531586246344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae4410770ec45cf9a16583727cc8904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _finishZone: {fileID: 0}
