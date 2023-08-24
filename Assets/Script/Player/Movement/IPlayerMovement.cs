@@ -2,11 +2,12 @@
 using Common;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
+using Interfaces;
 using UnityEngine;
 
 namespace Player.Movement
 {
-    public interface IPlayerMovement
+    public interface IPlayerMovement : IPlayerDashInformation
     {
         public event Action Land;
         public event Action GroundJump;
@@ -15,10 +16,6 @@ namespace Player.Movement
         public event Action<WallDirection> StartWallRunning;
         public event Action<WallDirection> WallRunningDirectionChanged;
         public event Action EndWallRunning;
-        public event Action<float> DashCooldownTimerTick;
-        public event Action DashCooldownFinished;
-        public event Action DashAiming;
-        public event Action Dashed;
         public Vector2 NormalizedVelocityDirectionXY { get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { get; }
         public Vector3 CurrentPosition { get; }

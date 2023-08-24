@@ -56,14 +56,13 @@ namespace Player
             SetInitializedStatus();
         }
 
-        public event Action DashCooldownFinished;
-        public event Action<float> DashCooldownTimerTick;
         public event Action<CharacterState> CharacterStateChanged;
         public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
         public event Action Dashed;
         public event Action DashAiming;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
+        public event Action<float> DashCooldownRatioChanged;
 
         public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
         public int Id => _idHolder.Id;
@@ -71,6 +70,7 @@ namespace Player
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
         public ISpellType SelectedType => _playerSpellsManager.SelectedType;
+        public float CurrentDashCooldownRatio => _playerMovement.CurrentDashCooldownRatio;
         public IReadonlyTransform CameraTransform { get; private set; }
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
@@ -152,8 +152,7 @@ namespace Player
             _playerMovement.EndWallRunning += OnEndWallRunning;
             _playerMovement.DashAiming += OnDashAiming;
             _playerMovement.Dashed += OnDashed;
-            _playerMovement.DashCooldownFinished += OnDashCooldownFinished;
-            _playerMovement.DashCooldownTimerTick += OnDashCooldownTimerTick;
+            _playerMovement.DashCooldownRatioChanged += OnDashCooldownRatioChanged;
 
             _playerCharacter.CharacterStateChanged += OnCharacterStateChanged;
             _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
@@ -185,8 +184,7 @@ namespace Player
             _playerMovement.EndWallRunning -= OnEndWallRunning;
             _playerMovement.DashAiming -= OnDashAiming;
             _playerMovement.Dashed -= OnDashed;
-            _playerMovement.DashCooldownFinished -= OnDashCooldownFinished;
-            _playerMovement.DashCooldownTimerTick -= OnDashCooldownTimerTick;
+            _playerMovement.DashCooldownRatioChanged -= OnDashCooldownRatioChanged;
 
             _playerCharacter.CharacterStateChanged -= OnCharacterStateChanged;
             _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
@@ -194,6 +192,11 @@ namespace Player
             _playerSpellsManager.NeedPlaySpellAnimation -= OnNeedPlaySpellAnimation;
             _playerSpellsManager.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellCanNotBeUsed;
             _playerSpellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
+        }
+
+        private void OnDashCooldownRatioChanged(float newCooldownRatio)
+        {
+            DashCooldownRatioChanged?.Invoke(newCooldownRatio);
         }
 
         private void OnInitializationStatusChanged(InitializationStatus newStatus)
@@ -222,9 +225,6 @@ namespace Player
         private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
             TypeOfHitPointsChange typeOfHitPointsChange) =>
             HitPointsCountChanged?.Invoke(hitPointsLeft, hitPointsChangeValue, typeOfHitPointsChange);
-
-        private void OnDashCooldownTimerTick(float cooldownRatio) => DashCooldownTimerTick?.Invoke(cooldownRatio);
-        private void OnDashCooldownFinished() => DashCooldownFinished?.Invoke();
 
         private void OnDashed()
         {

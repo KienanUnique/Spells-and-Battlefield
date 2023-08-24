@@ -4,6 +4,8 @@ using Settings.Puzzles.Mechanisms;
 using Settings.Puzzles.Triggers;
 using Settings.UI;
 using Settings.UI.Spell_Panel;
+using UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes;
+using UI.Bar.View.Concrete_Types.Filling_Bar;
 using UnityEngine;
 using Zenject;
 
@@ -23,6 +25,11 @@ namespace Systems.Installers
         [Header("UI")] [SerializeField] private GeneralUIAnimationSettings _generalUIAnimationSettings;
         [SerializeField] private SpellPanelSettings _spellPanelSettings;
         [SerializeField] private PopupTextSettings _popupTextSettings;
+
+        [SerializeField]
+        private BarViewWithAdditionalDisplayOfChangesSettings _barViewWithAdditionalDisplayOfChangesSettings;
+
+        [SerializeField] private FillingBarSettings _fillingBarSettings;
 
         [Header("Puzzles")] [SerializeField] private PlateSettings _plateSettings;
         [SerializeField] private MovingPlatformsSettings _movingPlatformSettings;
@@ -85,6 +92,14 @@ namespace Systems.Installers
             Container
                 .Bind<PopupTextSettings>()
                 .FromInstance(_popupTextSettings)
+                .AsSingle();
+            Container
+                .Bind<BarViewWithAdditionalDisplayOfChangesSettings>()
+                .FromInstance(_barViewWithAdditionalDisplayOfChangesSettings)
+                .AsSingle();
+            Container
+                .Bind<FillingBarSettings>()
+                .FromInstance(_fillingBarSettings)
                 .AsSingle();
         }
 

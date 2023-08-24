@@ -56,6 +56,8 @@ namespace Player.Movement
             _coroutineStarter.StartCoroutine(HandleInputMovement());
             _coroutineStarter.StartCoroutine(UpdateRatioOfCurrentVelocityToMaximumVelocity());
 
+            CurrentDashCooldownRatio = 1f;
+
             OnBeforeMovingStateChanged(_currentMovingState.Value);
             _currentMovingState.Value = MovingState.OnGround;
             OnAfterMovingStateChanged(_currentMovingState.Value);
@@ -68,10 +70,9 @@ namespace Player.Movement
         public event Action<WallDirection> StartWallRunning;
         public event Action<WallDirection> WallRunningDirectionChanged;
         public event Action EndWallRunning;
-        public event Action<float> DashCooldownTimerTick;
-        public event Action DashCooldownFinished;
         public event Action DashAiming;
         public event Action Dashed;
+        public event Action<float> DashCooldownRatioChanged;
 
         private enum MovingState
         {
@@ -89,6 +90,7 @@ namespace Player.Movement
 
         private bool IsGrounded => _groundChecker.IsColliding;
         private bool IsInContactWithWall => _wallChecker.IsColliding;
+        public float CurrentDashCooldownRatio { get; set; }
 
         public void TryJumpInputted()
         {
@@ -236,11 +238,11 @@ namespace Player.Movement
             {
                 yield return null;
                 passedTime = Time.time - startTime;
-                DashCooldownTimerTick?.Invoke(passedTime / _movementSettings.DashCooldownSeconds);
+                UpdateCooldownRatio(passedTime / _movementSettings.DashCooldownSeconds);
             } while (passedTime < _movementSettings.DashCooldownSeconds);
 
             _canDash = true;
-            DashCooldownFinished?.Invoke();
+            UpdateCooldownRatio(1f);
         }
 
         private IEnumerator DashDisableSpeedLimitation()
@@ -258,6 +260,12 @@ namespace Player.Movement
                 _currentWallDirection.Value = CalculateCurrentWallDirection();
                 yield return waitForFixedUpdate;
             }
+        }
+
+        private void UpdateCooldownRatio(float newCooldownRatio)
+        {
+            CurrentDashCooldownRatio = newCooldownRatio;
+            DashCooldownRatioChanged?.Invoke(CurrentDashCooldownRatio);
         }
 
         private void OnWallDirectionChanged(WallDirection newWallDirection)
