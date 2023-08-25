@@ -63,4 +63,10 @@
     public const string PickableItemsDirectory = RootDirectory + "Pickable Items/";
 
     #endregion
+    
+    #region Scenes
+
+    public const string ScenesDirectory = RootDirectory + "Scenes Data/";
+
+    #endregion
 }

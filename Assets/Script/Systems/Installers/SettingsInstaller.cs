@@ -4,6 +4,7 @@ using Settings.Puzzles.Mechanisms;
 using Settings.Puzzles.Triggers;
 using Settings.UI;
 using Settings.UI.Spell_Panel;
+using Systems.Scene_Switcher;
 using UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes;
 using UI.Bar.View.Concrete_Types.Filling_Bar;
 using UnityEngine;
@@ -35,13 +36,24 @@ namespace Systems.Installers
         [SerializeField] private MovingPlatformsSettings _movingPlatformSettings;
         [SerializeField] private ExtendableObjectsSettings _extendableObjectsSettings;
 
+        [Header("Scenes")] [SerializeField] private ScenesSettings _scenesSettings;
+
         public override void InstallBindings()
         {
+            BindSceneSettings();
             BindGeneralSettings();
             BindEnemiesSettings();
             BindUISettings();
             BindPlayerSettings();
             BindPuzzlesSettings();
+        }
+
+        private void BindSceneSettings()
+        {
+            Container
+                .Bind<IScenesSettings>()
+                .FromInstance(_scenesSettings)
+                .AsSingle();
         }
 
         private void BindPuzzlesSettings()

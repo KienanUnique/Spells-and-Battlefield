@@ -5047,6 +5047,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 137071396}
     - target: {fileID: 6518296617393244772, guid: ac30a9b9dc8b6a944a25b1ec6376db9a, type: 3}
+      propertyPath: _inGameScenesSwitcher
+      value: 
+      objectReference: {fileID: 7679258890571694401}
+    - target: {fileID: 6518296617393244772, guid: ac30a9b9dc8b6a944a25b1ec6376db9a, type: 3}
       propertyPath: _postProcessingController
       value: 
       objectReference: {fileID: 716566170}

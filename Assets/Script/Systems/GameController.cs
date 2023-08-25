@@ -5,6 +5,8 @@ using Common.Abstract_Bases.Character;
 using Interfaces;
 using Systems.Input_Manager;
 using Systems.Level_Finish_Zone;
+using Systems.Scene_Switcher;
+using Systems.Scene_Switcher.Concrete_Types;
 using Systems.Time_Controller;
 using UI;
 using UnityEngine;
@@ -18,7 +20,7 @@ namespace Systems
     public class GameController : Singleton<GameController>
     {
         [SerializeField] private InGameManagerUI _inGameManagerUI;
-        [SerializeField] private ScenesSwitcher _scenesSwitcher;
+        [SerializeField] private InGameScenesSwitcher _inGameScenesSwitcher;
 
         private ValueWithReactionOnChange<GameState> _currentGameState;
         private GameState _lastState;
@@ -195,7 +197,7 @@ namespace Systems
         private void OnRestartRequested()
         {
             _inGameManagerUI.SwitchToLoadingScreen();
-            _scenesSwitcher.LoadMainLevelScene();
+            _inGameScenesSwitcher.RestartLevel();
         }
 
         private void OnPlayerStateChanged(CharacterState newState)
@@ -205,7 +207,7 @@ namespace Systems
                 _currentGameState.Value = GameState.GameOver;
             }
         }
-        
+
         private void OnPlayerEnterFinishZone()
         {
             OnRestartRequested(); // TODO: Implement level finish
