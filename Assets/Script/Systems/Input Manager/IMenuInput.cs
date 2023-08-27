@@ -5,6 +5,6 @@ namespace Systems.Input_Manager
     public interface IMenuInput
     {
         public event Action GamePause;
-        public event Action GameContinue;
+        public event Action CloseCurrentWindow;
     }
 }

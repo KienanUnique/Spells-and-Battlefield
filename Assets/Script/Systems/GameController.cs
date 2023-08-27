@@ -5,10 +5,9 @@ using Common.Abstract_Bases.Character;
 using Interfaces;
 using Systems.Input_Manager;
 using Systems.Level_Finish_Zone;
-using Systems.Scene_Switcher;
 using Systems.Scene_Switcher.Concrete_Types;
 using Systems.Time_Controller;
-using UI;
+using UI.Managers.In_Game;
 using UnityEngine;
 using Zenject;
 
@@ -74,19 +73,13 @@ namespace Systems
         {
             _currentGameState.AfterValueChanged += OnAfterGameStateChanged;
             _currentGameState.BeforeValueChanged += OnBeforeGameStateChanged;
-            switch (_currentGameState.Value)
+            if (_currentGameState.Value == GameState.Playing)
             {
-                case GameState.Playing:
-                    SubscribeOnPlayingEvents();
-                    break;
-                case GameState.Pause:
-                    SubscribeOnPauseEvents();
-                    break;
-                case GameState.GameOver:
-                    SubscribeOnGameOverEvents();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                SubscribeOnPlayingEvents();
+            }
+            else
+            {
+                SubscribeOnUIEvents();
             }
         }
 
@@ -94,19 +87,14 @@ namespace Systems
         {
             _currentGameState.AfterValueChanged -= OnAfterGameStateChanged;
             _currentGameState.BeforeValueChanged -= OnBeforeGameStateChanged;
-            switch (_currentGameState.Value)
+
+            if (_currentGameState.Value == GameState.Playing)
             {
-                case GameState.Playing:
-                    UnsubscribeFromPlayingEvents();
-                    break;
-                case GameState.Pause:
-                    UnsubscribeFromPauseEvents();
-                    break;
-                case GameState.GameOver:
-                    UnsubscribeFromGameOverEvents();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                UnsubscribeFromPlayingEvents();
+            }
+            else
+            {
+                UnsubscribeFromUIEvents();
             }
         }
 
@@ -124,28 +112,22 @@ namespace Systems
             _inGameMenuInput.GamePause -= OnOpenMenuInputted;
         }
 
-        private void SubscribeOnPauseEvents()
+        private void SubscribeOnUIEvents()
         {
-            _inGameMenuInput.GameContinue += OnCloseMenuInputted;
-            _inGameManagerUI.GameContinueRequested += OnCloseMenuInputted;
-            _inGameManagerUI.RestartRequested += OnRestartRequested;
+            _inGameMenuInput.CloseCurrentWindow += OnCloseCurrentWindow;
+            _inGameManagerUI.AllMenusClosed += OnCloseMenuInputted;
+            _inGameManagerUI.RestartLevelRequested += OnRestartRequested;
+            _inGameManagerUI.LoadNextLevelRequested += OnLoadNextLevelRequested;
+            _inGameManagerUI.QuitToMainMenuRequested += OnQuitToMainMenuRequested;
         }
 
-        private void UnsubscribeFromPauseEvents()
+        private void UnsubscribeFromUIEvents()
         {
-            _inGameMenuInput.GameContinue -= OnCloseMenuInputted;
-            _inGameManagerUI.GameContinueRequested -= OnCloseMenuInputted;
-            _inGameManagerUI.RestartRequested -= OnRestartRequested;
-        }
-
-        private void SubscribeOnGameOverEvents()
-        {
-            _inGameManagerUI.RestartRequested += OnRestartRequested;
-        }
-
-        private void UnsubscribeFromGameOverEvents()
-        {
-            _inGameManagerUI.RestartRequested -= OnRestartRequested;
+            _inGameMenuInput.CloseCurrentWindow -= OnCloseCurrentWindow;
+            _inGameManagerUI.AllMenusClosed -= OnCloseMenuInputted;
+            _inGameManagerUI.RestartLevelRequested -= OnRestartRequested;
+            _inGameManagerUI.LoadNextLevelRequested -= OnLoadNextLevelRequested;
+            _inGameManagerUI.QuitToMainMenuRequested -= OnQuitToMainMenuRequested;
         }
 
         private void OnBeforeGameStateChanged(GameState previousState)
@@ -156,11 +138,14 @@ namespace Systems
                     UnsubscribeFromPlayingEvents();
                     break;
                 case GameState.GameOver:
-                    UnsubscribeFromGameOverEvents();
+                    UnsubscribeFromUIEvents();
                     break;
                 case GameState.Pause:
-                    UnsubscribeFromPauseEvents();
+                    UnsubscribeFromUIEvents();
                     _timeController.RestoreTimeToPrevious();
+                    break;
+                case GameState.LevelCompleted:
+                    UnsubscribeFromUIEvents();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(previousState), previousState, null);
@@ -176,27 +161,46 @@ namespace Systems
                 case GameState.Playing:
                     SubscribeOnPlayingEvents();
                     _inGameMenuInput.SwitchToGameInput();
-                    _inGameManagerUI.SwitchToGameUI();
                     break;
                 case GameState.GameOver:
-                    SubscribeOnGameOverEvents();
+                    SubscribeOnUIEvents();
                     _inGameMenuInput.SwitchToUIInput();
-                    _inGameManagerUI.SwitchToDeathMenuUI();
+                    _inGameManagerUI.SwitchTo(InGameUIElementsGroup.GameOverMenu);
                     break;
                 case GameState.Pause:
-                    SubscribeOnPauseEvents();
+                    SubscribeOnUIEvents();
                     _timeController.StopTime();
                     _inGameMenuInput.SwitchToUIInput();
-                    _inGameManagerUI.SwitchToPauseScreen();
+                    _inGameManagerUI.SwitchTo(InGameUIElementsGroup.PauseMenu);
+                    break;
+                case GameState.LevelCompleted:
+                    SubscribeOnUIEvents();
+                    _inGameMenuInput.SwitchToUIInput();
+                    _inGameManagerUI.SwitchTo(InGameUIElementsGroup.LevelCompletedMenu);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
             }
         }
 
+        private void OnQuitToMainMenuRequested()
+        {
+            _inGameScenesSwitcher.LoadMainMenu();
+        }
+
+        private void OnLoadNextLevelRequested()
+        {
+            _inGameScenesSwitcher.LoadNextLevel();
+        }
+
+        private void OnCloseCurrentWindow()
+        {
+            _inGameManagerUI.TryCloseCurrentWindow();
+        }
+
         private void OnRestartRequested()
         {
-            _inGameManagerUI.SwitchToLoadingScreen();
+            _inGameManagerUI.SwitchTo(InGameUIElementsGroup.LoadingWindow);
             _inGameScenesSwitcher.RestartLevel();
         }
 
@@ -210,7 +214,7 @@ namespace Systems
 
         private void OnPlayerEnterFinishZone()
         {
-            OnRestartRequested(); // TODO: Implement level finish
+            _currentGameState.Value = GameState.LevelCompleted;
         }
 
         private void OnOpenMenuInputted()
@@ -228,6 +232,7 @@ namespace Systems
             Playing,
             Pause,
             GameOver,
+            LevelCompleted
         }
     }
 }

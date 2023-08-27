@@ -34,14 +34,14 @@ namespace Systems.Input_Manager
         public event Action<Vector2> LookInputted;
         public event Action<ISpellType> SelectSpellType;
         public event Action GamePause;
-        public event Action GameContinue;
+        public event Action CloseCurrentWindow;
 
         private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpInputted?.Invoke();
         private void OnDashStarted(InputAction.CallbackContext obj) => StartDashAimingInputted?.Invoke();
         private void OnDashCanceled(InputAction.CallbackContext obj) => DashInputted?.Invoke();
         private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellInputted?.Invoke();
         private void OnPauseGamePerformed(InputAction.CallbackContext obj) => GamePause?.Invoke();
-        private void OnContinueGamePerformed(InputAction.CallbackContext obj) => GameContinue?.Invoke();
+        private void OnContinueGamePerformed(InputAction.CallbackContext obj) => CloseCurrentWindow?.Invoke();
 
         public void SwitchToUIInput()
         {

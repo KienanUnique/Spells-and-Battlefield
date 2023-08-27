@@ -3,6 +3,8 @@ using Common.Abstract_Bases;
 using Common.Abstract_Bases.Disableable;
 using Player;
 using Player.Spell_Manager;
+using UI.Element.Setup;
+using UI.Element.View;
 using UI.Spells_Panel.Panel.Model;
 using UI.Spells_Panel.Panel.Presenter;
 using UI.Spells_Panel.Slot_Group;
@@ -13,13 +15,13 @@ using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitia
 
 namespace UI.Spells_Panel.Panel.Setup
 {
-    public class SpellPanelSetup : SetupMonoBehaviourBase
+    public class SpellPanelSetup : UIElementPresenterSetup
     {
         [SerializeField] private List<SpellSlotGroupPresenterBase> _spellGroups;
         private IPlayerSpellsManagerInformation _playerManagerInformation;
         private IInitializableSpellPanelPresenter _presenter;
         private IPlayerInitializationStatus _playerInitializationStatus;
-
+        private IUIElementView _view;
 
         [Inject]
         private void Construct(IPlayerSpellsManagerInformation managerInformation,
@@ -50,13 +52,14 @@ namespace UI.Spells_Panel.Panel.Setup
 
         protected override void Prepare()
         {
+            _view = new DefaultUIElementView(transform, _generalUIAnimationSettings);
             _presenter = GetComponent<IInitializableSpellPanelPresenter>();
         }
 
         protected override void Initialize()
         {
             var model = new SpellPanelModel(new List<ISpellSlotGroup>(_spellGroups), _playerManagerInformation);
-            _presenter.Initialize(new List<IDisableable> {model});
+            _presenter.Initialize(_view, new List<IDisableable> {model});
         }
     }
 }

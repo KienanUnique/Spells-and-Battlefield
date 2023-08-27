@@ -7,6 +7,7 @@ using Settings.UI.Spell_Panel;
 using Systems.Scene_Switcher;
 using UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes;
 using UI.Bar.View.Concrete_Types.Filling_Bar;
+using UI.Loading_Window.View;
 using UnityEngine;
 using Zenject;
 
@@ -26,6 +27,7 @@ namespace Systems.Installers
         [Header("UI")] [SerializeField] private GeneralUIAnimationSettings _generalUIAnimationSettings;
         [SerializeField] private SpellPanelSettings _spellPanelSettings;
         [SerializeField] private PopupTextSettings _popupTextSettings;
+        [SerializeField] private LoadingWindowSettings _loadingWindowSettings;
 
         [SerializeField]
         private BarViewWithAdditionalDisplayOfChangesSettings _barViewWithAdditionalDisplayOfChangesSettings;
@@ -112,6 +114,10 @@ namespace Systems.Installers
             Container
                 .Bind<FillingBarSettings>()
                 .FromInstance(_fillingBarSettings)
+                .AsSingle();
+            Container
+                .Bind<ILoadingWindowSettings>()
+                .FromInstance(_loadingWindowSettings)
                 .AsSingle();
         }
 

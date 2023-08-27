@@ -20,6 +20,7 @@ MonoBehaviour:
   _generalUIAnimationSettings: {fileID: 11400000, guid: 56bf131e31d75194e8f15a3f4bb5ed31, type: 2}
   _spellPanelSettings: {fileID: 11400000, guid: bccfab12f13b3bd4b8dff61041dd164a, type: 2}
   _popupTextSettings: {fileID: 11400000, guid: b2fdcb0e8e52b2447864c66b0859fe82, type: 2}
+  _loadingWindowSettings: {fileID: 11400000, guid: d9587f79fb7f7a846b21ece164dbb765, type: 2}
   _barViewWithAdditionalDisplayOfChangesSettings: {fileID: 11400000, guid: 1c3168200402ad547a69a5b866700bb9, type: 2}
   _fillingBarSettings: {fileID: 11400000, guid: 5cdbe0e14def12e4689fdf3ebefe5abc, type: 2}
   _plateSettings: {fileID: 11400000, guid: e675676fc85c3ba40a9918f4e6384503, type: 2}
