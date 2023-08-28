@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Disableable;
-using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
@@ -168,27 +166,6 @@ namespace Enemies.Setup
             }
 
             _controller.Initialize(baseSetupData);
-        }
-
-        private class ExternalDependenciesInitializationWaiter : IInitializable
-        {
-            public ExternalDependenciesInitializationWaiter(bool needInstantlyHandleExternalDependenciesInitialization)
-            {
-                CurrentInitializationStatus = InitializationStatus.NonInitialized;
-                if (needInstantlyHandleExternalDependenciesInitialization)
-                {
-                    HandleExternalDependenciesInitialization();
-                }
-            }
-
-            public void HandleExternalDependenciesInitialization()
-            {
-                CurrentInitializationStatus = InitializationStatus.Initialized;
-                InitializationStatusChanged?.Invoke(CurrentInitializationStatus);
-            }
-
-            public event Action<InitializationStatus> InitializationStatusChanged;
-            public InitializationStatus CurrentInitializationStatus { get; private set; }
         }
     }
 }

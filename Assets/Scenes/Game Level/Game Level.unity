@@ -388,6 +388,7 @@ GameObject:
   - component: {fileID: 137071392}
   - component: {fileID: 137071397}
   - component: {fileID: 137071396}
+  - component: {fileID: 137071398}
   m_Layer: 5
   m_Name: Main Canvas
   m_TagString: Untagged
@@ -509,6 +510,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c3c78cdb84414ca5b580c8e0d65abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &137071398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137071391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57b2b19623954da492ae83e631cc8eed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inGameManagerUI: {fileID: 137071397}
 --- !u!1 &146302860
 GameObject:
   m_ObjectHideFlags: 0
@@ -7242,5 +7256,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8945726531586246359, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
+      propertyPath: _monoInstallers.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8945726530817711945, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}

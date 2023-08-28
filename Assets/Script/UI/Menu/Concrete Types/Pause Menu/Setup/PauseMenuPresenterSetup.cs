@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases.Disableable;
+using UI.Element.View;
+using UI.Managers.In_Game;
 using UI.Menu.Concrete_Types.Pause_Menu.Model;
 using UI.Menu.Concrete_Types.Pause_Menu.Presenter;
 using UI.Menu.Setup;
@@ -22,13 +24,13 @@ namespace UI.Menu.Concrete_Types.Pause_Menu.Setup
         protected override void Prepare()
         {
             base.Prepare();
-            _model = new PauseMenuModel(_idHolder, _uiControllable);
             _presenter = GetComponent<IInitializablePauseMenuPresenter>();
         }
 
-        protected override void Initialize()
+        protected override void Initialize(IInGameUIControllable uiControllable, IUIElementView view)
         {
-            _presenter.Initialize(View, _model, new List<IDisableable>(), _restartLevelButton, _goToMainMenuButton,
+            _model = new PauseMenuModel(_idHolder, uiControllable);
+            _presenter.Initialize(view, _model, new List<IDisableable>(), _restartLevelButton, _goToMainMenuButton,
                 _continueGameButton);
         }
     }
