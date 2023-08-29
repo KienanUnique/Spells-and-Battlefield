@@ -1,5 +1,8 @@
+using System;
+using System.Collections.Generic;
 using Interfaces;
 using Player;
+using Player.Spawn;
 using Player.Spell_Manager;
 using UnityEngine;
 using Zenject;
@@ -8,29 +11,35 @@ namespace Systems.Installers
 {
     public class PlayerInstaller : MonoInstaller
     {
-        [SerializeField] private PlayerController _player;
+        [SerializeField] private PlayerSpawnMarker _playerSpawnMarker;
+        [SerializeField] private Transform _playerParent;
+        [SerializeField] private PlayerPrefabProvider _prefabProvider;
 
         public override void InstallBindings()
         {
-            InstallPlayerInformation();
+            InstallPlayer();
         }
 
-        private void InstallPlayerInformation()
+        private void InstallPlayer()
         {
             Container
-                .Bind<IPlayerInformationProvider>()
-                .FromInstance(_player)
-                .AsSingle();
+                .Bind(new List<Type>
+                {
+                    typeof(IPlayerInformationProvider),
+                    typeof(IPlayerSpellsManagerInformation),
+                    typeof(IPlayerInitializationStatus)
+                })
+                .FromComponentInNewPrefab(_prefabProvider.Prefab)
+                .AsSingle()
+                .OnInstantiated<PlayerController>(OnPlayerInstantiated);
+        }
 
-            Container
-                .Bind<IPlayerSpellsManagerInformation>()
-                .FromInstance(_player)
-                .AsSingle();
-
-            Container
-                .Bind<IPlayerInitializationStatus>()
-                .FromInstance(_player)
-                .AsSingle();
+        private void OnPlayerInstantiated(InjectContext arg1, PlayerController playerController)
+        {
+            var playerTransform = playerController.transform;
+            playerTransform.SetParent(_playerParent);
+            playerTransform.position = _playerSpawnMarker.SpawnPosition;
+            playerTransform.rotation = _playerSpawnMarker.SpawnRotation;
         }
     }
 }

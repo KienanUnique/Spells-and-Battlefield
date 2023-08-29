@@ -24,7 +24,7 @@ namespace Enemies.Spawn
             var targetTriggers = new List<IEnemyTargetTrigger>(_triggerList);
             foreach (var marker in _markers)
             {
-                _enemyFactory.Create(marker.DataForSpawn, targetTriggers, marker.Position, marker.Rotation);
+                _enemyFactory.Create(marker.DataForSpawn, targetTriggers, marker.SpawnPosition, marker.SpawnRotation);
             }
         }
     }

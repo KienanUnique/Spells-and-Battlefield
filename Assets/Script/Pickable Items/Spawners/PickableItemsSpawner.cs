@@ -20,7 +20,7 @@ namespace Pickable_Items.Spawners
         {
             foreach (var marker in _markers)
             {
-                _pickableItemsFactory.Create(marker.DataForCreating, marker.Position, NeedCreatedItemsFallDown);
+                _pickableItemsFactory.Create(marker.DataForCreating, marker.SpawnPosition, NeedCreatedItemsFallDown);
             }
         }
     }

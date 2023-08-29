@@ -39,3 +39,4 @@ MonoBehaviour:
     _lastChanceSpell: {fileID: 11400000, guid: 64f2c7c17c0f77446a5eacd00b9c1249, type: 2}
   _visual:
     _emptyUseSpellAnimation: {fileID: 7400000, guid: 166679ff92a4b7c48864e99cb3e32c74, type: 2}
+  _prefabProvider: {fileID: 11400000, guid: 296733947c885f4409969be6453bf0a2, type: 2}

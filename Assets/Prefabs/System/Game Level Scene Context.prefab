@@ -51,9 +51,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 65d9f0260a9860b439bc3e5a29008d6c, type: 2}
   _monoInstallers:
   - {fileID: 6921710625290566928}
-  - {fileID: 1619584736600135485}
   - {fileID: 4819919980478210988}
   - {fileID: 1708283641}
+  - {fileID: 1619584736600135485}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d99be361cd595ab4d9385ccd19cb6d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
+  _playerSpawnMarker: {fileID: 0}
 --- !u!114 &6921710625290566928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 920842a47dc44fd787331ae319ba0372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerParent: {fileID: 0}
   _enemiesParent: {fileID: 0}
   _spellsParent: {fileID: 0}
   _pickableItemsParent: {fileID: 0}
