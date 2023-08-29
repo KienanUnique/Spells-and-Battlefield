@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Common;
 using UI.Element.View;
 using UI.Managers.In_Game;
@@ -18,8 +19,12 @@ namespace UI.Menu.Setup
         private IUIElementView _view;
         private ExternalDependenciesInitializationWaiter _externalDependenciesInitializationWaiter;
 
-        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
-            new[] {_externalDependenciesInitializationWaiter};
+        protected sealed override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
+            new List<IInitializable>(AdditionalObjectsToWaitBeforeInitialization)
+                {_externalDependenciesInitializationWaiter};
+
+        protected virtual IEnumerable<IInitializable> AdditionalObjectsToWaitBeforeInitialization =>
+            Enumerable.Empty<IInitializable>();
 
         public void SetInGameUIControllable(IInGameUIControllable inGameUIControllable)
         {

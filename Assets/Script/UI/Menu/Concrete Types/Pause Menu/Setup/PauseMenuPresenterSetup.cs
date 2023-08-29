@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Common.Abstract_Bases.Disableable;
 using UI.Element.View;
 using UI.Managers.In_Game;
@@ -8,7 +7,6 @@ using UI.Menu.Concrete_Types.Pause_Menu.Presenter;
 using UI.Menu.Setup;
 using UnityEngine;
 using UnityEngine.UI;
-using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
 namespace UI.Menu.Concrete_Types.Pause_Menu.Setup
 {
@@ -17,9 +15,6 @@ namespace UI.Menu.Concrete_Types.Pause_Menu.Setup
         [SerializeField] private Button _continueGameButton;
         private IPauseMenuModel _model;
         private IInitializablePauseMenuPresenter _presenter;
-
-        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
-            Enumerable.Empty<IInitializable>();
 
         protected override void Prepare()
         {
