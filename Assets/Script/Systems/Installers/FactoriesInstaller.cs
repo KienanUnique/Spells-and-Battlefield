@@ -4,31 +4,26 @@ using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
 using Enemies.Spawn.Factory;
 using Pickable_Items.Factory;
 using Spells.Factory;
+using Systems.In_Game_Systems.Factory;
+using Systems.In_Game_Systems.Prefab_Provider;
 using UI.Popup_Text.Factory;
-using UI.Popup_Text.Prefab_Provider;
+using UI.Popup_Text.Factory.Settings;
 using UnityEngine;
 using Zenject;
 
 namespace Systems.Installers
 {
+    [RequireComponent(typeof(LevelStartController))]
     public class FactoriesInstaller : MonoInstaller
     {
-        [Header("Enemies")] [SerializeField] private Transform _enemiesParent;
+        private const string EnemiesSectionName = "Enemies";
+        private const string SpellsSectionName = "Spells";
+        private const string PickableItemsSectionName = "Pickable Items";
+        private const string PopupTextSectionName = "Popup Text";
+        private const string SystemsSectionName = "Systems";
 
-        [Header("Spells")] [SerializeField] private Transform _spellsParent;
-
-        [Header("Pickable Items")] [SerializeField]
-        private Transform _pickableItemsParent;
-
-        [Header("Popup Text")] [SerializeField]
-        private Transform _popupTextParent;
-
-        [SerializeField] private SerializablePositionDataForInstantiation _defaultSpawnPosition;
-
-        [Min(1)] [SerializeField] private int _needPopupTextObjectPooledObjectsCount;
-        [SerializeField] private PopupTextPrefabProvider _damageTextPrefabProvider;
-        [SerializeField] private PopupTextPrefabProvider _healTextPrefabProvider;
-
+        [SerializeField] private PopupHitPointsChangeTextFactorySettings _popupHitPointsChangeTextFactorySettings;
+        [SerializeField] private InGameSystemsPrefabProvider _inGameSystemsPrefabProvider;
         private IReadOnlyList<IObjectPoolingFactory> ObjectPoolingFactories => _objectPoolingFactories;
         private List<IObjectPoolingFactory> _objectPoolingFactories;
 
@@ -40,13 +35,24 @@ namespace Systems.Installers
             InstallEnemyFactory();
             InstallPopupTextFactories();
             InstallAllObjectPoolingFactories();
+            InstallGameControllerSystems();
+        }
+
+        private void InstallGameControllerSystems()
+        {
+            var factory = new InGameSystemsFactory(Container, CreateEmptyParentWithName(SystemsSectionName),
+                _inGameSystemsPrefabProvider);
+            Container
+                .Bind<IInGameSystemsFactory>()
+                .FromInstance(factory)
+                .AsSingle();
         }
 
         private void InstallPopupTextFactories()
         {
             var textFactory = new PopupHitPointsChangeTextFactory(Container,
-                _popupTextParent, _needPopupTextObjectPooledObjectsCount, _healTextPrefabProvider,
-                _damageTextPrefabProvider, _defaultSpawnPosition);
+                CreateEmptyParentWithName(PopupTextSectionName), _popupHitPointsChangeTextFactorySettings,
+                new PositionDataForInstantiation(Vector3.zero, Quaternion.identity));
 
             _objectPoolingFactories.Add(textFactory);
 
@@ -66,7 +72,7 @@ namespace Systems.Installers
 
         private void InstallEnemyFactory()
         {
-            IEnemyFactory enemyFactory = new EnemyFactory(Container, _enemiesParent);
+            IEnemyFactory enemyFactory = new EnemyFactory(Container, CreateEmptyParentWithName(EnemiesSectionName));
             Container
                 .Bind<IEnemyFactory>()
                 .FromInstance(enemyFactory)
@@ -75,7 +81,8 @@ namespace Systems.Installers
 
         private void InstallPickableItemsFactory()
         {
-            IPickableItemsFactory pickableItemsFactory = new PickableItemsFactory(Container, _pickableItemsParent);
+            IPickableItemsFactory pickableItemsFactory =
+                new PickableItemsFactory(Container, CreateEmptyParentWithName(PickableItemsSectionName));
             Container
                 .Bind<IPickableItemsFactory>()
                 .FromInstance(pickableItemsFactory)
@@ -84,11 +91,17 @@ namespace Systems.Installers
 
         private void InstallSpellFactory()
         {
-            ISpellObjectsFactory spellObjectsFactory = new SpellObjectsFactory(Container, _spellsParent);
+            ISpellObjectsFactory spellObjectsFactory =
+                new SpellObjectsFactory(Container, CreateEmptyParentWithName(SpellsSectionName));
             Container
                 .Bind<ISpellObjectsFactory>()
                 .FromInstance(spellObjectsFactory)
                 .AsSingle();
+        }
+
+        private Transform CreateEmptyParentWithName(string parentName)
+        {
+            return new GameObject(parentName).transform;
         }
     }
 }

@@ -12,81 +12,82 @@ using UI.Window;
 namespace UI.Managers.In_Game
 {
     public class InGameManagerUI : InitializableMonoBehaviourBase, IInGameUIControllable, IInGameManagerUI,
-        IInitializableInGameManagerUI
+        IInitializableInGameManagerUI, IInGameManagerUIInitializationStatus
+
     {
-        private ILoadingWindow _loadingWindow;
-        private IGameplayUI _gameplayUI;
-        private IGameOverMenu _gameOverMenu;
-        private IPauseMenu _pauseMenu;
-        private ILevelCompletedMenu _levelCompletedMenu;
-        private IUIWindowsStackManager _windowsManager;
+    private ILoadingWindow _loadingWindow;
+    private IGameplayUI _gameplayUI;
+    private IGameOverMenu _gameOverMenu;
+    private IPauseMenu _pauseMenu;
+    private ILevelCompletedMenu _levelCompletedMenu;
+    private IUIWindowsStackManager _windowsManager;
 
-        public void Initialize(ILoadingWindow loadingWindow, IGameplayUI gameplayUI, IGameOverMenu gameOverMenu,
-            IPauseMenu pauseMenu, ILevelCompletedMenu levelCompletedMenu, IUIWindowsStackManager windowsManager)
+    public void Initialize(ILoadingWindow loadingWindow, IGameplayUI gameplayUI, IGameOverMenu gameOverMenu,
+        IPauseMenu pauseMenu, ILevelCompletedMenu levelCompletedMenu, IUIWindowsStackManager windowsManager)
+    {
+        _loadingWindow = loadingWindow;
+        _gameplayUI = gameplayUI;
+        _gameOverMenu = gameOverMenu;
+        _pauseMenu = pauseMenu;
+        _levelCompletedMenu = levelCompletedMenu;
+        _windowsManager = windowsManager;
+        SetInitializedStatus();
+    }
+
+    public event Action RestartLevelRequested;
+    public event Action QuitToMainMenuRequested;
+    public event Action LoadNextLevelRequested;
+    public event Action AllMenusClosed;
+
+    public void SwitchTo(InGameUIElementsGroup needElementsGroup)
+    {
+        IUIWindow elementToOpen = needElementsGroup switch
         {
-            _loadingWindow = loadingWindow;
-            _gameplayUI = gameplayUI;
-            _gameOverMenu = gameOverMenu;
-            _pauseMenu = pauseMenu;
-            _levelCompletedMenu = levelCompletedMenu;
-            _windowsManager = windowsManager;
-            SetInitializedStatus();
-        }
+            InGameUIElementsGroup.GameOverMenu => _gameOverMenu,
+            InGameUIElementsGroup.LevelCompletedMenu => _levelCompletedMenu,
+            InGameUIElementsGroup.PauseMenu => _pauseMenu,
+            InGameUIElementsGroup.LoadingWindow => _loadingWindow,
+            _ => throw new ArgumentOutOfRangeException(nameof(needElementsGroup), needElementsGroup, null)
+        };
+        _windowsManager.Open(elementToOpen);
+    }
 
-        public event Action RestartLevelRequested;
-        public event Action QuitToMainMenuRequested;
-        public event Action LoadNextLevelRequested;
-        public event Action AllMenusClosed;
+    public void RequestQuitToMainMenu()
+    {
+        QuitToMainMenuRequested?.Invoke();
+    }
 
-        public void SwitchTo(InGameUIElementsGroup needElementsGroup)
+    public void RequestRestartLevel()
+    {
+        RestartLevelRequested?.Invoke();
+    }
+
+    public void RequestLoadNextLevel()
+    {
+        LoadNextLevelRequested?.Invoke();
+    }
+
+    public void TryCloseCurrentWindow()
+    {
+        _windowsManager.TryCloseCurrentElement();
+    }
+
+    protected override void SubscribeOnEvents()
+    {
+        _windowsManager.WindowClosed += OnWindowClosed;
+    }
+
+    protected override void UnsubscribeFromEvents()
+    {
+        _windowsManager.WindowClosed -= OnWindowClosed;
+    }
+
+    private void OnWindowClosed()
+    {
+        if (_windowsManager.CurrentOpenedWindow == _gameplayUI)
         {
-            IUIWindow elementToOpen = needElementsGroup switch
-            {
-                InGameUIElementsGroup.GameOverMenu => _gameOverMenu,
-                InGameUIElementsGroup.LevelCompletedMenu => _levelCompletedMenu,
-                InGameUIElementsGroup.PauseMenu => _pauseMenu,
-                InGameUIElementsGroup.LoadingWindow => _loadingWindow,
-                _ => throw new ArgumentOutOfRangeException(nameof(needElementsGroup), needElementsGroup, null)
-            };
-            _windowsManager.Open(elementToOpen);
+            AllMenusClosed?.Invoke();
         }
-
-        public void RequestQuitToMainMenu()
-        {
-            QuitToMainMenuRequested?.Invoke();
-        }
-
-        public void RequestRestartLevel()
-        {
-            RestartLevelRequested?.Invoke();
-        }
-
-        public void RequestLoadNextLevel()
-        {
-            LoadNextLevelRequested?.Invoke();
-        }
-
-        public void TryCloseCurrentWindow()
-        {
-            _windowsManager.TryCloseCurrentElement();
-        }
-
-        protected override void SubscribeOnEvents()
-        {
-            _windowsManager.WindowClosed += OnWindowClosed;
-        }
-
-        protected override void UnsubscribeFromEvents()
-        {
-            _windowsManager.WindowClosed -= OnWindowClosed;
-        }
-
-        private void OnWindowClosed()
-        {
-            if (_windowsManager.CurrentOpenedWindow == _gameplayUI)
-            {
-                AllMenusClosed?.Invoke();
-            }
-        }
+    }
     }
 }

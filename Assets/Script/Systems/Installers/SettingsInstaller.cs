@@ -4,6 +4,9 @@ using Settings.Puzzles.Mechanisms;
 using Settings.Puzzles.Triggers;
 using Settings.UI;
 using Settings.UI.Spell_Panel;
+using Systems.In_Game_Systems.Post_Processing_Controller.Settings;
+using Systems.In_Game_Systems.Time_Controller.Settings;
+using Systems.Input_Manager.Settings;
 using Systems.Scene_Switcher;
 using UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes;
 using UI.Bar.View.Concrete_Types.Filling_Bar;
@@ -15,7 +18,7 @@ namespace Systems.Installers
 {
     [CreateAssetMenu(fileName = "Settings Installer",
         menuName = ScriptableObjectsMenuDirectories.InstallersDirectory + "Settings Installer")]
-    public class SettingsInstaller : ScriptableObjectInstaller<SettingsInstaller>
+    public class SettingsInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private GroundLayerMaskSetting _groundLayerMaskSetting;
         [SerializeField] private PickableItemsSettings _pickableItemsSettings;
@@ -40,6 +43,10 @@ namespace Systems.Installers
 
         [Header("Scenes")] [SerializeField] private ScenesSettings _scenesSettings;
 
+        [Header("Systems")] [SerializeField] private TimeControllerSettings _timeControllerSettings;
+        [SerializeField] private PostProcessingControllerSettings _postProcessingControllerSettings;
+        [SerializeField] private InputManagerSettings _inputManagerSettings;
+
         public override void InstallBindings()
         {
             BindSceneSettings();
@@ -48,6 +55,25 @@ namespace Systems.Installers
             BindUISettings();
             BindPlayerSettings();
             BindPuzzlesSettings();
+            BindSystemSettings();
+        }
+
+        private void BindSystemSettings()
+        {
+            Container
+                .Bind<ITimeControllerSettings>()
+                .FromInstance(_timeControllerSettings)
+                .AsSingle();
+
+            Container
+                .Bind<IPostProcessingControllerSettings>()
+                .FromInstance(_postProcessingControllerSettings)
+                .AsSingle();
+
+            Container
+                .Bind<IInputManagerSettings>()
+                .FromInstance(_inputManagerSettings)
+                .AsSingle();
         }
 
         private void BindSceneSettings()

@@ -1,29 +1,28 @@
 using System;
 using System.Collections;
-using Common;
-using Common.Abstract_Bases;
 using Settings;
 using Spells.Implementations_Interfaces.Implementations;
+using Systems.Input_Manager.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
 namespace Systems.Input_Manager
 {
-    public class InGameInputManager : Singleton<InGameInputManager>, IPlayerInput, IMenuInput
+    public class InGameInputManager : MonoBehaviour, IPlayerInput, IInGameSystemInputManager
     {
         private const float MinimalInputMagnitude = 0.5f;
-
-        [SerializeField] private float _inGameMouseSensitivity = 21f;
 
         private MainControls _mainControls;
         private float _mouseX, _mouseY;
         private SpellTypesSetting _spellTypesSetting;
+        private IInputManagerSettings _settings;
 
         [Inject]
-        private void Construct(SpellTypesSetting spellTypesSetting)
+        private void Construct(SpellTypesSetting spellTypesSetting, IInputManagerSettings settings)
         {
             _spellTypesSetting = spellTypesSetting;
+            _settings = settings;
         }
 
         public event Action JumpInputted;
@@ -33,14 +32,14 @@ namespace Systems.Input_Manager
         public event Action<Vector2> MoveInputted;
         public event Action<Vector2> LookInputted;
         public event Action<ISpellType> SelectSpellType;
-        public event Action GamePause;
+        public event Action GamePauseInputted;
         public event Action CloseCurrentWindow;
 
         private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpInputted?.Invoke();
         private void OnDashStarted(InputAction.CallbackContext obj) => StartDashAimingInputted?.Invoke();
         private void OnDashCanceled(InputAction.CallbackContext obj) => DashInputted?.Invoke();
         private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellInputted?.Invoke();
-        private void OnPauseGamePerformed(InputAction.CallbackContext obj) => GamePause?.Invoke();
+        private void OnPauseGamePerformed(InputAction.CallbackContext obj) => GamePauseInputted?.Invoke();
         private void OnContinueGamePerformed(InputAction.CallbackContext obj) => CloseCurrentWindow?.Invoke();
 
         public void SwitchToUIInput()
@@ -59,7 +58,7 @@ namespace Systems.Input_Manager
             Cursor.visible = false;
         }
 
-        protected override void SpecialAwakeAction()
+        private void Awake()
         {
             _mainControls = new MainControls();
         }
@@ -103,7 +102,7 @@ namespace Systems.Input_Manager
         {
             SelectSpellType?.Invoke(_spellTypesSetting.LastChanceSpellType);
         }
-        
+
         private void OnPerformedSwitchToSpellType1(InputAction.CallbackContext obj)
         {
             InvokeSwitchToSpellType(0);
@@ -118,7 +117,7 @@ namespace Systems.Input_Manager
         {
             InvokeSwitchToSpellType(2);
         }
-        
+
         private void InvokeSwitchToSpellType(int typeNumber)
         {
             SelectSpellType?.Invoke(_spellTypesSetting.TypesListInOrder[typeNumber]);
@@ -131,7 +130,7 @@ namespace Systems.Input_Manager
             {
                 readDirection = _mainControls.Character.Move.ReadValue<Vector2>().normalized;
                 MoveInputted?.Invoke(readDirection.magnitude > MinimalInputMagnitude ? readDirection : Vector2.zero);
-                LookInputted?.Invoke(_inGameMouseSensitivity * Time.unscaledDeltaTime *
+                LookInputted?.Invoke(_settings.InGameMouseSensitivity * Time.unscaledDeltaTime *
                                      _mainControls.Character.Look.ReadValue<Vector2>());
                 yield return null;
             }

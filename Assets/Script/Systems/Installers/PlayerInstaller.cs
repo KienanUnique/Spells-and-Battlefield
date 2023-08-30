@@ -31,7 +31,8 @@ namespace Systems.Installers
                 })
                 .FromComponentInNewPrefab(_prefabProvider.Prefab)
                 .AsSingle()
-                .OnInstantiated<PlayerController>(OnPlayerInstantiated);
+                .OnInstantiated<PlayerController>(OnPlayerInstantiated)
+                .NonLazy();
         }
 
         private void OnPlayerInstantiated(InjectContext arg1, PlayerController playerController)

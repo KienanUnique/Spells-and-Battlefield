@@ -9,5 +9,6 @@ namespace UI.Managers.In_Game
         public event Action LoadNextLevelRequested;
         public event Action AllMenusClosed;
         public void SwitchTo(InGameUIElementsGroup needElementsGroup);
+        public void TryCloseCurrentWindow();
     }
 }

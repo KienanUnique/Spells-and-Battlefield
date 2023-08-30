@@ -37,6 +37,7 @@
 
     public const string GeneralSettingsDirectory = SettingsDirectory + "General/";
     public const string ConcreteUISettingsDirectory = SettingsDirectory + "Concrete UI/";
+    public const string SystemsSettingsDirectory = SettingsDirectory + "Systems/";
 
     public const string PuzzleDirectory = SettingsDirectory + "Puzzles/";
     public const string PuzzleTriggersDirectory = PuzzleDirectory + "Triggers/";
@@ -53,6 +54,7 @@
 
     #region PrefabProviders
 
+    public const string SystemsPrefabProvidersDirectory = RootDirectory + "System/";
     public const string PickableItemsProvidersDirectory = RootDirectory + "Pickable Items/";
     public const string PopupTextProvidersDirectory = RootDirectory + "Popup Texts/";
 
@@ -63,7 +65,7 @@
     public const string PickableItemsDirectory = RootDirectory + "Pickable Items/";
 
     #endregion
-    
+
     #region Scenes
 
     public const string ScenesDirectory = RootDirectory + "Scenes Data/";

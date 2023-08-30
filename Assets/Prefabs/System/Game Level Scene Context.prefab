@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 8945726531586246358}
   - component: {fileID: 8945726531586246359}
   - component: {fileID: 1619584736600135485}
-  - component: {fileID: 6921710625290566928}
   - component: {fileID: 4819919980478210988}
   - component: {fileID: 1708283641}
+  - component: {fileID: 2042446009333522657}
+  - component: {fileID: 1084039649684062152}
+  - component: {fileID: 6383168730759800601}
   m_Layer: 0
   m_Name: Game Level Scene Context
   m_TagString: Untagged
@@ -50,10 +52,11 @@ MonoBehaviour:
   _scriptableObjectInstallers:
   - {fileID: 11400000, guid: 65d9f0260a9860b439bc3e5a29008d6c, type: 2}
   _monoInstallers:
-  - {fileID: 6921710625290566928}
   - {fileID: 4819919980478210988}
   - {fileID: 1708283641}
   - {fileID: 1619584736600135485}
+  - {fileID: 2042446009333522657}
+  - {fileID: 1084039649684062152}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -84,19 +87,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerSpawnMarker: {fileID: 0}
---- !u!114 &6921710625290566928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8945726531586246344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b4d6fbf70555a419ff3c99258cc035, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inGameMenuInput: {fileID: 0}
+  _playerParent: {fileID: 0}
+  _prefabProvider: {fileID: 11400000, guid: 296733947c885f4409969be6453bf0a2, type: 2}
 --- !u!114 &4819919980478210988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,16 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 920842a47dc44fd787331ae319ba0372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerParent: {fileID: 0}
-  _enemiesParent: {fileID: 0}
-  _spellsParent: {fileID: 0}
-  _pickableItemsParent: {fileID: 0}
-  _popupTextParent: {fileID: 0}
-  _defaultSpawnPosition:
-    _defaultSpawnPosition: {fileID: 0}
-  _needPopupTextObjectPooledObjectsCount: 15
-  _damageTextPrefabProvider: {fileID: 11400000, guid: 7b7d631834b23b543bcc58a8c99404a7, type: 2}
-  _healTextPrefabProvider: {fileID: 11400000, guid: 77b69c2cb86148f4d8592053e408228e, type: 2}
+  _popupHitPointsChangeTextFactorySettings: {fileID: 11400000, guid: 77d22b41baf6c7e4f9970377a90f9f69, type: 2}
+  _inGameSystemsPrefabProvider: {fileID: 11400000, guid: b56c86e1107bff14eb87a1ed838aa0d3, type: 2}
 --- !u!114 &1708283641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,3 +116,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _finishZone: {fileID: 0}
+--- !u!114 &2042446009333522657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8945726531586246344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6103fe7cb3b4d128e62f4805a03d7a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inGameUIPrefabProvider: {fileID: 11400000, guid: 5768ccd3dc1a566489c50b4e7eb56a1c, type: 2}
+--- !u!114 &1084039649684062152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8945726531586246344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e40117fd252f42fc87feca168cac3fce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inGameMenuInputProvider: {fileID: 11400000, guid: 6457484bd148a914086599f30af1c4df, type: 2}
+--- !u!114 &6383168730759800601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8945726531586246344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ddc72cb655e491580ab4e8a9ed3c222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

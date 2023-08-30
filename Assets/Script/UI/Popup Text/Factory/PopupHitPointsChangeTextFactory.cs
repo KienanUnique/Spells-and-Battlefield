@@ -4,6 +4,7 @@ using Common;
 using Common.Abstract_Bases.Factories;
 using Common.Abstract_Bases.Factories.Object_Pool;
 using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
+using UI.Popup_Text.Factory.Settings;
 using UI.Popup_Text.Prefab_Provider;
 using UnityEngine;
 using Zenject;
@@ -18,16 +19,19 @@ namespace UI.Popup_Text.Factory
         private readonly List<IObjectPoolingFactory> _allTextFactories;
 
         public PopupHitPointsChangeTextFactory(IInstantiator instantiator, Transform parentTransform,
-            int needItemsCount, IPopupTextPrefabProvider healTextPrefabProvider,
-            IPopupTextPrefabProvider damageTextPrefabProvider,
+            IPopupHitPointsChangeTextFactorySettings settings,
             IPositionDataForInstantiation defaultPositionDataForInstantiation)
         {
-            var healTextFactory = new PopupTextFactory(instantiator, parentTransform, needItemsCount,
-                healTextPrefabProvider, defaultPositionDataForInstantiation);
+            var healTextFactory = new PopupTextFactory(instantiator, parentTransform,
+                settings.HealTextObjectPooledCount,
+                settings.HealTextPrefabProvider,
+                defaultPositionDataForInstantiation);
             _healTextFactory = healTextFactory;
 
-            var damageTextFactory = new PopupTextFactory(instantiator, parentTransform, needItemsCount,
-                damageTextPrefabProvider, defaultPositionDataForInstantiation);
+            var damageTextFactory = new PopupTextFactory(instantiator, parentTransform,
+                settings.DamageTextObjectPooledCount,
+                settings.DamageTextPrefabProvider,
+                defaultPositionDataForInstantiation);
             _damageTextFactory = damageTextFactory;
 
             _allTextFactories = new List<IObjectPoolingFactory> {damageTextFactory, healTextFactory};
