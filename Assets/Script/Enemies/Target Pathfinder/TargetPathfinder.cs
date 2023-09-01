@@ -12,6 +12,7 @@ namespace Enemies.Target_Pathfinder
 {
     public class TargetPathfinder : ITargetPathfinder
     {
+        private const int CanBePassedAreasNavMeshMask = NavMesh.AllAreas;
         private readonly ITargetPathfinderSettings _settings;
         private readonly ICoroutineStarter _coroutineStarter;
         private readonly IReadonlyTransform _thisPosition;
@@ -74,7 +75,7 @@ namespace Enemies.Target_Pathfinder
             while (true)
             {
                 NavMesh.CalculatePath(_thisPosition.Position, CalculateNeedPosition(target, needDistance),
-                    NavMesh.AllAreas, path);
+                    CanBePassedAreasNavMeshMask, path);
                 _currentPathCorners = path.corners;
                 _currentWaypointIndex = 0;
 
@@ -85,7 +86,8 @@ namespace Enemies.Target_Pathfinder
         private Vector3 CalculateNeedPosition(IReadonlyTransform target, float needDistance)
         {
             var offsetVector = (_thisPosition.Position - target.Position).normalized * needDistance;
-            return NavMesh.SamplePosition(target.Position + offsetVector, out var hit, 5.0f, NavMesh.AllAreas)
+            return NavMesh.SamplePosition(target.Position + offsetVector, out var hit,
+                _settings.MaxDistanceFromTargetToNavMesh, CanBePassedAreasNavMeshMask)
                 ? hit.position
                 : target.Position + offsetVector;
         }

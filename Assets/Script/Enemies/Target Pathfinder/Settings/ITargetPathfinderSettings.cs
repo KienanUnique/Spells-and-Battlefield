@@ -2,7 +2,8 @@
 {
     public interface ITargetPathfinderSettings
     {
-        float UpdateDestinationCooldownSeconds { get; }
-        float NextWaypointDistance { get; }
+        public float UpdateDestinationCooldownSeconds { get; }
+        public float NextWaypointDistance { get; }
+        public float MaxDistanceFromTargetToNavMesh { get; }
     }
 }

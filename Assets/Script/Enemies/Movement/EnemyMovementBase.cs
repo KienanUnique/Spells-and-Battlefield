@@ -151,11 +151,13 @@ namespace Enemies.Movement
             {
                 if (_targetPathfinder.IsPathComplete())
                 {
+                    _isMoving.Value = false;
                     SetDirectionTowardsPoint(targetPosition.Position, ref direction);
                     _rigidbody.velocity = Vector3.zero;
                 }
                 else
                 {
+                    _isMoving.Value = true;
                     SetDirectionTowardsPoint(_targetPathfinder.CurrentWaypoint, ref direction);
                     _rigidbody.AddForce(MovementSettings.MoveForce * Time.deltaTime * _currentSpeedRatio * direction);
                     ApplyFriction(direction);
