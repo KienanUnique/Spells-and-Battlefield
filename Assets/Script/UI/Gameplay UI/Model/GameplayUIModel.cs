@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Interfaces;
 using UI.Element;
+using UI.Managers.Concrete_Types.In_Game;
 using UI.Window.Model;
 
 namespace UI.Gameplay_UI.Model
@@ -9,7 +10,8 @@ namespace UI.Gameplay_UI.Model
     {
         private readonly IReadOnlyCollection<IUIElement> _gameplayUIElements;
 
-        public GameplayUIModel(IIdHolder idHolder, IReadOnlyCollection<IUIElement> gameplayUIElements) : base(idHolder)
+        public GameplayUIModel(IIdHolder idHolder, IUIWindowManager manager,
+            IReadOnlyCollection<IUIElement> gameplayUIElements) : base(idHolder, manager)
         {
             _gameplayUIElements = gameplayUIElements;
         }

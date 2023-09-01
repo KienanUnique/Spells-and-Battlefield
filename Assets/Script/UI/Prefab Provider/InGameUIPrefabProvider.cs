@@ -1,5 +1,5 @@
 ﻿using Common.Abstract_Bases;
-using UI.Managers.In_Game;
+using UI.Managers.Concrete_Types.In_Game;
 using UnityEngine;
 
 namespace UI.Prefab_Provider

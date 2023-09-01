@@ -6,7 +6,7 @@ using Systems.In_Game_Systems.Level_Finish_Zone;
 using Systems.In_Game_Systems.Time_Controller;
 using Systems.Input_Manager;
 using Systems.Scene_Switcher.Concrete_Types;
-using UI.Managers.In_Game;
+using UI.Managers.Concrete_Types.In_Game;
 using UnityEngine;
 using Zenject;
 using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
@@ -14,10 +14,8 @@ using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitia
 namespace Systems.In_Game_Systems.Game_Controller
 {
     [RequireComponent(typeof(TimeController))]
-    [RequireComponent(typeof(InGameScenesSwitcher))]
     public class GameControllerSetup : SetupMonoBehaviourBase
     {
-        private InGameScenesSwitcher _inGameScenesSwitcher;
         private IInGameManagerUI _inGameManagerUI;
         private IInGameSystemInputManager _inGameSystemInput;
         private IPlayerInformationProvider _playerInformationProvider;
@@ -25,13 +23,13 @@ namespace Systems.In_Game_Systems.Game_Controller
         private ILevelFinishZone _levelFinishZone;
         private IInitializableGameController _controller;
         private IPlayerInitializationStatus _playerInitializationStatus;
-        private IInGameManagerUIInitializationStatus _inGameManagerUIInitializationStatus;
+        private IUIManagerInitializationStatus _inGameManagerUIInitializationStatus;
 
         [Inject]
         private void Construct(IPlayerInformationProvider playerInformationProvider,
             IPlayerInitializationStatus playerInitializationStatus, ILevelFinishZone levelFinishZone,
             IInGameSystemInputManager inGameSystemInput,
-            IInGameManagerUIInitializationStatus inGameManagerUIInitializationStatus, IInGameManagerUI inGameManagerUI)
+            IUIManagerInitializationStatus inGameManagerUIInitializationStatus, IInGameManagerUI inGameManagerUI)
         {
             _playerInformationProvider = playerInformationProvider;
             _levelFinishZone = levelFinishZone;
@@ -47,14 +45,13 @@ namespace Systems.In_Game_Systems.Game_Controller
         protected override void Prepare()
         {
             _timeController = GetComponent<TimeController>();
-            _inGameScenesSwitcher = GetComponent<InGameScenesSwitcher>();
             _controller = GetComponent<IInitializableGameController>();
         }
 
         protected override void Initialize()
         {
-            _controller.Initialize(_inGameManagerUI, _playerInformationProvider,
-                _inGameSystemInput, _timeController, _levelFinishZone, _inGameScenesSwitcher);
+            _controller.Initialize(_inGameManagerUI, _playerInformationProvider, _inGameSystemInput, _timeController,
+                _levelFinishZone);
         }
     }
 }

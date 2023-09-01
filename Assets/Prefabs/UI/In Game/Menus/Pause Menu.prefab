@@ -455,6 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5f05a5a4eb437a96b87209e3f4de8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _loadingWindow: {fileID: 0}
   _goToMainMenuButton: {fileID: 941077703739490492}
   _restartLevelButton: {fileID: 9083050626381609082}
   _continueGameButton: {fileID: 3735062008094018773}

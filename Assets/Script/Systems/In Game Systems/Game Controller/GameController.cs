@@ -7,7 +7,7 @@ using Systems.In_Game_Systems.Level_Finish_Zone;
 using Systems.In_Game_Systems.Time_Controller;
 using Systems.Input_Manager;
 using Systems.Scene_Switcher;
-using UI.Managers.In_Game;
+using UI.Managers.Concrete_Types.In_Game;
 
 namespace Systems.In_Game_Systems.Game_Controller
 {
@@ -21,18 +21,16 @@ namespace Systems.In_Game_Systems.Game_Controller
         private IInGameSystemInputManager _inGameSystemInput;
         private ITimeController _timeController;
         private ILevelFinishZone _levelFinishZone;
-        private IInGameSceneSwitcher _inGameSceneSwitcher;
 
         public void Initialize(IInGameManagerUI inGameManagerUI, IPlayerInformationProvider playerInformationProvider,
             IInGameSystemInputManager inGameSystemInput, ITimeController timeController,
-            ILevelFinishZone levelFinishZone, IInGameSceneSwitcher inGameSceneSwitcher)
+            ILevelFinishZone levelFinishZone)
         {
             _inGameManagerUI = inGameManagerUI;
             _playerInformationProvider = playerInformationProvider;
             _inGameSystemInput = inGameSystemInput;
             _timeController = timeController;
             _levelFinishZone = levelFinishZone;
-            _inGameSceneSwitcher = inGameSceneSwitcher;
             _currentGameState = new ValueWithReactionOnChange<GameState>(GameState.Playing);
             _lastState = _currentGameState.Value;
             SetInitializedStatus();
@@ -87,18 +85,12 @@ namespace Systems.In_Game_Systems.Game_Controller
         {
             _inGameSystemInput.CloseCurrentWindow += OnCloseCurrentWindow;
             _inGameManagerUI.AllMenusClosed += OnCloseMenuInputted;
-            _inGameManagerUI.RestartLevelRequested += OnRestartRequested;
-            _inGameManagerUI.LoadNextLevelRequested += OnLoadNextLevelRequested;
-            _inGameManagerUI.QuitToMainMenuRequested += OnQuitToMainMenuRequested;
         }
 
         private void UnsubscribeFromUIEvents()
         {
             _inGameSystemInput.CloseCurrentWindow -= OnCloseCurrentWindow;
             _inGameManagerUI.AllMenusClosed -= OnCloseMenuInputted;
-            _inGameManagerUI.RestartLevelRequested -= OnRestartRequested;
-            _inGameManagerUI.LoadNextLevelRequested -= OnLoadNextLevelRequested;
-            _inGameManagerUI.QuitToMainMenuRequested -= OnQuitToMainMenuRequested;
         }
 
         private void OnBeforeGameStateChanged(GameState previousState)
@@ -154,25 +146,9 @@ namespace Systems.In_Game_Systems.Game_Controller
             }
         }
 
-        private void OnQuitToMainMenuRequested()
-        {
-            _inGameSceneSwitcher.LoadMainMenu();
-        }
-
-        private void OnLoadNextLevelRequested()
-        {
-            _inGameSceneSwitcher.LoadNextLevel();
-        }
-
         private void OnCloseCurrentWindow()
         {
             _inGameManagerUI.TryCloseCurrentWindow();
-        }
-
-        private void OnRestartRequested()
-        {
-            _inGameManagerUI.SwitchTo(InGameUIElementsGroup.LoadingWindow);
-            _inGameSceneSwitcher.RestartLevel();
         }
 
         private void OnPlayerStateChanged(CharacterState newState)

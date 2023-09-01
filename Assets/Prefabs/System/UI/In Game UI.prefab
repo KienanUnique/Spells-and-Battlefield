@@ -131,7 +131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aee65f4af994fecbe5db79dbde3b6f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loadingWindow: {fileID: 9023161443701717841}
   _gameplayUI: {fileID: 2731305089583987120}
   _gameOverMenu: {fileID: 8447651615608495423}
   _pauseMenu: {fileID: 866779127299798512}
@@ -156,6 +155,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2731305090528449068}
     m_Modifications:
+    - target: {fileID: 963470770270948212, guid: 57ca7d1dc9edcc342a75774f6fd1c56d, type: 3}
+      propertyPath: _loadingWindow
+      value: 
+      objectReference: {fileID: 9023161443701717841}
     - target: {fileID: 1481629598836625840, guid: 57ca7d1dc9edcc342a75774f6fd1c56d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -357,6 +360,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pause Menu
       objectReference: {fileID: 0}
+    - target: {fileID: 2623956842143961251, guid: 530f2fae1fba7e44eb392b3c5e930d23, type: 3}
+      propertyPath: _loadingWindow
+      value: 
+      objectReference: {fileID: 9023161443701717841}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 530f2fae1fba7e44eb392b3c5e930d23, type: 3}
 --- !u!224 &3560172227436645213 stripped
@@ -470,6 +477,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Over Menu
       objectReference: {fileID: 0}
+    - target: {fileID: 7805791177172430828, guid: 701004064fd45e641836b43ed36a0827, type: 3}
+      propertyPath: _loadingWindow
+      value: 
+      objectReference: {fileID: 9023161443701717841}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 701004064fd45e641836b43ed36a0827, type: 3}
 --- !u!224 &3560172227399137794 stripped

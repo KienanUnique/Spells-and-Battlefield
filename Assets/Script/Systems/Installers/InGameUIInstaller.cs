@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using UI.Managers.In_Game;
+using UI.Managers.Concrete_Types.In_Game;
 using UI.Prefab_Provider;
 using UnityEngine;
 using Zenject;
@@ -14,7 +14,7 @@ namespace Systems.Installers
         public override void InstallBindings()
         {
             Container
-                .Bind(new List<Type> {typeof(IInGameManagerUI), typeof(IInGameManagerUIInitializationStatus)})
+                .Bind(new List<Type> {typeof(IInGameManagerUI), typeof(IUIManagerInitializationStatus)})
                 .FromComponentInNewPrefab(_inGameUIPrefabProvider.Prefab)
                 .AsSingle()
                 .NonLazy();

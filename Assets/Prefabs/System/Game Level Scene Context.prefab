@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2042446009333522657}
   - component: {fileID: 1084039649684062152}
   - component: {fileID: 6383168730759800601}
+  - component: {fileID: 4834877476197149024}
   m_Layer: 0
   m_Name: Game Level Scene Context
   m_TagString: Untagged
@@ -86,8 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d99be361cd595ab4d9385ccd19cb6d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerSpawnMarker: {fileID: 0}
-  _playerParent: {fileID: 0}
+  _playerSpawnMarkerHolder: {fileID: 0}
   _prefabProvider: {fileID: 11400000, guid: 296733947c885f4409969be6453bf0a2, type: 2}
 --- !u!114 &4819919980478210988
 MonoBehaviour:
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae4410770ec45cf9a16583727cc8904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _finishZone: {fileID: 0}
+  _finishZoneHolder: {fileID: 0}
 --- !u!114 &2042446009333522657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,3 +154,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ddc72cb655e491580ab4e8a9ed3c222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4834877476197149024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8945726531586246344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c8dfbad74e7450b8b6e2403f5a79cab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scenesSettings: {fileID: 11400000, guid: 98c114661a1630548b59a81b970801db, type: 2}

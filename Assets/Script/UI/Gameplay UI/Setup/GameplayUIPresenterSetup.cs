@@ -19,12 +19,15 @@ namespace UI.Gameplay_UI.Setup
         private IGameplayUIModel _model;
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
-            new List<IInitializable> {_spellPanel, _playerInformation};
+            new List<IInitializable>(base.ObjectsToWaitBeforeInitialization)
+            {
+                _spellPanel, _playerInformation
+            };
 
         protected override void Prepare()
         {
             base.Prepare();
-            _model = new GameplayUIModel(_idHolder, new List<IUIElement> {_spellPanel, _playerInformation});
+            _model = new GameplayUIModel(IDHolder, Manager, new List<IUIElement> {_spellPanel, _playerInformation});
             _presenter = GetComponent<IInitializableGameplayUIPresenter>();
         }
 
