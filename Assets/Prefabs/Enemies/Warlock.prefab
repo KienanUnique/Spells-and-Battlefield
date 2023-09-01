@@ -1890,7 +1890,6 @@ GameObject:
   - component: {fileID: 6235219945403987277}
   - component: {fileID: 6552153800352818887}
   - component: {fileID: 7166206672531240523}
-  - component: {fileID: 8516542026050768911}
   - component: {fileID: 6458958302228009291}
   - component: {fileID: 187948494797428274}
   - component: {fileID: 466582622939805502}
@@ -1977,34 +1976,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &8516542026050768911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4693423325618152249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  drawGizmos: 1
-  detailedGizmos: 0
-  startEndModifier:
-    addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
-    useRaycasting: 0
-    mask:
-      serializedVersion: 2
-      m_Bits: 4294967295
-    useGraphRaycasting: 0
-  traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  graphMask:
-    value: -1
 --- !u!114 &6458958302228009291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2018,7 +1989,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyStateMachineAI: {fileID: 2888857524040370406}
-  _itemToDrop: {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
   _localTargetTriggers:
   - {fileID: 5944730612950319660}
   _eventInvokerForAnimations: {fileID: 8034856137729205796}

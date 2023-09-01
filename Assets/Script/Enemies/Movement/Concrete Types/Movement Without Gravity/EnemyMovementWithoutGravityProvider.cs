@@ -11,9 +11,10 @@ namespace Enemies.Movement.Concrete_Types.Movement_Without_Gravity
     public class EnemyMovementWithoutGravityProvider : EnemyMovementProviderBase
     {
         [SerializeField] private MovementSettingsSection _movementSettings;
+
         public override IDisableableEnemyMovement GetImplementationObject(IEnemyMovementSetupData setupData)
         {
-            return new EnemyMovementWithoutGravity(setupData, _movementSettings, _targetPathfinderSettings);
+            return new EnemyMovementWithoutGravity(setupData, _movementSettings);
         }
     }
 }

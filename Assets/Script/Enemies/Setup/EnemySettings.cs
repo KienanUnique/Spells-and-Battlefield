@@ -1,5 +1,6 @@
 ﻿using Enemies.Character.Provider;
 using Enemies.Movement.Provider;
+using Enemies.Target_Pathfinder.Provider;
 using UnityEngine;
 
 namespace Enemies.Setup
@@ -11,9 +12,11 @@ namespace Enemies.Setup
     {
         [SerializeField] private EnemyMovementProviderBase _movementProvider;
         [SerializeField] private EnemyCharacterProviderBase _characterProvider;
+        [SerializeField] private TargetPathfinderProvider _targetPathfinderProvider;
         [SerializeField] private AnimatorOverrideController _baseAnimatorOverrideController;
-        public EnemyCharacterProviderBase CharacterProvider => _characterProvider;
-        public EnemyMovementProviderBase MovementProvider => _movementProvider;
+        public IEnemyCharacterProvider CharacterProvider => _characterProvider;
+        public IEnemyMovementProvider MovementProvider => _movementProvider;
+        public ITargetPathfinderProvider TargetPathfinderProvider => _targetPathfinderProvider;
         public AnimatorOverrideController BaseAnimatorOverrideController => _baseAnimatorOverrideController;
     }
 }

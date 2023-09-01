@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Enemies.Movement.Setup_Data;
-using General_Settings_in_Scriptable_Objects.Sections;
+using Settings.Sections;
 using Settings.Sections.Movement;
 using UnityEngine;
 
@@ -11,8 +11,7 @@ namespace Enemies.Movement.Concrete_Types.Movement_With_Gravity
         private readonly MovementOnGroundSettingsSection _movementSettings;
 
         public EnemyMovementWithGravity(IEnemyMovementSetupData setupData,
-            MovementOnGroundSettingsSection movementSettings, TargetPathfinderSettingsSection targetPathfinderSettings)
-            : base(setupData, movementSettings, targetPathfinderSettings)
+            MovementOnGroundSettingsSection movementSettings) : base(setupData, movementSettings)
         {
             _movementSettings = movementSettings;
             _coroutineStarter.StartCoroutine(ApplyGravityContinuously());

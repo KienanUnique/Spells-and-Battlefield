@@ -14,7 +14,7 @@ namespace Enemies.Movement.Concrete_Types.Movement_With_Gravity
 
         public override IDisableableEnemyMovement GetImplementationObject(IEnemyMovementSetupData setupData)
         {
-            return new EnemyMovementWithGravity(setupData, _movementSettings, _targetPathfinderSettings);
+            return new EnemyMovementWithGravity(setupData, _movementSettings);
         }
     }
 }

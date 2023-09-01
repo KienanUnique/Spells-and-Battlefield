@@ -13,11 +13,12 @@ using Enemies.Movement.Setup_Data;
 using Enemies.State_Machine;
 using Enemies.State_Machine.States;
 using Enemies.State_Machine.Transition_Conditions;
+using Enemies.Target_Pathfinder;
+using Enemies.Target_Pathfinder.Setup_Data;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Trigger;
 using Enemies.Visual;
 using Interfaces;
-using Pathfinding;
 using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
 using Settings.Enemies;
@@ -31,7 +32,6 @@ namespace Enemies.Setup
 {
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(Seeker))]
     [RequireComponent(typeof(EnemyController))]
     public class EnemySetup : SetupMonoBehaviourBase, ICoroutineStarter,
         IEnemyDataForInitializationSettable
@@ -46,7 +46,6 @@ namespace Enemies.Setup
         [SerializeField] [Min(0.1f)] private float _needDistanceFromIKCenterPoint = 3f;
         [SerializeField] private ReadonlyTransformGetter _popupTextHitPointsChangeAppearCenterPoint;
 
-        private Seeker _seeker;
         public Rigidbody _thisRigidbody;
         private List<IDisableable> _itemsNeedDisabling;
         private IdHolder _idHolder;
@@ -65,6 +64,7 @@ namespace Enemies.Setup
         private IInitializableTransitionEnemyAI[] _transitions;
         private IPopupHitPointsChangeTextFactory _popupHitPointsChangeTextFactory;
         private IPickableItemDataForCreating _itemToDrop;
+        private ITargetPathfinder _targetPathfinder;
 
         [Inject]
         private void Construct(GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
@@ -100,7 +100,6 @@ namespace Enemies.Setup
             _externalDependenciesInitializationWaiter ??= new ExternalDependenciesInitializationWaiter(false);
 
             _idHolder = GetComponent<IdHolder>();
-            _seeker = GetComponent<Seeker>();
             _thisRigidbody = GetComponent<Rigidbody>();
             _controller = GetComponent<EnemyController>();
 
@@ -113,6 +112,9 @@ namespace Enemies.Setup
         protected override void Initialize()
         {
             var thisReadonlyRigidbody = new ReadonlyRigidbody(_thisRigidbody);
+            var targetPathfinderSetupData = new TargetPathfinderSetupData(thisReadonlyRigidbody, this);
+            _targetPathfinder = _settings.TargetPathfinderProvider.GetImplementationObject(targetPathfinderSetupData);
+
             _enemyLook = new EnemyLook(_thisRigidbody.transform, thisReadonlyRigidbody, thisReadonlyRigidbody,
                 _targetFromTriggersSelector, this, _transformToRotateForIK, _thisIKCenterPoint.ReadonlyTransform,
                 _needDistanceFromIKCenterPoint);
@@ -121,7 +123,7 @@ namespace Enemies.Setup
                 _generalEnemySettings.EmptyActionAnimationClip);
 
             var movementSetupData =
-                new EnemyMovementSetupData(_thisRigidbody, _targetFromTriggersSelector, _seeker, this);
+                new EnemyMovementSetupData(_thisRigidbody, _targetFromTriggersSelector, this, _targetPathfinder);
             _enemyMovement = _settings.MovementProvider.GetImplementationObject(movementSetupData);
 
             _enemyCharacter = _settings.CharacterProvider.GetImplementationObject(this);

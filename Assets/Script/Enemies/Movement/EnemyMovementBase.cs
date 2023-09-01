@@ -6,9 +6,10 @@ using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Enemies.Movement.Enemy_Data_For_Moving;
 using Enemies.Movement.Setup_Data;
+using Enemies.Target_Pathfinder;
 using Enemies.Target_Selector_From_Triggers;
-using General_Settings_in_Scriptable_Objects.Sections;
 using Interfaces;
+using Settings.Sections;
 using Settings.Sections.Movement;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace Enemies.Movement
 
         protected readonly ICoroutineStarter _coroutineStarter;
         private readonly ValueWithReactionOnChange<bool> _isMoving;
-        private readonly TargetPathfinder _targetPathfinder;
+        private readonly ITargetPathfinderForMovement _targetPathfinder;
         private readonly Transform _cachedTransform;
         private readonly Transform _originalParent;
         private readonly IReadonlyEnemyTargetFromTriggersSelector _targetSelector;
@@ -31,7 +32,7 @@ namespace Enemies.Movement
         private bool _needMove;
 
         protected EnemyMovementBase(IEnemyMovementSetupData setupData,
-            MovementSettingsSection movementSettings, TargetPathfinderSettingsSection targetPathfinderSettings) :
+            MovementSettingsSection movementSettings) :
             base(setupData.Rigidbody, movementSettings)
         {
             _coroutineStarter = setupData.CoroutineStarter;
@@ -39,8 +40,7 @@ namespace Enemies.Movement
             _cachedTransform = _rigidbody.transform;
             _originalParent = _cachedTransform.parent;
             _isMoving = new ValueWithReactionOnChange<bool>(false);
-            _targetPathfinder =
-                new TargetPathfinder(setupData.Seeker, targetPathfinderSettings, _coroutineStarter);
+            _targetPathfinder = setupData.TargetPathfinderForMovement;
             _targetSelector = setupData.TargetSelector;
         }
 
@@ -149,16 +149,17 @@ namespace Enemies.Movement
             var direction = Vector3.zero;
             while (true)
             {
-                if (_targetPathfinder.TryGetNextWaypoint(out var waypointPosition))
+                if (_targetPathfinder.IsPathComplete())
                 {
-                    SetDirectionTowardsPoint(waypointPosition, ref direction);
-                    _rigidbody.AddForce(MovementSettings.MoveForce * Time.deltaTime * _currentSpeedRatio * direction);
-                    ApplyFriction(direction);
-                    TryLimitCurrentSpeed();
+                    SetDirectionTowardsPoint(targetPosition.Position, ref direction);
+                    _rigidbody.velocity = Vector3.zero;
                 }
                 else
                 {
-                    SetDirectionTowardsPoint(targetPosition.Position, ref direction);
+                    SetDirectionTowardsPoint(_targetPathfinder.CurrentWaypoint, ref direction);
+                    _rigidbody.AddForce(MovementSettings.MoveForce * Time.deltaTime * _currentSpeedRatio * direction);
+                    ApplyFriction(direction);
+                    TryLimitCurrentSpeed();
                 }
 
                 yield return waitForFixedUpdate;

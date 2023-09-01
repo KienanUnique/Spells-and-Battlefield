@@ -2,7 +2,7 @@
 
 namespace Enemies.Movement.Provider
 {
-    public interface IEnemyMovementProviderBase
+    public interface IEnemyMovementProvider
     {
         public IDisableableEnemyMovement GetImplementationObject(IEnemyMovementSetupData setupData);
     }

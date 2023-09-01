@@ -1,6 +1,4 @@
 ﻿using DG.Tweening;
-using General_Settings_in_Scriptable_Objects;
-using Settings;
 using Settings.UI;
 using UnityEngine;
 

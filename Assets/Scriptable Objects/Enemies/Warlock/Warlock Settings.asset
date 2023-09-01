@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movementProvider: {fileID: 11400000, guid: f86b5d12a524b0446a60c5a168725be6, type: 2}
   _characterProvider: {fileID: 11400000, guid: 5a79f998e235dda448fe4837683df0b2, type: 2}
+  _targetPathfinderProvider: {fileID: 11400000, guid: 555edbf34a2d0f94f91ebe1bba623d4b, type: 2}
   _baseAnimatorOverrideController: {fileID: 22100000, guid: bedff01a84cce0748a53e22ca28e1c12, type: 2}
