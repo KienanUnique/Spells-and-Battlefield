@@ -2,11 +2,11 @@
 using UnityEngine;
 using Zenject;
 
-namespace Systems.Installers
+namespace Systems.Installers.Level_Finish_Zone
 {
     public class LevelFinishZoneInstaller : MonoInstaller
     {
-        [SerializeField] private LevelFinishZoneController _finishZone;
+        [SerializeField] private LevelFinishZoneHolder _finishZoneHolder;
 
         public override void InstallBindings()
         {
@@ -17,7 +17,7 @@ namespace Systems.Installers
         {
             Container
                 .Bind<ILevelFinishZone>()
-                .FromInstance(_finishZone)
+                .FromInstance(_finishZoneHolder.ObjectToHold)
                 .AsSingle();
         }
     }

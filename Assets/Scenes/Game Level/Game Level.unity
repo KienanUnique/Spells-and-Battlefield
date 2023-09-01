@@ -3572,12 +3572,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 725570375404216857, guid: ed20c4dac85d4c041a1753c1e3e4b708, type: 3}
-      propertyPath: _playerSpawnMarker
+    - target: {fileID: 3216697544243168297, guid: ed20c4dac85d4c041a1753c1e3e4b708, type: 3}
+      propertyPath: _objectToHold
       value: 
       objectReference: {fileID: 4146809788282800928}
-    - target: {fileID: 2046980405246272477, guid: ed20c4dac85d4c041a1753c1e3e4b708, type: 3}
-      propertyPath: _finishZone
+    - target: {fileID: 4894883405274615069, guid: ed20c4dac85d4c041a1753c1e3e4b708, type: 3}
+      propertyPath: _objectToHold
       value: 
       objectReference: {fileID: 2118204716327897474}
     - target: {fileID: 6939430436986699702, guid: ed20c4dac85d4c041a1753c1e3e4b708, type: 3}

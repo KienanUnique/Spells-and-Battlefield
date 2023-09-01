@@ -7,12 +7,11 @@ using Player.Spell_Manager;
 using UnityEngine;
 using Zenject;
 
-namespace Systems.Installers
+namespace Systems.Installers.Player
 {
     public class PlayerInstaller : MonoInstaller
     {
-        [SerializeField] private PlayerSpawnMarker _playerSpawnMarker;
-        [SerializeField] private Transform _playerParent;
+        [SerializeField] private PlayerSpawnMarkerHolder _playerSpawnMarkerHolder;
         [SerializeField] private PlayerPrefabProvider _prefabProvider;
 
         public override void InstallBindings()
@@ -38,9 +37,8 @@ namespace Systems.Installers
         private void OnPlayerInstantiated(InjectContext arg1, PlayerController playerController)
         {
             var playerTransform = playerController.transform;
-            playerTransform.SetParent(_playerParent);
-            playerTransform.position = _playerSpawnMarker.SpawnPosition;
-            playerTransform.rotation = _playerSpawnMarker.SpawnRotation;
+            playerTransform.position = _playerSpawnMarkerHolder.ObjectToHold.SpawnPosition;
+            playerTransform.rotation = _playerSpawnMarkerHolder.ObjectToHold.SpawnRotation;
         }
     }
 }

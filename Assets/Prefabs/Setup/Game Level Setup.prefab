@@ -147,9 +147,68 @@ Transform:
   m_Children:
   - {fileID: 6939430437685933042}
   - {fileID: 6939430436199933321}
+  - {fileID: 621217830878965356}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8416053735099630550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 621217830878965356}
+  - component: {fileID: 4894883405274615069}
+  - component: {fileID: 3216697544243168297}
+  m_Layer: 0
+  m_Name: External Dependencies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &621217830878965356
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8416053735099630550}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6939430436986699702}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4894883405274615069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8416053735099630550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8cff38639314966bcd8e72040c197a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectToHold: {fileID: 0}
+--- !u!114 &3216697544243168297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8416053735099630550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f18bcaa2c3c43c9b7c3473a771380ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectToHold: {fileID: 0}
 --- !u!1001 &2046980404647425316
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -161,10 +220,18 @@ PrefabInstance:
       propertyPath: _finishZone
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1708283641, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
+      propertyPath: _finishZoneHolder
+      value: 
+      objectReference: {fileID: 4894883405274615069}
     - target: {fileID: 1619584736600135485, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
       propertyPath: _playerSpawnMarker
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1619584736600135485, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
+      propertyPath: _playerSpawnMarkerHolder
+      value: 
+      objectReference: {fileID: 3216697544243168297}
     - target: {fileID: 8945726531586246344, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
       propertyPath: m_Name
       value: Game Level Scene Context
