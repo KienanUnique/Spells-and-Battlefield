@@ -4,6 +4,7 @@ using Player;
 using UI.Bar.Model.Concrete_Types;
 using UI.Bar.View;
 using UI.Bar.View.Concrete_Types.Filling_Bar;
+using UI.Bar.View.Concrete_Types.Filling_Bar.Settings;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -17,12 +18,12 @@ namespace UI.Bar.Setup.Concrete_Types
         [SerializeField] private Transform _barTransform;
 
         private IPlayerInformationProvider _playerInformationProvider;
-        private FillingBarSettings _settings;
+        private IFillingBarSettings _settings;
         private IPlayerInitializationStatus _playerInitializationStatus;
         private IBarView _view;
 
         [Inject]
-        private void Construct(IPlayerInformationProvider playerInformationProvider, FillingBarSettings settings,
+        private void Construct(IPlayerInformationProvider playerInformationProvider, IFillingBarSettings settings,
             IPlayerInitializationStatus playerInitializationStatus)
         {
             _playerInformationProvider = playerInformationProvider;

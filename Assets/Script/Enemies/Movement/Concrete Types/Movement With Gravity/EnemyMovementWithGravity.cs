@@ -1,17 +1,17 @@
 ﻿using System.Collections;
+using Common.Settings.Sections.Movement;
+using Common.Settings.Sections.Movement.Movement_With_Gravity;
 using Enemies.Movement.Setup_Data;
-using Settings.Sections;
-using Settings.Sections.Movement;
 using UnityEngine;
 
 namespace Enemies.Movement.Concrete_Types.Movement_With_Gravity
 {
     public class EnemyMovementWithGravity : EnemyMovementBase
     {
-        private readonly MovementOnGroundSettingsSection _movementSettings;
+        private readonly IMovementOnGroundSettingsSection _movementSettings;
 
         public EnemyMovementWithGravity(IEnemyMovementSetupData setupData,
-            MovementOnGroundSettingsSection movementSettings) : base(setupData, movementSettings)
+            IMovementOnGroundSettingsSection movementSettings) : base(setupData, movementSettings)
         {
             _movementSettings = movementSettings;
             _coroutineStarter.StartCoroutine(ApplyGravityContinuously());

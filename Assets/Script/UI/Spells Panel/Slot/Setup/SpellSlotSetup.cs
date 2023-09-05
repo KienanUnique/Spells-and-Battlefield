@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases;
-using Settings.UI;
-using Settings.UI.Spell_Panel;
+using UI.Spells_Panel.Settings;
 using UI.Spells_Panel.Slot.Model;
 using UI.Spells_Panel.Slot.View;
 using UI.Spells_Panel.Slot_Information;
@@ -20,12 +19,12 @@ namespace UI.Spells_Panel.Slot.Setup
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Image _background;
         private IInitializableSpellSlotPresenter _controllerToSetup;
-        private SpellPanelSettings _settings;
+        private ISpellPanelSettings _settings;
         private ISpellSlotModel _model;
         private ISpellSlotView _view;
 
         [Inject]
-        public void Construct(SpellPanelSettings settings)
+        public void Construct(ISpellPanelSettings settings)
         {
             _settings = settings;
         }

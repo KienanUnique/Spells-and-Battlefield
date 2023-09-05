@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases;
 using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
+using Puzzles.Mechanisms.Moving_Platforms.Settings;
 using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
-using Settings.Puzzles.Mechanisms;
 using UnityEngine;
 using Zenject;
 
@@ -15,11 +15,11 @@ namespace Puzzles.Mechanisms.Moving_Platforms
         [SerializeField] private ColliderTrigger _platformColliderTrigger;
         [SerializeField] private float _movementSpeed = 16;
         [SerializeField] private float _delayInSeconds;
-        private MovingPlatformsSettings _settings;
+        private IMovingPlatformsSettings _settings;
         private List<Vector3> _waypoints;
 
         [Inject]
-        private void Construct(MovingPlatformsSettings settings)
+        private void Construct(IMovingPlatformsSettings settings)
         {
             _settings = settings;
         }

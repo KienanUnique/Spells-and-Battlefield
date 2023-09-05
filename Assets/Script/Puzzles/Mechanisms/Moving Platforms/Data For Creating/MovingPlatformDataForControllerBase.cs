@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
+using Puzzles.Mechanisms.Moving_Platforms.Settings;
 using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
-using Settings.Puzzles.Mechanisms;
 using UnityEngine;
 
 namespace Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating
 {
     public class MovingPlatformDataForControllerBase : IMovingPlatformDataForControllerBase
     {
-        public MovingPlatformDataForControllerBase(float delayInSeconds, MovingPlatformsSettings settings,
+        public MovingPlatformDataForControllerBase(float delayInSeconds, IMovingPlatformsSettings settings,
             float movementSpeed, List<Vector3> waypoints, Transform objectToMove,
             IColliderTrigger platformCollider)
         {
@@ -20,7 +20,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating
         }
 
         public float DelayInSeconds { get; }
-        public MovingPlatformsSettings Settings { get; }
+        public IMovingPlatformsSettings Settings { get; }
         public float MovementSpeed { get; }
         public List<Vector3> Waypoints { get; }
         public Transform ObjectToMove { get; }

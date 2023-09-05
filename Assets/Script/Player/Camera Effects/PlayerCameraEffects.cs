@@ -1,6 +1,7 @@
 ﻿using System;
 using DG.Tweening;
-using Settings;
+using Player.Camera_Effects.Settings;
+using Player.Settings;
 using UnityEngine;
 
 namespace Player.Camera_Effects
@@ -10,15 +11,15 @@ namespace Player.Camera_Effects
         private const RotateMode CameraRotateMode = RotateMode.Fast;
 
         private readonly Camera _camera;
-        private readonly PlayerSettings.PlayerCameraEffectsSettingsSection _cameraEffectsSettings;
+        private readonly IPlayerCameraEffectsSettings _cameraEffectsSettings;
         private readonly GameObject _effectsGameObject;
 
         private readonly Vector3 _defaultRotation;
         private readonly Transform _cachedTransform;
 
 
-        public PlayerCameraEffects(PlayerSettings.PlayerCameraEffectsSettingsSection cameraEffectsSettings,
-            Camera camera, GameObject effectsGameObject)
+        public PlayerCameraEffects(IPlayerCameraEffectsSettings cameraEffectsSettings, Camera camera,
+            GameObject effectsGameObject)
         {
             _camera = camera;
             _cameraEffectsSettings = cameraEffectsSettings;

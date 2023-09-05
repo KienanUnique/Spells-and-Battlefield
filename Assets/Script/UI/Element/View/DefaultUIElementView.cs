@@ -1,5 +1,5 @@
 ﻿using DG.Tweening;
-using Settings.UI;
+using UI.Element.View.Settings;
 using UnityEngine;
 
 namespace UI.Element.View
@@ -8,9 +8,9 @@ namespace UI.Element.View
     {
         private readonly Transform _cachedTransform;
         private readonly GameObject _cachedGameObject;
-        private readonly GeneralUIAnimationSettings _settings;
+        private readonly IDefaultUIElementViewSettings _settings;
 
-        public DefaultUIElementView(Transform cachedTransform, GeneralUIAnimationSettings settings)
+        public DefaultUIElementView(Transform cachedTransform, IDefaultUIElementViewSettings settings)
         {
             _cachedTransform = cachedTransform;
             _cachedGameObject = _cachedTransform.gameObject;
@@ -22,13 +22,15 @@ namespace UI.Element.View
         {
             _cachedGameObject.SetActive(true);
             _cachedTransform.DOKill();
-            _cachedTransform.SetupAppearAnimationForUI(_settings, _cachedGameObject);
+            _cachedTransform.DOScale(Vector3.one, _settings.ScaleAnimationDuration)
+                .ApplyCustomSetupForUI(_cachedGameObject).SetEase(_settings.ScaleAnimationEase);
         }
 
         public virtual void Disappear()
         {
             _cachedTransform.DOKill();
-            _cachedTransform.SetupDisappearAnimationForUI(_settings, _cachedGameObject)
+            _cachedTransform.DOScale(Vector3.zero, _settings.ScaleAnimationDuration)
+                .ApplyCustomSetupForUI(_cachedGameObject).SetEase(_settings.ScaleAnimationEase)
                 .OnComplete(() => _cachedGameObject.SetActive(false));
         }
     }

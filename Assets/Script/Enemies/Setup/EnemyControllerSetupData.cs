@@ -3,6 +3,7 @@ using Common.Abstract_Bases.Disableable;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Readonly_Transform;
 using Enemies.Character;
+using Enemies.General_Settings;
 using Enemies.Look;
 using Enemies.Movement;
 using Enemies.State_Machine;
@@ -11,7 +12,6 @@ using Enemies.Visual;
 using Interfaces;
 using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
-using Settings.Enemies;
 using UI.Popup_Text.Factory;
 
 namespace Enemies.Setup
@@ -20,7 +20,7 @@ namespace Enemies.Setup
     {
         public EnemyControllerSetupData(IEnemyStateMachineAI stateMachineAI, IPickableItemDataForCreating itemToDrop,
             IEnemyMovement movement, List<IDisableable> itemsNeedDisabling, IIdHolder idHolder,
-            GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
+            IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
             IEnemyTargetFromTriggersSelector targetFromTriggersSelector, IEnemyLook look,
             IEventInvokerForActionAnimations eventInvokerForAnimations, IEnemyVisual visual,
             IEnemyCharacter character, IPopupHitPointsChangeTextFactory setPopupHitPointsChangeTextFactory, IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint)
@@ -46,7 +46,7 @@ namespace Enemies.Setup
         public IEnemyMovement SetMovement { get; }
         public List<IDisableable> SetItemsNeedDisabling { get; }
         public IIdHolder SetIdHolder { get; }
-        public GeneralEnemySettings SetGeneralEnemySettings { get; }
+        public IGeneralEnemySettings SetGeneralEnemySettings { get; }
         public IPickableItemsFactory SetPickableItemsFactory { get; }
         public IPopupHitPointsChangeTextFactory SetPopupHitPointsChangeTextFactory { get; }
         public IEnemyTargetFromTriggersSelector SetTargetFromTriggersSelector { get; }

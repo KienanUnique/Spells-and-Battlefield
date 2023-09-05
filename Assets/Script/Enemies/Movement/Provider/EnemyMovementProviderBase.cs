@@ -1,5 +1,4 @@
 ﻿using Enemies.Movement.Setup_Data;
-using Settings.Sections;
 using UnityEngine;
 
 namespace Enemies.Movement.Provider

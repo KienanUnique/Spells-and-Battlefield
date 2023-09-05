@@ -4,9 +4,9 @@ using Common.Abstract_Bases.Factories.Object_Pool;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Readonly_Transform;
 using DG.Tweening;
-using Settings.UI;
 using TMPro;
 using UI.Popup_Text.Data_For_Activation;
+using UI.Popup_Text.Settings;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,12 +17,12 @@ namespace UI.Popup_Text
     {
         private TMP_Text _textComponent;
         private Transform _mainTransform;
-        private PopupTextSettings _settings;
+        private IPopupTextSettings _settings;
         private IReadonlyTransform _cameraTransform;
         private Coroutine _lookAtCameraCoroutine;
 
 
-        public void Initialize(TMP_Text textComponent, Transform mainTransform, PopupTextSettings settings,
+        public void Initialize(TMP_Text textComponent, Transform mainTransform, IPopupTextSettings settings,
             IReadonlyTransform cameraTransform)
         {
             _textComponent = textComponent;

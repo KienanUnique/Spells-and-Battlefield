@@ -1,5 +1,7 @@
-﻿using Settings.UI.Spell_Panel;
-using TMPro;
+﻿using TMPro;
+using UI.Spells_Panel.Settings;
+using UI.Spells_Panel.Settings.Sections;
+using UI.Spells_Panel.Settings.Sections.Group;
 using UI.Spells_Panel.Slot_Group.Base.View;
 using UnityEngine;
 
@@ -10,7 +12,7 @@ namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Vie
         private readonly TMP_Text _spellsCountText;
 
         public DefaultSpellSlotGroupView(TMP_Text spellsCountText, RectTransform rectTransform,
-            SpellGroupSection settings, int currentSpellGroupCount) : base(rectTransform, settings)
+            ISpellGroupSection settings, int currentSpellGroupCount) : base(rectTransform, settings)
         {
             _spellsCountText = spellsCountText;
             UpdateGroupCount(currentSpellGroupCount);

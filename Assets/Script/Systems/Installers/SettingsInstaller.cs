@@ -1,16 +1,20 @@
-using Settings;
-using Settings.Enemies;
-using Settings.Puzzles.Mechanisms;
-using Settings.Puzzles.Triggers;
-using Settings.UI;
-using Settings.UI.Spell_Panel;
+using Common.Settings.Ground_Layer_Mask;
+using Enemies.General_Settings;
+using Pickable_Items.Settings;
+using Player.Settings;
+using Puzzles.Mechanisms.Extendable_Object.Settings;
+using Puzzles.Mechanisms.Moving_Platforms.Settings;
+using Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Settings;
+using Spells.Spell_Types_Settings;
 using Systems.In_Game_Systems.Post_Processing_Controller.Settings;
 using Systems.In_Game_Systems.Time_Controller.Settings;
 using Systems.Input_Manager.Settings;
-using Systems.Scene_Switcher;
-using UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes;
-using UI.Bar.View.Concrete_Types.Filling_Bar;
+using UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes.Settings;
+using UI.Bar.View.Concrete_Types.Filling_Bar.Settings;
+using UI.Element.View.Settings;
 using UI.Loading_Window.View;
+using UI.Popup_Text.Settings;
+using UI.Spells_Panel.Settings;
 using UnityEngine;
 using Zenject;
 
@@ -27,7 +31,7 @@ namespace Systems.Installers
 
         [Header("Enemies")] [SerializeField] private GeneralEnemySettings _generalEnemySettings;
 
-        [Header("UI")] [SerializeField] private GeneralUIAnimationSettings _generalUIAnimationSettings;
+        [Header("UI")] [SerializeField] private DefaultUIElementViewSettings _defaultUIElementViewSettings;
         [SerializeField] private SpellPanelSettings _spellPanelSettings;
         [SerializeField] private PopupTextSettings _popupTextSettings;
         [SerializeField] private LoadingWindowSettings _loadingWindowSettings;
@@ -41,15 +45,12 @@ namespace Systems.Installers
         [SerializeField] private MovingPlatformsSettings _movingPlatformSettings;
         [SerializeField] private ExtendableObjectsSettings _extendableObjectsSettings;
 
-        [Header("Scenes")] [SerializeField] private ScenesSettings _scenesSettings;
-
         [Header("Systems")] [SerializeField] private TimeControllerSettings _timeControllerSettings;
         [SerializeField] private PostProcessingControllerSettings _postProcessingControllerSettings;
         [SerializeField] private InputManagerSettings _inputManagerSettings;
 
         public override void InstallBindings()
         {
-            BindSceneSettings();
             BindGeneralSettings();
             BindEnemiesSettings();
             BindUISettings();
@@ -76,28 +77,20 @@ namespace Systems.Installers
                 .AsSingle();
         }
 
-        private void BindSceneSettings()
-        {
-            Container
-                .Bind<IScenesSettings>()
-                .FromInstance(_scenesSettings)
-                .AsSingle();
-        }
-
         private void BindPuzzlesSettings()
         {
             Container
-                .Bind<PlateSettings>()
+                .Bind<IPlateSettings>()
                 .FromInstance(_plateSettings)
                 .AsSingle();
 
             Container
-                .Bind<MovingPlatformsSettings>()
+                .Bind<IMovingPlatformsSettings>()
                 .FromInstance(_movingPlatformSettings)
                 .AsSingle();
 
             Container
-                .Bind<ExtendableObjectsSettings>()
+                .Bind<IExtendableObjectsSettings>()
                 .FromInstance(_extendableObjectsSettings)
                 .AsSingle();
         }
@@ -105,7 +98,7 @@ namespace Systems.Installers
         private void BindPlayerSettings()
         {
             Container
-                .Bind<PlayerSettings>()
+                .Bind<IPlayerSettings>()
                 .FromInstance(_playerSettings)
                 .AsSingle();
         }
@@ -113,7 +106,7 @@ namespace Systems.Installers
         private void BindEnemiesSettings()
         {
             Container
-                .Bind<GeneralEnemySettings>()
+                .Bind<IGeneralEnemySettings>()
                 .FromInstance(_generalEnemySettings)
                 .AsSingle();
         }
@@ -121,24 +114,24 @@ namespace Systems.Installers
         private void BindUISettings()
         {
             Container
-                .Bind<GeneralUIAnimationSettings>()
-                .FromInstance(_generalUIAnimationSettings)
+                .Bind<IDefaultUIElementViewSettings>()
+                .FromInstance(_defaultUIElementViewSettings)
                 .AsSingle();
 
             Container
-                .Bind<SpellPanelSettings>()
+                .Bind<ISpellPanelSettings>()
                 .FromInstance(_spellPanelSettings)
                 .AsSingle();
             Container
-                .Bind<PopupTextSettings>()
+                .Bind<IPopupTextSettings>()
                 .FromInstance(_popupTextSettings)
                 .AsSingle();
             Container
-                .Bind<BarViewWithAdditionalDisplayOfChangesSettings>()
+                .Bind<IBarViewWithAdditionalDisplayOfChangesSettings>()
                 .FromInstance(_barViewWithAdditionalDisplayOfChangesSettings)
                 .AsSingle();
             Container
-                .Bind<FillingBarSettings>()
+                .Bind<IFillingBarSettings>()
                 .FromInstance(_fillingBarSettings)
                 .AsSingle();
             Container
@@ -151,17 +144,17 @@ namespace Systems.Installers
         private void BindGeneralSettings()
         {
             Container
-                .Bind<GroundLayerMaskSetting>()
+                .Bind<IGroundLayerMaskSetting>()
                 .FromInstance(_groundLayerMaskSetting)
                 .AsSingle();
 
             Container
-                .Bind<PickableItemsSettings>()
+                .Bind<IPickableItemsSettings>()
                 .FromInstance(_pickableItemsSettings)
                 .AsSingle();
 
             Container
-                .Bind<SpellTypesSetting>()
+                .Bind<ISpellTypesSetting>()
                 .FromInstance(_spellTypesSetting)
                 .AsSingle();
         }

@@ -1,5 +1,6 @@
 using Common.Readonly_Transform;
-using Settings;
+using Player.Look.Settings;
+using Player.Settings;
 using UnityEngine;
 
 namespace Player.Look
@@ -8,14 +9,14 @@ namespace Player.Look
     {
         private readonly IReadonlyTransform _cameraRootTransform;
         private readonly Transform _rotateObject;
-        private readonly PlayerSettings.PlayerLookSettingsSection _lookSettings;
+        private readonly IPlayerLookSettings _lookSettings;
         private readonly Transform _cameraTransform;
 
         private float _xRotation;
 
 
         public PlayerLook(Camera camera, IReadonlyTransform cameraRootTransform, Transform rotateObject,
-            PlayerSettings.PlayerLookSettingsSection lookSettings)
+            IPlayerLookSettings lookSettings)
         {
             _cameraRootTransform = cameraRootTransform;
             _rotateObject = rotateObject;

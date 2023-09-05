@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes.Settings;
 using UnityEngine.UI;
 
 namespace UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes
@@ -7,11 +8,11 @@ namespace UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes
     {
         private readonly Image _foreground;
         private readonly Image _foregroundBackground;
-        private readonly BarViewWithAdditionalDisplayOfChangesSettings _settings;
+        private readonly IBarViewWithAdditionalDisplayOfChangesSettings _settings;
         private Sequence _sequence;
 
         public BarViewWithAdditionalDisplayOfChanges(Image foreground, Image foregroundBackground,
-            BarViewWithAdditionalDisplayOfChangesSettings settings)
+            IBarViewWithAdditionalDisplayOfChangesSettings settings)
         {
             _foreground = foreground;
             _foregroundBackground = foregroundBackground;

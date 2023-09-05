@@ -2,10 +2,13 @@ using System;
 using System.Collections;
 using Common;
 using Common.Abstract_Bases.Checkers;
+using Common.Abstract_Bases.Checkers.Ground_Checker;
+using Common.Abstract_Bases.Checkers.Wall_Checker;
 using Common.Abstract_Bases.Movement;
 using Common.Readonly_Rigidbody;
 using Interfaces;
-using Settings;
+using Player.Movement.Settings;
+using Player.Settings;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -23,7 +26,7 @@ namespace Player.Movement
         private readonly Transform _cashedTransform;
         private readonly GroundChecker _groundChecker;
         private readonly WallChecker _wallChecker;
-        private readonly PlayerSettings.PlayerMovementSettingsSection _movementSettings;
+        private readonly IPlayerMovementSettings _movementSettings;
         private readonly ICoroutineStarter _coroutineStarter;
         private readonly Transform _originalParent;
 
@@ -38,7 +41,7 @@ namespace Player.Movement
         private bool _canDash = true;
         private bool _speedLimitationEnabled = true;
 
-        public PlayerMovement(Rigidbody rigidbody, PlayerSettings.PlayerMovementSettingsSection movementSettings,
+        public PlayerMovement(Rigidbody rigidbody, IPlayerMovementSettings movementSettings,
             GroundChecker groundChecker, WallChecker wallChecker, ICoroutineStarter coroutineStarter) :
             base(rigidbody, movementSettings)
         {

@@ -1,6 +1,6 @@
 ﻿using DG.Tweening;
-using Settings.UI;
 using UI.Element.View;
+using UI.Element.View.Settings;
 using UnityEngine;
 
 namespace UI.Loading_Window.View
@@ -10,7 +10,7 @@ namespace UI.Loading_Window.View
         private readonly Transform _loadingIcon;
         private readonly ILoadingWindowSettings _loadingWindowSettings;
 
-        public LoadingWindowView(Transform cachedTransform, GeneralUIAnimationSettings settings, Transform loadingIcon,
+        public LoadingWindowView(Transform cachedTransform, IDefaultUIElementViewSettings settings, Transform loadingIcon,
             ILoadingWindowSettings loadingWindowSettings) : base(cachedTransform, settings)
         {
             _loadingIcon = loadingIcon;

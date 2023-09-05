@@ -1,6 +1,7 @@
 using Common.Abstract_Bases.Visual;
 using Common.Animation_Data;
-using Settings;
+using Player.Settings;
+using Player.Visual.Settings;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -20,10 +21,9 @@ namespace Player.Visual
         private static readonly int FallTriggerHash = Animator.StringToHash("Fall");
         private static readonly int LandTriggerHash = Animator.StringToHash("Land");
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
-        private readonly PlayerSettings.PlayerVisualSettingsSection _settings;
+        private readonly IPlayerVisualSettings _settings;
 
-        public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator,
-            PlayerSettings.PlayerVisualSettingsSection settings) :
+        public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator, IPlayerVisualSettings settings) :
             base(rigBuilder, characterAnimator)
         {
             _settings = settings;

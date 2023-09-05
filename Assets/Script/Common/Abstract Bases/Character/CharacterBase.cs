@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
 using Common.Mechanic_Effects.Continuous_Effect;
+using Common.Settings.Sections;
+using Common.Settings.Sections.Character;
 using Interfaces;
-using Settings.Sections;
 
 namespace Common.Abstract_Bases.Character
 {
@@ -12,10 +13,10 @@ namespace Common.Abstract_Bases.Character
         protected readonly HitPointsCalculator _hitPointsCalculator;
         protected readonly ICoroutineStarter _coroutineStarter;
         protected readonly List<IAppliedContinuousEffect> _currentEffects;
-        protected readonly CharacterSettingsSection _characterSettings;
+        protected readonly ICharacterSettings _characterSettings;
         protected readonly ValueWithReactionOnChange<CharacterState> _currentState;
 
-        protected CharacterBase(ICoroutineStarter coroutineStarter, CharacterSettingsSection characterSettings)
+        protected CharacterBase(ICoroutineStarter coroutineStarter, ICharacterSettings characterSettings)
         {
             _coroutineStarter = coroutineStarter;
             _characterSettings = characterSettings;

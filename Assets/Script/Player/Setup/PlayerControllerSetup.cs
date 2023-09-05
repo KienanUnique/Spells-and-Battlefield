@@ -2,6 +2,8 @@
 using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Checkers;
+using Common.Abstract_Bases.Checkers.Ground_Checker;
+using Common.Abstract_Bases.Checkers.Wall_Checker;
 using Common.Abstract_Bases.Disableable;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Readonly_Transform;
@@ -10,12 +12,13 @@ using Player.Camera_Effects;
 using Player.Character;
 using Player.Look;
 using Player.Movement;
+using Player.Settings;
 using Player.Spell_Manager;
 using Player.Visual;
-using Settings;
 using Spells.Factory;
 using Spells.Spell;
 using Spells.Spell.Scriptable_Objects;
+using Spells.Spell_Types_Settings;
 using Systems.Input_Manager;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -51,17 +54,17 @@ namespace Player.Setup
         private IPlayerCharacter _playerCharacter;
         private IPlayerInput _playerInput;
         private IIdHolder _idHolder;
-        private PlayerSettings _settings;
+        private IPlayerSettings _settings;
         private ISpellObjectsFactory _spellObjectsFactory;
-        private SpellTypesSetting _spellTypesSetting;
+        private ISpellTypesSetting _spellTypesSetting;
         private List<IDisableable> _itemsNeedDisabling;
         private ICaster _playerCaster;
         private Rigidbody _thisRigidbody;
         private IReadonlyTransform _cameraTransform;
 
         [Inject]
-        private void Construct(IPlayerInput playerInput, PlayerSettings settings,
-            ISpellObjectsFactory spellObjectsFactory, SpellTypesSetting spellTypesSetting)
+        private void Construct(IPlayerInput playerInput, IPlayerSettings settings,
+            ISpellObjectsFactory spellObjectsFactory, ISpellTypesSetting spellTypesSetting)
         {
             _playerInput = playerInput;
             _settings = settings;

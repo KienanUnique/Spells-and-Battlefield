@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
-using Settings.UI.Spell_Panel;
+using UI.Spells_Panel.Settings;
+using UI.Spells_Panel.Settings.Sections.Slot;
 using UI.Spells_Panel.Slot_Information;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,11 +11,11 @@ namespace UI.Spells_Panel.Slot.View
     {
         private readonly RawImage _image;
         private readonly RectTransform _rectTransform;
-        private readonly SpellSlotSection _settings;
+        private readonly ISpellSlotSection _settings;
         private readonly GameObject _gameObject;
         private readonly Image _background;
 
-        public SpellSlotView(RawImage image, RectTransform rectTransform, Image background, SpellSlotSection settings)
+        public SpellSlotView(RawImage image, RectTransform rectTransform, Image background, ISpellSlotSection settings)
         {
             _background = background;
             _image = image;

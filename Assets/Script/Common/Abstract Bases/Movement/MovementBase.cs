@@ -1,5 +1,5 @@
 ﻿using Common.Abstract_Bases.Disableable;
-using Settings.Sections.Movement;
+using Common.Settings.Sections.Movement;
 using UnityEngine;
 
 namespace Common.Abstract_Bases.Movement
@@ -10,9 +10,9 @@ namespace Common.Abstract_Bases.Movement
 
         protected readonly Rigidbody _rigidbody;
         protected float _currentSpeedRatio = 1;
-        protected readonly MovementSettingsSection MovementSettings;
+        protected readonly IMovementSettingsSection MovementSettings;
 
-        protected MovementBase(Rigidbody rigidbody, MovementSettingsSection movementSettings)
+        protected MovementBase(Rigidbody rigidbody, IMovementSettingsSection movementSettings)
         {
             _rigidbody = rigidbody;
             MovementSettings = movementSettings;

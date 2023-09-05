@@ -10,11 +10,11 @@ using Common.Collection_With_Reaction_On_Change;
 using Common.Readonly_Transform;
 using Interfaces;
 using ModestTree;
-using Settings;
 using Spells.Factory;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using Spells.Spell.Interfaces;
+using Spells.Spell_Types_Settings;
 using UnityEngine;
 
 namespace Player.Spell_Manager
@@ -32,7 +32,7 @@ namespace Player.Spell_Manager
         private IList<ISpell> _spellGroupFromWhichToCreateSpell;
 
         public PlayerSpellsManager(List<ISpell> startTestSpells, IReadonlyTransform spellSpawnObject,
-            ICaster player, ISpellObjectsFactory spellObjectsFactory, SpellTypesSetting spellTypesSetting)
+            ICaster player, ISpellObjectsFactory spellObjectsFactory, ISpellTypesSetting spellTypesSetting)
         {
             _spellSpawnObject = spellSpawnObject;
             _player = player;

@@ -7,6 +7,7 @@ using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Enemies.Character;
 using Enemies.Controller;
+using Enemies.General_Settings;
 using Enemies.Look;
 using Enemies.Movement;
 using Enemies.Movement.Setup_Data;
@@ -21,7 +22,6 @@ using Enemies.Visual;
 using Interfaces;
 using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
-using Settings.Enemies;
 using UI.Popup_Text.Factory;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -49,7 +49,7 @@ namespace Enemies.Setup
         public Rigidbody _thisRigidbody;
         private List<IDisableable> _itemsNeedDisabling;
         private IdHolder _idHolder;
-        private GeneralEnemySettings _generalEnemySettings;
+        private IGeneralEnemySettings _generalEnemySettings;
         private IPickableItemsFactory _itemsFactory;
         private EnemyTargetFromTriggersSelector _targetFromTriggersSelector;
         private List<IEnemyTargetTrigger> _externalTargetTriggers;
@@ -68,7 +68,7 @@ namespace Enemies.Setup
         private IEnemy _initializedEnemy;
 
         [Inject]
-        private void Construct(GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
+        private void Construct(IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
             IPopupHitPointsChangeTextFactory popupHitPointsChangeTextFactory)
         {
             _generalEnemySettings = generalEnemySettings;

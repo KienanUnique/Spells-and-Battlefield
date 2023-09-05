@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using UI.Bar.View.Concrete_Types.Filling_Bar.Settings;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,13 +8,12 @@ namespace UI.Bar.View.Concrete_Types.Filling_Bar
 {
     public class FillingBarView : IBarView
     {
-        private const double Tolerance = 0.001f;
         private readonly Image _foreground;
         private readonly Transform _barTransform;
-        private readonly FillingBarSettings _settings;
+        private readonly IFillingBarSettings _settings;
         private readonly Vector3 _punchStrengthVector3;
 
-        public FillingBarView(Image foreground, Transform barTransform, FillingBarSettings settings)
+        public FillingBarView(Image foreground, Transform barTransform, IFillingBarSettings settings)
         {
             _foreground = foreground;
             _barTransform = barTransform;

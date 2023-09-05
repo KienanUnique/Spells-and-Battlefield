@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-using Settings;
 using Spells.Implementations_Interfaces.Implementations;
+using Spells.Spell_Types_Settings;
 using Systems.Input_Manager.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,11 +15,11 @@ namespace Systems.Input_Manager
 
         private MainControls _mainControls;
         private float _mouseX, _mouseY;
-        private SpellTypesSetting _spellTypesSetting;
+        private ISpellTypesSetting _spellTypesSetting;
         private IInputManagerSettings _settings;
 
         [Inject]
-        private void Construct(SpellTypesSetting spellTypesSetting, IInputManagerSettings settings)
+        private void Construct(ISpellTypesSetting spellTypesSetting, IInputManagerSettings settings)
         {
             _spellTypesSetting = spellTypesSetting;
             _settings = settings;

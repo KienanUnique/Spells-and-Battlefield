@@ -3,8 +3,8 @@ using System.Linq;
 using Common.Abstract_Bases;
 using Common.Readonly_Transform;
 using Interfaces;
-using Settings.UI;
 using TMPro;
+using UI.Popup_Text.Settings;
 using UnityEngine;
 using Zenject;
 using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
@@ -16,12 +16,12 @@ namespace UI.Popup_Text
     {
         [SerializeField] private TMP_Text _text;
         [SerializeField] private Transform _mainTransform;
-        private PopupTextSettings _settings;
+        private IPopupTextSettings _settings;
         private IPlayerInformationProvider _playerInformationProvider;
         private IInitializablePopupTextController _controller;
 
         [Inject]
-        private void Construct(PopupTextSettings settings, IPlayerInformationProvider playerInformationProvider)
+        private void Construct(IPopupTextSettings settings, IPlayerInformationProvider playerInformationProvider)
         {
             _settings = settings;
             _playerInformationProvider = playerInformationProvider;

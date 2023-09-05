@@ -4,13 +4,12 @@ using Common;
 using Common.Abstract_Bases.Movement;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
+using Common.Settings.Sections.Movement;
 using Enemies.Movement.Enemy_Data_For_Moving;
 using Enemies.Movement.Setup_Data;
 using Enemies.Target_Pathfinder;
 using Enemies.Target_Selector_From_Triggers;
 using Interfaces;
-using Settings.Sections;
-using Settings.Sections.Movement;
 using UnityEngine;
 
 namespace Enemies.Movement
@@ -32,7 +31,7 @@ namespace Enemies.Movement
         private bool _needMove;
 
         protected EnemyMovementBase(IEnemyMovementSetupData setupData,
-            MovementSettingsSection movementSettings) :
+            IMovementSettingsSection movementSettings) :
             base(setupData.Rigidbody, movementSettings)
         {
             _coroutineStarter = setupData.CoroutineStarter;

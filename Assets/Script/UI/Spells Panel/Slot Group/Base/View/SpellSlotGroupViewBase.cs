@@ -1,6 +1,8 @@
 ﻿using DG.Tweening;
-using Settings.UI.Spell_Panel;
 using Spells.Implementations_Interfaces.Implementations;
+using UI.Spells_Panel.Settings;
+using UI.Spells_Panel.Settings.Sections;
+using UI.Spells_Panel.Settings.Sections.Group;
 using UnityEngine;
 
 namespace UI.Spells_Panel.Slot_Group.Base.View
@@ -8,11 +10,11 @@ namespace UI.Spells_Panel.Slot_Group.Base.View
     public abstract class SpellSlotGroupViewBase : ISpellSlotGroupViewBase
     {
         private readonly RectTransform _rectTransform;
-        private readonly SpellGroupSection _settings;
+        private readonly ISpellGroupSection _settings;
         private readonly Vector3 _defaultLocalScale;
         private readonly GameObject _gameObject;
 
-        protected SpellSlotGroupViewBase(RectTransform rectTransform, SpellGroupSection settings)
+        protected SpellSlotGroupViewBase(RectTransform rectTransform, ISpellGroupSection settings)
         {
             _rectTransform = rectTransform;
             _settings = settings;

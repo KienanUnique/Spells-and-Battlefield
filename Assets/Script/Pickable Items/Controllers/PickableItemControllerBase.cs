@@ -1,12 +1,15 @@
 ﻿using System;
 using Common;
 using Common.Abstract_Bases.Checkers;
+using Common.Abstract_Bases.Checkers.Ground_Checker;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Common.Settings;
+using Common.Settings.Ground_Layer_Mask;
 using DG.Tweening;
 using Interfaces.Pickers;
+using Pickable_Items.Settings;
 using Pickable_Items.Setup;
 using Pickable_Items.Strategies_For_Pickable_Controller;
-using Settings;
 using UnityEngine;
 
 namespace Pickable_Items.Controllers
@@ -24,8 +27,8 @@ namespace Pickable_Items.Controllers
         private GroundChecker _groundChecker;
         private Transform _visualObjectTransform;
         private bool _needFallDown;
-        private PickableItemsSettings _pickableItemsSettings;
-        private GroundLayerMaskSetting _groundLayerMaskSetting;
+        private IPickableItemsSettings _pickableItemsSettings;
+        private IGroundLayerMaskSetting _groundLayerMaskSetting;
         private Rigidbody _rigidbody;
         private IStrategyForPickableController _strategyForPickableController;
         private GameObject _doTweenLinkGameObject;

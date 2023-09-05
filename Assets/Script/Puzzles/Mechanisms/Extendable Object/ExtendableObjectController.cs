@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using DG.Tweening;
+using Puzzles.Mechanisms.Extendable_Object.Settings;
+using Puzzles.Mechanisms.Extendable_Object.Setup;
 using Puzzles.Mechanisms_Triggers;
-using Settings.Puzzles.Mechanisms;
 using UnityEngine;
 
 namespace Puzzles.Mechanisms.Extendable_Object
@@ -18,13 +19,13 @@ namespace Puzzles.Mechanisms.Extendable_Object
         private float _pulledOutScaleZ;
         private Vector3 _pulledOutPosition;
         private Transform _objectToExtend;
-        private ExtendableObjectsSettings _settings;
+        private IExtendableObjectsSettings _settings;
         private float _animationDuration;
         private ValueWithReactionOnChange<ExtendableObjectState> _currentState;
 
         public void Initialize(List<IMechanismsTrigger> triggers, ExtendableObjectState startState,
             Vector3 startPosition,
-            Vector3 endPosition, float animationDuration, Transform objectToExtend, ExtendableObjectsSettings settings)
+            Vector3 endPosition, float animationDuration, Transform objectToExtend, IExtendableObjectsSettings settings)
         {
             _objectToExtend = objectToExtend;
             _triggers = triggers;

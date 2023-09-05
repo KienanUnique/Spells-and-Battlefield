@@ -1,6 +1,6 @@
-﻿using Enemies.Movement.Provider;
+﻿using Common.Settings.Sections.Movement;
+using Enemies.Movement.Provider;
 using Enemies.Movement.Setup_Data;
-using Settings.Sections.Movement;
 using UnityEngine;
 
 namespace Enemies.Movement.Concrete_Types.Movement_Without_Gravity

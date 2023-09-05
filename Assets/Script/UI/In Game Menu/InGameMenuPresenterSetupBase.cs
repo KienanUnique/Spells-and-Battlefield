@@ -29,7 +29,7 @@ namespace UI.In_Game_Menu
         protected override void Prepare()
         {
             base.Prepare();
-            View = new DefaultUIElementView(transform, _generalUIAnimationSettings);
+            View = new DefaultUIElementView(transform, DefaultUIElementViewSettings);
         }
     }
 }

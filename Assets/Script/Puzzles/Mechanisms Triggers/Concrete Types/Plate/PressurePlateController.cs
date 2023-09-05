@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using ModestTree;
 using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
-using Settings.Puzzles.Triggers;
-using Settings.Puzzles.Triggers.Identifiers;
+using Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Settings;
+using Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Setup;
+using Puzzles.Mechanisms_Triggers.Identifiers;
 using UnityEngine;
 
 namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
@@ -15,10 +16,10 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
         private IIdentifier _identifier;
         private List<Collider> _requiredObjectsOnPanel;
         private Transform _plateTransform;
-        private PlateSettings _plateSettings;
+        private IPlateSettings _plateSettings;
         private IColliderTrigger _colliderTrigger;
 
-        public void Initialize(IIdentifier identifier, Transform plateTransform, PlateSettings plateSettings,
+        public void Initialize(IIdentifier identifier, Transform plateTransform, IPlateSettings plateSettings,
             IColliderTrigger colliderTrigger)
         {
             _identifier = identifier;

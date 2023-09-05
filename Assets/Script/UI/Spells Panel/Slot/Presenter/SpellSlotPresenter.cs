@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Settings.UI.Spell_Panel;
 using Spells.Spell;
+using UI.Spells_Panel.Settings;
 using UI.Spells_Panel.Slot.Model;
 using UI.Spells_Panel.Slot.Setup;
 using UI.Spells_Panel.Slot.View;
@@ -16,7 +16,7 @@ namespace UI.Spells_Panel.Slot.Presenter
         private ISpellSlotModel _model;
         private ISpellSlotView _view;
 
-        public void Initialize(ISpellSlotModel model, ISpellSlotView view, SpellPanelSettings settings)
+        public void Initialize(ISpellSlotModel model, ISpellSlotView view, ISpellPanelSettings settings)
         {
             _model = model;
             _view = view;

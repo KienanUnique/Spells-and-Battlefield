@@ -1,6 +1,6 @@
 ﻿using System;
 using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
-using Settings.Puzzles.Triggers.Identifiers;
+using Puzzles.Mechanisms_Triggers.Identifiers;
 using UnityEngine;
 
 namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Pass_Through_Zone

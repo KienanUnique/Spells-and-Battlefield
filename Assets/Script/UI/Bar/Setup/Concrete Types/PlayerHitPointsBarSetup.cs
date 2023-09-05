@@ -4,6 +4,7 @@ using Player;
 using UI.Bar.Model.Concrete_Types;
 using UI.Bar.View;
 using UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes;
+using UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes.Settings;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -16,13 +17,13 @@ namespace UI.Bar.Setup.Concrete_Types
         [SerializeField] private Image _foreground;
         [SerializeField] private Image _foregroundBackground;
         private IPlayerInformationProvider _playerInformationProvider;
-        private BarViewWithAdditionalDisplayOfChangesSettings _settings;
+        private IBarViewWithAdditionalDisplayOfChangesSettings _settings;
         private IBarView _view;
         private IPlayerInitializationStatus _playerInitializationStatus;
 
         [Inject]
         private void Construct(IPlayerInformationProvider playerInformationProvider,
-            BarViewWithAdditionalDisplayOfChangesSettings settings,
+            IBarViewWithAdditionalDisplayOfChangesSettings settings,
             IPlayerInitializationStatus playerInitializationStatus)
         {
             _playerInformationProvider = playerInformationProvider;

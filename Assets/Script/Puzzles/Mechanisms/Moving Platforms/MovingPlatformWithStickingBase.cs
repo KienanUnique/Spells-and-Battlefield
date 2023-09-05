@@ -3,8 +3,8 @@ using System.Linq;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Interfaces;
 using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
+using Puzzles.Mechanisms.Moving_Platforms.Settings;
 using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
-using Settings.Puzzles.Mechanisms;
 using UnityEngine;
 
 namespace Puzzles.Mechanisms.Moving_Platforms
@@ -12,7 +12,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms
     public abstract class MovingPlatformWithStickingBase : InitializableMonoBehaviourBase
     {
         protected Transform _parentObjectToMove;
-        protected MovingPlatformsSettings _settings;
+        protected IMovingPlatformsSettings _settings;
         protected float _movementSpeed;
         protected List<Vector3> _waypoints;
         protected bool _isTriggersDisabled;

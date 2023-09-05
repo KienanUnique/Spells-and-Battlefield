@@ -17,7 +17,7 @@ namespace UI.Player_Information_Panel.Setup
 
         protected override void Prepare()
         {
-            _view = new DefaultUIElementView(transform, _generalUIAnimationSettings);
+            _view = new DefaultUIElementView(transform, DefaultUIElementViewSettings);
             _presenter = GetComponent<IInitializablePlayerInformationPanelPresenter>();
         }
 

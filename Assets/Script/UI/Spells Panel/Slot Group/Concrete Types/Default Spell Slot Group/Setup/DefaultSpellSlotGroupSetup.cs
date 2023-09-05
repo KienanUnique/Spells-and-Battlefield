@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Common.Collection_With_Reaction_On_Change;
-using Settings.UI.Spell_Panel;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using TMPro;
+using UI.Spells_Panel.Settings;
+using UI.Spells_Panel.Settings.Sections;
+using UI.Spells_Panel.Settings.Sections.Group;
 using UI.Spells_Panel.Slot.Presenter;
 using UI.Spells_Panel.Slot_Group.Base.Setup;
 using UI.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Model;
@@ -31,7 +33,7 @@ namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Set
         }
 
         protected override IDefaultSpellSlotGroupView CreateView(RectTransform rectTransform,
-            SpellGroupSection settings, int count)
+            ISpellGroupSection settings, int count)
         {
             return new DefaultSpellSlotGroupView(_spellsCountText, rectTransform, settings, count);
         }

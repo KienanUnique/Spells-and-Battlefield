@@ -35,7 +35,7 @@ namespace UI.Loading_Window.Setup
             base.Prepare();
             _presenter = GetComponent<IInitializableLoadingWindowPresenter>();
             _model = new LoadingWindowModel(IDHolder, Manager);
-            _view = new LoadingWindowView(_mainTransform, _generalUIAnimationSettings, _loadingIcon.transform,
+            _view = new LoadingWindowView(_mainTransform, DefaultUIElementViewSettings, _loadingIcon.transform,
                 _loadingWindowSettings);
         }
 

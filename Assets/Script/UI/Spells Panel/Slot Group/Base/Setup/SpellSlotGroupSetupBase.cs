@@ -4,10 +4,11 @@ using Common.Abstract_Bases.Disableable;
 using Common.Collection_With_Reaction_On_Change;
 using Player;
 using Player.Spell_Manager;
-using Settings.UI;
-using Settings.UI.Spell_Panel;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
+using UI.Spells_Panel.Settings;
+using UI.Spells_Panel.Settings.Sections;
+using UI.Spells_Panel.Settings.Sections.Group;
 using UI.Spells_Panel.Slot.Presenter;
 using UI.Spells_Panel.Slot_Group.Base.Model;
 using UI.Spells_Panel.Slot_Group.Base.View;
@@ -29,10 +30,10 @@ namespace UI.Spells_Panel.Slot_Group.Base.Setup
         private List<IDisableable> _itemsNeedDisabling;
         private IPlayerSpellsManagerInformation _managerInformation;
         private IPlayerInitializationStatus _playerInitializationStatus;
-        private SpellGroupSection _settings;
+        private ISpellGroupSection _settings;
 
         [Inject]
-        public void Construct(SpellPanelSettings settings, IPlayerSpellsManagerInformation managerInformation,
+        public void Construct(ISpellPanelSettings settings, IPlayerSpellsManagerInformation managerInformation,
             IPlayerInitializationStatus playerInitializationStatus)
         {
             _settings = settings.GroupSection;
@@ -66,7 +67,7 @@ namespace UI.Spells_Panel.Slot_Group.Base.Setup
             IEnumerable<SpellSlotPresenter> slots, IReadonlyListWithReactionOnChange<ISpell> spellsGroupToRepresent);
 
         protected abstract TView CreateView(RectTransform rectTransform,
-            SpellGroupSection settings, int count);
+            ISpellGroupSection settings, int count);
 
         protected override void Prepare()
         {
