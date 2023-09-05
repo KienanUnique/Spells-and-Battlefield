@@ -34,7 +34,7 @@ namespace Enemies.Setup
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(EnemyController))]
     public class EnemySetup : SetupMonoBehaviourBase, ICoroutineStarter,
-        IEnemyDataForInitializationSettable
+        IEnemySetup
     {
         [SerializeField] private EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] private List<EnemyTargetTrigger> _localTargetTriggers;
@@ -65,6 +65,7 @@ namespace Enemies.Setup
         private IPopupHitPointsChangeTextFactory _popupHitPointsChangeTextFactory;
         private IPickableItemDataForCreating _itemToDrop;
         private ITargetPathfinder _targetPathfinder;
+        private IEnemy _initializedEnemy;
 
         [Inject]
         private void Construct(GeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
@@ -74,6 +75,8 @@ namespace Enemies.Setup
             _itemsFactory = itemsFactory;
             _popupHitPointsChangeTextFactory = popupHitPointsChangeTextFactory;
         }
+
+        public IEnemy InitializedEnemy => _initializedEnemy ??= GetComponent<IEnemy>();
 
         public void SetDataForInitialization(IEnemySettings settings, IPickableItemDataForCreating itemToDrop,
             List<IEnemyTargetTrigger> targetTriggers)
@@ -98,6 +101,8 @@ namespace Enemies.Setup
         protected override void Prepare()
         {
             _externalDependenciesInitializationWaiter ??= new ExternalDependenciesInitializationWaiter(false);
+
+            _initializedEnemy ??= GetComponent<IEnemy>();
 
             _idHolder = GetComponent<IdHolder>();
             _thisRigidbody = GetComponent<Rigidbody>();

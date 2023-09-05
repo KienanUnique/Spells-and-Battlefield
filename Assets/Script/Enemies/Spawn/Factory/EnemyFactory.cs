@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Factories;
+using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
 using Enemies.Spawn.Data_For_Spawn;
 using Enemies.Trigger;
+using Interfaces;
 using UnityEngine;
 using Zenject;
 
@@ -14,15 +16,23 @@ namespace Enemies.Spawn.Factory
         {
         }
 
-        public void Create(IEnemyDataForSpawnMarker dataForSpawnMarker, List<IEnemyTargetTrigger> enemyTargetTriggers,
-            Vector3 spawnPosition,
+        public IEnemy Create(IEnemyDataForSpawnMarker dataForSpawnMarker, List<IEnemyTargetTrigger> enemyTargetTriggers,
+            IPositionDataForInstantiation positionDataForInstantiation)
+        {
+            return Create(dataForSpawnMarker, enemyTargetTriggers, positionDataForInstantiation.SpawnPosition,
+                positionDataForInstantiation.SpawnRotation);
+        }
+
+        public IEnemy Create(IEnemyDataForSpawnMarker dataForSpawnMarker,
+            List<IEnemyTargetTrigger> enemyTargetTriggers, Vector3 spawnPosition,
             Quaternion spawnRotation)
         {
-            var enemyTriggersSettable = InstantiatePrefabForComponent<IEnemyDataForInitializationSettable>(
-                dataForSpawnMarker.PrefabProvider,
-                spawnPosition, spawnRotation);
-            enemyTriggersSettable.SetDataForInitialization(dataForSpawnMarker.Settings, dataForSpawnMarker.ItemToDrop,
+            var enemySetup =
+                InstantiatePrefabForComponent<IEnemySetup>(dataForSpawnMarker.PrefabProvider, spawnPosition,
+                    spawnRotation);
+            enemySetup.SetDataForInitialization(dataForSpawnMarker.Settings, dataForSpawnMarker.ItemToDrop,
                 enemyTargetTriggers);
+            return enemySetup.InitializedEnemy;
         }
     }
 }
