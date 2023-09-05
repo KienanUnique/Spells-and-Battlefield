@@ -1,25 +1,28 @@
-﻿using Common;
+﻿using System.Collections.Generic;
+using Common;
+using Common.Abstract_Bases;
 using Common.Abstract_Bases.Checkers;
 using Pickable_Items.Strategies_For_Pickable_Controller;
 using Settings;
 using UnityEngine;
 using Zenject;
+using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
 namespace Pickable_Items.Setup
 {
-    public abstract class PickableItemControllerSetupBase<TController> : MonoBehaviour, IPickableItemStrategySettable
+    public abstract class PickableItemControllerSetupBase<TController> : SetupMonoBehaviourBase,
+        IPickableItemStrategySettable
     {
         [SerializeField] private PickableItemsPickerTrigger _pickerTrigger;
         [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private Transform _visualObjectTransform;
+        private ExternalDependenciesInitializationWaiter _externalDependenciesInitializationWaiter;
         private PickableItemsSettings _pickableItemsSettings;
         private GroundLayerMaskSetting _groundLayerMaskSetting;
         private IStrategyForPickableController _strategyForPickableController;
         private Rigidbody _rigidbody;
         private bool _needFallDown;
-
-        private ValueWithReactionOnChange<bool> _isBaseReadyForSetup;
-        protected ValueWithReactionOnChange<bool> _isChildReadyForSetup;
+        private TController _controllerToSetup;
 
         [Inject]
         private void Construct(GroundLayerMaskSetting groundLayerMaskSetting,
@@ -29,45 +32,42 @@ namespace Pickable_Items.Setup
             _pickableItemsSettings = pickableItemsSettings;
         }
 
+        protected abstract IEnumerable<IInitializable> AdditionalObjectsToWaitBeforeInitialization { get; }
+
+        protected sealed override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
+            new List<IInitializable>(AdditionalObjectsToWaitBeforeInitialization)
+            {
+                _groundChecker,
+                _externalDependenciesInitializationWaiter
+            };
+
         public void SetStrategyForPickableController(IStrategyForPickableController strategyForPickableController,
             bool needFallDown)
         {
             _strategyForPickableController = strategyForPickableController;
             _needFallDown = needFallDown;
-            _isBaseReadyForSetup.Value = true;
-        }
-
-        protected abstract void SetupConcreteController(IPickableItemControllerBaseSetupData baseSetupData,
-            TController controllerToSetup);
-
-        private void Awake()
-        {
-            _isChildReadyForSetup = new ValueWithReactionOnChange<bool>(false);
-            _isBaseReadyForSetup = new ValueWithReactionOnChange<bool>(false);
-            _rigidbody = GetComponent<Rigidbody>();
-        }
-
-        private void OnEnable()
-        {
-            _isChildReadyForSetup.AfterValueChanged += SetupControllerIfReady;
-        }
-
-        private void OnDisable()
-        {
-            _isChildReadyForSetup.AfterValueChanged -= SetupControllerIfReady;
-        }
-
-        private void SetupControllerIfReady(bool unnecessaryValue)
-        {
-            if (_isChildReadyForSetup.Value && _isBaseReadyForSetup.Value)
+            if (_externalDependenciesInitializationWaiter == null)
             {
-                Setup();
+                _externalDependenciesInitializationWaiter = new ExternalDependenciesInitializationWaiter(true);
+            }
+            else
+            {
+                _externalDependenciesInitializationWaiter.HandleExternalDependenciesInitialization();
             }
         }
 
-        private void Setup()
+        protected abstract void Initialize(IPickableItemControllerBaseSetupData baseSetupData,
+            TController controllerToSetup);
+
+        protected override void Prepare()
         {
-            var controllerToSetup = GetComponent<TController>();
+            _externalDependenciesInitializationWaiter ??= new ExternalDependenciesInitializationWaiter(false);
+            _rigidbody = GetComponent<Rigidbody>();
+            _controllerToSetup = GetComponent<TController>();
+        }
+
+        protected override void Initialize()
+        {
             var setupData = new PickableItemControllerBaseSetupData(
                 _needFallDown,
                 _strategyForPickableController,
@@ -78,8 +78,7 @@ namespace Pickable_Items.Setup
                 _pickerTrigger,
                 _rigidbody
             );
-
-            SetupConcreteController(setupData, controllerToSetup);
+            Initialize(setupData, _controllerToSetup);
         }
     }
 }

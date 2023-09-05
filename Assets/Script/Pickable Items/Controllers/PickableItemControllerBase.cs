@@ -1,6 +1,7 @@
 ﻿using System;
 using Common;
 using Common.Abstract_Bases.Checkers;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using DG.Tweening;
 using Interfaces.Pickers;
 using Pickable_Items.Setup;
@@ -11,10 +12,14 @@ using UnityEngine;
 namespace Pickable_Items.Controllers
 {
     [RequireComponent(typeof(Rigidbody))]
-    public abstract class PickableItemControllerBase : MonoBehaviour, IPickableItem
+    public abstract class PickableItemControllerBase : InitializableMonoBehaviourBase, IPickableItem
     {
         private const float MaxGroundRayDistance = 2f;
         private const float GroundCheckOffsetY = 20f;
+
+        private readonly ValueWithReactionOnChange<ControllerStates> _currentControllerState =
+            new ValueWithReactionOnChange<ControllerStates>(ControllerStates.NonInitialized);
+
         private PickableItemsPickerTrigger _pickerTrigger;
         private GroundChecker _groundChecker;
         private Transform _visualObjectTransform;
@@ -22,7 +27,6 @@ namespace Pickable_Items.Controllers
         private PickableItemsSettings _pickableItemsSettings;
         private GroundLayerMaskSetting _groundLayerMaskSetting;
         private Rigidbody _rigidbody;
-        private ValueWithReactionOnChange<ControllerStates> _currentControllerState;
         private IStrategyForPickableController _strategyForPickableController;
         private GameObject _doTweenLinkGameObject;
 
@@ -38,16 +42,16 @@ namespace Pickable_Items.Controllers
             _rigidbody = setupData.SetRigidBody;
             _strategyForPickableController = setupData.SetStrategyForPickableController;
             _needFallDown = setupData.SetNeedFallDown;
+            SetInitializedStatus();
 
-            SubscribeOnEvents();
-
-            _currentControllerState.Value = ControllerStates.Initialized;
+            PlayAppearAnimation();
+            _visualObjectTransform.localScale = Vector3.zero;
+            _currentControllerState.Value = _needFallDown ? ControllerStates.Falling : ControllerStates.Idle;
         }
 
         private enum ControllerStates
         {
-            NotInitialized,
-            Initialized,
+            NonInitialized,
             Falling,
             Idle,
             PickedUp
@@ -58,32 +62,14 @@ namespace Pickable_Items.Controllers
             _rigidbody.AddForce(_pickableItemsSettings.DropForce * direction, ForceMode.Impulse);
         }
 
-        private void Awake()
-        {
-            _currentControllerState = new ValueWithReactionOnChange<ControllerStates>(ControllerStates.NotInitialized);
-        }
-
-        private void OnEnable()
-        {
-            if (_currentControllerState.Value != ControllerStates.NotInitialized)
-            {
-                SubscribeOnEvents();
-            }
-        }
-
-        private void OnDisable()
-        {
-            UnsubscribeFromEvents();
-        }
-
-        protected virtual void SubscribeOnEvents()
+        protected override void SubscribeOnEvents()
         {
             _pickerTrigger.PickerDetected += OnPickerDetected;
             _groundChecker.ContactStateChanged += OnIsGroundedStatusChanged;
             _currentControllerState.AfterValueChanged += OnControllerStateChanged;
         }
 
-        protected virtual void UnsubscribeFromEvents()
+        protected override void UnsubscribeFromEvents()
         {
             _pickerTrigger.PickerDetected -= OnPickerDetected;
             _groundChecker.ContactStateChanged -= OnIsGroundedStatusChanged;
@@ -94,11 +80,6 @@ namespace Pickable_Items.Controllers
         {
             switch (newState)
             {
-                case ControllerStates.Initialized:
-                    PlayAppearAnimation();
-                    _visualObjectTransform.localScale = Vector3.zero;
-                    _currentControllerState.Value = _needFallDown ? ControllerStates.Falling : ControllerStates.Idle;
-                    break;
                 case ControllerStates.Falling:
                     _rigidbody.useGravity = true;
                     break;

@@ -5,14 +5,27 @@ using UnityEngine;
 
 namespace Common.Abstract_Bases.Initializable_MonoBehaviour
 {
-    public abstract class InitializableMonoBehaviourBase : MonoBehaviour, IInitializable
+    public abstract class InitializableMonoBehaviourBase : MonoBehaviour, IInitializableWithActionsPool
     {
+        private readonly List<Action> _actionsAfterInitialization = new List<Action>();
         private ValueWithReactionOnChange<InitializationStatus> _currentStatus;
         private List<IDisableable> _itemsNeedDisabling;
 
         public event Action<InitializationStatus> InitializationStatusChanged;
 
         public InitializationStatus CurrentInitializationStatus => _currentStatus.Value;
+
+        public void AddActionAfterInitializing(Action action)
+        {
+            if (CurrentInitializationStatus == InitializationStatus.NonInitialized)
+            {
+                _actionsAfterInitialization.Add(action);
+            }
+            else
+            {
+                action.Invoke();
+            }
+        }
 
         protected abstract void SubscribeOnEvents();
         protected abstract void UnsubscribeFromEvents();
@@ -39,13 +52,18 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
         {
             SubscribeOnBaseEvents();
             _currentStatus.Value = InitializationStatus.Initialized;
+            foreach (var action in _actionsAfterInitialization)
+            {
+                action.Invoke();
+            }
+            _actionsAfterInitialization.Clear();
         }
 
         protected void SetItemsNeedDisabling(List<IDisableable> itemsNeedDisabling)
         {
             _itemsNeedDisabling = itemsNeedDisabling;
         }
-        
+
         private void SubscribeOnBaseEvents()
         {
             _currentStatus.AfterValueChanged += OnInitializationStatusChanged;

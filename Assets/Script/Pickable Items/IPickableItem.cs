@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using UnityEngine;
 
 namespace Pickable_Items
 {
-    public interface IPickableItem
+    public interface IPickableItem : IInitializableWithActionsPool
     {
-        void DropItemTowardsDirection(Vector3 direction);
+        public void DropItemTowardsDirection(Vector3 direction);
     }
 }

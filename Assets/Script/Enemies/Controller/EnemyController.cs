@@ -248,7 +248,7 @@ namespace Enemies.Controller
                 .normalized;
             var spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
             var pickableSpell = _itemsFactory.Create(_itemToDrop, spawnPosition, NeedCreatedItemsFallDown);
-            pickableSpell.DropItemTowardsDirection(dropDirection);
+            pickableSpell.AddActionAfterInitializing(() => pickableSpell.DropItemTowardsDirection(dropDirection));
         }
 
         private IEnumerator DestroyAfterDelay()
