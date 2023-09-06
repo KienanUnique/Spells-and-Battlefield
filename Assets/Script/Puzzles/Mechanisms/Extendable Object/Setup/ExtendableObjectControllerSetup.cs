@@ -19,24 +19,24 @@ namespace Puzzles.Mechanisms.Extendable_Object.Setup
         private IInitializableExtendableObjectController _controller;
         private IExtendableObjectsSettings _settings;
 
-        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
-            new List<IInitializable>(_triggers);
-
         [Inject]
-        private void Construct(IExtendableObjectsSettings settings)
+        private void GetDependencies(IExtendableObjectsSettings settings)
         {
             _settings = settings;
         }
 
-        protected override void Prepare()
-        {
-            _controller = GetComponent<IInitializableExtendableObjectController>();
-        }
+        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
+            new List<IInitializable>(_triggers);
 
         protected override void Initialize()
         {
             _controller.Initialize(new List<IMechanismsTrigger>(_triggers), _startState, _startPoint.position,
                 _endPoint.position, _animationDuration, _objectToExtend, _settings);
+        }
+
+        protected override void Prepare()
+        {
+            _controller = GetComponent<IInitializableExtendableObjectController>();
         }
     }
 }

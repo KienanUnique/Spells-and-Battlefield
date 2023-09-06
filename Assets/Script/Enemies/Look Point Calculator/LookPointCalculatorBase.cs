@@ -7,10 +7,10 @@ namespace Enemies.Look_Point_Calculator
 {
     public abstract class LookPointCalculatorBase : ILookPointCalculator
     {
-        protected IReadonlyRigidbody _thisRigidbody;
-        protected IReadonlyTransform _thisPositionReferencePoint;
-        protected IEnemyTarget _target;
         protected bool _isTargetNull;
+        protected IEnemyTarget _target;
+        protected IReadonlyTransform _thisPositionReferencePoint;
+        protected IReadonlyRigidbody _thisRigidbody;
         protected IReadonlyRigidbody TargetRigidbody => _target.MainRigidbody;
         protected Vector3 CurrentPosition => _thisPositionReferencePoint.Position;
         protected Vector3 CurrentVelocity => _thisRigidbody.Velocity;

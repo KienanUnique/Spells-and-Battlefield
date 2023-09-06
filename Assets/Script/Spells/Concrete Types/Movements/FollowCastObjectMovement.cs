@@ -11,7 +11,10 @@ namespace Spells.Concrete_Types.Movements
         menuName = ScriptableObjectsMenuDirectories.SpellMovementDirectory + "Follow Cast Object Movement", order = 0)]
     public class FollowCastObjectMovement : SpellMovementScriptableObject
     {
-        public override ISpellMovementWithLookPointCalculator GetImplementationObject() => new FollowCastObjectMovementImplementation();
+        public override ISpellMovementWithLookPointCalculator GetImplementationObject()
+        {
+            return new FollowCastObjectMovementImplementation();
+        }
 
         private class FollowCastObjectMovementImplementation : SpellMovementImplementationBase
         {

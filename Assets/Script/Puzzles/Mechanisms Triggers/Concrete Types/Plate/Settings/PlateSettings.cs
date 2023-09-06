@@ -11,7 +11,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Settings
         [SerializeField] private Ease _animationEase = Ease.OutQuart;
         [SerializeField] private float _pressedScaleY = 0.01f;
         [SerializeField] private float _unpressedScaleY = 0.1f;
-        
+
         public float AnimationDuration => _animationDuration;
         public Ease AnimationEase => _animationEase;
         public float PressedScaleY => _pressedScaleY;

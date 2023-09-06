@@ -8,6 +8,7 @@ namespace Puzzles.Mechanisms_Triggers.Box_Collider_Trigger
     {
         public event Action<Collider> TriggerEnter;
         public event Action<Collider> TriggerExit;
+
         private void OnTriggerEnter(Collider other)
         {
             TriggerEnter?.Invoke(other);

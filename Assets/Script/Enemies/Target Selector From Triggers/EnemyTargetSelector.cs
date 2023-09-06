@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases.Disableable;
+using Enemies.Trigger;
 using Interfaces;
 using ModestTree;
 
@@ -9,14 +10,14 @@ namespace Enemies.Target_Selector_From_Triggers
     public class EnemyTargetFromTriggersSelector : BaseWithDisabling, IEnemyTargetFromTriggersSelector
     {
         private readonly HashSet<IEnemyTarget> _targets = new HashSet<IEnemyTarget>();
-        private readonly List<Trigger.IEnemyTargetTrigger> _triggers = new List<Trigger.IEnemyTargetTrigger>();
+        private readonly List<IEnemyTargetTrigger> _triggers = new List<IEnemyTargetTrigger>();
         public event IReadonlyEnemyTargetFromTriggersSelector.CurrentTargetChangedEventHandler CurrentTargetChanged;
         public IEnemyTarget CurrentTarget { get; private set; }
 
-        public void AddTrigger(Trigger.IEnemyTargetTrigger trigger)
+        public void AddTrigger(IEnemyTargetTrigger trigger)
         {
             _triggers.Add(trigger);
-            foreach (var enemyTarget in trigger.TargetsInTrigger)
+            foreach (IEnemyTarget enemyTarget in trigger.TargetsInTrigger)
             {
                 HandleNewDetectedTarget(enemyTarget);
             }
@@ -25,9 +26,9 @@ namespace Enemies.Target_Selector_From_Triggers
             trigger.TargetLost += OnTargetInTriggerLost;
         }
 
-        public void AddTriggers(IEnumerable<Trigger.IEnemyTargetTrigger> triggers)
+        public void AddTriggers(IEnumerable<IEnemyTargetTrigger> triggers)
         {
-            foreach (var trigger in triggers)
+            foreach (IEnemyTargetTrigger trigger in triggers)
             {
                 AddTrigger(trigger);
             }
@@ -35,7 +36,7 @@ namespace Enemies.Target_Selector_From_Triggers
 
         protected sealed override void SubscribeOnEvents()
         {
-            foreach (var trigger in _triggers)
+            foreach (IEnemyTargetTrigger trigger in _triggers)
             {
                 trigger.TargetDetected += HandleNewDetectedTarget;
                 trigger.TargetLost += OnTargetInTriggerLost;
@@ -44,7 +45,7 @@ namespace Enemies.Target_Selector_From_Triggers
 
         protected override void UnsubscribeFromEvents()
         {
-            foreach (var trigger in _triggers)
+            foreach (IEnemyTargetTrigger trigger in _triggers)
             {
                 trigger.TargetDetected -= HandleNewDetectedTarget;
                 trigger.TargetLost -= OnTargetInTriggerLost;
@@ -55,7 +56,7 @@ namespace Enemies.Target_Selector_From_Triggers
         {
             if (_targets.IsEmpty())
             {
-                var oldTarget = CurrentTarget;
+                IEnemyTarget oldTarget = CurrentTarget;
                 CurrentTarget = newTarget;
                 CurrentTargetChanged?.Invoke(oldTarget, newTarget);
             }
@@ -70,12 +71,16 @@ namespace Enemies.Target_Selector_From_Triggers
 
         private void RemoveTargetIfUnreachable(IEnemyTarget target)
         {
-            if (_triggers.Any(trigger => trigger.IsTargetInTrigger(target))) return;
+            if (_triggers.Any(trigger => trigger.IsTargetInTrigger(target)))
+            {
+                return;
+            }
+
             _targets.Remove(target);
 
             if (target == CurrentTarget)
             {
-                var nextTarget = _targets.IsEmpty() ? null : _targets.First();
+                IEnemyTarget nextTarget = _targets.IsEmpty() ? null : _targets.First();
                 CurrentTargetChanged?.Invoke(CurrentTarget, nextTarget);
             }
         }

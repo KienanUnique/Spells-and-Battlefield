@@ -1,5 +1,4 @@
-﻿using Common.Abstract_Bases;
-using Common.Abstract_Bases.Factories;
+﻿using Common.Abstract_Bases.Factories;
 using Interfaces;
 using Spells.Controllers;
 using Spells.Implementations_Interfaces.Implementations;
@@ -11,14 +10,13 @@ namespace Spells.Factory
 {
     public class SpellObjectsFactory : FactoryWithInstantiatorBase, ISpellObjectsFactory
     {
-        public SpellObjectsFactory(IInstantiator instantiator, Transform parentTransform) :
-            base(instantiator, parentTransform)
+        public SpellObjectsFactory(IInstantiator instantiator, Transform parentTransform) : base(instantiator,
+            parentTransform)
         {
         }
 
-        public void Create(ISpellDataForSpellController spellData,
-            ISpellPrefabProvider spellPrefabProvider, ICaster caster,
-            Vector3 spawnPosition, Quaternion spawnRotation)
+        public void Create(ISpellDataForSpellController spellData, ISpellPrefabProvider spellPrefabProvider,
+            ICaster caster, Vector3 spawnPosition, Quaternion spawnRotation)
         {
             var spellController =
                 InstantiatePrefabForComponent<ISpellObjectController>(spellPrefabProvider, spawnPosition,

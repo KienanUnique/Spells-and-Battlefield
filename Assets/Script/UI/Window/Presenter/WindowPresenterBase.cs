@@ -10,6 +10,9 @@ namespace UI.Window.Presenter
         public bool CanBeClosedByPlayer => Model.CanBeClosedByPlayer;
         protected abstract IUIWindowModel Model { get; }
 
-        public bool Equals(IIdHolder other) => Model.Equals(other);
+        public bool Equals(IIdHolder other)
+        {
+            return Model.Equals(other);
+        }
     }
 }

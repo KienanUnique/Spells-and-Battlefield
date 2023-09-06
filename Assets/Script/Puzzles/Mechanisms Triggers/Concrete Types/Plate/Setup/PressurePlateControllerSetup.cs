@@ -15,11 +15,11 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Setup
         [SerializeField] private ColliderTrigger _colliderTrigger;
         [SerializeField] private Transform _visualObject;
         [SerializeField] private IdentifierScriptableObjectBase _identifier;
-        private IPlateSettings _plateSettings;
         private IInitializablePressurePlateController _controller;
+        private IPlateSettings _plateSettings;
 
         [Inject]
-        private void Construct(IPlateSettings plateSettings)
+        private void GetDependencies(IPlateSettings plateSettings)
         {
             _plateSettings = plateSettings;
         }
@@ -27,14 +27,14 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Setup
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             Enumerable.Empty<IInitializable>();
 
-        protected override void Prepare()
-        {
-            _controller = GetComponent<IInitializablePressurePlateController>();
-        }
-
         protected override void Initialize()
         {
             _controller.Initialize(_identifier, _visualObject, _plateSettings, _colliderTrigger);
+        }
+
+        protected override void Prepare()
+        {
+            _controller = GetComponent<IInitializablePressurePlateController>();
         }
     }
 }

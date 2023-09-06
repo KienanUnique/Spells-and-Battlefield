@@ -14,21 +14,36 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
         private Coroutine _currentCheckConditionsCoroutine;
         private ValueWithReactionOnChange<bool> _isConditionCompleted;
 
+        public override bool IsConditionCompleted => _isConditionCompleted.Value;
+
         private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
         private Vector3 CurrentTargetPosition => CurrentTarget.MainRigidbody.Position;
 
-        public override bool IsConditionCompleted => _isConditionCompleted.Value;
+        protected override void Awake()
+        {
+            base.Awake();
+            _cashedTransform = transform;
+            _isConditionCompleted = new ValueWithReactionOnChange<bool>(false);
+        }
 
         protected override void HandleStartCheckingConditions()
         {
-            if (_currentCheckConditionsCoroutine != null) return;
+            if (_currentCheckConditionsCoroutine != null)
+            {
+                return;
+            }
+
             _currentCheckConditionsCoroutine = StartCoroutine(CheckConditionsCoroutine());
         }
 
         protected override void HandleStopCheckingConditions()
         {
             _isConditionCompleted.Value = false;
-            if (_currentCheckConditionsCoroutine == null) return;
+            if (_currentCheckConditionsCoroutine == null)
+            {
+                return;
+            }
+
             StopCoroutine(_currentCheckConditionsCoroutine);
 
             _currentCheckConditionsCoroutine = null;
@@ -42,13 +57,6 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
         protected override void UnsubscribeFromEvents()
         {
             _isConditionCompleted.AfterValueChanged -= OnConditionCompletedStateChanged;
-        }
-
-        protected override void Awake()
-        {
-            base.Awake();
-            _cashedTransform = transform;
-            _isConditionCompleted = new ValueWithReactionOnChange<bool>(false);
         }
 
         private void OnConditionCompletedStateChanged(bool newIsConditionCompleted)
@@ -75,7 +83,7 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
                 return false;
             }
 
-            var calculatedDistance = Vector3.Distance(_cashedTransform.position, CurrentTargetPosition);
+            float calculatedDistance = Vector3.Distance(_cashedTransform.position, CurrentTargetPosition);
             switch (_typeOfComparison)
             {
                 case TypeOfComparison.IsMore:

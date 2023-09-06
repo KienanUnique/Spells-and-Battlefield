@@ -7,8 +7,8 @@ namespace Enemies.Spawn.Spawn_Trigger
 {
     public class EnemySpawnTrigger : BoxColliderTriggerBase<IEnemyTarget>, IEnemySpawnTrigger
     {
-        public bool IsSpawnRequired => !_requiredObjectsInside.IsEmpty();
         public event Action SpawnRequired;
+        public bool IsSpawnRequired => !_requiredObjectsInside.IsEmpty();
 
         protected override void OnRequiredObjectEnteringDetected()
         {

@@ -10,8 +10,7 @@ namespace Enemies.Character
         private readonly string _name;
 
         protected EnemyCharacterBase(ICoroutineStarter coroutineStarter,
-            EnemyCharacterSettingsSection characterSettings) :
-            base(coroutineStarter, characterSettings)
+            EnemyCharacterSettingsSection characterSettings) : base(coroutineStarter, characterSettings)
         {
             _name = characterSettings.Name;
         }
@@ -19,7 +18,7 @@ namespace Enemies.Character
         public void ApplyEffectsToTargets(IReadOnlyCollection<IEnemyTarget> targets,
             IReadOnlyCollection<IMechanicEffect> mechanicEffects)
         {
-            foreach (var effect in mechanicEffects)
+            foreach (IMechanicEffect effect in mechanicEffects)
             {
                 effect.ApplyEffectToTargets(targets);
             }

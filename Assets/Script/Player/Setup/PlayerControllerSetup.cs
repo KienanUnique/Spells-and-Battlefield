@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases;
-using Common.Abstract_Bases.Checkers;
 using Common.Abstract_Bases.Checkers.Ground_Checker;
 using Common.Abstract_Bases.Checkers.Wall_Checker;
 using Common.Abstract_Bases.Disableable;
@@ -37,7 +36,8 @@ namespace Player.Setup
         [SerializeField] private GameObject _cameraEffectsGameObject;
         [SerializeField] private Camera _camera;
 
-        [Header("Animations")] [SerializeField]
+        [Header("Animations")]
+        [SerializeField]
         private RigBuilder _rigBuilder;
 
         [SerializeField] private Animator _characterAnimator;
@@ -48,22 +48,22 @@ namespace Player.Setup
 
         [Header("Spells")] [SerializeField] private List<SpellScriptableObject> _startTestSpells;
         [SerializeField] private ReadonlyTransformGetter _spellSpawnObject;
+        private IReadonlyTransform _cameraTransform;
+        private IIdHolder _idHolder;
+        private List<IDisableable> _itemsNeedDisabling;
 
         private IPlayerCameraEffects _playerCameraEffects;
-        private IPlayerVisual _playerVisual;
+        private ICaster _playerCaster;
         private IPlayerCharacter _playerCharacter;
         private IPlayerInput _playerInput;
-        private IIdHolder _idHolder;
+        private IPlayerVisual _playerVisual;
         private IPlayerSettings _settings;
         private ISpellObjectsFactory _spellObjectsFactory;
         private ISpellTypesSetting _spellTypesSetting;
-        private List<IDisableable> _itemsNeedDisabling;
-        private ICaster _playerCaster;
         private Rigidbody _thisRigidbody;
-        private IReadonlyTransform _cameraTransform;
 
         [Inject]
-        private void Construct(IPlayerInput playerInput, IPlayerSettings settings,
+        private void GetDependencies(IPlayerInput playerInput, IPlayerSettings settings,
             ISpellObjectsFactory spellObjectsFactory, ISpellTypesSetting spellTypesSetting)
         {
             _playerInput = playerInput;
@@ -73,41 +73,15 @@ namespace Player.Setup
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
-            new List<IInitializable>
-            {
-                _cameraFollowObject, _spellSpawnObject, _wallChecker, _groundChecker
-            };
-
-        protected override void Prepare()
-        {
-            _playerCaster = GetComponent<ICaster>();
-            _idHolder = GetComponent<IdHolder>();
-            _thisRigidbody = GetComponent<Rigidbody>();
-
-            var playerCharacter = new PlayerCharacter(this, _settings.Character);
-
-            _itemsNeedDisabling = new List<IDisableable>
-            {
-                playerCharacter,
-            };
-
-            _playerCharacter = playerCharacter;
-
-
-            _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator, _settings.Visual);
-            _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
-
-            _cameraTransform = new ReadonlyTransform(_camera.transform);
-        }
+            new List<IInitializable> {_cameraFollowObject, _spellSpawnObject, _wallChecker, _groundChecker};
 
         protected override void Initialize()
         {
             var playerMovement =
                 new PlayerMovement(_thisRigidbody, _settings.Movement, _groundChecker, _wallChecker, this);
 
-            var playerSpellsManager =
-                new PlayerSpellsManager(new List<ISpell>(_startTestSpells), _spellSpawnObject.ReadonlyTransform,
-                    _playerCaster, _spellObjectsFactory, _spellTypesSetting);
+            var playerSpellsManager = new PlayerSpellsManager(new List<ISpell>(_startTestSpells),
+                _spellSpawnObject.ReadonlyTransform, _playerCaster, _spellObjectsFactory, _spellTypesSetting);
             playerSpellsManager.AddSpell(_spellTypesSetting.LastChanceSpellType,
                 _settings.SpellManager.LastChanceSpell);
 
@@ -118,20 +92,28 @@ namespace Player.Setup
             _itemsNeedDisabling.Add(playerSpellsManager);
 
             var controllerToSetup = GetComponent<IInitializablePlayerController>();
-            var setupData = new PlayerControllerSetupData(
-                _eventInvokerForAnimations,
-                _playerCameraEffects,
-                _playerVisual,
-                _playerCharacter,
-                playerSpellsManager,
-                _playerInput,
-                playerMovement,
-                playerLook,
-                _idHolder,
-                _itemsNeedDisabling,
-                _cameraTransform
-            );
+            var setupData = new PlayerControllerSetupData(_eventInvokerForAnimations, _playerCameraEffects,
+                _playerVisual, _playerCharacter, playerSpellsManager, _playerInput, playerMovement, playerLook,
+                _idHolder, _itemsNeedDisabling, _cameraTransform);
             controllerToSetup.Initialize(setupData);
+        }
+
+        protected override void Prepare()
+        {
+            _playerCaster = GetComponent<ICaster>();
+            _idHolder = GetComponent<IdHolder>();
+            _thisRigidbody = GetComponent<Rigidbody>();
+
+            var playerCharacter = new PlayerCharacter(this, _settings.Character);
+
+            _itemsNeedDisabling = new List<IDisableable> {playerCharacter};
+
+            _playerCharacter = playerCharacter;
+
+            _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator, _settings.Visual);
+            _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
+
+            _cameraTransform = new ReadonlyTransform(_camera.transform);
         }
     }
 }

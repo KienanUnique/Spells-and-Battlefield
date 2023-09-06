@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Common.Abstract_Bases;
 using Interfaces;
 using Player;
@@ -15,13 +14,13 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller.Setup
     public class PostProcessingControllerSetup : SetupMonoBehaviourBase
     {
         [SerializeField] private Volume _dashEffectsVolume;
+        private IInitializablePostProcessingController _controller;
         private IPlayerInformationProvider _playerInformationProvider;
         private IPlayerInitializationStatus _playerInitializationStatus;
         private IPostProcessingControllerSettings _settings;
-        private IInitializablePostProcessingController _controller;
 
         [Inject]
-        private void Construct(IPlayerInformationProvider playerInformationProvider,
+        private void GetDependencies(IPlayerInformationProvider playerInformationProvider,
             IPostProcessingControllerSettings settings, IPlayerInitializationStatus playerInitializationStatus)
         {
             _playerInformationProvider = playerInformationProvider;
@@ -32,14 +31,14 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller.Setup
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             new[] {_playerInitializationStatus};
 
-        protected override void Prepare()
-        {
-            _controller = GetComponent<IInitializablePostProcessingController>();
-        }
-
         protected override void Initialize()
         {
             _controller.Initialize(_playerInformationProvider, _dashEffectsVolume, _settings);
+        }
+
+        protected override void Prepare()
+        {
+            _controller = GetComponent<IInitializablePostProcessingController>();
         }
     }
 }

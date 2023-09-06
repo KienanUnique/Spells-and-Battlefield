@@ -2,8 +2,6 @@ namespace Spells
 {
     public enum SpellTriggerCheckStatusEnum
     {
-        Ignore,
-        HandleEffect,
-        Finish
+        Ignore, HandleEffect, Finish
     }
 }

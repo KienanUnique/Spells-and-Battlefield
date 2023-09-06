@@ -2,6 +2,30 @@
 {
     public const string RootDirectory = "Spells and Battlefield/";
 
+    #region Mechanics
+
+    public const string MechanicsDirectory = RootDirectory + "Mechanics/";
+
+    #endregion
+
+    #region Installers
+
+    public const string InstallersDirectory = RootDirectory + "Installers/";
+
+    #endregion
+
+    #region PickableItems
+
+    public const string PickableItemsDirectory = RootDirectory + "Pickable Items/";
+
+    #endregion
+
+    #region Scenes
+
+    public const string ScenesDirectory = RootDirectory + "Scenes Data/";
+
+    #endregion
+
     #region Spells
 
     public const string SpellSystemDirectory = RootDirectory + "Spell System/";
@@ -11,12 +35,6 @@
     public const string SpellMovementDirectory = SpellSystemDirectory + "Movement/";
     public const string SpellTargetSelectorDirectory = SpellSystemDirectory + "Target Selector/";
     public const string SpellTriggerDirectory = SpellSystemDirectory + "Trigger/";
-
-    #endregion
-
-    #region Mechanics
-
-    public const string MechanicsDirectory = RootDirectory + "Mechanics/";
 
     #endregion
 
@@ -46,29 +64,11 @@
 
     #endregion
 
-    #region Installers
-
-    public const string InstallersDirectory = RootDirectory + "Installers/";
-
-    #endregion
-
     #region PrefabProviders
 
     public const string SystemsPrefabProvidersDirectory = RootDirectory + "System/";
     public const string PickableItemsProvidersDirectory = RootDirectory + "Pickable Items/";
     public const string PopupTextProvidersDirectory = RootDirectory + "Popup Texts/";
-
-    #endregion
-
-    #region PickableItems
-
-    public const string PickableItemsDirectory = RootDirectory + "Pickable Items/";
-
-    #endregion
-
-    #region Scenes
-
-    public const string ScenesDirectory = RootDirectory + "Scenes Data/";
 
     #endregion
 }

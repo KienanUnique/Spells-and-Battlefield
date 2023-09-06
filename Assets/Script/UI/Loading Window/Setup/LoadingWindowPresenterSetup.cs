@@ -15,20 +15,25 @@ namespace UI.Loading_Window.Setup
     {
         [SerializeField] private Image _loadingIcon;
         [SerializeField] private Transform _mainTransform;
-
-        private ILoadingWindowModel _model;
-        private ILoadingWindowView _view;
-        private IInitializableLoadingWindowPresenter _presenter;
         private ILoadingWindowSettings _loadingWindowSettings;
 
+        private ILoadingWindowModel _model;
+        private IInitializableLoadingWindowPresenter _presenter;
+        private ILoadingWindowView _view;
+
         [Inject]
-        private void Construct(ILoadingWindowSettings loadingWindowSettings)
+        private void GetDependencies(ILoadingWindowSettings loadingWindowSettings)
         {
             _loadingWindowSettings = loadingWindowSettings;
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             Enumerable.Empty<IInitializable>();
+
+        protected override void Initialize()
+        {
+            _presenter.Initialize(_model, _view);
+        }
 
         protected override void Prepare()
         {
@@ -37,11 +42,6 @@ namespace UI.Loading_Window.Setup
             _model = new LoadingWindowModel(IDHolder, Manager);
             _view = new LoadingWindowView(_mainTransform, DefaultUIElementViewSettings, _loadingIcon.transform,
                 _loadingWindowSettings);
-        }
-
-        protected override void Initialize()
-        {
-            _presenter.Initialize(_model, _view);
         }
     }
 }

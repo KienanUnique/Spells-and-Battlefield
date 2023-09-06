@@ -12,7 +12,7 @@ namespace UI.Bar.Model.Concrete_Types
             _characterInformation = characterInformation;
             UpdateFillAmount();
         }
-        
+
         public override float CurrentFillAmount => _characterInformation.HitPointCountRatio;
 
         protected override void SubscribeOnEvents()

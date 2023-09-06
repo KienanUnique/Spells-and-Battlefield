@@ -10,10 +10,10 @@ namespace Enemies.Spawn.Spawn_Zone_Controller
 {
     public class EnemySpawnZoneController : InitializableMonoBehaviourBase, IInitializableEnemySpawnZoneController
     {
-        private List<IEnemyTargetTrigger> _triggerList;
         private List<IEnemySpawner> _spawners;
         private List<IEnemySpawnTrigger> _spawnTriggers;
-        private bool _wasSpawned = false;
+        private List<IEnemyTargetTrigger> _triggerList;
+        private bool _wasSpawned;
 
         public void Initialize(List<IEnemyTargetTrigger> triggerList, List<IEnemySpawner> spawners,
             List<IEnemySpawnTrigger> spawnTriggers)
@@ -30,8 +30,12 @@ namespace Enemies.Spawn.Spawn_Zone_Controller
 
         protected override void SubscribeOnEvents()
         {
-            if (_wasSpawned) return;
-            foreach (var enemySpawnTrigger in _spawnTriggers)
+            if (_wasSpawned)
+            {
+                return;
+            }
+
+            foreach (IEnemySpawnTrigger enemySpawnTrigger in _spawnTriggers)
             {
                 enemySpawnTrigger.SpawnRequired += Spawn;
             }
@@ -44,7 +48,7 @@ namespace Enemies.Spawn.Spawn_Zone_Controller
 
         private void UnsubscribeFromTriggers()
         {
-            foreach (var enemySpawnTrigger in _spawnTriggers)
+            foreach (IEnemySpawnTrigger enemySpawnTrigger in _spawnTriggers)
             {
                 enemySpawnTrigger.SpawnRequired -= Spawn;
             }
@@ -52,10 +56,14 @@ namespace Enemies.Spawn.Spawn_Zone_Controller
 
         private void Spawn()
         {
-            if (_wasSpawned) return;
+            if (_wasSpawned)
+            {
+                return;
+            }
+
             _wasSpawned = true;
             UnsubscribeFromTriggers();
-            foreach (var enemySpawner in _spawners)
+            foreach (IEnemySpawner enemySpawner in _spawners)
             {
                 enemySpawner.Spawn(_triggerList);
             }

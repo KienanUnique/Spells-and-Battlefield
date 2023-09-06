@@ -13,11 +13,11 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
     [RequireComponent(typeof(PressurePlateControllerSetup))]
     public class PressurePlateController : MechanismsTriggerBase, IInitializablePressurePlateController
     {
-        private IIdentifier _identifier;
-        private List<Collider> _requiredObjectsOnPanel;
-        private Transform _plateTransform;
-        private IPlateSettings _plateSettings;
         private IColliderTrigger _colliderTrigger;
+        private IIdentifier _identifier;
+        private IPlateSettings _plateSettings;
+        private Transform _plateTransform;
+        private List<Collider> _requiredObjectsOnPanel;
 
         public void Initialize(IIdentifier identifier, Transform plateTransform, IPlateSettings plateSettings,
             IColliderTrigger colliderTrigger)
@@ -47,7 +47,11 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
 
         private void OnColliderTriggerEnter(Collider other)
         {
-            if (!_identifier.IsObjectOfRequiredType(other)) return;
+            if (!_identifier.IsObjectOfRequiredType(other))
+            {
+                return;
+            }
+
             if (_requiredObjectsOnPanel.IsEmpty())
             {
                 ProcessPressingDown();
@@ -58,7 +62,11 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
 
         private void OnColliderTriggerExit(Collider other)
         {
-            if (!_identifier.IsObjectOfRequiredType(other) || !_requiredObjectsOnPanel.Contains(other)) return;
+            if (!_identifier.IsObjectOfRequiredType(other) || !_requiredObjectsOnPanel.Contains(other))
+            {
+                return;
+            }
+
             _requiredObjectsOnPanel.Remove(other);
             if (_requiredObjectsOnPanel.IsEmpty())
             {
@@ -71,19 +79,23 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
             Triggered?.Invoke();
             _plateTransform.DOComplete();
             _plateTransform.DOScaleY(_plateSettings.PressedScaleY, _plateSettings.AnimationDuration)
-                .SetEase(_plateSettings.AnimationEase).SetLink(gameObject);
-            var scaleDeltaPositionY = (_plateSettings.UnpressedScaleY - _plateSettings.PressedScaleY) / -2;
+                           .SetEase(_plateSettings.AnimationEase)
+                           .SetLink(gameObject);
+            float scaleDeltaPositionY = (_plateSettings.UnpressedScaleY - _plateSettings.PressedScaleY) / -2;
             _plateTransform.DOLocalMoveY(scaleDeltaPositionY, _plateSettings.AnimationDuration)
-                .SetEase(_plateSettings.AnimationEase).SetLink(gameObject);
+                           .SetEase(_plateSettings.AnimationEase)
+                           .SetLink(gameObject);
         }
 
         private void ProcessPressingUp()
         {
             _plateTransform.DOComplete();
             _plateTransform.DOScaleY(_plateSettings.UnpressedScaleY, _plateSettings.AnimationDuration)
-                .SetEase(_plateSettings.AnimationEase).SetLink(gameObject);
+                           .SetEase(_plateSettings.AnimationEase)
+                           .SetLink(gameObject);
             _plateTransform.DOLocalMoveY(0, _plateSettings.AnimationDuration)
-                .SetEase(_plateSettings.AnimationEase).SetLink(gameObject);
+                           .SetEase(_plateSettings.AnimationEase)
+                           .SetLink(gameObject);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Enemies.State_Machine.Transition_Manager.Sub_Managers
 
         protected override void HandleStartCheckingConditions()
         {
-            foreach (var condition in _conditions)
+            foreach (TransitionConditionEnemyAIBase condition in _conditions)
             {
                 condition.StartCheckingConditions();
             }
@@ -22,7 +22,7 @@ namespace Enemies.State_Machine.Transition_Manager.Sub_Managers
 
         protected override void HandleStopCheckingConditions()
         {
-            foreach (var condition in _conditions)
+            foreach (TransitionConditionEnemyAIBase condition in _conditions)
             {
                 condition.StopCheckingConditions();
             }
@@ -30,7 +30,7 @@ namespace Enemies.State_Machine.Transition_Manager.Sub_Managers
 
         protected override void SubscribeOnTransitionEvents()
         {
-            foreach (var condition in _conditions)
+            foreach (TransitionConditionEnemyAIBase condition in _conditions)
             {
                 condition.ConditionCompleted += OnConditionCompleted;
             }
@@ -38,7 +38,7 @@ namespace Enemies.State_Machine.Transition_Manager.Sub_Managers
 
         protected override void UnsubscribeFromTransitionEvents()
         {
-            foreach (var condition in _conditions)
+            foreach (TransitionConditionEnemyAIBase condition in _conditions)
             {
                 condition.ConditionCompleted -= OnConditionCompleted;
             }

@@ -27,21 +27,25 @@ namespace Common.Collection_With_Reaction_On_Change
         public int Count => _list.Count;
         public bool IsReadOnly => false;
 
-        public IEnumerator<T> GetEnumerator() => _list.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => _list.GetEnumerator();
-        public bool Contains(T item) => _list.Contains(item);
-        public void CopyTo(T[] array, int arrayIndex) => _list.CopyTo(array, arrayIndex);
-        public int IndexOf(T item) => _list.IndexOf(item);
-
         public T this[int index]
         {
             get => _list[index];
             set
             {
-                var oldValue = _list[index];
+                T oldValue = _list[index];
                 _list[index] = value;
                 ItemReplaced?.Invoke(new ItemReplacedEventArgs<T>(value, oldValue, index));
             }
+        }
+
+        public bool Contains(T item)
+        {
+            return _list.Contains(item);
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            _list.CopyTo(array, arrayIndex);
         }
 
         public void Add(T item)
@@ -58,8 +62,8 @@ namespace Common.Collection_With_Reaction_On_Change
 
         public bool Remove(T item)
         {
-            var itemToRemoveIndex = _list.IndexOf(item);
-            var willBeRemoved = itemToRemoveIndex != -1;
+            int itemToRemoveIndex = _list.IndexOf(item);
+            bool willBeRemoved = itemToRemoveIndex != -1;
             if (willBeRemoved)
             {
                 _list.RemoveAt(itemToRemoveIndex);
@@ -67,6 +71,16 @@ namespace Common.Collection_With_Reaction_On_Change
             }
 
             return willBeRemoved;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _list.GetEnumerator();
+        }
+
+        public int IndexOf(T item)
+        {
+            return _list.IndexOf(item);
         }
 
         public void Insert(int index, T item)
@@ -77,9 +91,14 @@ namespace Common.Collection_With_Reaction_On_Change
 
         public void RemoveAt(int index)
         {
-            var removedItem = _list[index];
+            T removedItem = _list[index];
             _list.RemoveAt(index);
             ItemRemoved?.Invoke(new ItemWithIndexEventArgs<T>(removedItem, index));
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _list.GetEnumerator();
         }
     }
 }

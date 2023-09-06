@@ -30,8 +30,8 @@ namespace Spells.Concrete_Types.Appliers
         private class DefaultSpellApplierImplementation : SpellApplierImplementationBase
         {
             private readonly List<IMechanicEffect> _spellMechanicEffects;
-            private readonly ISpellTargetSelector _targetSelector;
             private readonly ISpellTrigger _spellTrigger;
+            private readonly ISpellTargetSelector _targetSelector;
 
             public DefaultSpellApplierImplementation(List<IMechanicEffect> spellMechanicEffects,
                 ISpellTargetSelector targetSelector, ISpellTrigger spellTrigger)
@@ -43,11 +43,7 @@ namespace Spells.Concrete_Types.Appliers
 
             public override void Initialize(Rigidbody spellRigidbody, ICaster caster)
             {
-                var spellImplementations = new List<ISpellImplementation>()
-                {
-                    _targetSelector,
-                    _spellTrigger
-                };
+                var spellImplementations = new List<ISpellImplementation> {_targetSelector, _spellTrigger};
                 spellImplementations.AddRange(_spellMechanicEffects);
 
                 spellImplementations.ForEach(spellImplementation =>
@@ -56,21 +52,21 @@ namespace Spells.Concrete_Types.Appliers
 
             public override SpellTriggerCheckStatusEnum CheckContact(Collider other)
             {
-                var response = _spellTrigger.CheckContact(other);
+                SpellTriggerCheckStatusEnum response = _spellTrigger.CheckContact(other);
                 HandleSpellTriggerResponse(response);
                 return response;
             }
 
             public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize)
             {
-                var response = _spellTrigger.CheckTime(timePassedFromInitialize);
+                SpellTriggerCheckStatusEnum response = _spellTrigger.CheckTime(timePassedFromInitialize);
                 HandleSpellTriggerResponse(response);
                 return response;
             }
 
             public override void HandleRollbackableEffects()
             {
-                foreach (var effect in _spellMechanicEffects)
+                foreach (IMechanicEffect effect in _spellMechanicEffects)
                 {
                     if (effect is IMechanicEffectWithRollback effectWithRollback)
                     {
@@ -90,7 +86,7 @@ namespace Spells.Concrete_Types.Appliers
 
             private void HandleSpellEffect()
             {
-                var selectedTargets = _targetSelector.SelectTargets();
+                List<ISpellInteractable> selectedTargets = _targetSelector.SelectTargets();
                 _spellMechanicEffects.ForEach(mechanicEffect =>
                     mechanicEffect.ApplyEffectToTargets(new List<IInteractable>(selectedTargets)));
             }

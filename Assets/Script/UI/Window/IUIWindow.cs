@@ -5,6 +5,5 @@ namespace UI.Window
 {
     public interface IUIWindow : IUIWindowModel, IUIElement
     {
-        
     }
 }

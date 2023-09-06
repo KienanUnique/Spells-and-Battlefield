@@ -3,8 +3,6 @@ using Common.Collection_With_Reaction_On_Change;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using Spells.Spell_Types_Settings;
-using UI.Spells_Panel.Settings;
-using UI.Spells_Panel.Settings.Sections;
 using UI.Spells_Panel.Settings.Sections.Group;
 using UI.Spells_Panel.Slot.Presenter;
 using UI.Spells_Panel.Slot_Group.Base.Setup;
@@ -23,7 +21,7 @@ namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Last_Chance_Spell_Slot_Group
         private ISpellTypesSetting _spellTypesSetting;
 
         [Inject]
-        private void Construct(ISpellTypesSetting spellTypesSetting)
+        private void GetDependencies(ISpellTypesSetting spellTypesSetting)
         {
             _spellTypesSetting = spellTypesSetting;
         }

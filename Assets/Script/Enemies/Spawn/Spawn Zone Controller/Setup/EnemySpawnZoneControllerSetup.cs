@@ -13,22 +13,22 @@ namespace Enemies.Spawn.Spawn_Zone_Controller.Setup
     {
         [SerializeField] private List<EnemyTargetTrigger> _triggersList;
         [SerializeField] private List<EnemySpawnTrigger> _spawnTriggers;
-        private List<IInitializableEnemySpawner> _spawners;
         private IInitializableEnemySpawnZoneController _controller;
+        private List<IInitializableEnemySpawner> _spawners;
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             new EnumerableQuery<IInitializable>(_spawners);
-
-        protected override void Prepare()
-        {
-            _controller = GetComponent<IInitializableEnemySpawnZoneController>();
-            _spawners = new List<IInitializableEnemySpawner>(GetComponentsInChildren<IInitializableEnemySpawner>());
-        }
 
         protected override void Initialize()
         {
             _controller.Initialize(new List<IEnemyTargetTrigger>(_triggersList), new List<IEnemySpawner>(_spawners),
                 new List<IEnemySpawnTrigger>(_spawnTriggers));
+        }
+
+        protected override void Prepare()
+        {
+            _controller = GetComponent<IInitializableEnemySpawnZoneController>();
+            _spawners = new List<IInitializableEnemySpawner>(GetComponentsInChildren<IInitializableEnemySpawner>());
         }
     }
 }

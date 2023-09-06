@@ -4,6 +4,5 @@ namespace Enemies.Spawn.Spawner
 {
     public interface IInitializableEnemySpawner : IInitializable, IEnemySpawner
     {
-        
     }
 }

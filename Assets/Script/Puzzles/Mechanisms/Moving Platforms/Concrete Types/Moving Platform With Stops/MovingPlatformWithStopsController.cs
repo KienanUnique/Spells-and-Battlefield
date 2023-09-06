@@ -10,9 +10,9 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
     public class MovingPlatformWithStopsController : MovingPlatformWithStickingBase,
         IInitializableMovingPlatformWithStopsController
     {
+        private int _currentWaypoint;
         private List<IMechanismsTrigger> _moveNextTriggers;
         private List<IMechanismsTrigger> _movePreviousTriggers;
-        private int _currentWaypoint;
 
         public void Initialize(List<IMechanismsTrigger> moveNextTriggers, List<IMechanismsTrigger> movePreviousTriggers,
             IMovingPlatformDataForControllerBase dataForControllerBase)
@@ -29,12 +29,12 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
         protected override void SubscribeOnEvents()
         {
             base.SubscribeOnEvents();
-            foreach (var trigger in _moveNextTriggers)
+            foreach (IMechanismsTrigger trigger in _moveNextTriggers)
             {
                 trigger.Triggered += TryMoveToNextWaypoint;
             }
 
-            foreach (var trigger in _movePreviousTriggers)
+            foreach (IMechanismsTrigger trigger in _movePreviousTriggers)
             {
                 trigger.Triggered += TryMoveToPreviousWaypoint;
             }
@@ -43,12 +43,12 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
         protected override void UnsubscribeFromEvents()
         {
             base.UnsubscribeFromEvents();
-            foreach (var trigger in _moveNextTriggers)
+            foreach (IMechanismsTrigger trigger in _moveNextTriggers)
             {
                 trigger.Triggered -= TryMoveToNextWaypoint;
             }
 
-            foreach (var trigger in _movePreviousTriggers)
+            foreach (IMechanismsTrigger trigger in _movePreviousTriggers)
             {
                 trigger.Triggered -= TryMoveToPreviousWaypoint;
             }
@@ -56,14 +56,22 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
 
         private void TryMoveToNextWaypoint()
         {
-            if (_isTriggersDisabled || _currentWaypoint >= LastWaypointIndex) return;
+            if (_isTriggersDisabled || _currentWaypoint >= LastWaypointIndex)
+            {
+                return;
+            }
+
             _currentWaypoint++;
             MoveToPosition(_waypoints[_currentWaypoint]);
         }
 
         private void TryMoveToPreviousWaypoint()
         {
-            if (_isTriggersDisabled || _currentWaypoint <= 0) return;
+            if (_isTriggersDisabled || _currentWaypoint <= 0)
+            {
+                return;
+            }
+
             _currentWaypoint--;
             MoveToPosition(_waypoints[_currentWaypoint]);
         }
@@ -73,8 +81,8 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
             _isTriggersDisabled = true;
             _parentObjectToMove.DOKill();
             _parentObjectToMove.DOMove(waypoint, _movementSpeed)
-                .ApplyCustomSetupForMovingPlatforms(gameObject, _settings, _delayInSeconds)
-                .OnKill(() => _isTriggersDisabled = false);
+                               .ApplyCustomSetupForMovingPlatforms(gameObject, _settings, _delayInSeconds)
+                               .OnKill(() => _isTriggersDisabled = false);
         }
     }
 }

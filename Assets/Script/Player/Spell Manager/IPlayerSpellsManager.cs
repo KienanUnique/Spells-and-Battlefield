@@ -2,7 +2,6 @@
 using Common.Animation_Data;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
-using Spells.Spell.Interfaces;
 using UnityEngine;
 
 namespace Player.Spell_Manager

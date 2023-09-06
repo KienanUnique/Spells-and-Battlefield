@@ -14,14 +14,16 @@ namespace Spells.Concrete_Types.Target_Selectors
         [SerializeField] private float _sphereRadius;
         [SerializeField] private bool _ignoreCaster;
 
-        public override ISpellTargetSelector GetImplementationObject() =>
-            new SphereEnemySelectorImplementation(_sphereRadius, _ignoreCaster);
+        public override ISpellTargetSelector GetImplementationObject()
+        {
+            return new SphereEnemySelectorImplementation(_sphereRadius, _ignoreCaster);
+        }
 
         private class SphereEnemySelectorImplementation : SpellTargetSelectorImplementationBase
         {
             private const int LayerMask = Physics.AllLayers;
-            private readonly float _sphereRadius;
             private readonly bool _ignoreCasterCollisions;
+            private readonly float _sphereRadius;
 
             public SphereEnemySelectorImplementation(float sphereRadius, bool ignoreCasterCollisions)
             {
@@ -32,9 +34,9 @@ namespace Spells.Concrete_Types.Target_Selectors
             public override List<ISpellInteractable> SelectTargets()
             {
                 var selectedTargets = new List<ISpellInteractable>();
-                var collidersInsideSphere = Physics.OverlapSphere(_spellRigidbody.position, _sphereRadius, LayerMask,
-                    QueryTriggerInteraction.Ignore);
-                var casterId = -1;
+                Collider[] collidersInsideSphere = Physics.OverlapSphere(_spellRigidbody.position, _sphereRadius,
+                    LayerMask, QueryTriggerInteraction.Ignore);
+                int casterId = -1;
                 var casterHaveId = false;
                 if (Caster is ISpellInteractable casterSpellInteractable)
                 {
@@ -42,11 +44,11 @@ namespace Spells.Concrete_Types.Target_Selectors
                     casterHaveId = true;
                 }
 
-                foreach (var hitCollider in collidersInsideSphere)
+                foreach (Collider hitCollider in collidersInsideSphere)
                 {
-                    if (hitCollider.gameObject.TryGetComponent<ISpellInteractable>(out var target) &&
-                        !(_ignoreCasterCollisions && casterHaveId && target.Id == casterId)
-                        && !selectedTargets.Exists(handledTarget => handledTarget.Id == target.Id))
+                    if (hitCollider.gameObject.TryGetComponent(out ISpellInteractable target) &&
+                        !(_ignoreCasterCollisions && casterHaveId && target.Id == casterId) &&
+                        !selectedTargets.Exists(handledTarget => handledTarget.Id == target.Id))
                     {
                         selectedTargets.Add(target);
                     }

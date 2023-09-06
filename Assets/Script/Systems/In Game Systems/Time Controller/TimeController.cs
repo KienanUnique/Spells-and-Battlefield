@@ -7,9 +7,9 @@ namespace Systems.In_Game_Systems.Time_Controller
 {
     public class TimeController : InitializableMonoBehaviourBase, ITimeController, IInitializableTimeController
     {
-        private float _timeScaleBeforePause = 1f;
         private IPlayerInformationProvider _playerInformationProvider;
         private ITimeControllerSettings _settings;
+        private float _timeScaleBeforePause = 1f;
 
         public void Initialize(IPlayerInformationProvider playerInformationProvider, ITimeControllerSettings settings)
         {

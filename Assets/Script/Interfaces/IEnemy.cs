@@ -1,9 +1,14 @@
-﻿using Enemies;
-using Enemies.Character;
+﻿using Enemies.Character;
 
 namespace Interfaces
 {
-    public interface IEnemy : ISpellInteractable, IEnemyCharacter, IIdHolder, IPhysicsInteractable, IMovable, IToMovingPlatformStickable, ICaster
+    public interface IEnemy : ISpellInteractable,
+        IEnemyCharacter,
+        IIdHolder,
+        IPhysicsInteractable,
+        IMovable,
+        IToMovingPlatformStickable,
+        ICaster
     {
     }
 }

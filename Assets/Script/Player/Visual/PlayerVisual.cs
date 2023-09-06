@@ -1,6 +1,5 @@
 using Common.Abstract_Bases.Visual;
 using Common.Animation_Data;
-using Player.Settings;
 using Player.Visual.Settings;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -23,8 +22,8 @@ namespace Player.Visual
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
         private readonly IPlayerVisualSettings _settings;
 
-        public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator, IPlayerVisualSettings settings) :
-            base(rigBuilder, characterAnimator)
+        public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator, IPlayerVisualSettings settings) : base(
+            rigBuilder, characterAnimator)
         {
             _settings = settings;
         }
@@ -32,8 +31,7 @@ namespace Player.Visual
         public void PlayUseSpellAnimation(IAnimationData spellAnimationData)
         {
             ApplyAnimationOverride(new AnimatorOverrideController(_characterAnimator.runtimeAnimatorController),
-                _settings.EmptyUseSpellAnimation,
-                spellAnimationData.Clip);
+                _settings.EmptyUseSpellAnimation, spellAnimationData.Clip);
             _characterAnimator.SetFloat(UseSpellFloatSpeedHash, spellAnimationData.AnimationSpeed);
             _characterAnimator.SetTrigger(AttackTriggerHash);
         }

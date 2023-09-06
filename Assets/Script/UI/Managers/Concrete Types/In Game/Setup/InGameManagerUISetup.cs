@@ -16,27 +16,22 @@ namespace UI.Managers.Concrete_Types.In_Game.Setup
         [SerializeField] private GameOverPresenter _gameOverMenu;
         [SerializeField] private PauseInGameMenuPresenter _pauseMenu;
         [SerializeField] private LevelCompletedMenuPresenter _levelCompletedMenu;
-
-        private IUIWindowsStackManager _stackManager;
         private IInitializableInGameManagerUI _presenter;
 
-        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization => new List<IInitializable>
-        {
-            _gameplayUI,
-            _gameOverMenu,
-            _pauseMenu,
-            _levelCompletedMenu
-        };
+        private IUIWindowsStackManager _stackManager;
 
-        protected override void Prepare()
-        {
-            _presenter = GetComponent<IInitializableInGameManagerUI>();
-        }
+        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
+            new List<IInitializable> {_gameplayUI, _gameOverMenu, _pauseMenu, _levelCompletedMenu};
 
         protected override void Initialize()
         {
             _stackManager = new UIWindowsStackManager(_gameplayUI);
             _presenter.Initialize(_gameplayUI, _gameOverMenu, _pauseMenu, _levelCompletedMenu, _stackManager);
+        }
+
+        protected override void Prepare()
+        {
+            _presenter = GetComponent<IInitializableInGameManagerUI>();
         }
     }
 }

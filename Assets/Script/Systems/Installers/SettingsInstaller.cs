@@ -61,102 +61,54 @@ namespace Systems.Installers
 
         private void BindSystemSettings()
         {
-            Container
-                .Bind<ITimeControllerSettings>()
-                .FromInstance(_timeControllerSettings)
-                .AsSingle();
+            Container.Bind<ITimeControllerSettings>().FromInstance(_timeControllerSettings).AsSingle();
 
-            Container
-                .Bind<IPostProcessingControllerSettings>()
-                .FromInstance(_postProcessingControllerSettings)
-                .AsSingle();
+            Container.Bind<IPostProcessingControllerSettings>()
+                     .FromInstance(_postProcessingControllerSettings)
+                     .AsSingle();
 
-            Container
-                .Bind<IInputManagerSettings>()
-                .FromInstance(_inputManagerSettings)
-                .AsSingle();
+            Container.Bind<IInputManagerSettings>().FromInstance(_inputManagerSettings).AsSingle();
         }
 
         private void BindPuzzlesSettings()
         {
-            Container
-                .Bind<IPlateSettings>()
-                .FromInstance(_plateSettings)
-                .AsSingle();
+            Container.Bind<IPlateSettings>().FromInstance(_plateSettings).AsSingle();
 
-            Container
-                .Bind<IMovingPlatformsSettings>()
-                .FromInstance(_movingPlatformSettings)
-                .AsSingle();
+            Container.Bind<IMovingPlatformsSettings>().FromInstance(_movingPlatformSettings).AsSingle();
 
-            Container
-                .Bind<IExtendableObjectsSettings>()
-                .FromInstance(_extendableObjectsSettings)
-                .AsSingle();
+            Container.Bind<IExtendableObjectsSettings>().FromInstance(_extendableObjectsSettings).AsSingle();
         }
 
         private void BindPlayerSettings()
         {
-            Container
-                .Bind<IPlayerSettings>()
-                .FromInstance(_playerSettings)
-                .AsSingle();
+            Container.Bind<IPlayerSettings>().FromInstance(_playerSettings).AsSingle();
         }
 
         private void BindEnemiesSettings()
         {
-            Container
-                .Bind<IGeneralEnemySettings>()
-                .FromInstance(_generalEnemySettings)
-                .AsSingle();
+            Container.Bind<IGeneralEnemySettings>().FromInstance(_generalEnemySettings).AsSingle();
         }
 
         private void BindUISettings()
         {
-            Container
-                .Bind<IDefaultUIElementViewSettings>()
-                .FromInstance(_defaultUIElementViewSettings)
-                .AsSingle();
+            Container.Bind<IDefaultUIElementViewSettings>().FromInstance(_defaultUIElementViewSettings).AsSingle();
 
-            Container
-                .Bind<ISpellPanelSettings>()
-                .FromInstance(_spellPanelSettings)
-                .AsSingle();
-            Container
-                .Bind<IPopupTextSettings>()
-                .FromInstance(_popupTextSettings)
-                .AsSingle();
-            Container
-                .Bind<IBarViewWithAdditionalDisplayOfChangesSettings>()
-                .FromInstance(_barViewWithAdditionalDisplayOfChangesSettings)
-                .AsSingle();
-            Container
-                .Bind<IFillingBarSettings>()
-                .FromInstance(_fillingBarSettings)
-                .AsSingle();
-            Container
-                .Bind<ILoadingWindowSettings>()
-                .FromInstance(_loadingWindowSettings)
-                .AsSingle();
+            Container.Bind<ISpellPanelSettings>().FromInstance(_spellPanelSettings).AsSingle();
+            Container.Bind<IPopupTextSettings>().FromInstance(_popupTextSettings).AsSingle();
+            Container.Bind<IBarViewWithAdditionalDisplayOfChangesSettings>()
+                     .FromInstance(_barViewWithAdditionalDisplayOfChangesSettings)
+                     .AsSingle();
+            Container.Bind<IFillingBarSettings>().FromInstance(_fillingBarSettings).AsSingle();
+            Container.Bind<ILoadingWindowSettings>().FromInstance(_loadingWindowSettings).AsSingle();
         }
-
 
         private void BindGeneralSettings()
         {
-            Container
-                .Bind<IGroundLayerMaskSetting>()
-                .FromInstance(_groundLayerMaskSetting)
-                .AsSingle();
+            Container.Bind<IGroundLayerMaskSetting>().FromInstance(_groundLayerMaskSetting).AsSingle();
 
-            Container
-                .Bind<IPickableItemsSettings>()
-                .FromInstance(_pickableItemsSettings)
-                .AsSingle();
+            Container.Bind<IPickableItemsSettings>().FromInstance(_pickableItemsSettings).AsSingle();
 
-            Container
-                .Bind<ISpellTypesSetting>()
-                .FromInstance(_spellTypesSetting)
-                .AsSingle();
+            Container.Bind<ISpellTypesSetting>().FromInstance(_spellTypesSetting).AsSingle();
         }
     }
 }

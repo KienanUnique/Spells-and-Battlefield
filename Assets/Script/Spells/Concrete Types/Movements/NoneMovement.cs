@@ -11,7 +11,10 @@ namespace Spells.Concrete_Types.Movements
         menuName = ScriptableObjectsMenuDirectories.SpellMovementDirectory + "None Movement", order = 0)]
     public class NoneMovement : SpellMovementScriptableObject
     {
-        public override ISpellMovementWithLookPointCalculator GetImplementationObject() => new NoneMovementImplementation();
+        public override ISpellMovementWithLookPointCalculator GetImplementationObject()
+        {
+            return new NoneMovementImplementation();
+        }
 
         private class NoneMovementImplementation : ISpellMovementWithLookPointCalculator
         {

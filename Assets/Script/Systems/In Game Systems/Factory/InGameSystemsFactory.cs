@@ -10,8 +10,7 @@ namespace Systems.In_Game_Systems.Factory
         private readonly IInGameSystemsPrefabProvider _inGameSystemsPrefabProvider;
 
         public InGameSystemsFactory(IInstantiator instantiator, Transform parentTransform,
-            IInGameSystemsPrefabProvider inGameSystemsPrefabProvider) : base(instantiator,
-            parentTransform)
+            IInGameSystemsPrefabProvider inGameSystemsPrefabProvider) : base(instantiator, parentTransform)
         {
             _inGameSystemsPrefabProvider = inGameSystemsPrefabProvider;
         }

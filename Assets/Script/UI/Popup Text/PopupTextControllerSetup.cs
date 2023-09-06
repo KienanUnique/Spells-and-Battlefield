@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases;
-using Common.Readonly_Transform;
 using Interfaces;
 using TMPro;
 using UI.Popup_Text.Settings;
@@ -16,12 +15,12 @@ namespace UI.Popup_Text
     {
         [SerializeField] private TMP_Text _text;
         [SerializeField] private Transform _mainTransform;
-        private IPopupTextSettings _settings;
-        private IPlayerInformationProvider _playerInformationProvider;
         private IInitializablePopupTextController _controller;
+        private IPlayerInformationProvider _playerInformationProvider;
+        private IPopupTextSettings _settings;
 
         [Inject]
-        private void Construct(IPopupTextSettings settings, IPlayerInformationProvider playerInformationProvider)
+        private void GetDependencies(IPopupTextSettings settings, IPlayerInformationProvider playerInformationProvider)
         {
             _settings = settings;
             _playerInformationProvider = playerInformationProvider;
@@ -30,14 +29,14 @@ namespace UI.Popup_Text
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             Enumerable.Empty<IInitializable>();
 
-        protected override void Prepare()
-        {
-            _controller = GetComponent<IInitializablePopupTextController>();
-        }
-
         protected override void Initialize()
         {
             _controller.Initialize(_text, _mainTransform, _settings, _playerInformationProvider.CameraTransform);
+        }
+
+        protected override void Prepare()
+        {
+            _controller = GetComponent<IInitializablePopupTextController>();
         }
     }
 }

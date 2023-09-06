@@ -19,23 +19,23 @@ namespace Puzzles.Mechanisms.Moving_Platforms
         private List<Vector3> _waypoints;
 
         [Inject]
-        private void Construct(IMovingPlatformsSettings settings)
+        private void GetDependencies(IMovingPlatformsSettings settings)
         {
             _settings = settings;
         }
 
         protected abstract void Initialize(IMovingPlatformDataForControllerBase dataForControllerBase);
 
-        protected override void Prepare()
-        {
-            _waypoints = new List<Vector3>();
-            _waypointTransforms.ForEach(waypointTransform => _waypoints.Add(waypointTransform.position));
-        }
-
         protected sealed override void Initialize()
         {
             Initialize(new MovingPlatformDataForControllerBase(_delayInSeconds, _settings, _movementSpeed, _waypoints,
                 _objectToMove, _platformColliderTrigger));
+        }
+
+        protected override void Prepare()
+        {
+            _waypoints = new List<Vector3>();
+            _waypointTransforms.ForEach(waypointTransform => _waypoints.Add(waypointTransform.position));
         }
     }
 }

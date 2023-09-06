@@ -13,8 +13,10 @@ namespace UI.Window.Model
             Manager = manager;
         }
 
-        public int Id => _idHolder.Id;
         public abstract bool CanBeClosedByPlayer { get; }
+
+        public int Id => _idHolder.Id;
+
         protected IUIWindowManager Manager { get; }
 
         public virtual void Appear()
@@ -25,6 +27,9 @@ namespace UI.Window.Model
         {
         }
 
-        public bool Equals(IIdHolder other) => _idHolder.Equals(other);
+        public bool Equals(IIdHolder other)
+        {
+            return _idHolder.Equals(other);
+        }
     }
 }

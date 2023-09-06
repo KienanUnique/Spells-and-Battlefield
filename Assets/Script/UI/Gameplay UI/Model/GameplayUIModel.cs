@@ -21,7 +21,7 @@ namespace UI.Gameplay_UI.Model
         public override void Appear()
         {
             base.Appear();
-            foreach (var uiElement in _gameplayUIElements)
+            foreach (IUIElement uiElement in _gameplayUIElements)
             {
                 uiElement.Appear();
             }
@@ -30,7 +30,7 @@ namespace UI.Gameplay_UI.Model
         public override void Disappear()
         {
             base.Disappear();
-            foreach (var uiElement in _gameplayUIElements)
+            foreach (IUIElement uiElement in _gameplayUIElements)
             {
                 uiElement.Disappear();
             }

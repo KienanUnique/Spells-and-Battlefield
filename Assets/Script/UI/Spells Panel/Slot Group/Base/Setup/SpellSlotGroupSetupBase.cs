@@ -7,7 +7,6 @@ using Player.Spell_Manager;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using UI.Spells_Panel.Settings;
-using UI.Spells_Panel.Settings.Sections;
 using UI.Spells_Panel.Settings.Sections.Group;
 using UI.Spells_Panel.Slot.Presenter;
 using UI.Spells_Panel.Slot_Group.Base.Model;
@@ -26,14 +25,14 @@ namespace UI.Spells_Panel.Slot_Group.Base.Setup
     {
         [SerializeField] private List<SpellSlotPresenter> _slots;
         [SerializeField] private RectTransform _rectTransform;
-        private TPresenter _presenter;
         private List<IDisableable> _itemsNeedDisabling;
         private IPlayerSpellsManagerInformation _managerInformation;
         private IPlayerInitializationStatus _playerInitializationStatus;
+        private TPresenter _presenter;
         private ISpellGroupSection _settings;
 
         [Inject]
-        public void Construct(ISpellPanelSettings settings, IPlayerSpellsManagerInformation managerInformation,
+        public void GetDependencies(ISpellPanelSettings settings, IPlayerSpellsManagerInformation managerInformation,
             IPlayerInitializationStatus playerInitializationStatus)
         {
             _settings = settings.GroupSection;
@@ -48,7 +47,7 @@ namespace UI.Spells_Panel.Slot_Group.Base.Setup
             get
             {
                 var initializableObjects = new List<IInitializable>();
-                foreach (var slot in _slots)
+                foreach (SpellSlotPresenter slot in _slots)
                 {
                     if (slot is IInitializable initializableSlot)
                     {
@@ -62,34 +61,33 @@ namespace UI.Spells_Panel.Slot_Group.Base.Setup
             }
         }
 
-        protected abstract TModel CreateModel(
-            IEnumerable<ISlotInformation> slotsInformation,
+        protected abstract TModel CreateModel(IEnumerable<ISlotInformation> slotsInformation,
             IEnumerable<SpellSlotPresenter> slots, IReadonlyListWithReactionOnChange<ISpell> spellsGroupToRepresent);
 
-        protected abstract TView CreateView(RectTransform rectTransform,
-            ISpellGroupSection settings, int count);
+        protected abstract TView CreateView(RectTransform rectTransform, ISpellGroupSection settings, int count);
+
+        protected override void Initialize()
+        {
+            var slotsInformation = new SortedSet<ISlotInformation>();
+            foreach (SpellSlotPresenter slot in _slots)
+            {
+                slotsInformation.Add(slot.CurrentSlotInformation);
+            }
+
+            IReadonlyListWithReactionOnChange<ISpell> spellsGroupToRepresent =
+                _managerInformation.Spells[TypeToRepresent];
+
+            TModel model = CreateModel(slotsInformation, _slots, spellsGroupToRepresent);
+            TView view = CreateView(_rectTransform, _settings, spellsGroupToRepresent.Count);
+
+            _itemsNeedDisabling.Add(model);
+            _presenter.Initialize(model, view, _itemsNeedDisabling);
+        }
 
         protected override void Prepare()
         {
             _presenter = GetComponent<TPresenter>();
             _itemsNeedDisabling = new List<IDisableable>();
-        }
-
-        protected override void Initialize()
-        {
-            var slotsInformation = new SortedSet<ISlotInformation>();
-            foreach (var slot in _slots)
-            {
-                slotsInformation.Add(slot.CurrentSlotInformation);
-            }
-
-            var spellsGroupToRepresent = _managerInformation.Spells[TypeToRepresent];
-
-            var model = CreateModel(slotsInformation, _slots, spellsGroupToRepresent);
-            var view = CreateView(_rectTransform, _settings, spellsGroupToRepresent.Count);
-
-            _itemsNeedDisabling.Add(model);
-            _presenter.Initialize(model, view, _itemsNeedDisabling);
         }
     }
 }

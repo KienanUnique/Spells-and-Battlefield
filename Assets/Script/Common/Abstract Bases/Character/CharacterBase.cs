@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
 using Common.Mechanic_Effects.Continuous_Effect;
-using Common.Settings.Sections;
 using Common.Settings.Sections.Character;
 using Interfaces;
 
@@ -10,11 +9,11 @@ namespace Common.Abstract_Bases.Character
 {
     public abstract class CharacterBase : BaseWithDisabling, ICharacterBase
     {
-        protected readonly HitPointsCalculator _hitPointsCalculator;
+        protected readonly ICharacterSettings _characterSettings;
         protected readonly ICoroutineStarter _coroutineStarter;
         protected readonly List<IAppliedContinuousEffect> _currentEffects;
-        protected readonly ICharacterSettings _characterSettings;
         protected readonly ValueWithReactionOnChange<CharacterState> _currentState;
+        protected readonly HitPointsCalculator _hitPointsCalculator;
 
         protected CharacterBase(ICoroutineStarter coroutineStarter, ICharacterSettings characterSettings)
         {
@@ -31,24 +30,36 @@ namespace Common.Abstract_Bases.Character
         public CharacterState CurrentCharacterState => _currentState.Value;
         public float HitPointCountRatio => _hitPointsCalculator.HitPointCountRatio;
 
-        public virtual void HandleHeal(int countOfHitPoints)
+        public virtual void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {
-            if (_currentState.Value == CharacterState.Dead) return;
-            _hitPointsCalculator.HandleHeal(countOfHitPoints);
+            if (_currentState.Value == CharacterState.Dead)
+            {
+                return;
+            }
+
+            _currentEffects.Add(effect);
+            effect.EffectEnded += OnEffectEnded;
+            effect.Start(_coroutineStarter);
         }
 
         public virtual void HandleDamage(int countOfHitPoints)
         {
-            if (_currentState.Value == CharacterState.Dead) return;
+            if (_currentState.Value == CharacterState.Dead)
+            {
+                return;
+            }
+
             _hitPointsCalculator.HandleDamage(countOfHitPoints);
         }
 
-        public virtual void ApplyContinuousEffect(IAppliedContinuousEffect effect)
+        public virtual void HandleHeal(int countOfHitPoints)
         {
-            if (_currentState.Value == CharacterState.Dead) return;
-            _currentEffects.Add(effect);
-            effect.EffectEnded += OnEffectEnded;
-            effect.Start(_coroutineStarter);
+            if (_currentState.Value == CharacterState.Dead)
+            {
+                return;
+            }
+
+            _hitPointsCalculator.HandleHeal(countOfHitPoints);
         }
 
         protected sealed override void SubscribeOnEvents()
@@ -86,7 +97,7 @@ namespace Common.Abstract_Bases.Character
         {
             if (newState == CharacterState.Dead)
             {
-                foreach (var effect in _currentEffects)
+                foreach (IAppliedContinuousEffect effect in _currentEffects)
                 {
                     effect.EffectEnded -= OnEffectEnded;
                     effect.End();
@@ -102,9 +113,6 @@ namespace Common.Abstract_Bases.Character
         {
             private readonly int _maximumCountOfHitPoints;
 
-            public float HitPointCountRatio => 1.0f * CurrentCountOfHitPoints / _maximumCountOfHitPoints;
-            public int CurrentCountOfHitPoints { get; private set; }
-
             public HitPointsCalculator(int maximumCountOfHitPoints)
             {
                 _maximumCountOfHitPoints = maximumCountOfHitPoints;
@@ -113,6 +121,9 @@ namespace Common.Abstract_Bases.Character
 
             public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
 
+            public float HitPointCountRatio => 1.0f * CurrentCountOfHitPoints / _maximumCountOfHitPoints;
+            public int CurrentCountOfHitPoints { get; private set; }
+
             public void HandleDamage(int countOfHitPoints)
             {
                 if (countOfHitPoints <= 0)
@@ -120,7 +131,7 @@ namespace Common.Abstract_Bases.Character
                     return;
                 }
 
-                var oldCountOfHitPoints = CurrentCountOfHitPoints;
+                int oldCountOfHitPoints = CurrentCountOfHitPoints;
                 CurrentCountOfHitPoints -= countOfHitPoints;
                 if (CurrentCountOfHitPoints < 0)
                 {
@@ -138,7 +149,7 @@ namespace Common.Abstract_Bases.Character
                     return;
                 }
 
-                var oldCountOfHitPoints = CurrentCountOfHitPoints;
+                int oldCountOfHitPoints = CurrentCountOfHitPoints;
                 CurrentCountOfHitPoints += countOfHitPoints;
                 if (CurrentCountOfHitPoints > _maximumCountOfHitPoints)
                 {

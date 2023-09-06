@@ -1,5 +1,4 @@
-﻿using Common;
-using Common.Abstract_Bases;
+﻿using Common.Abstract_Bases;
 
 namespace Spells.Abstract_Types.Scriptable_Objects.Parts
 {

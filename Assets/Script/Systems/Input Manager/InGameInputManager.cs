@@ -15,15 +15,18 @@ namespace Systems.Input_Manager
 
         private MainControls _mainControls;
         private float _mouseX, _mouseY;
-        private ISpellTypesSetting _spellTypesSetting;
         private IInputManagerSettings _settings;
+        private ISpellTypesSetting _spellTypesSetting;
 
         [Inject]
-        private void Construct(ISpellTypesSetting spellTypesSetting, IInputManagerSettings settings)
+        private void GetDependencies(ISpellTypesSetting spellTypesSetting, IInputManagerSettings settings)
         {
             _spellTypesSetting = spellTypesSetting;
             _settings = settings;
         }
+
+        public event Action GamePauseInputted;
+        public event Action CloseCurrentWindow;
 
         public event Action JumpInputted;
         public event Action StartDashAimingInputted;
@@ -32,15 +35,6 @@ namespace Systems.Input_Manager
         public event Action<Vector2> MoveInputted;
         public event Action<Vector2> LookInputted;
         public event Action<ISpellType> SelectSpellType;
-        public event Action GamePauseInputted;
-        public event Action CloseCurrentWindow;
-
-        private void OnJumpPerformed(InputAction.CallbackContext obj) => JumpInputted?.Invoke();
-        private void OnDashStarted(InputAction.CallbackContext obj) => StartDashAimingInputted?.Invoke();
-        private void OnDashCanceled(InputAction.CallbackContext obj) => DashInputted?.Invoke();
-        private void OnUseSpellPerformed(InputAction.CallbackContext obj) => UseSpellInputted?.Invoke();
-        private void OnPauseGamePerformed(InputAction.CallbackContext obj) => GamePauseInputted?.Invoke();
-        private void OnContinueGamePerformed(InputAction.CallbackContext obj) => CloseCurrentWindow?.Invoke();
 
         public void SwitchToUIInput()
         {
@@ -98,6 +92,36 @@ namespace Systems.Input_Manager
             _mainControls.UI.ContinueGame.performed -= OnContinueGamePerformed;
         }
 
+        private void OnJumpPerformed(InputAction.CallbackContext obj)
+        {
+            JumpInputted?.Invoke();
+        }
+
+        private void OnDashStarted(InputAction.CallbackContext obj)
+        {
+            StartDashAimingInputted?.Invoke();
+        }
+
+        private void OnDashCanceled(InputAction.CallbackContext obj)
+        {
+            DashInputted?.Invoke();
+        }
+
+        private void OnUseSpellPerformed(InputAction.CallbackContext obj)
+        {
+            UseSpellInputted?.Invoke();
+        }
+
+        private void OnPauseGamePerformed(InputAction.CallbackContext obj)
+        {
+            GamePauseInputted?.Invoke();
+        }
+
+        private void OnContinueGamePerformed(InputAction.CallbackContext obj)
+        {
+            CloseCurrentWindow?.Invoke();
+        }
+
         private void OnPerformedSwitchToLastChanceSpellType(InputAction.CallbackContext obj)
         {
             SelectSpellType?.Invoke(_spellTypesSetting.LastChanceSpellType);
@@ -130,7 +154,8 @@ namespace Systems.Input_Manager
             {
                 readDirection = _mainControls.Character.Move.ReadValue<Vector2>().normalized;
                 MoveInputted?.Invoke(readDirection.magnitude > MinimalInputMagnitude ? readDirection : Vector2.zero);
-                LookInputted?.Invoke(_settings.InGameMouseSensitivity * Time.unscaledDeltaTime *
+                LookInputted?.Invoke(_settings.InGameMouseSensitivity *
+                                     Time.unscaledDeltaTime *
                                      _mainControls.Character.Look.ReadValue<Vector2>());
                 yield return null;
             }

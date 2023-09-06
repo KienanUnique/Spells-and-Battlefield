@@ -17,12 +17,12 @@ namespace UI.Bar.Setup.Concrete_Types
         [SerializeField] private Image _foreground;
         [SerializeField] private Image _foregroundBackground;
         private IPlayerInformationProvider _playerInformationProvider;
+        private IPlayerInitializationStatus _playerInitializationStatus;
         private IBarViewWithAdditionalDisplayOfChangesSettings _settings;
         private IBarView _view;
-        private IPlayerInitializationStatus _playerInitializationStatus;
 
         [Inject]
-        private void Construct(IPlayerInformationProvider playerInformationProvider,
+        private void GetDependencies(IPlayerInformationProvider playerInformationProvider,
             IBarViewWithAdditionalDisplayOfChangesSettings settings,
             IPlayerInitializationStatus playerInitializationStatus)
         {
@@ -34,17 +34,17 @@ namespace UI.Bar.Setup.Concrete_Types
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             new List<IInitializable> {_playerInitializationStatus};
 
-        protected override void Prepare()
-        {
-            base.Prepare();
-            _view = new BarViewWithAdditionalDisplayOfChanges(_foreground, _foregroundBackground, _settings);
-        }
-
         protected override void Initialize()
         {
             var model = new HitPointsBarModel(_playerInformationProvider);
             AddDisableable(model);
             InitializePresenter(model, _view);
+        }
+
+        protected override void Prepare()
+        {
+            base.Prepare();
+            _view = new BarViewWithAdditionalDisplayOfChanges(_foreground, _foregroundBackground, _settings);
         }
     }
 }

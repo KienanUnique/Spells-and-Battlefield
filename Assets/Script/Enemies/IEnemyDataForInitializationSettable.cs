@@ -9,6 +9,8 @@ namespace Enemies
     public interface IEnemySetup
     {
         public IEnemy InitializedEnemy { get; }
-        public void SetDataForInitialization(IEnemySettings settings, IPickableItemDataForCreating itemToDrop, List<IEnemyTargetTrigger> targetTriggers);
+
+        public void SetDataForInitialization(IEnemySettings settings, IPickableItemDataForCreating itemToDrop,
+            List<IEnemyTargetTrigger> targetTriggers);
     }
 }

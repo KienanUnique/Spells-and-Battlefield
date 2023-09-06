@@ -9,7 +9,10 @@ namespace Common.Mechanic_Effects.Concrete_Types
         menuName = ScriptableObjectsMenuDirectories.MechanicsDirectory + "None Mechanic", order = 0)]
     public class NoneMechanic : MechanicEffectScriptableObject
     {
-        public override IMechanicEffect GetImplementationObject() => new NoneMechanicImplementation();
+        public override IMechanicEffect GetImplementationObject()
+        {
+            return new NoneMechanicImplementation();
+        }
 
         private class NoneMechanicImplementation : IMechanicEffect
         {

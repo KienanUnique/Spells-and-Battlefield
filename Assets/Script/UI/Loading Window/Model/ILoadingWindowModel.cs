@@ -2,7 +2,7 @@
 
 namespace UI.Loading_Window.Model
 {
-    public interface ILoadingWindowModel : IUIWindowModel 
+    public interface ILoadingWindowModel : IUIWindowModel
     {
     }
 }

@@ -8,8 +8,8 @@ namespace Common.Abstract_Bases.Checkers
 {
     public abstract class CheckerBase : InitializableMonoBehaviourBase, IChecker
     {
-        private ValueWithReactionOnChange<bool> _isCollidingWithReaction;
         private List<Collider> _colliders;
+        private ValueWithReactionOnChange<bool> _isCollidingWithReaction;
 
         public event Action<bool> ContactStateChanged;
 
@@ -17,6 +17,15 @@ namespace Common.Abstract_Bases.Checkers
         public ReadOnlyCollection<Collider> Colliders => new ReadOnlyCollection<Collider>(_colliders);
         protected abstract LayerMask NeedObjectsMask { get; }
         protected abstract void SpecialAwakeAction();
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _colliders = new List<Collider>();
+            _isCollidingWithReaction = new ValueWithReactionOnChange<bool>(false);
+            SpecialAwakeAction();
+            SetInitializedStatus();
+        }
 
         protected override void SubscribeOnEvents()
         {
@@ -26,15 +35,6 @@ namespace Common.Abstract_Bases.Checkers
         protected override void UnsubscribeFromEvents()
         {
             _isCollidingWithReaction.AfterValueChanged -= OnAfterCollidingStateChanged;
-        }
-
-        protected override void Awake()
-        {
-            base.Awake();
-            _colliders = new List<Collider>();
-            _isCollidingWithReaction = new ValueWithReactionOnChange<bool>(false);
-            SpecialAwakeAction();
-            SetInitializedStatus();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -48,7 +48,11 @@ namespace Common.Abstract_Bases.Checkers
 
         private void OnTriggerExit(Collider other)
         {
-            if (!IsNeedCollider(other)) return;
+            if (!IsNeedCollider(other))
+            {
+                return;
+            }
+
             _colliders.Remove(other);
             if (_colliders.Count == 0)
             {

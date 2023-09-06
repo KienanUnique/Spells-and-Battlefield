@@ -6,6 +6,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform
 {
     public interface IInitializableMovingPlatformController
     {
-        public void Initialize(List<IMechanismsTrigger> triggers, IMovingPlatformDataForControllerBase dataForControllerBase);
+        public void Initialize(List<IMechanismsTrigger> triggers,
+            IMovingPlatformDataForControllerBase dataForControllerBase);
     }
 }

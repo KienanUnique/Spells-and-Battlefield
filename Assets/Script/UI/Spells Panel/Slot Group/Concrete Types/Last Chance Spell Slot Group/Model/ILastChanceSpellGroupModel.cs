@@ -4,6 +4,5 @@ namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Last_Chance_Spell_Slot_Group
 {
     public interface ILastChanceSpellGroupModel : ISpellSlotGroupModelBase
     {
-        
     }
 }

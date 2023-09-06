@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Common.Abstract_Bases;
 using Common.Abstract_Bases.Disableable;
 using Player;
 using Player.Spell_Manager;
@@ -18,13 +17,13 @@ namespace UI.Spells_Panel.Panel.Setup
     public class SpellPanelSetup : UIElementPresenterSetup
     {
         [SerializeField] private List<SpellSlotGroupPresenterBase> _spellGroups;
+        private IPlayerInitializationStatus _playerInitializationStatus;
         private IPlayerSpellsManagerInformation _playerManagerInformation;
         private IInitializableSpellPanelPresenter _presenter;
-        private IPlayerInitializationStatus _playerInitializationStatus;
         private IUIElementView _view;
 
         [Inject]
-        private void Construct(IPlayerSpellsManagerInformation managerInformation,
+        private void GetDependencies(IPlayerSpellsManagerInformation managerInformation,
             IPlayerInitializationStatus playerInitializationStatus)
         {
             _playerManagerInformation = managerInformation;
@@ -36,7 +35,7 @@ namespace UI.Spells_Panel.Panel.Setup
             get
             {
                 var initializableObjects = new List<IInitializable>();
-                foreach (var slot in _spellGroups)
+                foreach (SpellSlotGroupPresenterBase slot in _spellGroups)
                 {
                     if (slot is IInitializable initializableSlot)
                     {
@@ -50,16 +49,16 @@ namespace UI.Spells_Panel.Panel.Setup
             }
         }
 
-        protected override void Prepare()
-        {
-            _view = new DefaultUIElementView(transform, DefaultUIElementViewSettings);
-            _presenter = GetComponent<IInitializableSpellPanelPresenter>();
-        }
-
         protected override void Initialize()
         {
             var model = new SpellPanelModel(new List<ISpellSlotGroup>(_spellGroups), _playerManagerInformation);
             _presenter.Initialize(_view, new List<IDisableable> {model});
+        }
+
+        protected override void Prepare()
+        {
+            _view = new DefaultUIElementView(transform, DefaultUIElementViewSettings);
+            _presenter = GetComponent<IInitializableSpellPanelPresenter>();
         }
     }
 }

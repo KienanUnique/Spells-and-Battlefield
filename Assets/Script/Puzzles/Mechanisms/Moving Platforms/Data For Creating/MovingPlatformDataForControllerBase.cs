@@ -8,8 +8,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating
     public class MovingPlatformDataForControllerBase : IMovingPlatformDataForControllerBase
     {
         public MovingPlatformDataForControllerBase(float delayInSeconds, IMovingPlatformsSettings settings,
-            float movementSpeed, List<Vector3> waypoints, Transform objectToMove,
-            IColliderTrigger platformCollider)
+            float movementSpeed, List<Vector3> waypoints, Transform objectToMove, IColliderTrigger platformCollider)
         {
             DelayInSeconds = delayInSeconds;
             Settings = settings;

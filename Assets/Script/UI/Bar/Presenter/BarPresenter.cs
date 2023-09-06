@@ -22,12 +22,18 @@ namespace UI.Bar.Presenter
 
         protected override void SubscribeOnEvents()
         {
-            if (_model != null) _model.FillAmountChanged += UpdateFillAmount;
+            if (_model != null)
+            {
+                _model.FillAmountChanged += UpdateFillAmount;
+            }
         }
 
         protected override void UnsubscribeFromEvents()
         {
-            if (_model != null) _model.FillAmountChanged -= UpdateFillAmount;
+            if (_model != null)
+            {
+                _model.FillAmountChanged -= UpdateFillAmount;
+            }
         }
 
         private void UpdateFillAmount(float newFillAmount)

@@ -1,5 +1,4 @@
-﻿using Common.Abstract_Bases.Factories;
-using Common.Abstract_Bases.Factories.Object_Pool;
+﻿using Common.Abstract_Bases.Factories.Object_Pool;
 using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
 using UI.Popup_Text.Data_For_Activation;
 using UnityEngine;
@@ -9,7 +8,8 @@ using IPrefabProvider = Common.IPrefabProvider;
 namespace UI.Popup_Text.Factory
 {
     public class PopupTextFactory : ObjectPoolingFactoryWithInstantiatorBase<IPopupTextController,
-        IPopupTextControllerDataForActivation>, IPopupTextFactory
+            IPopupTextControllerDataForActivation>,
+        IPopupTextFactory
     {
         public PopupTextFactory(IInstantiator instantiator, Transform parentTransform, int needItemsCount,
             IPrefabProvider prefabProvider, IPositionDataForInstantiation defaultPositionDataForInstantiation) : base(

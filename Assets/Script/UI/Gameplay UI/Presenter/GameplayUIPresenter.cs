@@ -17,6 +17,11 @@ namespace UI.Gameplay_UI.Presenter
         public int Id => _model.Id;
         public bool CanBeClosedByPlayer => _model.CanBeClosedByPlayer;
 
+        public bool Equals(IIdHolder other)
+        {
+            return _model.Equals(other);
+        }
+
         public void Appear()
         {
             _model.Appear();
@@ -26,8 +31,6 @@ namespace UI.Gameplay_UI.Presenter
         {
             _model.Disappear();
         }
-
-        public bool Equals(IIdHolder other) => _model.Equals(other);
 
         protected override void SubscribeOnEvents()
         {

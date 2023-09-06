@@ -13,11 +13,10 @@ namespace Systems.Installers
 
         public override void InstallBindings()
         {
-            Container
-                .Bind(new List<Type> {typeof(IInGameManagerUI), typeof(IUIManagerInitializationStatus)})
-                .FromComponentInNewPrefab(_inGameUIPrefabProvider.Prefab)
-                .AsSingle()
-                .NonLazy();
+            Container.Bind(new List<Type> {typeof(IInGameManagerUI), typeof(IUIManagerInitializationStatus)})
+                     .FromComponentInNewPrefab(_inGameUIPrefabProvider.Prefab)
+                     .AsSingle()
+                     .NonLazy();
         }
     }
 }

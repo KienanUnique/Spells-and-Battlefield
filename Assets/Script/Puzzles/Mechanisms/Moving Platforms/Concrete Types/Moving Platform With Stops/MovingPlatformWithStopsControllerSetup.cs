@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
 using Puzzles.Mechanisms_Triggers;
 using UnityEngine;
-using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
 namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_With_Stops
 {
@@ -25,8 +25,8 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
 
         protected override void Initialize(IMovingPlatformDataForControllerBase dataForControllerBase)
         {
-            _controller.Initialize(new List<IMechanismsTrigger>(_moveNextTriggers), new List<IMechanismsTrigger>(_movePreviousTriggers),
-                dataForControllerBase);
+            _controller.Initialize(new List<IMechanismsTrigger>(_moveNextTriggers),
+                new List<IMechanismsTrigger>(_movePreviousTriggers), dataForControllerBase);
         }
 
         protected override void Prepare()

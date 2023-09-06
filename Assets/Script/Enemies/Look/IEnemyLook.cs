@@ -9,7 +9,7 @@ namespace Enemies.Look
         public void SetLookPointCalculator(ILookPointCalculator lookPointCalculator);
         public void StopLooking();
     }
-    
+
     public interface IEnemyLookForStateMachine
     {
         public IReadonlyTransform ThisPositionReferencePointForLook { get; }

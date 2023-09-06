@@ -20,7 +20,7 @@ namespace Enemies.Spawn.Spawner.Setup
         private IPositionDataForInstantiation _thisPositionData;
 
         [Inject]
-        private void Construct(IEnemyFactory enemyFactory)
+        private void GetDependencies(IEnemyFactory enemyFactory)
         {
             _enemyFactory = enemyFactory;
         }
@@ -30,15 +30,15 @@ namespace Enemies.Spawn.Spawner.Setup
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             Enumerable.Empty<IInitializable>();
 
+        protected override void Initialize()
+        {
+            _spawner.Initialize(_enemyFactory, _thisPositionData, _objectToSpawn);
+        }
+
         protected override void Prepare()
         {
             _spawner = GetComponent<IInitializableEnemySpawnerWithTrigger>();
             _thisPositionData = new PositionDataForInstantiation(transform.position, transform.rotation);
-        }
-
-        protected override void Initialize()
-        {
-            _spawner.Initialize(_enemyFactory, _thisPositionData, _objectToSpawn);
         }
     }
 }

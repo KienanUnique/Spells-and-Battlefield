@@ -1,5 +1,4 @@
-﻿using Pickable_Items.Controllers;
-using Pickable_Items.Controllers.Concrete_Types._3D_Object;
+﻿using Pickable_Items.Controllers.Concrete_Types._3D_Object;
 using UnityEngine;
 
 namespace Pickable_Items.Prefab_Provider.Concrete_Types

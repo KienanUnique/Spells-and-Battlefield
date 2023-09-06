@@ -10,22 +10,22 @@ using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitia
 
 namespace Common.Abstract_Bases.Factories.Object_Pool
 {
-    public abstract class ObjectPoolingFactoryWithInstantiatorBase<TPoolItem, TDataForActivation> :
-        FactoryWithInstantiatorBase, IDisableable, IObjectPoolingFactory
-        where TPoolItem : IObjectPoolItem<TDataForActivation>
-        where TDataForActivation : IPositionDataForInstantiation
+    public abstract class
+        ObjectPoolingFactoryWithInstantiatorBase<TPoolItem, TDataForActivation> : FactoryWithInstantiatorBase,
+            IDisableable,
+            IObjectPoolingFactory
+        where TPoolItem : IObjectPoolItem<TDataForActivation> where TDataForActivation : IPositionDataForInstantiation
     {
+        private readonly IPositionDataForInstantiation _defaultPositionDataForInstantiation;
         private readonly List<TPoolItem> _items;
         private readonly int _needItemsCount;
-        private readonly List<TPoolItem> _waitingInitializationItems;
         private readonly Queue<TDataForActivation> _nextItemDataForActivations;
         private readonly IPrefabProvider _prefabProvider;
-        private readonly IPositionDataForInstantiation _defaultPositionDataForInstantiation;
+        private readonly List<TPoolItem> _waitingInitializationItems;
 
         protected ObjectPoolingFactoryWithInstantiatorBase(IInstantiator instantiator, Transform parentTransform,
             int needItemsCount, IPrefabProvider prefabProvider,
-            IPositionDataForInstantiation defaultPositionDataForInstantiation) :
-            base(instantiator, parentTransform)
+            IPositionDataForInstantiation defaultPositionDataForInstantiation) : base(instantiator, parentTransform)
         {
             _items = new List<TPoolItem>();
             _waitingInitializationItems = new List<TPoolItem>();
@@ -37,13 +37,17 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
 
         public void Enable()
         {
-            if (_items == null) return;
-            foreach (var objectPoolItem in _items)
+            if (_items == null)
+            {
+                return;
+            }
+
+            foreach (TPoolItem objectPoolItem in _items)
             {
                 objectPoolItem.Deactivated += OnItemDeactivated;
             }
 
-            foreach (var waitingInitializationItem in _waitingInitializationItems)
+            foreach (TPoolItem waitingInitializationItem in _waitingInitializationItems)
             {
                 SubscribeOnWaitingInitializationItem(waitingInitializationItem);
             }
@@ -51,13 +55,17 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
 
         public void Disable()
         {
-            if (_items == null) return;
-            foreach (var objectPoolItem in _items)
+            if (_items == null)
+            {
+                return;
+            }
+
+            foreach (TPoolItem objectPoolItem in _items)
             {
                 objectPoolItem.Deactivated -= OnItemDeactivated;
             }
 
-            foreach (var waitingInitializationItem in _waitingInitializationItems)
+            foreach (TPoolItem waitingInitializationItem in _waitingInitializationItems)
             {
                 UnsubscribeFromWaitingInitializationItem(waitingInitializationItem);
             }
@@ -80,7 +88,7 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
             }
             else
             {
-                var freeItem = _items.Find(item => !item.IsUsed);
+                TPoolItem freeItem = _items.Find(item => !item.IsUsed);
                 freeItem.Activate(dataForActivation);
             }
         }
@@ -104,7 +112,7 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
         {
             if (newInitializationStatus == InitializationStatus.Initialized)
             {
-                var initializedItem = _waitingInitializationItems.First(item =>
+                TPoolItem initializedItem = _waitingInitializationItems.First(item =>
                     item.CurrentInitializationStatus == InitializationStatus.Initialized);
                 UnsubscribeFromWaitingInitializationItem(initializedItem);
                 _waitingInitializationItems.Remove(initializedItem);
@@ -131,7 +139,11 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
 
         private void HandleNewFreeItem(IObjectPoolItem<TDataForActivation> newFreeItem)
         {
-            if (_nextItemDataForActivations.IsEmpty()) return;
+            if (_nextItemDataForActivations.IsEmpty())
+            {
+                return;
+            }
+
             newFreeItem.Activate(_nextItemDataForActivations.Dequeue());
         }
     }

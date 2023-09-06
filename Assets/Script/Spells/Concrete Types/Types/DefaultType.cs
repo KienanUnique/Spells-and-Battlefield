@@ -5,14 +5,16 @@ using UnityEngine;
 
 namespace Spells.Concrete_Types.Types
 {
-    [CreateAssetMenu(fileName = "Spell Type",
-        menuName = ScriptableObjectsMenuDirectories.SpellSystemDirectory + "Type", order = 0)]
+    [CreateAssetMenu(fileName = "Spell Type", menuName = ScriptableObjectsMenuDirectories.SpellSystemDirectory + "Type",
+        order = 0)]
     public class DefaultType : SpellTypeScriptableObject
     {
         [SerializeField] private Color _visualisationColor;
 
-        public override ISpellType GetImplementationObject() =>
-            new SpellTypeImplementation(GetInstanceID(), _visualisationColor);
+        public override ISpellType GetImplementationObject()
+        {
+            return new SpellTypeImplementation(GetInstanceID(), _visualisationColor);
+        }
 
         private class SpellTypeImplementation : SpellTypeImplementationBase
         {

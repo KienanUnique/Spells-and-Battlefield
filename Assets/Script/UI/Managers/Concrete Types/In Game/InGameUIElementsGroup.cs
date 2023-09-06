@@ -2,8 +2,6 @@
 {
     public enum InGameUIElementsGroup
     {
-        GameOverMenu,
-        LevelCompletedMenu,
-        PauseMenu
+        GameOverMenu, LevelCompletedMenu, PauseMenu
     }
 }

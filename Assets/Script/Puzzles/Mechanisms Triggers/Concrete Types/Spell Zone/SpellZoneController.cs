@@ -7,8 +7,8 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone
 {
     public class SpellZoneController : MechanismsTriggerBase, IInitializableSpellZoneController
     {
-        private List<ISpellType> _typesToTriggerOn;
         private ITriggerOnSpellInteraction _triggerOnSpellInteraction;
+        private List<ISpellType> _typesToTriggerOn;
 
         public void Initialize(List<ISpellType> typesToTriggerOn, ITriggerOnSpellInteraction triggerOnSpellInteraction)
         {

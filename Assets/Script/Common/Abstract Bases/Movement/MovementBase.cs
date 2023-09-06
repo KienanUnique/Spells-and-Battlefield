@@ -9,8 +9,8 @@ namespace Common.Abstract_Bases.Movement
         protected const float StopVelocityMagnitude = 0.0001f;
 
         protected readonly Rigidbody _rigidbody;
-        protected float _currentSpeedRatio = 1;
         protected readonly IMovementSettingsSection MovementSettings;
+        protected float _currentSpeedRatio = 1;
 
         protected MovementBase(Rigidbody rigidbody, IMovementSettingsSection movementSettings)
         {

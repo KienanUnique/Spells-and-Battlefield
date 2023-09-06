@@ -52,10 +52,11 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
         {
             SubscribeOnBaseEvents();
             _currentStatus.Value = InitializationStatus.Initialized;
-            foreach (var action in _actionsAfterInitialization)
+            foreach (Action action in _actionsAfterInitialization)
             {
                 action.Invoke();
             }
+
             _actionsAfterInitialization.Clear();
         }
 

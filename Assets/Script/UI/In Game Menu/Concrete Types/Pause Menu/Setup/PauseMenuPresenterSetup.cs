@@ -13,17 +13,17 @@ namespace UI.In_Game_Menu.Concrete_Types.Pause_Menu.Setup
         private IPauseMenuModel _model;
         private IInitializablePauseMenuPresenter _presenter;
 
-        protected override void Prepare()
-        {
-            base.Prepare();
-            _presenter = GetComponent<IInitializablePauseMenuPresenter>();
-        }
-
         protected override void Initialize()
         {
             _model = new PauseMenuModel(IDHolder, Manager, InGameSceneSwitcher, LoadingWindow);
             _presenter.Initialize(View, _model, new List<IDisableable>(), RestartLevelButton, GoToMainMenuButton,
                 _continueGameButton);
+        }
+
+        protected override void Prepare()
+        {
+            base.Prepare();
+            _presenter = GetComponent<IInitializablePauseMenuPresenter>();
         }
     }
 }

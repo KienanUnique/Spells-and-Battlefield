@@ -13,9 +13,9 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
 {
     public abstract class SpellSlotGroupModelBase : BaseWithDisabling, ISpellSlotGroupModelBaseWithDisabling
     {
-        protected readonly IReadonlyListWithReactionOnChange<ISpell> _spellGroupToRepresent;
         protected readonly List<ObjectWithUsageFlag<ISpellSlot>> _slotObjects;
         protected readonly SortedSet<ObjectWithUsageFlag<ISlotInformation>> _slots;
+        protected readonly IReadonlyListWithReactionOnChange<ISpell> _spellGroupToRepresent;
 
         protected SpellSlotGroupModelBase(IEnumerable<ISlotInformation> slotsInformation,
             IEnumerable<ISpellSlot> slotControllers, IReadonlyListWithReactionOnChange<ISpell> spellGroupToRepresent,
@@ -27,12 +27,12 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
             IsSelected = false;
             Type = spellTypeToRepresent;
 
-            foreach (var slot in slotsInformation)
+            foreach (ISlotInformation slot in slotsInformation)
             {
                 _slots.Add(new ObjectWithUsageFlag<ISlotInformation>(slot, false));
             }
 
-            foreach (var slotObject in slotControllers)
+            foreach (ISpellSlot slotObject in slotControllers)
             {
                 _slotObjects.Add(new ObjectWithUsageFlag<ISpellSlot>(slotObject, false));
                 slotObject.ChangeBackgroundColor(spellTypeToRepresent.VisualisationColor);
@@ -73,7 +73,7 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
 
         protected ObjectWithUsageFlag<ISpellSlot> FindUsedSpellObjectInSlot(ISlotInformation slotInformationToSearch)
         {
-            foreach (var slotObject in _slotObjects)
+            foreach (ObjectWithUsageFlag<ISpellSlot> slotObject in _slotObjects)
             {
                 if (slotObject.IsUsed &&
                     slotObject.StoredObject.CurrentSlotInformation.CompareTo(slotInformationToSearch) == 0)
@@ -87,13 +87,13 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
 
         protected void AppearSlot(ISpell spellToShow)
         {
-            var freeSlot = _slots.First(slotObject => !slotObject.IsUsed);
+            ObjectWithUsageFlag<ISlotInformation> freeSlot = _slots.First(slotObject => !slotObject.IsUsed);
             AppearSlot(freeSlot, spellToShow);
         }
 
         protected void AppearSlot(ObjectWithUsageFlag<ISlotInformation> slotInformation, ISpell spellToShow)
         {
-            var freeSlotObject = _slotObjects.First(slotObject => !slotObject.IsUsed);
+            ObjectWithUsageFlag<ISpellSlot> freeSlotObject = _slotObjects.First(slotObject => !slotObject.IsUsed);
             freeSlotObject.StoredObject.AppearAsSlot(slotInformation.StoredObject, spellToShow);
             freeSlotObject.SetAsUsed();
             slotInformation.SetAsUsed();
@@ -101,15 +101,14 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
 
         protected void MoveSlotsBack(ISlotInformation includedUpToSlot)
         {
-            var slotsList = _slots.ToList();
-            var finishItemIndex = slotsList.FindIndex(slot =>
-                slot.StoredObject.CompareTo(includedUpToSlot) == 0);
+            List<ObjectWithUsageFlag<ISlotInformation>> slotsList = _slots.ToList();
+            int finishItemIndex = slotsList.FindIndex(slot => slot.StoredObject.CompareTo(includedUpToSlot) == 0);
             int slotIndex;
-            var lastUsedSlotIndex = slotsList.FindLastIndex(slot => slot.IsUsed);
+            int lastUsedSlotIndex = slotsList.FindLastIndex(slot => slot.IsUsed);
             int startIndex;
             if (lastUsedSlotIndex == _slots.Count - 1)
             {
-                var lastSlotObject = _slotObjects.First(slotObject =>
+                ObjectWithUsageFlag<ISpellSlot> lastSlotObject = _slotObjects.First(slotObject =>
                     slotObject.StoredObject.CurrentSlotInformation == _slots.Last().StoredObject);
                 lastSlotObject.StoredObject.DisappearAndForgetSpell();
                 startIndex = lastUsedSlotIndex - 1;
@@ -123,9 +122,12 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
             {
                 if (_slots.ElementAt(slotIndex).IsUsed)
                 {
-                    var currentSpellController = _slotObjects.Find(slotObject =>
-                        slotObject.StoredObject.CurrentSlotInformation.CompareTo(_slots.ElementAt(slotIndex)
-                            .StoredObject) == 0).StoredObject;
+                    ISpellSlot currentSpellController = _slotObjects.Find(slotObject =>
+                                                                        slotObject.StoredObject.CurrentSlotInformation
+                                                                            .CompareTo(_slots.ElementAt(slotIndex)
+                                                                                .StoredObject) ==
+                                                                        0)
+                                                                    .StoredObject;
                     currentSpellController.MoveToSlot(_slots.ElementAt(slotIndex + 1).StoredObject);
                 }
                 else
@@ -137,10 +139,10 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
 
         protected void FillEmptySlots()
         {
-            var firstEmptySlotIndex = _slots.ToList().FindIndex(slot => !slot.IsUsed);
-            for (var slotIndex = firstEmptySlotIndex; slotIndex < _slots.Count; slotIndex++)
+            int firstEmptySlotIndex = _slots.ToList().FindIndex(slot => !slot.IsUsed);
+            for (int slotIndex = firstEmptySlotIndex; slotIndex < _slots.Count; slotIndex++)
             {
-                var currentSlot = _slots.ElementAt(slotIndex);
+                ObjectWithUsageFlag<ISlotInformation> currentSlot = _slots.ElementAt(slotIndex);
 
                 if (currentSlot.IsUsed)
                 {
@@ -160,19 +162,19 @@ namespace UI.Spells_Panel.Slot_Group.Base.Model
 
         protected void DisappearAllSlotsAndShowEmpty()
         {
-            foreach (var slot in _slots)
+            foreach (ObjectWithUsageFlag<ISlotInformation> slot in _slots)
             {
                 slot.SetAsFree();
             }
 
-            foreach (var slotObject in _slotObjects.Where(slotObject => slotObject.IsUsed))
+            foreach (ObjectWithUsageFlag<ISpellSlot> slotObject in _slotObjects.Where(slotObject => slotObject.IsUsed))
             {
                 slotObject.StoredObject.DisappearAndForgetSpell();
                 slotObject.SetAsFree();
             }
 
-            var slotWithUsageFlag = _slots.ElementAt(0);
-            var slotObjectWithUsageFlag = _slotObjects.ElementAt(0);
+            ObjectWithUsageFlag<ISlotInformation> slotWithUsageFlag = _slots.ElementAt(0);
+            ObjectWithUsageFlag<ISpellSlot> slotObjectWithUsageFlag = _slotObjects.ElementAt(0);
             slotObjectWithUsageFlag.StoredObject.AppearAsEmptySlot(slotWithUsageFlag.StoredObject);
             slotObjectWithUsageFlag.SetAsUsed();
             slotWithUsageFlag.SetAsUsed();

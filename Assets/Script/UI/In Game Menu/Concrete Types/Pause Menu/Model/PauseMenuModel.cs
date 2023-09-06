@@ -8,8 +8,7 @@ namespace UI.In_Game_Menu.Concrete_Types.Pause_Menu.Model
     public class PauseMenuModel : InGameMenuModelBase, IPauseMenuModel
     {
         public PauseMenuModel(IIdHolder idHolder, IUIWindowManager manager, IInGameSceneSwitcher inGameSceneSwitcher,
-            ILoadingWindow loadingWindow) : base(idHolder, manager,
-            inGameSceneSwitcher, loadingWindow)
+            ILoadingWindow loadingWindow) : base(idHolder, manager, inGameSceneSwitcher, loadingWindow)
         {
         }
 

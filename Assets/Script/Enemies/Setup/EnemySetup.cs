@@ -33,8 +33,7 @@ namespace Enemies.Setup
     [RequireComponent(typeof(IdHolder))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(EnemyController))]
-    public class EnemySetup : SetupMonoBehaviourBase, ICoroutineStarter,
-        IEnemySetup
+    public class EnemySetup : SetupMonoBehaviourBase, ICoroutineStarter, IEnemySetup
     {
         [SerializeField] private EnemyStateMachineAI _enemyStateMachineAI;
         [SerializeField] private List<EnemyTargetTrigger> _localTargetTriggers;
@@ -45,30 +44,30 @@ namespace Enemies.Setup
         [SerializeField] private ReadonlyTransformGetter _thisIKCenterPoint;
         [SerializeField] [Min(0.1f)] private float _needDistanceFromIKCenterPoint = 3f;
         [SerializeField] private ReadonlyTransformGetter _popupTextHitPointsChangeAppearCenterPoint;
+        [SerializeField] private Rigidbody _thisRigidbody;
 
-        public Rigidbody _thisRigidbody;
-        private List<IDisableable> _itemsNeedDisabling;
-        private IdHolder _idHolder;
-        private IGeneralEnemySettings _generalEnemySettings;
-        private IPickableItemsFactory _itemsFactory;
-        private EnemyTargetFromTriggersSelector _targetFromTriggersSelector;
-        private List<IEnemyTargetTrigger> _externalTargetTriggers;
+        private EnemyController _controller;
+        private IDisableableEnemyCharacter _enemyCharacter;
         private EnemyLook _enemyLook;
         private IDisableableEnemyMovement _enemyMovement;
-        private IDisableableEnemyCharacter _enemyCharacter;
         private EnemyVisual _enemyVisual;
-        private IEnemySettings _settings;
         private ExternalDependenciesInitializationWaiter _externalDependenciesInitializationWaiter;
-        private EnemyController _controller;
-        private IInitializableStateEnemyAI[] _states;
-        private IInitializableTransitionEnemyAI[] _transitions;
-        private IPopupHitPointsChangeTextFactory _popupHitPointsChangeTextFactory;
-        private IPickableItemDataForCreating _itemToDrop;
-        private ITargetPathfinder _targetPathfinder;
+        private List<IEnemyTargetTrigger> _externalTargetTriggers;
+        private IGeneralEnemySettings _generalEnemySettings;
+        private IdHolder _idHolder;
         private IEnemy _initializedEnemy;
+        private IPickableItemsFactory _itemsFactory;
+        private List<IDisableable> _itemsNeedDisabling;
+        private IPickableItemDataForCreating _itemToDrop;
+        private IPopupHitPointsChangeTextFactory _popupHitPointsChangeTextFactory;
+        private IEnemySettings _settings;
+        private IInitializableStateEnemyAI[] _states;
+        private EnemyTargetFromTriggersSelector _targetFromTriggersSelector;
+        private ITargetPathfinder _targetPathfinder;
+        private IInitializableTransitionEnemyAI[] _transitions;
 
         [Inject]
-        private void Construct(IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
+        private void GetDependencies(IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
             IPopupHitPointsChangeTextFactory popupHitPointsChangeTextFactory)
         {
             _generalEnemySettings = generalEnemySettings;
@@ -77,6 +76,9 @@ namespace Enemies.Setup
         }
 
         public IEnemy InitializedEnemy => _initializedEnemy ??= GetComponent<IEnemy>();
+
+        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
+            new List<IInitializable> {_externalDependenciesInitializationWaiter, _thisIKCenterPoint};
 
         public void SetDataForInitialization(IEnemySettings settings, IPickableItemDataForCreating itemToDrop,
             List<IEnemyTargetTrigger> targetTriggers)
@@ -93,25 +95,6 @@ namespace Enemies.Setup
             {
                 _externalDependenciesInitializationWaiter.HandleExternalDependenciesInitialization();
             }
-        }
-
-        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization => new List<IInitializable>
-            {_externalDependenciesInitializationWaiter, _thisIKCenterPoint};
-
-        protected override void Prepare()
-        {
-            _externalDependenciesInitializationWaiter ??= new ExternalDependenciesInitializationWaiter(false);
-
-            _initializedEnemy ??= GetComponent<IEnemy>();
-
-            _idHolder = GetComponent<IdHolder>();
-            _thisRigidbody = GetComponent<Rigidbody>();
-            _controller = GetComponent<EnemyController>();
-
-            _targetFromTriggersSelector = new EnemyTargetFromTriggersSelector();
-
-            _states = _enemyStateMachineAI.GetComponents<IInitializableStateEnemyAI>();
-            _transitions = _enemyStateMachineAI.GetComponents<IInitializableTransitionEnemyAI>();
         }
 
         protected override void Initialize()
@@ -138,41 +121,43 @@ namespace Enemies.Setup
 
             _itemsNeedDisabling = new List<IDisableable>
             {
-                _enemyMovement,
-                _enemyCharacter,
-                _targetFromTriggersSelector,
-                _enemyLook
+                _enemyMovement, _enemyCharacter, _targetFromTriggersSelector, _enemyLook
             };
 
-            var baseSetupData = new EnemyControllerSetupData(
-                _enemyStateMachineAI,
-                _itemToDrop,
-                _enemyMovement,
-                _itemsNeedDisabling,
-                _idHolder,
-                _generalEnemySettings,
-                _itemsFactory,
-                _targetFromTriggersSelector,
-                _enemyLook,
-                _eventInvokerForAnimations,
-                _enemyVisual,
-                _enemyCharacter,
-                _popupHitPointsChangeTextFactory,
+            var baseSetupData = new EnemyControllerSetupData(_enemyStateMachineAI, _itemToDrop, _enemyMovement,
+                _itemsNeedDisabling, _idHolder, _generalEnemySettings, _itemsFactory, _targetFromTriggersSelector,
+                _enemyLook, _eventInvokerForAnimations, _enemyVisual, _enemyCharacter, _popupHitPointsChangeTextFactory,
                 _popupTextHitPointsChangeAppearCenterPoint.ReadonlyTransform);
 
             _enemyStateMachineAI.Initialize(_controller);
 
-            foreach (var initializableStateEnemyAI in _states)
+            foreach (IInitializableStateEnemyAI initializableStateEnemyAI in _states)
             {
                 initializableStateEnemyAI.Initialize(_controller);
             }
 
-            foreach (var initializableTransitionEnemyAI in _transitions)
+            foreach (IInitializableTransitionEnemyAI initializableTransitionEnemyAI in _transitions)
             {
                 initializableTransitionEnemyAI.Initialize(_controller);
             }
 
             _controller.Initialize(baseSetupData);
+        }
+
+        protected override void Prepare()
+        {
+            _externalDependenciesInitializationWaiter ??= new ExternalDependenciesInitializationWaiter(false);
+
+            _initializedEnemy ??= GetComponent<IEnemy>();
+
+            _idHolder = GetComponent<IdHolder>();
+            _thisRigidbody = GetComponent<Rigidbody>();
+            _controller = GetComponent<EnemyController>();
+
+            _targetFromTriggersSelector = new EnemyTargetFromTriggersSelector();
+
+            _states = _enemyStateMachineAI.GetComponents<IInitializableStateEnemyAI>();
+            _transitions = _enemyStateMachineAI.GetComponents<IInitializableTransitionEnemyAI>();
         }
     }
 }

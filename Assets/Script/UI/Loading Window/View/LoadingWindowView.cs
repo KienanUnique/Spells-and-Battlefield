@@ -10,8 +10,8 @@ namespace UI.Loading_Window.View
         private readonly Transform _loadingIcon;
         private readonly ILoadingWindowSettings _loadingWindowSettings;
 
-        public LoadingWindowView(Transform cachedTransform, IDefaultUIElementViewSettings settings, Transform loadingIcon,
-            ILoadingWindowSettings loadingWindowSettings) : base(cachedTransform, settings)
+        public LoadingWindowView(Transform cachedTransform, IDefaultUIElementViewSettings settings,
+            Transform loadingIcon, ILoadingWindowSettings loadingWindowSettings) : base(cachedTransform, settings)
         {
             _loadingIcon = loadingIcon;
             _loadingWindowSettings = loadingWindowSettings;
@@ -21,7 +21,8 @@ namespace UI.Loading_Window.View
         {
             base.Appear();
             _loadingIcon
-                .DORotate(new Vector3(0, 0, -360), _loadingWindowSettings.RotateAnimationDurationSpeed, RotateMode.FastBeyond360)
+                .DORotate(new Vector3(0, 0, -360), _loadingWindowSettings.RotateAnimationDurationSpeed,
+                    RotateMode.FastBeyond360)
                 .SetEase(Ease.Linear)
                 .SetLoops(-1, LoopType.Restart)
                 .ApplyCustomSetupForUI(_loadingIcon.gameObject);

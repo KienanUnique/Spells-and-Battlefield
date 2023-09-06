@@ -7,8 +7,10 @@ using UnityEngine;
 namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone.Trigger_On_Spell_Interaction
 {
     [RequireComponent(typeof(Collider))]
-    public class TriggerOnSpellInteractionController : InitializableMonoBehaviourBase, ISpellInteractable,
-        ITriggerOnSpellInteraction, IInitializableTriggerOnSpellInteractionController
+    public class TriggerOnSpellInteractionController : InitializableMonoBehaviourBase,
+        ISpellInteractable,
+        ITriggerOnSpellInteraction,
+        IInitializableTriggerOnSpellInteractionController
     {
         private IIdHolder _idHolder;
 
@@ -19,16 +21,17 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone.Trigger_On_Spell
         }
 
         public event Action<ISpellType> SpellTypeInteractionDetected;
-        public int Id => _idHolder.Id;
 
-        public void InteractAsSpellType(ISpellType spellType)
-        {
-            SpellTypeInteractionDetected?.Invoke(spellType);
-        }
+        public int Id => _idHolder.Id;
 
         public bool Equals(IIdHolder other)
         {
             return _idHolder.Equals(other);
+        }
+
+        public void InteractAsSpellType(ISpellType spellType)
+        {
+            SpellTypeInteractionDetected?.Invoke(spellType);
         }
 
         protected override void SubscribeOnEvents()

@@ -1,5 +1,4 @@
 ﻿using System;
-using Common.Settings.Sections;
 using Common.Settings.Sections.Character;
 using UnityEngine;
 

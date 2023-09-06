@@ -5,8 +5,7 @@ using UnityEngine;
 namespace Enemies.Prefab_Provider
 {
     [CreateAssetMenu(fileName = "Enemy Prefab Provider",
-        menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory + "Enemy Prefab Provider",
-        order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory + "Enemy Prefab Provider", order = 0)]
     public class EnemyPrefabProvider : PrefabProviderScriptableObjectBase, IEnemyPrefabProvider
     {
         [SerializeField] private EnemyController _knightPrefab;

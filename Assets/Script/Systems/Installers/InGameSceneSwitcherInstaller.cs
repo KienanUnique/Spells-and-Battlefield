@@ -12,10 +12,7 @@ namespace Systems.Installers
         public override void InstallBindings()
         {
             var inGameSceneSwitcher = new InGameScenesSwitcher(_scenesSettings);
-            Container
-                .Bind<IInGameSceneSwitcher>()
-                .FromInstance(inGameSceneSwitcher)
-                .AsSingle();
+            Container.Bind<IInGameSceneSwitcher>().FromInstance(inGameSceneSwitcher).AsSingle();
         }
     }
 }

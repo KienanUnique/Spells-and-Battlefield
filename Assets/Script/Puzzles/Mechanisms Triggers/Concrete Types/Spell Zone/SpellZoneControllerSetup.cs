@@ -18,17 +18,17 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             new List<IInitializable> {_triggerOnSpellInteraction};
 
+        protected override void Initialize()
+        {
+            _controller.Initialize(_spellTypesToTriggerOnImplementations, _triggerOnSpellInteraction);
+        }
+
         protected override void Prepare()
         {
             _controller = GetComponent<IInitializableSpellZoneController>();
             _spellTypesToTriggerOnImplementations = new List<ISpellType>();
             _spellTypesToTriggerOn.ForEach(spellType =>
                 _spellTypesToTriggerOnImplementations.Add(spellType.GetImplementationObject()));
-        }
-
-        protected override void Initialize()
-        {
-            _controller.Initialize(_spellTypesToTriggerOnImplementations, _triggerOnSpellInteraction);
         }
     }
 }

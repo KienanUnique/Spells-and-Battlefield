@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Spells.Spell;
 
-namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.
-    Spells_With_Cooldown_Selector
+namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.With_Cooldown
 {
     public class SpellsWithCooldownSelectorImplementation : SpellSelectorBase
     {
@@ -21,14 +19,14 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
 
         public override ISpell Pop()
         {
-            var oldSelectedSpell = _selectedSpell.GetSpellAndStartCooldownTimer();
+            ISpell oldSelectedSpell = _selectedSpell.GetSpellAndStartCooldownTimer();
             SelectMostPrioritizedReadyToUseSpell();
             return oldSelectedSpell;
         }
 
         protected override void SubscribeOnEvents()
         {
-            foreach (var spell in _spellsToUseInPriorityOrder)
+            foreach (ISpellWithCooldown spell in _spellsToUseInPriorityOrder)
             {
                 spell.CanUseAgain += SelectMostPrioritizedReadyToUseSpell;
             }
@@ -36,7 +34,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
 
         protected override void UnsubscribeFromEvents()
         {
-            foreach (var spell in _spellsToUseInPriorityOrder)
+            foreach (ISpellWithCooldown spell in _spellsToUseInPriorityOrder)
             {
                 spell.CanUseAgain -= SelectMostPrioritizedReadyToUseSpell;
             }
@@ -44,7 +42,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
 
         private void SelectMostPrioritizedReadyToUseSpell()
         {
-            var canUseSpellsBefore = CanUseSpell;
+            bool canUseSpellsBefore = CanUseSpell;
             _selectedSpell = _spellsToUseInPriorityOrder.FirstOrDefault(spell => spell.CanUse);
             if (!canUseSpellsBefore && CanUseSpell)
             {

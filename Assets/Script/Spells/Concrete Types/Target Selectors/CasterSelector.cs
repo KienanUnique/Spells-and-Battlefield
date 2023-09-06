@@ -11,7 +11,10 @@ namespace Spells.Concrete_Types.Target_Selectors
         menuName = ScriptableObjectsMenuDirectories.SpellTargetSelectorDirectory + "Caster Selector", order = 0)]
     public class CasterSelector : SpellTargetSelectorScriptableObject
     {
-        public override ISpellTargetSelector GetImplementationObject() => new CasterSelectorImplementation();
+        public override ISpellTargetSelector GetImplementationObject()
+        {
+            return new CasterSelectorImplementation();
+        }
 
         private class CasterSelectorImplementation : SpellTargetSelectorImplementationBase
         {

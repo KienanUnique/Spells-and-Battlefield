@@ -12,15 +12,15 @@ using Random = UnityEngine.Random;
 
 namespace UI.Popup_Text
 {
-    public class PopupTextController : InitializableMonoBehaviourBase, IInitializablePopupTextController,
+    public class PopupTextController : InitializableMonoBehaviourBase,
+        IInitializablePopupTextController,
         IPopupTextController
     {
-        private TMP_Text _textComponent;
-        private Transform _mainTransform;
-        private IPopupTextSettings _settings;
         private IReadonlyTransform _cameraTransform;
         private Coroutine _lookAtCameraCoroutine;
-
+        private Transform _mainTransform;
+        private IPopupTextSettings _settings;
+        private TMP_Text _textComponent;
 
         public void Initialize(TMP_Text textComponent, Transform mainTransform, IPopupTextSettings settings,
             IReadonlyTransform cameraTransform)
@@ -35,6 +35,8 @@ namespace UI.Popup_Text
 
         public event Action<IObjectPoolItem<IPopupTextControllerDataForActivation>> Deactivated;
         public bool IsUsed { get; private set; }
+
+        private float HalfAnimationDurationInSeconds => _settings.AnimationDurationInSeconds / 2;
 
         public void Activate(IPopupTextControllerDataForActivation dataForActivation)
         {
@@ -57,28 +59,18 @@ namespace UI.Popup_Text
             {
             }
 
-            var needSequence = DOTween.Sequence();
+            Sequence needSequence = DOTween.Sequence();
             needSequence.SetLink(_mainTransform.gameObject);
             needSequence.Append(_mainTransform.DOScale(Vector3.one, HalfAnimationDurationInSeconds)
-                .SetEase(_settings.ScaleEase));
+                                              .SetEase(_settings.ScaleEase));
             needSequence.Append(_mainTransform.DOScale(Vector3.zero, HalfAnimationDurationInSeconds)
-                .SetEase(_settings.ScaleEase));
+                                              .SetEase(_settings.ScaleEase));
             needSequence.OnComplete(OnPopupAnimationComplete);
 
             _mainTransform
                 .DOMove(CalculatePositionToMove(_cameraTransform.Position), _settings.AnimationDurationInSeconds)
-                .SetEase(_settings.MovementEase).SetLink(_mainTransform.gameObject);
-        }
-
-        private float HalfAnimationDurationInSeconds => _settings.AnimationDurationInSeconds / 2;
-
-        private IEnumerator LookAtCameraCoroutine()
-        {
-            while (true)
-            {
-                _mainTransform.LookAt(_cameraTransform.Position);
-                yield return null;
-            }
+                .SetEase(_settings.MovementEase)
+                .SetLink(_mainTransform.gameObject);
         }
 
         protected override void SubscribeOnEvents()
@@ -87,6 +79,15 @@ namespace UI.Popup_Text
 
         protected override void UnsubscribeFromEvents()
         {
+        }
+
+        private IEnumerator LookAtCameraCoroutine()
+        {
+            while (true)
+            {
+                _mainTransform.LookAt(_cameraTransform.Position);
+                yield return null;
+            }
         }
 
         private void OnPopupAnimationComplete()
@@ -100,16 +101,16 @@ namespace UI.Popup_Text
 
         private Vector3 CalculatePositionToMove(Vector3 cameraPosition)
         {
-            var circleCenter = _mainTransform.position;
-            var circleNormalVector = (circleCenter - cameraPosition).normalized;
+            Vector3 circleCenter = _mainTransform.position;
+            Vector3 circleNormalVector = (circleCenter - cameraPosition).normalized;
 
-            var circleNormal = Vector3.Cross(circleNormalVector, Vector3.up).normalized;
+            Vector3 circleNormal = Vector3.Cross(circleNormalVector, Vector3.up).normalized;
 
-            var randomAngle = Random.Range(0f, Mathf.PI);
-            var randomRadius = Random.Range(_settings.MoveMinimumRadius, _settings.MoveMaximumRadius);
+            float randomAngle = Random.Range(0f, Mathf.PI);
+            float randomRadius = Random.Range(_settings.MoveMinimumRadius, _settings.MoveMaximumRadius);
 
-            return circleCenter + randomRadius *
-                (Mathf.Cos(randomAngle) * circleNormal + Mathf.Sin(randomAngle) * Vector3.up);
+            return circleCenter +
+                   randomRadius * (Mathf.Cos(randomAngle) * circleNormal + Mathf.Sin(randomAngle) * Vector3.up);
         }
     }
 }

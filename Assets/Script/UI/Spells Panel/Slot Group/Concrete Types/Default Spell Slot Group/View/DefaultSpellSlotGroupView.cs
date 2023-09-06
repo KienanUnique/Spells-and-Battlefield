@@ -1,6 +1,4 @@
 ﻿using TMPro;
-using UI.Spells_Panel.Settings;
-using UI.Spells_Panel.Settings.Sections;
 using UI.Spells_Panel.Settings.Sections.Group;
 using UI.Spells_Panel.Slot_Group.Base.View;
 using UnityEngine;

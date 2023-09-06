@@ -7,7 +7,7 @@ namespace Common.Settings.Sections.Movement.Movement_With_Gravity
     public class MovementOnGroundSettingsSection : MovementSettingsSection, IMovementOnGroundSettingsSection
     {
         [SerializeField] private float _normalGravityForce = 30;
-        
+
         public float NormalGravityForce => _normalGravityForce;
     }
 }

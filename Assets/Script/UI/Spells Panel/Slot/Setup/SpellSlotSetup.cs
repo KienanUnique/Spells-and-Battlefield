@@ -19,12 +19,12 @@ namespace UI.Spells_Panel.Slot.Setup
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Image _background;
         private IInitializableSpellSlotPresenter _controllerToSetup;
-        private ISpellPanelSettings _settings;
         private ISpellSlotModel _model;
+        private ISpellPanelSettings _settings;
         private ISpellSlotView _view;
 
         [Inject]
-        public void Construct(ISpellPanelSettings settings)
+        public void GetDependencies(ISpellPanelSettings settings)
         {
             _settings = settings;
         }
@@ -32,17 +32,17 @@ namespace UI.Spells_Panel.Slot.Setup
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             Enumerable.Empty<IInitializable>();
 
+        protected override void Initialize()
+        {
+            _controllerToSetup.Initialize(_model, _view, _settings);
+        }
+
         protected override void Prepare()
         {
             _controllerToSetup = GetComponent<IInitializableSpellSlotPresenter>();
             var currentSlotInformation = new SlotInformation(_rectTransform.localScale, _rectTransform.localPosition);
             _model = new SpellSlotModel(currentSlotInformation);
             _view = new SpellSlotView(_image, _rectTransform, _background, _settings.SlotSection);
-        }
-
-        protected override void Initialize()
-        {
-            _controllerToSetup.Initialize(_model, _view, _settings);
         }
     }
 }

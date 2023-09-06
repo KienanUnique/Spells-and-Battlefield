@@ -12,13 +12,12 @@ namespace UI.Spells_Panel.Panel.Model
         private readonly IPlayerSpellsManagerInformation _managerInformation;
         private readonly Dictionary<ISpellType, ISpellSlotGroup> _spellsTypeGroups;
 
-        public SpellPanelModel(List<ISpellSlotGroup> spellGroups,
-            IPlayerSpellsManagerInformation managerInformation)
+        public SpellPanelModel(List<ISpellSlotGroup> spellGroups, IPlayerSpellsManagerInformation managerInformation)
         {
             _managerInformation = managerInformation;
 
             _spellsTypeGroups = new Dictionary<ISpellType, ISpellSlotGroup>();
-            foreach (var group in spellGroups)
+            foreach (ISpellSlotGroup group in spellGroups)
             {
                 _spellsTypeGroups.Add(group.Type, group);
             }
@@ -45,7 +44,7 @@ namespace UI.Spells_Panel.Panel.Model
 
         private void SelectSpellTypeGroup(ISpellType newSelectedSpellType)
         {
-            foreach (var group in _spellsTypeGroups.Values.Where(group => group.IsSelected))
+            foreach (ISpellSlotGroup group in _spellsTypeGroups.Values.Where(group => group.IsSelected))
             {
                 group.Unselect();
             }

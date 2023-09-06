@@ -8,8 +8,12 @@ using Interfaces;
 
 namespace Enemies.State_Machine
 {
-    public interface IEnemyStateMachineControllable : IEventInvokerForActionAnimations, IEnemyActionAnimationPlayer,
-        IEnemyTargetsEffectsApplier, IEnemyMovementForStateMachine, IEnemyLookForStateMachine, ICharacterInformationProvider
+    public interface IEnemyStateMachineControllable : IEventInvokerForActionAnimations,
+        IEnemyActionAnimationPlayer,
+        IEnemyTargetsEffectsApplier,
+        IEnemyMovementForStateMachine,
+        IEnemyLookForStateMachine,
+        ICharacterInformationProvider
     {
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; }
     }

@@ -6,8 +6,7 @@ using UnityEngine;
 namespace Enemies.Setup
 {
     [CreateAssetMenu(fileName = "Enemy Settings",
-        menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory +
-                   "Enemy Settings", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory + "Enemy Settings", order = 0)]
     public class EnemySettings : ScriptableObject, IEnemySettings
     {
         [SerializeField] private EnemyMovementProviderBase _movementProvider;

@@ -11,17 +11,16 @@ namespace Enemies.Look
 {
     public class EnemyLook : BaseWithDisabling, IEnemyLook
     {
-        private readonly Transform _transformToRotate;
         private readonly ICoroutineStarter _coroutineStarter;
-        private readonly IReadonlyRigidbody _thisRigidbody;
-        private readonly IReadonlyEnemyTargetFromTriggersSelector _targetFromTriggersSelector;
-        private readonly Transform _transformToRotateForIK;
-        private readonly IReadonlyTransform _thisIKCenterPoint;
         private readonly float _needDistanceFromIKCenterPoint;
+        private readonly IReadonlyEnemyTargetFromTriggersSelector _targetFromTriggersSelector;
+        private readonly IReadonlyTransform _thisIKCenterPoint;
+        private readonly IReadonlyRigidbody _thisRigidbody;
+        private readonly Transform _transformToRotate;
+        private readonly Transform _transformToRotateForIK;
         private Vector3 _cachedLookXZ;
-        private IReadonlyTransform _thisPositionReferencePoint;
-        private ILookPointCalculator _lookPointCalculator;
         private Coroutine _lookCoroutine;
+        private ILookPointCalculator _lookPointCalculator;
         private Vector3 _needDirection;
 
         public EnemyLook(Transform transformToRotate, IReadonlyRigidbody thisRigidbody,
@@ -32,7 +31,7 @@ namespace Enemies.Look
             _transformToRotate = transformToRotate;
             _coroutineStarter = coroutineStarter;
             _thisRigidbody = thisRigidbody;
-            _thisPositionReferencePoint = thisPositionReferencePoint;
+            ThisPositionReferencePointForLook = thisPositionReferencePoint;
             _targetFromTriggersSelector = targetFromTriggersSelector;
             _transformToRotateForIK = transformToRotateForIK;
             _thisIKCenterPoint = thisIKCenterPoint;
@@ -40,7 +39,41 @@ namespace Enemies.Look
             _needDistanceFromIKCenterPoint = needDistanceFromIKCenterPoint;
         }
 
-        public IReadonlyTransform ThisPositionReferencePointForLook => _thisPositionReferencePoint;
+        public IReadonlyTransform ThisPositionReferencePointForLook { get; private set; }
+
+        public void StartLooking()
+        {
+            TryStartLookingCoroutine();
+        }
+
+        public void SetLookPointCalculator(ILookPointCalculator lookPointCalculator)
+        {
+            if (lookPointCalculator == null)
+            {
+                return;
+            }
+
+            lookPointCalculator.SetLookData(_thisRigidbody, ThisPositionReferencePointForLook,
+                _targetFromTriggersSelector.CurrentTarget);
+            _lookPointCalculator = lookPointCalculator;
+            TryStartLookingCoroutine();
+        }
+
+        public void StopLooking()
+        {
+            if (_lookCoroutine == null)
+            {
+                return;
+            }
+
+            _coroutineStarter.StopCoroutine(_lookCoroutine);
+        }
+
+        public void ChangeThisPositionReferencePointTransform(IReadonlyTransform newReferenceTransform)
+        {
+            ThisPositionReferencePointForLook = newReferenceTransform;
+            _lookPointCalculator.ChangeThisPositionReferencePointTransform(newReferenceTransform);
+        }
 
         protected override void SubscribeOnEvents()
         {
@@ -52,36 +85,13 @@ namespace Enemies.Look
             _targetFromTriggersSelector.CurrentTargetChanged -= OnCurrentTargetChanged;
         }
 
-        public void StartLooking()
-        {
-            TryStartLookingCoroutine();
-        }
-
-        public void SetLookPointCalculator(ILookPointCalculator lookPointCalculator)
-        {
-            if (lookPointCalculator == null) return;
-
-            lookPointCalculator.SetLookData(_thisRigidbody, _thisPositionReferencePoint,
-                _targetFromTriggersSelector.CurrentTarget);
-            _lookPointCalculator = lookPointCalculator;
-            TryStartLookingCoroutine();
-        }
-
-        public void ChangeThisPositionReferencePointTransform(IReadonlyTransform newReferenceTransform)
-        {
-            _thisPositionReferencePoint = newReferenceTransform;
-            _lookPointCalculator.ChangeThisPositionReferencePointTransform(newReferenceTransform);
-        }
-
-        public void StopLooking()
-        {
-            if (_lookCoroutine == null) return;
-            _coroutineStarter.StopCoroutine(_lookCoroutine);
-        }
-
         private void TryStartLookingCoroutine()
         {
-            if (_lookCoroutine != null || _lookPointCalculator == null) return;
+            if (_lookCoroutine != null || _lookPointCalculator == null)
+            {
+                return;
+            }
+
             _lookCoroutine = _coroutineStarter.StartCoroutine(LookUsingCalculator());
         }
 

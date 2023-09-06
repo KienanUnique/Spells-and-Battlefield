@@ -8,10 +8,10 @@ namespace Common.Abstract_Bases
 {
     public abstract class SetupMonoBehaviourBase : MonoBehaviour
     {
-        private bool _wasInitialized;
         private bool _needWaitOtherObjects;
-        private bool _wasStartPhasePassed;
         private List<IInitializable> _objectsToWaitBeforeInitialization;
+        private bool _wasInitialized;
+        private bool _wasStartPhasePassed;
 
         protected abstract IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization { get; }
         protected abstract void Prepare();
@@ -24,21 +24,39 @@ namespace Common.Abstract_Bases
             _needWaitOtherObjects = !_objectsToWaitBeforeInitialization.IsEmpty();
         }
 
+        private void Start()
+        {
+            if (!_needWaitOtherObjects || _needWaitOtherObjects && IsAllRequiredObjectsInitialized())
+            {
+                RunInitialization();
+            }
+
+            _wasStartPhasePassed = true;
+        }
+
         private void OnEnable()
         {
-            if (_wasInitialized || !_needWaitOtherObjects) return;
+            if (_wasInitialized || !_needWaitOtherObjects)
+            {
+                return;
+            }
+
             SubscribeOnEvents();
         }
 
         private void OnDisable()
         {
-            if (_wasInitialized || !_needWaitOtherObjects) return;
+            if (_wasInitialized || !_needWaitOtherObjects)
+            {
+                return;
+            }
+
             UnsubscribeFromEvents();
         }
 
         private void SubscribeOnEvents()
         {
-            foreach (var initializableObject in _objectsToWaitBeforeInitialization)
+            foreach (IInitializable initializableObject in _objectsToWaitBeforeInitialization)
             {
                 initializableObject.InitializationStatusChanged += OnInitializableObjectStatusChanged;
             }
@@ -46,7 +64,7 @@ namespace Common.Abstract_Bases
 
         private void UnsubscribeFromEvents()
         {
-            foreach (var initializableObject in _objectsToWaitBeforeInitialization)
+            foreach (IInitializable initializableObject in _objectsToWaitBeforeInitialization)
             {
                 initializableObject.InitializationStatusChanged -= OnInitializableObjectStatusChanged;
             }
@@ -54,16 +72,22 @@ namespace Common.Abstract_Bases
 
         private void OnInitializableObjectStatusChanged(InitializationStatus obj)
         {
-            if (_wasInitialized || !_wasStartPhasePassed) return;
+            if (_wasInitialized || !_wasStartPhasePassed)
+            {
+                return;
+            }
+
             if (IsAllRequiredObjectsInitialized())
             {
                 RunInitialization();
             }
         }
 
-        private bool IsAllRequiredObjectsInitialized() =>
-            _objectsToWaitBeforeInitialization.All(initializableObject =>
+        private bool IsAllRequiredObjectsInitialized()
+        {
+            return _objectsToWaitBeforeInitialization.All(initializableObject =>
                 initializableObject.CurrentInitializationStatus == InitializationStatus.Initialized);
+        }
 
         private void RunInitialization()
         {
@@ -73,15 +97,6 @@ namespace Common.Abstract_Bases
             {
                 UnsubscribeFromEvents();
             }
-        }
-
-        private void Start()
-        {
-            if (!_needWaitOtherObjects || (_needWaitOtherObjects && IsAllRequiredObjectsInitialized()))
-            {
-                RunInitialization();
-            }
-            _wasStartPhasePassed = true;
         }
     }
 }

@@ -2,7 +2,6 @@
 {
     public enum ExtendableObjectState
     {
-        PulledIn,
-        PulledOut
+        PulledIn, PulledOut
     }
 }

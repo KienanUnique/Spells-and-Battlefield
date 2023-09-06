@@ -2,7 +2,6 @@
 {
     public enum WallDirection
     {
-        Left,
-        Right
+        Left, Right
     }
 }

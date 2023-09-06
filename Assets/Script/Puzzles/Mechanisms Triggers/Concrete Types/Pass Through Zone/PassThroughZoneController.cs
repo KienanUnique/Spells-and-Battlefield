@@ -7,8 +7,8 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Pass_Through_Zone
 {
     public class PassThroughZoneController : MechanismsTriggerBase, IInitializablePassThroughZoneController
     {
-        private IIdentifier _identifier;
         private IColliderTrigger _colliderTrigger;
+        private IIdentifier _identifier;
 
         public void Initialize(IIdentifier identifier, IColliderTrigger colliderTrigger)
         {

@@ -24,10 +24,9 @@ namespace UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes
         {
             _sequence.Kill();
             _sequence = DOTween.Sequence();
-            var oldValueRatio = _foreground.fillAmount;
-            _sequence.Append(DOVirtual
-                .Float(oldValueRatio, newFillAmount, _settings.ChangeDuration,
-                    currentValueRatio => _foreground.fillAmount = currentValueRatio));
+            float oldValueRatio = _foreground.fillAmount;
+            _sequence.Append(DOVirtual.Float(oldValueRatio, newFillAmount, _settings.ChangeDuration,
+                currentValueRatio => _foreground.fillAmount = currentValueRatio));
             _sequence.Append(DOVirtual.Float(oldValueRatio, newFillAmount, _settings.ChangeDuration,
                 currentValueRatio => _foregroundBackground.fillAmount = currentValueRatio));
             _sequence.ApplyCustomSetupForUI(_foregroundBackground.gameObject);

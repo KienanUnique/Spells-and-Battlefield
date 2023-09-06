@@ -1,5 +1,4 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UI.Bar.View.Concrete_Types.Filling_Bar.Settings;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,10 +7,10 @@ namespace UI.Bar.View.Concrete_Types.Filling_Bar
 {
     public class FillingBarView : IBarView
     {
-        private readonly Image _foreground;
         private readonly Transform _barTransform;
-        private readonly IFillingBarSettings _settings;
+        private readonly Image _foreground;
         private readonly Vector3 _punchStrengthVector3;
+        private readonly IFillingBarSettings _settings;
 
         public FillingBarView(Image foreground, Transform barTransform, IFillingBarSettings settings)
         {
@@ -29,7 +28,7 @@ namespace UI.Bar.View.Concrete_Types.Filling_Bar
             {
                 _barTransform.DOComplete();
                 _barTransform.DOPunchScale(_punchStrengthVector3, _settings.OnFillAnimationDurationSeconds)
-                    .ApplyCustomSetupForUI(_barTransform.gameObject);
+                             .ApplyCustomSetupForUI(_barTransform.gameObject);
             }
         }
     }

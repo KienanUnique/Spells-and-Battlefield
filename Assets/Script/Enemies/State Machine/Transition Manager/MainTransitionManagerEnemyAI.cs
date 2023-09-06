@@ -9,18 +9,26 @@ namespace Enemies.State_Machine.Transition_Manager
     [Serializable]
     public class MainTransitionManagerEnemyAI : TransitionManagerEnemyAIBase
     {
-        [Space] [Header("After action state")] [SerializeField]
+        [Space]
+        [Header("After action state")]
+        [SerializeField]
         private bool _needTransitAfterAction;
 
         [SerializeField] private StateEnemyAI _afterActionNextState;
 
         [Header("Single")] [SerializeField] private List<SingleTransitionSubManagerEnemyAI> _singleSubManagers;
 
-        [Space] [Header("And")] [SerializeField]
+        [Space]
+        [Header("And")]
+        [SerializeField]
         private List<ConjunctionMultipleTransitionSubManagerEnemyAI> _conjunctionSubManagers;
 
-        [Space] [Header("Or")] [SerializeField]
+        [Space]
+        [Header("Or")]
+        [SerializeField]
         private List<DisjunctionMultipleTransitionSubManagerEnemyAI> _disjunctionSubManagers;
+
+        public override event Action<IStateEnemyAI> NeedTransit;
 
         private List<ITransitionManagerEnemyAIWithDisabling> AllSubManagers
         {
@@ -34,12 +42,18 @@ namespace Enemies.State_Machine.Transition_Manager
             }
         }
 
-        public override event Action<IStateEnemyAI> NeedTransit;
+        public void HandleCompletedAction()
+        {
+            if (_needTransitAfterAction)
+            {
+                TransitNextState(_afterActionNextState);
+            }
+        }
 
         protected override void SubscribeOnEvents()
         {
             base.SubscribeOnEvents();
-            foreach (var subManager in AllSubManagers)
+            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
             {
                 subManager.Enable();
             }
@@ -48,7 +62,7 @@ namespace Enemies.State_Machine.Transition_Manager
         protected override void UnsubscribeFromEvents()
         {
             base.UnsubscribeFromEvents();
-            foreach (var subManager in AllSubManagers)
+            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
             {
                 subManager.Disable();
             }
@@ -56,7 +70,7 @@ namespace Enemies.State_Machine.Transition_Manager
 
         protected override void HandleStartCheckingConditions()
         {
-            foreach (var subManager in AllSubManagers)
+            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
             {
                 subManager.StartCheckingConditions();
             }
@@ -64,7 +78,7 @@ namespace Enemies.State_Machine.Transition_Manager
 
         protected override void HandleStopCheckingConditions()
         {
-            foreach (var subManager in AllSubManagers)
+            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
             {
                 subManager.StopCheckingConditions();
             }
@@ -72,7 +86,7 @@ namespace Enemies.State_Machine.Transition_Manager
 
         protected override void SubscribeOnTransitionEvents()
         {
-            foreach (var subManager in AllSubManagers)
+            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
             {
                 subManager.NeedTransit += TransitNextState;
             }
@@ -80,7 +94,7 @@ namespace Enemies.State_Machine.Transition_Manager
 
         protected override void UnsubscribeFromTransitionEvents()
         {
-            foreach (var subManager in AllSubManagers)
+            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
             {
                 subManager.NeedTransit -= TransitNextState;
             }
@@ -90,14 +104,6 @@ namespace Enemies.State_Machine.Transition_Manager
         {
             UnsubscribeFromTransitionEvents();
             NeedTransit?.Invoke(nextState);
-        }
-
-        public void HandleCompletedAction()
-        {
-            if (_needTransitAfterAction)
-            {
-                TransitNextState(_afterActionNextState);
-            }
         }
     }
 }

@@ -11,14 +11,14 @@ namespace Pickable_Items.Spawners
         private IPickableItemsFactory _pickableItemsFactory;
 
         [Inject]
-        private void Construct(IPickableItemsFactory pickableItemsFactory)
+        private void GetDependencies(IPickableItemsFactory pickableItemsFactory)
         {
             _pickableItemsFactory = pickableItemsFactory;
         }
 
         protected override void Spawn()
         {
-            foreach (var marker in _markers)
+            foreach (IPickableItemMarker marker in _markers)
             {
                 _pickableItemsFactory.Create(marker.DataForCreating, marker.SpawnPosition, NeedCreatedItemsFallDown);
             }

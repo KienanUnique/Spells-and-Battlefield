@@ -21,15 +21,10 @@ namespace Spells.Spell.Implementations
 
         public void Initialize(Rigidbody spellRigidbody, ICaster caster)
         {
-            var spellImplementations = new List<ISpellImplementation>()
-            {
-                SpellObjectMovement,
-                SpellMainTrigger
-            };
+            var spellImplementations = new List<ISpellImplementation> {SpellObjectMovement, SpellMainTrigger};
             spellImplementations.AddRange(SpellAppliers);
 
-            spellImplementations.ForEach(spellImplementation =>
-                spellImplementation.Initialize(spellRigidbody, caster));
+            spellImplementations.ForEach(spellImplementation => spellImplementation.Initialize(spellRigidbody, caster));
         }
 
         public List<ISpell> NextSpellsOnFinish { get; }

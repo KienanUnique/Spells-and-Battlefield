@@ -58,8 +58,8 @@ namespace Common.Abstract_Bases.Factories
             return InstantiatePrefabForComponent<TComponent>(prefabProvider.Prefab, spawnPosition, spawnRotation);
         }
 
-        protected TComponent InstantiatePrefabForComponent<TComponent>(GameObject prefab,
-            Vector3 spawnPosition, Quaternion spawnRotation)
+        protected TComponent InstantiatePrefabForComponent<TComponent>(GameObject prefab, Vector3 spawnPosition,
+            Quaternion spawnRotation)
         {
             return _instantiator.InstantiatePrefabForComponent<TComponent>(prefab, spawnPosition, spawnRotation,
                 _parentTransform);

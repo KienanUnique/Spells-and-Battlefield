@@ -64,8 +64,8 @@ namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Mod
                 return;
             }
 
-            var frontSlotInformation = _slots.First();
-            var frontSlotObject = _slotObjects.First(slotObject =>
+            ObjectWithUsageFlag<ISlotInformation> frontSlotInformation = _slots.First();
+            ObjectWithUsageFlag<ISpellSlot> frontSlotObject = _slotObjects.First(slotObject =>
                 slotObject.StoredObject.CurrentSlotInformation == frontSlotInformation.StoredObject);
             if (frontSlotObject.StoredObject.IsEmptySlot)
             {
@@ -84,10 +84,10 @@ namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Mod
                 return;
             }
 
-            var slotInformation = _slots.ElementAt(args.Index).StoredObject;
-            var removedSlotObjectWithUsageFlag = _slotObjects.First(slotObject =>
+            ISlotInformation slotInformation = _slots.ElementAt(args.Index).StoredObject;
+            ObjectWithUsageFlag<ISpellSlot> removedSlotObjectWithUsageFlag = _slotObjects.First(slotObject =>
                 slotObject.StoredObject.CurrentSlotInformation == slotInformation);
-            var removedSlotObject = removedSlotObjectWithUsageFlag.StoredObject;
+            ISpellSlot removedSlotObject = removedSlotObjectWithUsageFlag.StoredObject;
 
             if (!removedSlotObject.CurrentSpell.Equals(args.Item))
             {
@@ -103,14 +103,14 @@ namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Mod
             }
             else
             {
-                for (var slotIndex = args.Index; slotIndex < _slots.Count - 1; slotIndex++)
+                for (int slotIndex = args.Index; slotIndex < _slots.Count - 1; slotIndex++)
                 {
-                    var nextSlot = _slots.ElementAt(slotIndex + 1);
-                    var currentSlot = _slots.ElementAt(slotIndex);
+                    ObjectWithUsageFlag<ISlotInformation> nextSlot = _slots.ElementAt(slotIndex + 1);
+                    ObjectWithUsageFlag<ISlotInformation> currentSlot = _slots.ElementAt(slotIndex);
                     if (nextSlot.IsUsed)
                     {
-                        var nextSlotInformation = nextSlot.StoredObject;
-                        var nextSpellController = FindUsedSpellObjectInSlot(nextSlotInformation).StoredObject;
+                        ISlotInformation nextSlotInformation = nextSlot.StoredObject;
+                        ISpellSlot nextSpellController = FindUsedSpellObjectInSlot(nextSlotInformation).StoredObject;
                         nextSpellController.MoveToSlot(currentSlot.StoredObject);
                         currentSlot.SetAsUsed();
                         nextSlot.SetAsFree();
@@ -132,17 +132,17 @@ namespace UI.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Mod
                 return;
             }
 
-            var slotInformation = _slots.ElementAt(args.Index).StoredObject;
-            var replacedSlotObjectWithUsageFlag = _slotObjects.First(slotObject =>
+            ISlotInformation slotInformation = _slots.ElementAt(args.Index).StoredObject;
+            ObjectWithUsageFlag<ISpellSlot> replacedSlotObjectWithUsageFlag = _slotObjects.First(slotObject =>
                 slotObject.StoredObject.CurrentSlotInformation == slotInformation);
-            var replacedSlotObject = replacedSlotObjectWithUsageFlag.StoredObject;
+            ISpellSlot replacedSlotObject = replacedSlotObjectWithUsageFlag.StoredObject;
             replacedSlotObject.DisappearAndForgetSpell();
             replacedSlotObject.AppearAsSlot(slotInformation, args.NewItem);
         }
 
         private void OnItemInserted(ItemWithIndexEventArgs<ISpell> args)
         {
-            var slotInformation = _slots.ElementAt(args.Index);
+            ObjectWithUsageFlag<ISlotInformation> slotInformation = _slots.ElementAt(args.Index);
             MoveSlotsBack(slotInformation.StoredObject);
             AppearSlot(slotInformation, args.Item);
         }

@@ -6,6 +6,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
 {
     public interface IInitializableMovingPlatformWithStopsController
     {
-        public void Initialize(List<IMechanismsTrigger> moveNextTriggers, List<IMechanismsTrigger> movePreviousTriggers, IMovingPlatformDataForControllerBase dataForControllerBase);
+        public void Initialize(List<IMechanismsTrigger> moveNextTriggers, List<IMechanismsTrigger> movePreviousTriggers,
+            IMovingPlatformDataForControllerBase dataForControllerBase);
     }
 }

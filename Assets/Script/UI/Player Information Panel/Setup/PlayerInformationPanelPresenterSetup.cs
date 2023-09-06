@@ -15,15 +15,15 @@ namespace UI.Player_Information_Panel.Setup
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             Enumerable.Empty<IInitializable>();
 
+        protected override void Initialize()
+        {
+            _presenter.Initialize(_view);
+        }
+
         protected override void Prepare()
         {
             _view = new DefaultUIElementView(transform, DefaultUIElementViewSettings);
             _presenter = GetComponent<IInitializablePlayerInformationPanelPresenter>();
-        }
-
-        protected override void Initialize()
-        {
-            _presenter.Initialize(_view);
         }
     }
 }

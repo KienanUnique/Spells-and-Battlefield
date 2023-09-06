@@ -6,13 +6,13 @@ namespace Systems.Scene_Switcher.Concrete_Types
 {
     public class InGameScenesSwitcher : ScenesSwitcherBase, IInGameSceneSwitcher
     {
-        private readonly int _currentLevelIndex;
         private readonly IGameLevelData _currentLevel;
+        private readonly int _currentLevelIndex;
         private readonly bool _isCurrentLevelLast;
 
         public InGameScenesSwitcher(IScenesSettings settings) : base(settings)
         {
-            var currentName = SceneManager.GetActiveScene().name;
+            string currentName = SceneManager.GetActiveScene().name;
             _currentLevel = _settings.GameLevels.First(level => level.SceneName == currentName);
             _currentLevelIndex = _settings.GameLevels.IndexOf(_currentLevel);
             _isCurrentLevelLast = _currentLevelIndex == _settings.GameLevels.Count - 1;

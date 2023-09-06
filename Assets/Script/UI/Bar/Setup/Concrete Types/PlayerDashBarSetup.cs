@@ -18,12 +18,12 @@ namespace UI.Bar.Setup.Concrete_Types
         [SerializeField] private Transform _barTransform;
 
         private IPlayerInformationProvider _playerInformationProvider;
-        private IFillingBarSettings _settings;
         private IPlayerInitializationStatus _playerInitializationStatus;
+        private IFillingBarSettings _settings;
         private IBarView _view;
 
         [Inject]
-        private void Construct(IPlayerInformationProvider playerInformationProvider, IFillingBarSettings settings,
+        private void GetDependencies(IPlayerInformationProvider playerInformationProvider, IFillingBarSettings settings,
             IPlayerInitializationStatus playerInitializationStatus)
         {
             _playerInformationProvider = playerInformationProvider;
@@ -34,17 +34,17 @@ namespace UI.Bar.Setup.Concrete_Types
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             new List<IInitializable> {_playerInitializationStatus};
 
-        protected override void Prepare()
-        {
-            base.Prepare();
-            _view = new FillingBarView(_foreground, _barTransform, _settings);
-        }
-
         protected override void Initialize()
         {
             var model = new PlayerDashBarModel(_playerInformationProvider);
             AddDisableable(model);
             InitializePresenter(model, _view);
+        }
+
+        protected override void Prepare()
+        {
+            base.Prepare();
+            _view = new FillingBarView(_foreground, _barTransform, _settings);
         }
     }
 }

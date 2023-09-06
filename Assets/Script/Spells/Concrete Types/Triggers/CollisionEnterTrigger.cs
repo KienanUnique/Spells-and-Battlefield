@@ -11,23 +11,31 @@ namespace Spells.Concrete_Types.Triggers
     {
         [SerializeField] private float _timeBeforeFinishTrigger;
 
-        public override ISpellTrigger GetImplementationObject() =>
-            new CollisionEnterTriggerImplementation(_timeBeforeFinishTrigger);
+        public override ISpellTrigger GetImplementationObject()
+        {
+            return new CollisionEnterTriggerImplementation(_timeBeforeFinishTrigger);
+        }
 
         private class CollisionEnterTriggerImplementation : SpellTriggerImplementationBase
         {
             private readonly float _timeBeforeFinishTrigger;
 
-            public CollisionEnterTriggerImplementation(float timeBeforeFinishTrigger) =>
+            public CollisionEnterTriggerImplementation(float timeBeforeFinishTrigger)
+            {
                 _timeBeforeFinishTrigger = timeBeforeFinishTrigger;
+            }
 
-            public override SpellTriggerCheckStatusEnum CheckContact(Collider other) =>
-                SpellTriggerCheckStatusEnum.Finish;
+            public override SpellTriggerCheckStatusEnum CheckContact(Collider other)
+            {
+                return SpellTriggerCheckStatusEnum.Finish;
+            }
 
-            public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize) =>
-                _timeBeforeFinishTrigger > timePassedFromInitialize
+            public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize)
+            {
+                return _timeBeforeFinishTrigger > timePassedFromInitialize
                     ? SpellTriggerCheckStatusEnum.Ignore
                     : SpellTriggerCheckStatusEnum.Finish;
+            }
         }
     }
 }

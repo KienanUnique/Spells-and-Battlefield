@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Common.Abstract_Bases.Factories;
+﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Factories.Object_Pool;
 using Systems.In_Game_Systems.Factory;
 using UnityEngine;
@@ -10,11 +8,11 @@ namespace Systems
 {
     public class LevelStartController : MonoBehaviour
     {
-        private IReadOnlyList<IObjectPoolingFactory> _objectPoolingFactories;
         private IInGameSystemsFactory _gameSystemsFactory;
+        private IReadOnlyList<IObjectPoolingFactory> _objectPoolingFactories;
 
         [Inject]
-        private void Construct(IReadOnlyList<IObjectPoolingFactory> objectPoolingFactories,
+        private void GetDependencies(IReadOnlyList<IObjectPoolingFactory> objectPoolingFactories,
             IInGameSystemsFactory gameSystemsFactory)
         {
             _objectPoolingFactories = objectPoolingFactories;
@@ -24,7 +22,7 @@ namespace Systems
         private void Start()
         {
             _gameSystemsFactory.Create();
-            foreach (var factory in _objectPoolingFactories)
+            foreach (IObjectPoolingFactory factory in _objectPoolingFactories)
             {
                 factory.FillPool();
             }
@@ -32,7 +30,7 @@ namespace Systems
 
         private void OnEnable()
         {
-            foreach (var factory in _objectPoolingFactories)
+            foreach (IObjectPoolingFactory factory in _objectPoolingFactories)
             {
                 factory.Enable();
             }
@@ -40,7 +38,7 @@ namespace Systems
 
         private void OnDisable()
         {
-            foreach (var factory in _objectPoolingFactories)
+            foreach (IObjectPoolingFactory factory in _objectPoolingFactories)
             {
                 factory.Disable();
             }

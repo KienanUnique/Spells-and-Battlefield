@@ -24,20 +24,18 @@ namespace Enemies.State_Machine.States
             SetInitializedStatus();
         }
 
-
         public event Action<IStateEnemyAI> NeedToSwitchToNextState;
         public event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
-        public int StateID => this.GetInstanceID();
-        public abstract ILookPointCalculator LookPointCalculator { get; }
-        protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
-        protected StateEnemyAIStatus CurrentStatus => _currentStateStatus.Value;
 
         protected enum StateEnemyAIStatus
         {
-            NonActive,
-            Active,
-            Exiting
+            NonActive, Active, Exiting
         }
+
+        public abstract ILookPointCalculator LookPointCalculator { get; }
+        public int StateID => GetInstanceID();
+        protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
+        protected StateEnemyAIStatus CurrentStatus => _currentStateStatus.Value;
 
         public void Enter()
         {
@@ -49,8 +47,15 @@ namespace Enemies.State_Machine.States
             _currentStateStatus.Value = StateEnemyAIStatus.NonActive;
         }
 
+        protected abstract void SpecialReactionOnStateStatusChange(StateEnemyAIStatus newStatus);
+
         protected virtual void SpecialInitializeAction()
         {
+        }
+
+        protected virtual void ChangeLookPointCalculator(ILookPointCalculator lookPointCalculator)
+        {
+            NeedChangeLookPointCalculator?.Invoke(lookPointCalculator);
         }
 
         protected override void SubscribeOnEvents()
@@ -62,18 +67,10 @@ namespace Enemies.State_Machine.States
             }
         }
 
-
         protected override void UnsubscribeFromEvents()
         {
             _currentStateStatus.AfterValueChanged -= OnAfterStateStatus;
             UnsubscribeFromTransitionEvents();
-        }
-
-        protected abstract void SpecialReactionOnStateStatusChange(StateEnemyAIStatus newStatus);
-
-        protected virtual void ChangeLookPointCalculator(ILookPointCalculator lookPointCalculator)
-        {
-            NeedChangeLookPointCalculator?.Invoke(lookPointCalculator);
         }
 
         protected void HandleCompletedAction()

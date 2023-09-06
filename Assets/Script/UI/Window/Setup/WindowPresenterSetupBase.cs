@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Common;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Interfaces;
@@ -14,11 +13,12 @@ namespace UI.Window.Setup
     public abstract class WindowPresenterSetupBase : UIElementPresenterSetup, IUIWindowManagerSettable
     {
         private ExternalDependenciesInitializationWaiter _externalDependenciesInitializationWaiter;
-        protected IIdHolder IDHolder { get; private set; }
-        protected IUIWindowManager Manager { get; private set; }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             new List<IInitializable> {_externalDependenciesInitializationWaiter};
+
+        protected IIdHolder IDHolder { get; private set; }
+        protected IUIWindowManager Manager { get; private set; }
 
         public void SetInGameUIControllable(IUIWindowManager manager)
         {

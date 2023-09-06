@@ -2,7 +2,6 @@
 {
     public enum TypeOfHitPointsChange
     {
-        Damage,
-        Heal
+        Damage, Heal
     }
 }

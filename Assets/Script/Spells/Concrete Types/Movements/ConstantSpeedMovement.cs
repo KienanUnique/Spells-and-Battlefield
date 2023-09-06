@@ -13,13 +13,19 @@ namespace Spells.Concrete_Types.Movements
     {
         [SerializeField] private float _speed;
 
-        public override ISpellMovementWithLookPointCalculator GetImplementationObject() =>
-            new ConstantSpeedMovementImplementation(_speed);
+        public override ISpellMovementWithLookPointCalculator GetImplementationObject()
+        {
+            return new ConstantSpeedMovementImplementation(_speed);
+        }
 
         private class ConstantSpeedMovementImplementation : SpellMovementImplementationBase
         {
             private readonly float _speed;
-            public ConstantSpeedMovementImplementation(float speed) => _speed = speed;
+
+            public ConstantSpeedMovementImplementation(float speed)
+            {
+                _speed = speed;
+            }
 
             public override void UpdatePosition()
             {

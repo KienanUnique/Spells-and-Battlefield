@@ -14,17 +14,17 @@ namespace UI.In_Game_Menu
         [SerializeField] private Button _goToMainMenuButton;
         [SerializeField] private Button _restartLevelButton;
 
+        [Inject]
+        private void GetDependencies(IInGameSceneSwitcher inGameSceneSwitcher)
+        {
+            InGameSceneSwitcher = inGameSceneSwitcher;
+        }
+
         protected LoadingWindowPresenter LoadingWindow => _loadingWindow;
         protected Button GoToMainMenuButton => _goToMainMenuButton;
         protected Button RestartLevelButton => _restartLevelButton;
         protected IInGameSceneSwitcher InGameSceneSwitcher { private set; get; }
         protected IUIElementView View { private set; get; }
-
-        [Inject]
-        private void Construct(IInGameSceneSwitcher inGameSceneSwitcher)
-        {
-            InGameSceneSwitcher = inGameSceneSwitcher;
-        }
 
         protected override void Prepare()
         {

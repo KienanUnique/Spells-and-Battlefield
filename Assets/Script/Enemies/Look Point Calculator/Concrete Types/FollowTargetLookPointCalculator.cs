@@ -11,7 +11,7 @@ namespace Enemies.Look_Point_Calculator.Concrete_Types
                 return DefaultRotation;
             }
 
-            var direction = TargetRigidbody.Position - _thisRigidbody.Position;
+            Vector3 direction = TargetRigidbody.Position - _thisRigidbody.Position;
             direction.Normalize();
             return direction;
         }

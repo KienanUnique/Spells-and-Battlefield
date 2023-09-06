@@ -6,7 +6,6 @@ using Interfaces;
 using Systems.In_Game_Systems.Level_Finish_Zone;
 using Systems.In_Game_Systems.Time_Controller;
 using Systems.Input_Manager;
-using Systems.Scene_Switcher;
 using UI.Managers.Concrete_Types.In_Game;
 
 namespace Systems.In_Game_Systems.Game_Controller
@@ -14,13 +13,13 @@ namespace Systems.In_Game_Systems.Game_Controller
     public class GameController : InitializableMonoBehaviourBase, IInitializableGameController
     {
         private ValueWithReactionOnChange<GameState> _currentGameState;
-        private GameState _lastState;
 
         private IInGameManagerUI _inGameManagerUI;
-        private IPlayerInformationProvider _playerInformationProvider;
         private IInGameSystemInputManager _inGameSystemInput;
-        private ITimeController _timeController;
+        private GameState _lastState;
         private ILevelFinishZone _levelFinishZone;
+        private IPlayerInformationProvider _playerInformationProvider;
+        private ITimeController _timeController;
 
         public void Initialize(IInGameManagerUI inGameManagerUI, IPlayerInformationProvider playerInformationProvider,
             IInGameSystemInputManager inGameSystemInput, ITimeController timeController,
@@ -36,6 +35,14 @@ namespace Systems.In_Game_Systems.Game_Controller
             SetInitializedStatus();
             _timeController.RestoreTimeToNormal();
             OnAfterGameStateChanged(_currentGameState.Value);
+        }
+
+        private enum GameState
+        {
+            Playing,
+            Pause,
+            GameOver,
+            LevelCompleted
         }
 
         protected override void SubscribeOnEvents()
@@ -172,14 +179,6 @@ namespace Systems.In_Game_Systems.Game_Controller
         private void OnCloseMenuInputted()
         {
             _currentGameState.Value = _lastState;
-        }
-
-        private enum GameState
-        {
-            Playing,
-            Pause,
-            GameOver,
-            LevelCompleted
         }
     }
 }

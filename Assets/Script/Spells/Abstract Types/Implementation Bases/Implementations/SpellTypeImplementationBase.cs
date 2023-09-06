@@ -9,9 +9,14 @@ namespace Spells.Abstract_Types.Implementation_Bases.Implementations
         public abstract int TypeID { get; }
         public abstract Color VisualisationColor { get; }
 
-        public int CompareTo(ISpellType otherSpellType)
+        public override bool Equals(object obj)
         {
-            return TypeID.CompareTo(otherSpellType.TypeID);
+            return CompareTo(obj) == 0;
+        }
+
+        public override int GetHashCode()
+        {
+            return TypeID;
         }
 
         public int CompareTo(object obj)
@@ -24,14 +29,9 @@ namespace Spells.Abstract_Types.Implementation_Bases.Implementations
             throw new InvalidCastException();
         }
 
-        public override bool Equals(object obj)
+        public int CompareTo(ISpellType otherSpellType)
         {
-            return CompareTo(obj) == 0;
-        }
-
-        public override int GetHashCode()
-        {
-            return TypeID;
+            return TypeID.CompareTo(otherSpellType.TypeID);
         }
     }
 }

@@ -9,8 +9,19 @@ namespace Common.Event_Invoker_For_Action_Animations
         public event Action ActionAnimationStart;
         public event Action ActionAnimationEnd;
 
-        public void InvokeActionAnimationStart() => ActionAnimationStart?.Invoke();
-        public void InvokeActionAnimationKeyMomentTrigger() => ActionAnimationKeyMomentTrigger?.Invoke();
-        public void InvokeActionAnimationEnd() => ActionAnimationEnd?.Invoke();
+        public void InvokeActionAnimationStart()
+        {
+            ActionAnimationStart?.Invoke();
+        }
+
+        public void InvokeActionAnimationKeyMomentTrigger()
+        {
+            ActionAnimationKeyMomentTrigger?.Invoke();
+        }
+
+        public void InvokeActionAnimationEnd()
+        {
+            ActionAnimationEnd?.Invoke();
+        }
     }
 }

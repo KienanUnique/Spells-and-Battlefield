@@ -24,8 +24,8 @@ namespace Systems.Installers
 
         [SerializeField] private PopupHitPointsChangeTextFactorySettings _popupHitPointsChangeTextFactorySettings;
         [SerializeField] private InGameSystemsPrefabProvider _inGameSystemsPrefabProvider;
-        private IReadOnlyList<IObjectPoolingFactory> ObjectPoolingFactories => _objectPoolingFactories;
         private List<IObjectPoolingFactory> _objectPoolingFactories;
+        private IReadOnlyList<IObjectPoolingFactory> ObjectPoolingFactories => _objectPoolingFactories;
 
         public override void InstallBindings()
         {
@@ -42,10 +42,7 @@ namespace Systems.Installers
         {
             var factory = new InGameSystemsFactory(Container, CreateEmptyParentWithName(SystemsSectionName),
                 _inGameSystemsPrefabProvider);
-            Container
-                .Bind<IInGameSystemsFactory>()
-                .FromInstance(factory)
-                .AsSingle();
+            Container.Bind<IInGameSystemsFactory>().FromInstance(factory).AsSingle();
         }
 
         private void InstallPopupTextFactories()
@@ -56,47 +53,32 @@ namespace Systems.Installers
 
             _objectPoolingFactories.Add(textFactory);
 
-            Container
-                .Bind<IPopupHitPointsChangeTextFactory>()
-                .FromInstance(textFactory)
-                .AsSingle();
+            Container.Bind<IPopupHitPointsChangeTextFactory>().FromInstance(textFactory).AsSingle();
         }
 
         private void InstallAllObjectPoolingFactories()
         {
-            Container
-                .Bind<IReadOnlyList<IObjectPoolingFactory>>()
-                .FromInstance(ObjectPoolingFactories)
-                .AsSingle();
+            Container.Bind<IReadOnlyList<IObjectPoolingFactory>>().FromInstance(ObjectPoolingFactories).AsSingle();
         }
 
         private void InstallEnemyFactory()
         {
             IEnemyFactory enemyFactory = new EnemyFactory(Container, CreateEmptyParentWithName(EnemiesSectionName));
-            Container
-                .Bind<IEnemyFactory>()
-                .FromInstance(enemyFactory)
-                .AsSingle();
+            Container.Bind<IEnemyFactory>().FromInstance(enemyFactory).AsSingle();
         }
 
         private void InstallPickableItemsFactory()
         {
             IPickableItemsFactory pickableItemsFactory =
                 new PickableItemsFactory(Container, CreateEmptyParentWithName(PickableItemsSectionName));
-            Container
-                .Bind<IPickableItemsFactory>()
-                .FromInstance(pickableItemsFactory)
-                .AsSingle();
+            Container.Bind<IPickableItemsFactory>().FromInstance(pickableItemsFactory).AsSingle();
         }
 
         private void InstallSpellFactory()
         {
             ISpellObjectsFactory spellObjectsFactory =
                 new SpellObjectsFactory(Container, CreateEmptyParentWithName(SpellsSectionName));
-            Container
-                .Bind<ISpellObjectsFactory>()
-                .FromInstance(spellObjectsFactory)
-                .AsSingle();
+            Container.Bind<ISpellObjectsFactory>().FromInstance(spellObjectsFactory).AsSingle();
         }
 
         private Transform CreateEmptyParentWithName(string parentName)

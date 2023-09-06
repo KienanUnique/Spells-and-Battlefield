@@ -8,7 +8,7 @@ namespace UI.Managers.Concrete_Types.In_Game.Setup
 {
     public interface IInitializableInGameManagerUI
     {
-        public void Initialize(IGameplayUI gameplayUI, IGameOverMenu gameOverMenu,
-            IPauseMenu pauseMenu, ILevelCompletedMenu levelCompletedMenu, IUIWindowsStackManager windowsManager);
+        public void Initialize(IGameplayUI gameplayUI, IGameOverMenu gameOverMenu, IPauseMenu pauseMenu,
+            ILevelCompletedMenu levelCompletedMenu, IUIWindowsStackManager windowsManager);
     }
 }

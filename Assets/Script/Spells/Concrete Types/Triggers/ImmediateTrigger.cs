@@ -9,13 +9,14 @@ namespace Spells.Concrete_Types.Triggers
         menuName = ScriptableObjectsMenuDirectories.SpellTriggerDirectory + "Immediate Trigger", order = 0)]
     public class ImmediateTrigger : SpellTriggerScriptableObject
     {
-        public override ISpellTrigger GetImplementationObject() => new ImmediateTriggerImplementation();
+        public override ISpellTrigger GetImplementationObject()
+        {
+            return new ImmediateTriggerImplementation();
+        }
 
         private class ImmediateTriggerImplementation : SpellTriggerImplementationBase
         {
-            private bool _wasTriggered = false;
-            public override SpellTriggerCheckStatusEnum CheckContact(Collider other) => TriggerStatus;
-            public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize) => TriggerStatus;
+            private bool _wasTriggered;
 
             private SpellTriggerCheckStatusEnum TriggerStatus
             {
@@ -26,11 +27,19 @@ namespace Spells.Concrete_Types.Triggers
                         _wasTriggered = true;
                         return SpellTriggerCheckStatusEnum.Finish;
                     }
-                    else
-                    {
-                        return SpellTriggerCheckStatusEnum.Ignore;
-                    }
+
+                    return SpellTriggerCheckStatusEnum.Ignore;
                 }
+            }
+
+            public override SpellTriggerCheckStatusEnum CheckContact(Collider other)
+            {
+                return TriggerStatus;
+            }
+
+            public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize)
+            {
+                return TriggerStatus;
             }
         }
     }

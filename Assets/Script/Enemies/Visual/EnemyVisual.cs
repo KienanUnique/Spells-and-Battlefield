@@ -15,12 +15,20 @@ namespace Enemies.Visual
         private readonly AnimationClip _emptyActionAnimationClip;
 
         public EnemyVisual(RigBuilder rigBuilder, Animator characterAnimator,
-            AnimatorOverrideController baseAnimatorOverrideController,
-            AnimationClip emptyActionAnimationClip) : base(rigBuilder, characterAnimator)
+            AnimatorOverrideController baseAnimatorOverrideController, AnimationClip emptyActionAnimationClip) : base(
+            rigBuilder, characterAnimator)
         {
             _baseAnimatorOverrideController = baseAnimatorOverrideController;
             _emptyActionAnimationClip = emptyActionAnimationClip;
             ApplyRuntimeAnimatorController(_baseAnimatorOverrideController);
+        }
+
+        public void PlayActionAnimation(IAnimationData animationData)
+        {
+            ApplyAnimationOverride(_baseAnimatorOverrideController, _emptyActionAnimationClip, animationData.Clip);
+
+            _characterAnimator.SetFloat(ActionFloatAnimationSpeedHash, animationData.AnimationSpeed);
+            _characterAnimator.SetTrigger(ActionTriggerHash);
         }
 
         public void UpdateMovingData(bool isRunning)
@@ -32,14 +40,6 @@ namespace Enemies.Visual
         {
             _rigBuilder.enabled = false;
             _characterAnimator.SetTrigger(DieTriggerHash);
-        }
-
-        public void PlayActionAnimation(IAnimationData animationData)
-        {
-            ApplyAnimationOverride(_baseAnimatorOverrideController, _emptyActionAnimationClip, animationData.Clip);
-
-            _characterAnimator.SetFloat(ActionFloatAnimationSpeedHash, animationData.AnimationSpeed);
-            _characterAnimator.SetTrigger(ActionTriggerHash);
         }
 
         private void ApplyRuntimeAnimatorController(RuntimeAnimatorController animatorOverrideController)

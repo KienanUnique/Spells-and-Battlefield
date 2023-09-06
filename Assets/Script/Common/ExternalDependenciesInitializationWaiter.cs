@@ -14,13 +14,13 @@ namespace Common
             }
         }
 
+        public event Action<InitializationStatus> InitializationStatusChanged;
+        public InitializationStatus CurrentInitializationStatus { get; private set; }
+
         public void HandleExternalDependenciesInitialization()
         {
             CurrentInitializationStatus = InitializationStatus.Initialized;
             InitializationStatusChanged?.Invoke(CurrentInitializationStatus);
         }
-
-        public event Action<InitializationStatus> InitializationStatusChanged;
-        public InitializationStatus CurrentInitializationStatus { get; private set; }
     }
 }

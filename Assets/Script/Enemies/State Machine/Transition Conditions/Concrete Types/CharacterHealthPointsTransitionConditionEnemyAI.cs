@@ -49,7 +49,11 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
 
         protected override void SubscribeOnEvents()
         {
-            if (!IsEnabled) return;
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             SubscribeOnThisCharacterEvents();
         }
 

@@ -10,16 +10,17 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
     {
         [SerializeField] private List<EnemySpawnerWithTrigger> _triggers;
         private IInitializableSpawnedEnemiesDeathMechanismTrigger _deathMechanismTrigger;
-        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization => _triggers;
 
-        protected override void Prepare()
-        {
-            _deathMechanismTrigger = GetComponent<IInitializableSpawnedEnemiesDeathMechanismTrigger>();
-        }
+        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization => _triggers;
 
         protected override void Initialize()
         {
             _deathMechanismTrigger.Initialize(new List<IEnemyDeathTrigger>(_triggers));
+        }
+
+        protected override void Prepare()
+        {
+            _deathMechanismTrigger = GetComponent<IInitializableSpawnedEnemiesDeathMechanismTrigger>();
         }
     }
 }

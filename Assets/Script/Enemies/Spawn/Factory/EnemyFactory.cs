@@ -11,8 +11,7 @@ namespace Enemies.Spawn.Factory
 {
     public class EnemyFactory : FactoryWithInstantiatorBase, IEnemyFactory
     {
-        public EnemyFactory(IInstantiator instantiator, Transform parentTransform) :
-            base(instantiator, parentTransform)
+        public EnemyFactory(IInstantiator instantiator, Transform parentTransform) : base(instantiator, parentTransform)
         {
         }
 
@@ -23,9 +22,8 @@ namespace Enemies.Spawn.Factory
                 positionDataForInstantiation.SpawnRotation);
         }
 
-        public IEnemy Create(IEnemyDataForSpawnMarker dataForSpawnMarker,
-            List<IEnemyTargetTrigger> enemyTargetTriggers, Vector3 spawnPosition,
-            Quaternion spawnRotation)
+        public IEnemy Create(IEnemyDataForSpawnMarker dataForSpawnMarker, List<IEnemyTargetTrigger> enemyTargetTriggers,
+            Vector3 spawnPosition, Quaternion spawnRotation)
         {
             var enemySetup =
                 InstantiatePrefabForComponent<IEnemySetup>(dataForSpawnMarker.PrefabProvider, spawnPosition,

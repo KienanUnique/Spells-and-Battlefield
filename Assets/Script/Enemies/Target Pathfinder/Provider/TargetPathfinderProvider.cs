@@ -5,8 +5,7 @@ using UnityEngine;
 namespace Enemies.Target_Pathfinder.Provider
 {
     [CreateAssetMenu(fileName = "Target Pathfinder Provider",
-        menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory +
-                   "Target Pathfinder Provider", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory + "Target Pathfinder Provider", order = 0)]
     public class TargetPathfinderProvider : ScriptableObject, ITargetPathfinderProvider
     {
         [SerializeField] private TargetPathfinderSettingsSection _settings;

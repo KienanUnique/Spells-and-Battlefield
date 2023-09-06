@@ -6,8 +6,8 @@ namespace Systems.Scene_Switcher.Concrete_Types
 {
     public class ScenesSwitcherBase
     {
-        private bool _isAlreadyLoading = false;
         protected readonly IScenesSettings _settings;
+        private bool _isAlreadyLoading;
 
         public ScenesSwitcherBase(IScenesSettings settings)
         {

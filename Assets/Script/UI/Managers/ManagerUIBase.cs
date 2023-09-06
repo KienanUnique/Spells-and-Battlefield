@@ -5,7 +5,8 @@ using UI.Window;
 
 namespace UI.Managers
 {
-    public abstract class ManagerUIBase : InitializableMonoBehaviourBase, IUIWindowManager,
+    public abstract class ManagerUIBase : InitializableMonoBehaviourBase,
+        IUIWindowManager,
         IUIManagerInitializationStatus
     {
         protected abstract IUIWindowsStackManager WindowsManager { get; }

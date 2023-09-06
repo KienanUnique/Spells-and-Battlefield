@@ -7,8 +7,7 @@ using UnityEngine;
 namespace Enemies.Spawn.Data_For_Spawn
 {
     [CreateAssetMenu(fileName = "Enemy Data For Spawn Marker",
-        menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory +
-                   "Enemy Data For Spawn Marker", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory + "Enemy Data For Spawn Marker", order = 0)]
     public class EnemyDataForSpawnMarker : ScriptableObject, IEnemyDataForSpawnMarker
     {
         [SerializeField] private EnemyPrefabProvider _prefabProvider;

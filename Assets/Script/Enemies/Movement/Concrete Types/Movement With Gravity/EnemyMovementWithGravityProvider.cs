@@ -1,5 +1,4 @@
-﻿using Common.Settings.Sections.Movement;
-using Common.Settings.Sections.Movement.Movement_With_Gravity;
+﻿using Common.Settings.Sections.Movement.Movement_With_Gravity;
 using Enemies.Movement.Provider;
 using Enemies.Movement.Setup_Data;
 using UnityEngine;

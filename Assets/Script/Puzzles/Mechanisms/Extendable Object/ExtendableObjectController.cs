@@ -10,22 +10,21 @@ using UnityEngine;
 
 namespace Puzzles.Mechanisms.Extendable_Object
 {
-    public class ExtendableObjectController : InitializableMonoBehaviourBase,
-        IInitializableExtendableObjectController
+    public class ExtendableObjectController : InitializableMonoBehaviourBase, IInitializableExtendableObjectController
     {
         private const float PulledInScaleZ = 0f;
-        private List<IMechanismsTrigger> _triggers;
-        private Vector3 _pulledInPosition;
-        private float _pulledOutScaleZ;
-        private Vector3 _pulledOutPosition;
-        private Transform _objectToExtend;
-        private IExtendableObjectsSettings _settings;
         private float _animationDuration;
         private ValueWithReactionOnChange<ExtendableObjectState> _currentState;
+        private Transform _objectToExtend;
+        private Vector3 _pulledInPosition;
+        private Vector3 _pulledOutPosition;
+        private float _pulledOutScaleZ;
+        private IExtendableObjectsSettings _settings;
+        private List<IMechanismsTrigger> _triggers;
 
         public void Initialize(List<IMechanismsTrigger> triggers, ExtendableObjectState startState,
-            Vector3 startPosition,
-            Vector3 endPosition, float animationDuration, Transform objectToExtend, IExtendableObjectsSettings settings)
+            Vector3 startPosition, Vector3 endPosition, float animationDuration, Transform objectToExtend,
+            IExtendableObjectsSettings settings)
         {
             _objectToExtend = objectToExtend;
             _triggers = triggers;
@@ -36,7 +35,7 @@ namespace Puzzles.Mechanisms.Extendable_Object
             _animationDuration = animationDuration;
             _settings = settings;
             _currentState = new ValueWithReactionOnChange<ExtendableObjectState>(startState);
-            var localScale = _objectToExtend.localScale;
+            Vector3 localScale = _objectToExtend.localScale;
             switch (startState)
             {
                 case ExtendableObjectState.PulledIn:
@@ -56,7 +55,7 @@ namespace Puzzles.Mechanisms.Extendable_Object
 
         protected override void SubscribeOnEvents()
         {
-            foreach (var trigger in _triggers)
+            foreach (IMechanismsTrigger trigger in _triggers)
             {
                 trigger.Triggered += OnTriggered;
             }
@@ -66,7 +65,7 @@ namespace Puzzles.Mechanisms.Extendable_Object
 
         protected override void UnsubscribeFromEvents()
         {
-            foreach (var trigger in _triggers)
+            foreach (IMechanismsTrigger trigger in _triggers)
             {
                 trigger.Triggered -= OnTriggered;
             }
@@ -107,10 +106,12 @@ namespace Puzzles.Mechanisms.Extendable_Object
         private void MoveToState(float targetScaleZ, Vector3 targetPosition)
         {
             _objectToExtend.DOComplete();
-            _objectToExtend.DOScaleZ(targetScaleZ, _animationDuration).SetEase(_settings.AnimationEase)
-                .SetLink(gameObject);
-            _objectToExtend.DOMove(targetPosition, _animationDuration).SetEase(_settings.AnimationEase)
-                .SetLink(gameObject);
+            _objectToExtend.DOScaleZ(targetScaleZ, _animationDuration)
+                           .SetEase(_settings.AnimationEase)
+                           .SetLink(gameObject);
+            _objectToExtend.DOMove(targetPosition, _animationDuration)
+                           .SetEase(_settings.AnimationEase)
+                           .SetLink(gameObject);
         }
     }
 }

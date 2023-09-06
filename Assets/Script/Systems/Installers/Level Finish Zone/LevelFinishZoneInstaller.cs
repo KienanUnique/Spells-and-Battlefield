@@ -15,10 +15,7 @@ namespace Systems.Installers.Level_Finish_Zone
 
         private void InstallFinishZone()
         {
-            Container
-                .Bind<ILevelFinishZone>()
-                .FromInstance(_finishZoneHolder.ObjectToHold)
-                .AsSingle();
+            Container.Bind<ILevelFinishZone>().FromInstance(_finishZoneHolder.ObjectToHold).AsSingle();
         }
     }
 }

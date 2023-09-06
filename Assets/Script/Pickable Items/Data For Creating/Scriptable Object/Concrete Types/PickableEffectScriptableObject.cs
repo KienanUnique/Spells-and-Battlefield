@@ -1,7 +1,5 @@
-﻿using Common.Mechanic_Effects;
-using Common.Mechanic_Effects.Scriptable_Objects;
+﻿using Common.Mechanic_Effects.Scriptable_Objects;
 using Pickable_Items.Strategies_For_Pickable_Controller;
-using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using UnityEngine;
 
 namespace Pickable_Items.Data_For_Creating.Scriptable_Object.Concrete_Types

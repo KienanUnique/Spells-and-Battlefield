@@ -19,13 +19,16 @@ namespace Common.Mechanic_Effects.Concrete_Types
         {
             private readonly float _forceValue;
 
-            public PushMechanicImplementation(float forceValue) => _forceValue = forceValue;
+            public PushMechanicImplementation(float forceValue)
+            {
+                _forceValue = forceValue;
+            }
 
             public override void ApplyEffectToTarget(IInteractable target)
             {
                 if (target.TryGetComponent(out IPhysicsInteractable physicsTarget))
                 {
-                    var force = (physicsTarget.CurrentPosition - _spellRigidbody.position).normalized;
+                    Vector3 force = (physicsTarget.CurrentPosition - _spellRigidbody.position).normalized;
                     force *= _forceValue;
                     physicsTarget.AddForce(force, ForceMode.Impulse);
                 }

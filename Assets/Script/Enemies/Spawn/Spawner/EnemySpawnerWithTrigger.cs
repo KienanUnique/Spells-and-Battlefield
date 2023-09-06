@@ -11,12 +11,14 @@ using Interfaces;
 
 namespace Enemies.Spawn.Spawner
 {
-    public class EnemySpawnerWithTrigger : InitializableMonoBehaviourBase, IInitializableEnemySpawner,
-        IInitializableEnemySpawnerWithTrigger, IEnemyDeathTrigger
+    public class EnemySpawnerWithTrigger : InitializableMonoBehaviourBase,
+        IInitializableEnemySpawner,
+        IInitializableEnemySpawnerWithTrigger,
+        IEnemyDeathTrigger
     {
+        private IEnemyDataForSpawnMarker _dataForSpawnMarker;
         private IEnemyFactory _enemyFactory;
         private IPositionDataForInstantiation _positionDataForInstantiation;
-        private IEnemyDataForSpawnMarker _dataForSpawnMarker;
         private IEnemy _spawnedEnemy;
 
         public void Initialize(IEnemyFactory enemyFactory, IPositionDataForInstantiation positionDataForInstantiation,
@@ -31,6 +33,12 @@ namespace Enemies.Spawn.Spawner
         public event Action SpawnedEnemyDied;
 
         public bool IsSpawnedEnemyDied => _spawnedEnemy is {CurrentCharacterState: CharacterState.Dead};
+
+        public void Spawn(List<IEnemyTargetTrigger> targetTriggers)
+        {
+            _spawnedEnemy = _enemyFactory.Create(_dataForSpawnMarker, targetTriggers, _positionDataForInstantiation);
+            SubscribeOnSpawnedEnemyEvents();
+        }
 
         protected override void SubscribeOnEvents()
         {
@@ -50,12 +58,6 @@ namespace Enemies.Spawn.Spawner
             }
 
             UnsubscribeFromSpawnedEnemyEvents();
-        }
-
-        public void Spawn(List<IEnemyTargetTrigger> targetTriggers)
-        {
-            _spawnedEnemy = _enemyFactory.Create(_dataForSpawnMarker, targetTriggers, _positionDataForInstantiation);
-            SubscribeOnSpawnedEnemyEvents();
         }
 
         private void SubscribeOnSpawnedEnemyEvents()

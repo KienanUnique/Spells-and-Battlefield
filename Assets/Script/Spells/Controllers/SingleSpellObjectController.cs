@@ -8,20 +8,12 @@ namespace Spells.Controllers
     [RequireComponent(typeof(Rigidbody))]
     public class SingleSpellObjectController : MonoBehaviour, ISpellObjectController
     {
+        private ICaster _caster;
+        private SpellControllerStatus _controllerStatus = SpellControllerStatus.NonInitialized;
+        private float _initializeTime;
         private Rigidbody _rigidbody;
         private ISpellDataForSpellController _spellData;
         private ISpellObjectsFactory _spellObjectsFactory;
-        private ICaster _caster;
-        private float _initializeTime;
-        private SpellControllerStatus _controllerStatus = SpellControllerStatus.NonInitialized;
-        private float TimePassedFromInitialize => Time.time - _initializeTime;
-
-        private enum SpellControllerStatus
-        {
-            NonInitialized,
-            Active,
-            Finished
-        }
 
         public void Initialize(ISpellDataForSpellController spellData, ICaster caster,
             ISpellObjectsFactory spellObjectsFactory)
@@ -34,6 +26,13 @@ namespace Spells.Controllers
             _initializeTime = Time.time;
             _controllerStatus = SpellControllerStatus.Active;
         }
+
+        private enum SpellControllerStatus
+        {
+            NonInitialized, Active, Finished
+        }
+
+        private float TimePassedFromInitialize => Time.time - _initializeTime;
 
         private void Awake()
         {
@@ -55,7 +54,7 @@ namespace Spells.Controllers
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<ISpellInteractable>(out var otherAsSpellInteractable))
+            if (other.TryGetComponent(out ISpellInteractable otherAsSpellInteractable))
             {
                 otherAsSpellInteractable.InteractAsSpellType(_spellData.SpellType);
             }
@@ -81,11 +80,11 @@ namespace Spells.Controllers
             _spellData.SpellAppliers.ForEach(applier => applier.HandleRollbackableEffects());
             _spellData.NextSpellsOnFinish.ForEach(spell =>
             {
-                var spellTransform = _rigidbody.transform;
-                _spellObjectsFactory.Create(spell.SpellDataForSpellController, spell.SpellPrefabProvider,
-                    _caster, spellTransform.position, spellTransform.rotation);
+                Transform spellTransform = _rigidbody.transform;
+                _spellObjectsFactory.Create(spell.SpellDataForSpellController, spell.SpellPrefabProvider, _caster,
+                    spellTransform.position, spellTransform.rotation);
             });
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }

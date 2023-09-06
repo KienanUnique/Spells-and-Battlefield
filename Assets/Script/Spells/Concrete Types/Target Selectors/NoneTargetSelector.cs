@@ -10,7 +10,10 @@ namespace Spells.Concrete_Types.Target_Selectors
         menuName = ScriptableObjectsMenuDirectories.SpellTargetSelectorDirectory + "None Target Selector", order = 0)]
     public class NoneTargetSelector : SpellTargetSelectorScriptableObject
     {
-        public override ISpellTargetSelector GetImplementationObject() => new NoneSelectorImplementation();
+        public override ISpellTargetSelector GetImplementationObject()
+        {
+            return new NoneSelectorImplementation();
+        }
 
         private class NoneSelectorImplementation : ISpellTargetSelector
         {
@@ -18,7 +21,10 @@ namespace Spells.Concrete_Types.Target_Selectors
             {
             }
 
-            public List<ISpellInteractable> SelectTargets() => new List<ISpellInteractable>();
+            public List<ISpellInteractable> SelectTargets()
+            {
+                return new List<ISpellInteractable>();
+            }
         }
     }
 }

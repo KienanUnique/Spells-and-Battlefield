@@ -8,19 +8,22 @@ using UnityEngine;
 namespace Spells.Concrete_Types.Movements
 {
     [CreateAssetMenu(fileName = "Rotating Around Caster Movement",
-        menuName = ScriptableObjectsMenuDirectories.SpellMovementDirectory + "Rotating Around Caster Movement", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.SpellMovementDirectory + "Rotating Around Caster Movement",
+        order = 0)]
     public class RotatingAroundCasterMovement : SpellMovementScriptableObject
     {
         [SerializeField] private float _speed;
         [SerializeField] private float _radius;
 
-        public override ISpellMovementWithLookPointCalculator GetImplementationObject() =>
-            new RotatingAroundCasterMovementImplementation(_speed, _radius);
+        public override ISpellMovementWithLookPointCalculator GetImplementationObject()
+        {
+            return new RotatingAroundCasterMovementImplementation(_speed, _radius);
+        }
 
         private class RotatingAroundCasterMovementImplementation : SpellMovementImplementationBase
         {
-            private readonly float _speed;
             private readonly float _radius;
+            private readonly float _speed;
 
             public RotatingAroundCasterMovementImplementation(float speed, float radius)
             {
@@ -35,12 +38,12 @@ namespace Spells.Concrete_Types.Movements
                     return;
                 }
 
-                var fromCastObjectPosition = Caster.CurrentPosition;
+                Vector3 fromCastObjectPosition = Caster.CurrentPosition;
                 if (!Mathf.Approximately(_radius,
                         Vector3.Distance(fromCastObjectPosition, _spellRigidbodyTransform.position)))
                 {
-                    var direction = (_spellRigidbodyTransform.position - fromCastObjectPosition).normalized;
-                    var needPosition = fromCastObjectPosition + direction * _radius;
+                    Vector3 direction = (_spellRigidbodyTransform.position - fromCastObjectPosition).normalized;
+                    Vector3 needPosition = fromCastObjectPosition + direction * _radius;
                     needPosition.y = fromCastObjectPosition.y;
                     _spellRigidbodyTransform.position = needPosition;
                 }

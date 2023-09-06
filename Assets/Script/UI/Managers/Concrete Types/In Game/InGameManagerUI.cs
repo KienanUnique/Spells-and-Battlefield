@@ -11,14 +11,14 @@ namespace UI.Managers.Concrete_Types.In_Game
 {
     public class InGameManagerUI : ManagerUIBase, IInGameManagerUI, IInitializableInGameManagerUI
     {
-        private IGameplayUI _gameplayUI;
         private IGameOverMenu _gameOverMenu;
-        private IPauseMenu _pauseMenu;
+        private IGameplayUI _gameplayUI;
         private ILevelCompletedMenu _levelCompletedMenu;
+        private IPauseMenu _pauseMenu;
         private IUIWindowsStackManager _windowsManager;
 
-        public void Initialize(IGameplayUI gameplayUI, IGameOverMenu gameOverMenu,
-            IPauseMenu pauseMenu, ILevelCompletedMenu levelCompletedMenu, IUIWindowsStackManager windowsManager)
+        public void Initialize(IGameplayUI gameplayUI, IGameOverMenu gameOverMenu, IPauseMenu pauseMenu,
+            ILevelCompletedMenu levelCompletedMenu, IUIWindowsStackManager windowsManager)
         {
             _gameplayUI = gameplayUI;
             _gameOverMenu = gameOverMenu;

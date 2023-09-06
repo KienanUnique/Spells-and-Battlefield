@@ -11,12 +11,12 @@ namespace Puzzles.Mechanisms.Moving_Platforms
 {
     public abstract class MovingPlatformWithStickingBase : InitializableMonoBehaviourBase
     {
+        protected float _delayInSeconds;
+        protected bool _isTriggersDisabled;
+        protected float _movementSpeed;
         protected Transform _parentObjectToMove;
         protected IMovingPlatformsSettings _settings;
-        protected float _movementSpeed;
         protected List<Vector3> _waypoints;
-        protected bool _isTriggersDisabled;
-        protected float _delayInSeconds;
         private IColliderTrigger _platformCollider;
 
         protected void Initialize(IMovingPlatformDataForControllerBase dataForControllerBase)
@@ -46,13 +46,21 @@ namespace Puzzles.Mechanisms.Moving_Platforms
 
         private void OnPlatformColliderTriggerEnter(Collider other)
         {
-            if (!other.TryGetComponent<IToMovingPlatformStickable>(out var stickable)) return;
+            if (!other.TryGetComponent(out IToMovingPlatformStickable stickable))
+            {
+                return;
+            }
+
             stickable.StickToPlatform(_parentObjectToMove);
         }
 
         private void OnPlatformColliderTriggerExit(Collider other)
         {
-            if (!other.TryGetComponent<IToMovingPlatformStickable>(out var stickable)) return;
+            if (!other.TryGetComponent(out IToMovingPlatformStickable stickable))
+            {
+                return;
+            }
+
             stickable.UnstickFromPlatform();
         }
     }

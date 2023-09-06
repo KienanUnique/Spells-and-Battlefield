@@ -18,15 +18,13 @@ namespace Common.Abstract_Bases.Visual
         protected void ApplyAnimationOverride(AnimatorOverrideController baseController, AnimationClip originalClip,
             AnimationClip newClip)
         {
-            var originalOverrides =
-                new List<KeyValuePair<AnimationClip, AnimationClip>>(baseController.overridesCount);
+            var originalOverrides = new List<KeyValuePair<AnimationClip, AnimationClip>>(baseController.overridesCount);
             baseController.GetOverrides(originalOverrides);
 
-            var actionClipOverride =
+            KeyValuePair<AnimationClip, AnimationClip> actionClipOverride =
                 originalOverrides.Find(clipOverride => clipOverride.Key == originalClip);
             originalOverrides.Remove(actionClipOverride);
-            originalOverrides.Add(
-                new KeyValuePair<AnimationClip, AnimationClip>(originalClip, newClip));
+            originalOverrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(originalClip, newClip));
 
             baseController.ApplyOverrides(originalOverrides);
 

@@ -8,9 +8,9 @@ namespace Common.Abstract_Bases
     public abstract class BoxColliderTriggerBase<TRequiredObject> : MonoBehaviour
     {
         protected List<TRequiredObject> _requiredObjectsInside;
+
         protected event Action<TRequiredObject> RequiredObjectEnteringDetected;
         protected event Action<TRequiredObject> RequiredObjectExitingDetected;
-        protected IReadOnlyCollection<TRequiredObject> GetRequiredObjectsInCollider() => _requiredObjectsInside;
 
         protected virtual void OnRequiredObjectEnteringDetected()
         {
@@ -18,6 +18,11 @@ namespace Common.Abstract_Bases
 
         protected virtual void OnRequiredObjectExitingDetected()
         {
+        }
+
+        protected IReadOnlyCollection<TRequiredObject> GetRequiredObjectsInCollider()
+        {
+            return _requiredObjectsInside;
         }
 
         private void Awake()

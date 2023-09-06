@@ -7,9 +7,9 @@ namespace UI.Element.Setup
     public abstract class UIElementPresenterSetup : SetupMonoBehaviourBase
     {
         protected IDefaultUIElementViewSettings DefaultUIElementViewSettings;
-        
+
         [Inject]
-        private void Construct(IDefaultUIElementViewSettings defaultUIElementViewSettings)
+        private void GetDependencies(IDefaultUIElementViewSettings defaultUIElementViewSettings)
         {
             DefaultUIElementViewSettings = defaultUIElementViewSettings;
         }

@@ -10,8 +10,6 @@ namespace UI.Loading_Window.Presenter
     {
         private ILoadingWindowModel _model;
         private ILoadingWindowView _view;
-        protected override IUIElementView View => _view;
-        protected override IUIWindowModel Model => _model;
 
         public void Initialize(ILoadingWindowModel model, ILoadingWindowView view)
         {
@@ -19,5 +17,8 @@ namespace UI.Loading_Window.Presenter
             _view = view;
             SetInitializedStatus();
         }
+
+        protected override IUIElementView View => _view;
+        protected override IUIWindowModel Model => _model;
     }
 }

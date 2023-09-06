@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace Spells.Spell.Scriptable_Objects
 {
-    [CreateAssetMenu(fileName = "Spell",
-        menuName = ScriptableObjectsMenuDirectories.SpellSystemDirectory + "Spell", order = 0)]
+    [CreateAssetMenu(fileName = "Spell", menuName = ScriptableObjectsMenuDirectories.SpellSystemDirectory + "Spell",
+        order = 0)]
     public class SpellScriptableObject : PickableCardScriptableObjectBase, ISpell
     {
         [SerializeField] private AnimationData _animationData;
@@ -21,6 +21,11 @@ namespace Spells.Spell.Scriptable_Objects
         [SerializeField] private PickableCardPrefabProvider _cardPrefabProvider;
         [SerializeField] private SpellTypeScriptableObject _type;
 
+        public override IPickableItemPrefabProvider PickableItemPrefabProvider => _cardPrefabProvider;
+
+        public override IStrategyForPickableController StrategyForController =>
+            new StrategyForSpellsForPickableController(this);
+
         public IAnimationData SpellAnimationData => _animationData;
         public ISpellPrefabProvider SpellPrefabProvider => _spellPrefabProvider;
         public ISpellType SpellType => _type.GetImplementationObject();
@@ -28,11 +33,6 @@ namespace Spells.Spell.Scriptable_Objects
 
         public ISpellDataForSpellController SpellDataForSpellController =>
             _dataForSpellController.GetImplementationObject(SpellType);
-
-        public override IPickableItemPrefabProvider PickableItemPrefabProvider => _cardPrefabProvider;
-
-        public override IStrategyForPickableController StrategyForController =>
-            new StrategyForSpellsForPickableController(this);
 
         public new bool Equals(object x, object y)
         {

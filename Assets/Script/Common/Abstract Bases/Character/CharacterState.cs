@@ -2,7 +2,6 @@
 {
     public enum CharacterState
     {
-        Alive,
-        Dead
+        Alive, Dead
     }
 }

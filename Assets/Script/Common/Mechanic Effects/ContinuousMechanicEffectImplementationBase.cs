@@ -5,8 +5,7 @@ using Spells.Abstract_Types.Implementation_Bases;
 
 namespace Common.Mechanic_Effects
 {
-    public abstract class ContinuousMechanicEffectImplementationBase : SpellImplementationBase,
-        IMechanicEffect
+    public abstract class ContinuousMechanicEffectImplementationBase : SpellImplementationBase, IMechanicEffect
     {
         private readonly IContinuousEffect _effect;
 
@@ -26,7 +25,7 @@ namespace Common.Mechanic_Effects
 
         public virtual void ApplyEffectToTargets(IReadOnlyCollection<IInteractable> targets)
         {
-            foreach (var target in targets)
+            foreach (IInteractable target in targets)
             {
                 ApplyEffectToTarget(target);
             }

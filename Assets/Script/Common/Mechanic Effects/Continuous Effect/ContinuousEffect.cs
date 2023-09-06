@@ -12,9 +12,9 @@ namespace Common.Mechanic_Effects.Continuous_Effect
         private readonly float _durationInSeconds;
         private readonly List<IMechanicEffect> _mechanics;
         private readonly bool _needIgnoreCooldown;
+        private ICoroutineStarter _coroutineStarter;
         private Coroutine _effectCoroutine;
         private IInteractable _target;
-        private ICoroutineStarter _coroutineStarter;
 
         public ContinuousEffect(float cooldownInSeconds, List<IMechanicEffect> mechanics, float durationInSeconds,
             bool needIgnoreCooldown)
@@ -39,11 +39,15 @@ namespace Common.Mechanic_Effects.Continuous_Effect
 
         public void End()
         {
-            if (_effectCoroutine == null) return;
+            if (_effectCoroutine == null)
+            {
+                return;
+            }
+
             _coroutineStarter.StopCoroutine(_effectCoroutine);
             _coroutineStarter = null;
             _effectCoroutine = null;
-            foreach (var mechanic in _mechanics)
+            foreach (IMechanicEffect mechanic in _mechanics)
             {
                 if (mechanic is IMechanicEffectWithRollback mechanicEffectWithRollback)
                 {

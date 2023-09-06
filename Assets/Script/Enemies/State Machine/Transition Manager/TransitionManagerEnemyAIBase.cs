@@ -6,8 +6,8 @@ namespace Enemies.State_Machine.Transition_Manager
 {
     public abstract class TransitionManagerEnemyAIBase : BaseWithDisabling, ITransitionManagerEnemyAIWithDisabling
     {
-        public abstract event Action<IStateEnemyAI> NeedTransit;
         private bool _isActive;
+        public abstract event Action<IStateEnemyAI> NeedTransit;
 
         public void StartCheckingConditions()
         {

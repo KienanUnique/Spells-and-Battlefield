@@ -6,7 +6,6 @@ namespace Common
     {
         public Action<T> AfterValueChanged;
         public Action<T> BeforeValueChanged;
-
         private T _value;
 
         public ValueWithReactionOnChange(T startValue)
@@ -19,8 +18,11 @@ namespace Common
             get => _value;
             set
             {
-                if (value.CompareTo(_value) == 0) return;
-                
+                if (value.CompareTo(_value) == 0)
+                {
+                    return;
+                }
+
                 BeforeValueChanged?.Invoke(_value);
                 _value = value;
                 AfterValueChanged?.Invoke(_value);

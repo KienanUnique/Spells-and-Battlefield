@@ -6,8 +6,7 @@ using UI.Spells_Panel.Slot_Group.Base.View;
 namespace UI.Spells_Panel.Slot_Group.Base.Setup
 {
     public interface IInitializableSpellSlotGroupPresenter<in TModel, in TView>
-        where TModel : ISpellSlotGroupModelBase
-        where TView : ISpellSlotGroupViewBase
+        where TModel : ISpellSlotGroupModelBase where TView : ISpellSlotGroupViewBase
     {
         public void Initialize(TModel model, TView view, List<IDisableable> itemsNeedDisabling);
     }

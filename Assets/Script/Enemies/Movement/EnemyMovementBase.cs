@@ -17,21 +17,22 @@ namespace Enemies.Movement
     public abstract class EnemyMovementBase : MovementBase, IDisableableEnemyMovement
     {
         private const RigidbodyConstraints RigidbodyConstraintsFreezeRotationAndPositionXY =
-            RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |
+            RigidbodyConstraints.FreezePositionX |
+            RigidbodyConstraints.FreezePositionZ |
             RigidbodyConstraints.FreezeRotation;
 
         protected readonly ICoroutineStarter _coroutineStarter;
-        private readonly ValueWithReactionOnChange<bool> _isMoving;
-        private readonly ITargetPathfinderForMovement _targetPathfinder;
+
         private readonly Transform _cachedTransform;
+        private readonly ValueWithReactionOnChange<bool> _isMoving;
         private readonly Transform _originalParent;
+        private readonly ITargetPathfinderForMovement _targetPathfinder;
         private readonly IReadonlyEnemyTargetFromTriggersSelector _targetSelector;
-        private Coroutine _followPathCoroutine;
         private IEnemyDataForMoving _currentDataForMoving;
+        private Coroutine _followPathCoroutine;
         private bool _needMove;
 
-        protected EnemyMovementBase(IEnemyMovementSetupData setupData,
-            IMovementSettingsSection movementSettings) :
+        protected EnemyMovementBase(IEnemyMovementSetupData setupData, IMovementSettingsSection movementSettings) :
             base(setupData.Rigidbody, movementSettings)
         {
             _coroutineStarter = setupData.CoroutineStarter;
@@ -46,42 +47,9 @@ namespace Enemies.Movement
         public event Action<bool> MovingStateChanged;
         public Vector3 CurrentPosition => _rigidbody.position;
         public IReadonlyRigidbody ReadonlyRigidbody { get; }
+
         protected virtual Vector3 VelocityForLimitations => _rigidbody.velocity;
         private IEnemyTarget CurrentTarget => _targetSelector.CurrentTarget;
-
-        public void StartKeepingCurrentTargetOnDistance(IEnemyDataForMoving dataForMoving)
-        {
-            _currentDataForMoving = dataForMoving;
-
-            if (_followPathCoroutine != null)
-            {
-                StopMoving();
-            }
-
-            _needMove = true;
-
-            if (CurrentTarget != null)
-            {
-                _isMoving.Value = true;
-                _followPathCoroutine =
-                    _coroutineStarter.StartCoroutine(KeepingTransformOnDistance(CurrentTarget.MainRigidbody,
-                        dataForMoving.NeedDistanceFromTarget));
-            }
-        }
-
-        public void StopMoving()
-        {
-            if (_followPathCoroutine != null)
-            {
-                _coroutineStarter.StopCoroutine(_followPathCoroutine);
-                _followPathCoroutine = null;
-            }
-
-            _needMove = false;
-            _isMoving.Value = false;
-            _targetPathfinder.StopUpdatingPath();
-            _rigidbody.velocity = Vector3.zero;
-        }
 
         public void DisableMoving()
         {
@@ -102,6 +70,39 @@ namespace Enemies.Movement
         public void UnstickFromPlatform()
         {
             _cachedTransform.SetParent(_originalParent);
+        }
+
+        public void StartKeepingCurrentTargetOnDistance(IEnemyDataForMoving dataForMoving)
+        {
+            _currentDataForMoving = dataForMoving;
+
+            if (_followPathCoroutine != null)
+            {
+                StopMoving();
+            }
+
+            _needMove = true;
+
+            if (CurrentTarget != null)
+            {
+                _isMoving.Value = true;
+                _followPathCoroutine = _coroutineStarter.StartCoroutine(
+                    KeepingTransformOnDistance(CurrentTarget.MainRigidbody, dataForMoving.NeedDistanceFromTarget));
+            }
+        }
+
+        public void StopMoving()
+        {
+            if (_followPathCoroutine != null)
+            {
+                _coroutineStarter.StopCoroutine(_followPathCoroutine);
+                _followPathCoroutine = null;
+            }
+
+            _needMove = false;
+            _isMoving.Value = false;
+            _targetPathfinder.StopUpdatingPath();
+            _rigidbody.velocity = Vector3.zero;
         }
 
         protected override void SubscribeOnEvents()
@@ -145,7 +146,7 @@ namespace Enemies.Movement
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
             _targetPathfinder.StartUpdatingPathForKeepingTransformOnDistance(targetPosition, needDistance);
-            var direction = Vector3.zero;
+            Vector3 direction = Vector3.zero;
             while (true)
             {
                 if (_targetPathfinder.IsPathComplete())
@@ -176,11 +177,13 @@ namespace Enemies.Movement
 
         private void ApplyFriction(Vector3 needMoveDirection)
         {
-            var currentVelocity = VelocityForLimitations;
-            var needFrictionDirection = Time.deltaTime * _currentSpeedRatio *
-                                        MovementSettings.NormalFrictionCoefficient *
-                                        MovementSettings.MoveForce * currentVelocity.magnitude *
-                                        (needMoveDirection - currentVelocity.normalized);
+            Vector3 currentVelocity = VelocityForLimitations;
+            Vector3 needFrictionDirection = Time.deltaTime *
+                                            _currentSpeedRatio *
+                                            MovementSettings.NormalFrictionCoefficient *
+                                            MovementSettings.MoveForce *
+                                            currentVelocity.magnitude *
+                                            (needMoveDirection - currentVelocity.normalized);
             _rigidbody.AddForce(needFrictionDirection);
         }
     }

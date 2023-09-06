@@ -11,7 +11,6 @@ namespace UI.Spells_Panel.Panel.Presenter
     public class SpellPanelPresenter : UIElementPresenterBase, IInitializableSpellPanelPresenter
     {
         private IUIElementView _view;
-        protected override IUIElementView View => _view;
 
         public void Initialize(IUIElementView view, List<IDisableable> itemsNeedDisabling)
         {
@@ -19,5 +18,7 @@ namespace UI.Spells_Panel.Panel.Presenter
             SetItemsNeedDisabling(itemsNeedDisabling);
             SetInitializedStatus();
         }
+
+        protected override IUIElementView View => _view;
     }
 }

@@ -8,9 +8,9 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller
 {
     public class PostProcessingController : InitializableMonoBehaviourBase, IInitializablePostProcessingController
     {
+        private Volume _dashEffectsVolume;
         private IPlayerInformationProvider _playerInformationProvider;
         private IPostProcessingControllerSettings _settings;
-        private Volume _dashEffectsVolume;
 
         public void Initialize(IPlayerInformationProvider playerInformationProvider, Volume dashEffectsVolume,
             IPostProcessingControllerSettings settings)
@@ -38,14 +38,15 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller
             _dashEffectsVolume.enabled = true;
             DOVirtual
                 .Float(0, 1, _settings.ApplyDashEffectsVolumeDurationSeconds,
-                    currentWeight => _dashEffectsVolume.weight = currentWeight).SetLink(gameObject)
+                    currentWeight => _dashEffectsVolume.weight = currentWeight)
+                .SetLink(gameObject)
                 .SetEase(_settings.ApplyDashEffectsVolumeEase)
                 .OnComplete(() =>
                     DOVirtual.Float(1, 0, _settings.ApplyDashEffectsVolumeDurationSeconds,
-                            currentWeight => _dashEffectsVolume.weight = currentWeight)
-                        .SetLink(gameObject)
-                        .SetEase(_settings.ApplyDashEffectsVolumeEase)
-                        .OnComplete(() => _dashEffectsVolume.enabled = false));
+                                 currentWeight => _dashEffectsVolume.weight = currentWeight)
+                             .SetLink(gameObject)
+                             .SetEase(_settings.ApplyDashEffectsVolumeEase)
+                             .OnComplete(() => _dashEffectsVolume.enabled = false));
         }
     }
 }

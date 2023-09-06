@@ -9,11 +9,10 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
         [SerializeField] private CharacterState _needState;
         private int _lastCashedTargetId;
 
-        private IEnemyTarget CurrentTarget =>
-            StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
-
         public override bool IsConditionCompleted =>
             CurrentTarget != null && CurrentTarget.CurrentCharacterState == _needState;
+
+        private IEnemyTarget CurrentTarget => StateMachineControllable.TargetFromTriggersSelector.CurrentTarget;
 
         protected override void HandleStartCheckingConditions()
         {
@@ -27,7 +26,11 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
 
         protected override void SubscribeOnEvents()
         {
-            if (!IsEnabled) return;
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             StateMachineControllable.TargetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetChanged;
             SubscribeOnCharacterEvents(CurrentTarget);
         }

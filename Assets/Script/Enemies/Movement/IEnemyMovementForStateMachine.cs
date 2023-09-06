@@ -1,5 +1,4 @@
 ﻿using Common.Readonly_Rigidbody;
-using Common.Readonly_Transform;
 using Enemies.Movement.Enemy_Data_For_Moving;
 
 namespace Enemies.Movement

@@ -9,10 +9,11 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform
     [RequireComponent(typeof(MovingPlatformControllerSetup))]
     public class MovingPlatformController : MovingPlatformWithStickingBase, IInitializableMovingPlatformController
     {
-        private List<IMechanismsTrigger> _triggers;
         private bool _needMoveBackward;
+        private List<IMechanismsTrigger> _triggers;
 
-        public void Initialize(List<IMechanismsTrigger> triggers, IMovingPlatformDataForControllerBase dataForControllerBase)
+        public void Initialize(List<IMechanismsTrigger> triggers,
+            IMovingPlatformDataForControllerBase dataForControllerBase)
         {
             _triggers = triggers;
             base.Initialize(dataForControllerBase);
@@ -22,7 +23,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform
         protected override void SubscribeOnEvents()
         {
             base.SubscribeOnEvents();
-            foreach (var trigger in _triggers)
+            foreach (IMechanismsTrigger trigger in _triggers)
             {
                 trigger.Triggered += OnTriggered;
             }
@@ -31,7 +32,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform
         protected override void UnsubscribeFromEvents()
         {
             base.UnsubscribeFromEvents();
-            foreach (var trigger in _triggers)
+            foreach (IMechanismsTrigger trigger in _triggers)
             {
                 trigger.Triggered -= OnTriggered;
             }
@@ -39,7 +40,10 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform
 
         private void OnTriggered()
         {
-            if (_isTriggersDisabled) return;
+            if (_isTriggersDisabled)
+            {
+                return;
+            }
 
             _isTriggersDisabled = true;
             _parentObjectToMove.DOKill();
@@ -50,8 +54,8 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform
             }
 
             _parentObjectToMove.DOPath(path.ToArray(), _movementSpeed, _settings.MovementPathType)
-                .ApplyCustomSetupForMovingPlatforms(gameObject, _settings, _delayInSeconds)
-                .OnKill(() => _isTriggersDisabled = false);
+                               .ApplyCustomSetupForMovingPlatforms(gameObject, _settings, _delayInSeconds)
+                               .OnKill(() => _isTriggersDisabled = false);
 
             _needMoveBackward = !_needMoveBackward;
         }

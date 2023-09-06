@@ -22,8 +22,9 @@ namespace Enemies.Setup
             IEnemyMovement movement, List<IDisableable> itemsNeedDisabling, IIdHolder idHolder,
             IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
             IEnemyTargetFromTriggersSelector targetFromTriggersSelector, IEnemyLook look,
-            IEventInvokerForActionAnimations eventInvokerForAnimations, IEnemyVisual visual,
-            IEnemyCharacter character, IPopupHitPointsChangeTextFactory setPopupHitPointsChangeTextFactory, IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint)
+            IEventInvokerForActionAnimations eventInvokerForAnimations, IEnemyVisual visual, IEnemyCharacter character,
+            IPopupHitPointsChangeTextFactory setPopupHitPointsChangeTextFactory,
+            IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint)
         {
             SetStateMachineAI = stateMachineAI;
             SetItemToDrop = itemToDrop;

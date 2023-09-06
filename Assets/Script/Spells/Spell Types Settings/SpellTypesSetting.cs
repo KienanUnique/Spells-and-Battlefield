@@ -14,21 +14,21 @@ namespace Spells.Spell_Types_Settings
         [SerializeField] private List<SpellTypeScriptableObject> _typesOrder;
         [SerializeField] private LastChanceSpellPlace _lastChanceSpellPlace;
         [SerializeField] private LastChanceSpellType _lastChanceSpellType;
+        private IReadOnlyList<ISpellType> _cachedTypesInOrder;
 
         private List<SpellTypeScriptableObject> _cachedTypesOrderScriptableObjects;
-        private IReadOnlyList<ISpellType> _cachedTypesInOrder;
 
         private enum LastChanceSpellPlace
         {
-            InBeginning,
-            InEnd
+            InBeginning, InEnd
         }
 
         public IReadOnlyList<ISpellType> TypesListInOrder
         {
             get
             {
-                if (_cachedTypesInOrder != null && _cachedTypesOrderScriptableObjects != null &&
+                if (_cachedTypesInOrder != null &&
+                    _cachedTypesOrderScriptableObjects != null &&
                     _cachedTypesOrderScriptableObjects.Equals(_typesOrder))
                 {
                     return _cachedTypesInOrder;
@@ -37,7 +37,7 @@ namespace Spells.Spell_Types_Settings
                 var resultTypesOrder = new List<ISpellType>();
                 _typesOrder.ForEach(typeScriptableObject =>
                     resultTypesOrder.Add(typeScriptableObject.GetImplementationObject()));
-                var lastChanceSpellTypeInsertIndex = _lastChanceSpellPlace switch
+                int lastChanceSpellTypeInsertIndex = _lastChanceSpellPlace switch
                 {
                     LastChanceSpellPlace.InBeginning => 0,
                     LastChanceSpellPlace.InEnd => resultTypesOrder.Count,

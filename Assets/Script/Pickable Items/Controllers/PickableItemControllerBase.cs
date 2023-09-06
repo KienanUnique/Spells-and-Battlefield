@@ -1,9 +1,7 @@
 ﻿using System;
 using Common;
-using Common.Abstract_Bases.Checkers;
 using Common.Abstract_Bases.Checkers.Ground_Checker;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Common.Settings;
 using Common.Settings.Ground_Layer_Mask;
 using DG.Tweening;
 using Interfaces.Pickers;
@@ -23,15 +21,16 @@ namespace Pickable_Items.Controllers
         private readonly ValueWithReactionOnChange<ControllerStates> _currentControllerState =
             new ValueWithReactionOnChange<ControllerStates>(ControllerStates.NonInitialized);
 
-        private PickableItemsPickerTrigger _pickerTrigger;
+        private GameObject _doTweenLinkGameObject;
         private GroundChecker _groundChecker;
-        private Transform _visualObjectTransform;
+        private IGroundLayerMaskSetting _groundLayerMaskSetting;
         private bool _needFallDown;
         private IPickableItemsSettings _pickableItemsSettings;
-        private IGroundLayerMaskSetting _groundLayerMaskSetting;
+
+        private PickableItemsPickerTrigger _pickerTrigger;
         private Rigidbody _rigidbody;
         private IStrategyForPickableController _strategyForPickableController;
-        private GameObject _doTweenLinkGameObject;
+        private Transform _visualObjectTransform;
 
         protected void Initialize(IPickableItemControllerBaseSetupData setupData)
         {
@@ -107,7 +106,11 @@ namespace Pickable_Items.Controllers
 
         private void OnPickerDetected(IPickableItemsPicker picker)
         {
-            if (!_strategyForPickableController.CanBePickedUpByThisPeeker(picker)) return;
+            if (!_strategyForPickableController.CanBePickedUpByThisPeeker(picker))
+            {
+                return;
+            }
+
             _strategyForPickableController.HandlePickUp(picker);
             _currentControllerState.Value = ControllerStates.PickedUp;
         }
@@ -115,9 +118,9 @@ namespace Pickable_Items.Controllers
         private void PlayDisappearAnimationAndDestroy()
         {
             _visualObjectTransform.DOScale(Vector3.zero, _pickableItemsSettings.DisappearScaleAnimationDuration)
-                .SetEase(_pickableItemsSettings.SizeChangeEase)
-                .SetLink(_doTweenLinkGameObject)
-                .OnComplete(OnPickupAnimationFinished);
+                                  .SetEase(_pickableItemsSettings.SizeChangeEase)
+                                  .SetLink(_doTweenLinkGameObject)
+                                  .OnComplete(OnPickupAnimationFinished);
         }
 
         private void StartIdleAnimation()
@@ -125,29 +128,32 @@ namespace Pickable_Items.Controllers
             _rigidbody.useGravity = false;
             _rigidbody.velocity = Vector3.zero;
 
-            var visualObjectSequence = DOTween.Sequence();
+            Sequence visualObjectSequence = DOTween.Sequence();
             visualObjectSequence.SetLink(_doTweenLinkGameObject);
-            var cashedTransform = transform;
+            Transform cashedTransform = transform;
             if (_needFallDown)
             {
-                var startRayCheckPosition = cashedTransform.position;
+                Vector3 startRayCheckPosition = cashedTransform.position;
                 startRayCheckPosition.y += GroundCheckOffsetY;
-                if (Physics.Raycast(startRayCheckPosition, Vector3.down,
-                        out var hitGround, MaxGroundRayDistance + GroundCheckOffsetY,
-                        _groundLayerMaskSetting.Mask))
+                if (Physics.Raycast(startRayCheckPosition, Vector3.down, out RaycastHit hitGround,
+                        MaxGroundRayDistance + GroundCheckOffsetY, _groundLayerMaskSetting.Mask))
                 {
                     visualObjectSequence.Append(_visualObjectTransform.DOMoveY(
-                        hitGround.point.y + _pickableItemsSettings.AnimationMinimumHeight,
-                        _pickableItemsSettings.YAnimationDuration).SetLink(_doTweenLinkGameObject));
+                                                                          hitGround.point.y +
+                                                                          _pickableItemsSettings.AnimationMinimumHeight,
+                                                                          _pickableItemsSettings.YAnimationDuration)
+                                                                      .SetLink(_doTweenLinkGameObject));
                 }
             }
 
             visualObjectSequence.AppendCallback(() => _visualObjectTransform
-                .DOMoveY(cashedTransform.position.y + _pickableItemsSettings.AnimationMaximumHeight,
-                    _pickableItemsSettings.YAnimationDuration)
-                .SetLoops(-1, LoopType.Yoyo)
-                .SetEase(_pickableItemsSettings.YMovingEase)
-                .SetLink(_doTweenLinkGameObject));
+                                                      .DOMoveY(
+                                                          cashedTransform.position.y +
+                                                          _pickableItemsSettings.AnimationMaximumHeight,
+                                                          _pickableItemsSettings.YAnimationDuration)
+                                                      .SetLoops(-1, LoopType.Yoyo)
+                                                      .SetEase(_pickableItemsSettings.YMovingEase)
+                                                      .SetLink(_doTweenLinkGameObject));
             _visualObjectTransform
                 .DORotate(new Vector3(0, 360, 0), _pickableItemsSettings.RotateAnimationDuration,
                     RotateMode.FastBeyond360)
@@ -156,19 +162,17 @@ namespace Pickable_Items.Controllers
                 .SetLink(_doTweenLinkGameObject);
         }
 
-
         private void PlayAppearAnimation()
         {
             _visualObjectTransform.DOScale(Vector3.one, _pickableItemsSettings.AppearScaleAnimationDuration)
-                .SetEase(_pickableItemsSettings.SizeChangeEase)
-                .SetLink(_doTweenLinkGameObject);
+                                  .SetEase(_pickableItemsSettings.SizeChangeEase)
+                                  .SetLink(_doTweenLinkGameObject);
         }
-
 
         private void OnPickupAnimationFinished()
         {
             _visualObjectTransform.DOKill();
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }

@@ -11,19 +11,25 @@ namespace Spells.Concrete_Types.Triggers
     {
         [SerializeField] private float _timeBeforeFinishTrigger;
 
-        public override ISpellTrigger GetImplementationObject() =>
-            new TimeFinishTriggerImplementation(_timeBeforeFinishTrigger);
+        public override ISpellTrigger GetImplementationObject()
+        {
+            return new TimeFinishTriggerImplementation(_timeBeforeFinishTrigger);
+        }
 
         private class TimeFinishTriggerImplementation : SpellTriggerImplementationBase
         {
             private readonly float _timeBeforeFinishTrigger;
-            private bool _wasTriggered = false;
+            private bool _wasTriggered;
 
-            public TimeFinishTriggerImplementation(float timeBeforeFinishTrigger) =>
+            public TimeFinishTriggerImplementation(float timeBeforeFinishTrigger)
+            {
                 _timeBeforeFinishTrigger = timeBeforeFinishTrigger;
+            }
 
-            public override SpellTriggerCheckStatusEnum CheckContact(Collider other) =>
-                SpellTriggerCheckStatusEnum.Ignore;
+            public override SpellTriggerCheckStatusEnum CheckContact(Collider other)
+            {
+                return SpellTriggerCheckStatusEnum.Ignore;
+            }
 
             public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize)
             {
@@ -32,10 +38,8 @@ namespace Spells.Concrete_Types.Triggers
                     _wasTriggered = true;
                     return SpellTriggerCheckStatusEnum.Finish;
                 }
-                else
-                {
-                    return SpellTriggerCheckStatusEnum.Ignore;
-                }
+
+                return SpellTriggerCheckStatusEnum.Ignore;
             }
         }
     }

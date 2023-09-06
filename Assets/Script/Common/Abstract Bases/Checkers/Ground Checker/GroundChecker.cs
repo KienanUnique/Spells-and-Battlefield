@@ -1,4 +1,3 @@
-using Common.Settings;
 using Common.Settings.Ground_Layer_Mask;
 using UnityEngine;
 using Zenject;
@@ -11,7 +10,7 @@ namespace Common.Abstract_Bases.Checkers.Ground_Checker
         private LayerMask _cashedGroundMask;
 
         [Inject]
-        private void Construct(IGroundLayerMaskSetting groundLayerMaskSetting)
+        private void GetDependencies(IGroundLayerMaskSetting groundLayerMaskSetting)
         {
             _cashedGroundMask = groundLayerMaskSetting.Mask;
         }

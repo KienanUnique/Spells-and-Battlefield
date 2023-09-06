@@ -21,6 +21,7 @@ using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Visual;
 using Interfaces;
+using Pickable_Items;
 using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
 using Spells.Implementations_Interfaces.Implementations;
@@ -29,23 +30,25 @@ using UnityEngine;
 
 namespace Enemies.Controller
 {
-    public sealed class EnemyController : InitializableMonoBehaviourBase, IEnemy, IEnemyStateMachineControllable,
-        ICoroutineStarter, IInitializableEnemyController
+    public sealed class EnemyController : InitializableMonoBehaviourBase,
+        IEnemy,
+        IEnemyStateMachineControllable,
+        ICoroutineStarter,
+        IInitializableEnemyController
     {
         private const bool NeedCreatedItemsFallDown = true;
-        private IEnemyMovement _movement;
-        private IEnemyLook _look;
-        private IEnemyStateMachineAI _enemyStateMachineAI;
-        private IPickableItemDataForCreating _itemToDrop;
-        private IIdHolder _idHolder;
-        private IGeneralEnemySettings _generalEnemySettings;
-        private IPickableItemsFactory _itemsFactory;
-        private IEnemyTargetFromTriggersSelector _targetFromTriggersSelector;
-        private IEventInvokerForActionAnimations _eventInvokerForAnimations;
-        private IEnemyVisual _visual;
         private IEnemyCharacter _character;
+        private IEnemyStateMachineAI _enemyStateMachineAI;
+        private IEventInvokerForActionAnimations _eventInvokerForAnimations;
+        private IGeneralEnemySettings _generalEnemySettings;
+        private IIdHolder _idHolder;
+        private IPickableItemsFactory _itemsFactory;
+        private IPickableItemDataForCreating _itemToDrop;
+        private IEnemyLook _look;
+        private IEnemyMovement _movement;
         private IPopupHitPointsChangeTextFactory _popupHitPointsChangeTextFactory;
         private IReadonlyTransform _popupTextHitPointsChangeAppearCenterPoint;
+        private IEnemyVisual _visual;
 
         public void Initialize(IEnemyBaseSetupData setupData)
         {
@@ -56,7 +59,7 @@ namespace Enemies.Controller
             _generalEnemySettings = setupData.SetGeneralEnemySettings;
             _itemsFactory = setupData.SetPickableItemsFactory;
             _popupHitPointsChangeTextFactory = setupData.SetPopupHitPointsChangeTextFactory;
-            _targetFromTriggersSelector = setupData.SetTargetFromTriggersSelector;
+            TargetFromTriggersSelector = setupData.SetTargetFromTriggersSelector;
             _look = setupData.SetLook;
             _eventInvokerForAnimations = setupData.SetEventInvokerForAnimations;
             _visual = setupData.SetVisual;
@@ -67,17 +70,42 @@ namespace Enemies.Controller
             SetInitializedStatus();
         }
 
-        public event Action ActionAnimationKeyMomentTrigger;
-        public event Action ActionAnimationStart;
-        public event Action ActionAnimationEnd;
         public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
         public event Action<CharacterState> CharacterStateChanged;
 
+        public event Action ActionAnimationKeyMomentTrigger;
+        public event Action ActionAnimationStart;
+        public event Action ActionAnimationEnd;
+
         public float HitPointCountRatio => _character.HitPointCountRatio;
+
+        public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
+        public IReadonlyTransform ThisPositionReferencePointForLook => _look.ThisPositionReferencePointForLook;
+        public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
+
+        public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; private set; }
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _movement.CurrentPosition;
-        public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
-        public IReadonlyTransform ThisPositionReferencePointForLook => _look.ThisPositionReferencePointForLook;
+
+        public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
+        {
+            _character.ApplyContinuousEffect(effect);
+        }
+
+        public void HandleDamage(int countOfHealthPoints)
+        {
+            _character.HandleDamage(countOfHealthPoints);
+        }
+
+        public void PlayActionAnimation(IAnimationData animationData)
+        {
+            _visual.PlayActionAnimation(animationData);
+        }
+
+        public void ChangeThisPositionReferencePointTransform(IReadonlyTransform newReferenceTransform)
+        {
+            _look.ChangeThisPositionReferencePointTransform(newReferenceTransform);
+        }
 
         public void StartKeepingCurrentTargetOnDistance(IEnemyDataForMoving dataForMoving)
         {
@@ -89,42 +117,20 @@ namespace Enemies.Controller
             _movement.StopMoving();
         }
 
-        public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
-        public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector => _targetFromTriggersSelector;
+        public void ApplyEffectsToTargets(IReadOnlyCollection<IEnemyTarget> targets,
+            IReadOnlyCollection<IMechanicEffect> mechanicEffects)
+        {
+            _character.ApplyEffectsToTargets(targets, mechanicEffects);
+        }
 
         public bool Equals(IIdHolder other)
         {
             return _idHolder.Equals(other);
         }
 
-        public void AddForce(Vector3 force, ForceMode mode)
-        {
-            _movement.AddForce(force, mode);
-        }
-
-        public void InteractAsSpellType(ISpellType spellType)
-        {
-        }
-
         public void HandleHeal(int countOfHitPoints)
         {
             _character.HandleHeal(countOfHitPoints);
-        }
-
-        public void HandleDamage(int countOfHealthPoints)
-        {
-            _character.HandleDamage(countOfHealthPoints);
-        }
-
-        public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
-        {
-            _character.ApplyContinuousEffect(effect);
-        }
-
-        public void ApplyEffectsToTargets(IReadOnlyCollection<IEnemyTarget> targets,
-            IReadOnlyCollection<IMechanicEffect> mechanicEffects)
-        {
-            _character.ApplyEffectsToTargets(targets, mechanicEffects);
         }
 
         public void MultiplySpeedRatioBy(float speedRatio)
@@ -137,6 +143,15 @@ namespace Enemies.Controller
             _movement.DivideSpeedRatioBy(speedRatio);
         }
 
+        public void AddForce(Vector3 force, ForceMode mode)
+        {
+            _movement.AddForce(force, mode);
+        }
+
+        public void InteractAsSpellType(ISpellType spellType)
+        {
+        }
+
         public void StickToPlatform(Transform platformTransform)
         {
             _movement.StickToPlatform(platformTransform);
@@ -145,16 +160,6 @@ namespace Enemies.Controller
         public void UnstickFromPlatform()
         {
             _movement.UnstickFromPlatform();
-        }
-
-        public void PlayActionAnimation(IAnimationData animationData)
-        {
-            _visual.PlayActionAnimation(animationData);
-        }
-
-        public void ChangeThisPositionReferencePointTransform(IReadonlyTransform newReferenceTransform)
-        {
-            _look.ChangeThisPositionReferencePointTransform(newReferenceTransform);
         }
 
         protected override void SubscribeOnEvents()
@@ -240,21 +245,20 @@ namespace Enemies.Controller
 
         private void DropSpell()
         {
-            var cashedTransform = transform;
-            var dropDirection = _targetFromTriggersSelector.CurrentTarget == null
+            Transform cashedTransform = transform;
+            Vector3 dropDirection = TargetFromTriggersSelector.CurrentTarget == null
                 ? cashedTransform.forward
-                : (_targetFromTriggersSelector.CurrentTarget.MainRigidbody.Position -
-                   cashedTransform.position)
+                : (TargetFromTriggersSelector.CurrentTarget.MainRigidbody.Position - cashedTransform.position)
                 .normalized;
-            var spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
-            var pickableSpell = _itemsFactory.Create(_itemToDrop, spawnPosition, NeedCreatedItemsFallDown);
+            Vector3 spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
+            IPickableItem pickableSpell = _itemsFactory.Create(_itemToDrop, spawnPosition, NeedCreatedItemsFallDown);
             pickableSpell.AddActionAfterInitializing(() => pickableSpell.DropItemTowardsDirection(dropDirection));
         }
 
         private IEnumerator DestroyAfterDelay()
         {
             yield return new WaitForSeconds(_generalEnemySettings.DelayInSecondsBeforeDestroy);
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }

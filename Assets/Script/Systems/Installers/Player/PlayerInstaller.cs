@@ -21,22 +21,21 @@ namespace Systems.Installers.Player
 
         private void InstallPlayer()
         {
-            Container
-                .Bind(new List<Type>
-                {
-                    typeof(IPlayerInformationProvider),
-                    typeof(IPlayerSpellsManagerInformation),
-                    typeof(IPlayerInitializationStatus)
-                })
-                .FromComponentInNewPrefab(_prefabProvider.Prefab)
-                .AsSingle()
-                .OnInstantiated<PlayerController>(OnPlayerInstantiated)
-                .NonLazy();
+            Container.Bind(new List<Type>
+                     {
+                         typeof(IPlayerInformationProvider),
+                         typeof(IPlayerSpellsManagerInformation),
+                         typeof(IPlayerInitializationStatus)
+                     })
+                     .FromComponentInNewPrefab(_prefabProvider.Prefab)
+                     .AsSingle()
+                     .OnInstantiated<PlayerController>(OnPlayerInstantiated)
+                     .NonLazy();
         }
 
         private void OnPlayerInstantiated(InjectContext arg1, PlayerController playerController)
         {
-            var playerTransform = playerController.transform;
+            Transform playerTransform = playerController.transform;
             playerTransform.position = _playerSpawnMarkerHolder.ObjectToHold.SpawnPosition;
             playerTransform.rotation = _playerSpawnMarkerHolder.ObjectToHold.SpawnRotation;
         }

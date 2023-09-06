@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases;
-using Common.Abstract_Bases.Checkers;
 using Common.Abstract_Bases.Checkers.Ground_Checker;
-using Common.Settings;
 using Common.Settings.Ground_Layer_Mask;
 using Pickable_Items.Settings;
 using Pickable_Items.Strategies_For_Pickable_Controller;
@@ -19,16 +17,16 @@ namespace Pickable_Items.Setup
         [SerializeField] private PickableItemsPickerTrigger _pickerTrigger;
         [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private Transform _visualObjectTransform;
-        private ExternalDependenciesInitializationWaiter _externalDependenciesInitializationWaiter;
-        private IPickableItemsSettings _pickableItemsSettings;
-        private IGroundLayerMaskSetting _groundLayerMaskSetting;
-        private IStrategyForPickableController _strategyForPickableController;
-        private Rigidbody _rigidbody;
-        private bool _needFallDown;
         private TController _controllerToSetup;
+        private ExternalDependenciesInitializationWaiter _externalDependenciesInitializationWaiter;
+        private IGroundLayerMaskSetting _groundLayerMaskSetting;
+        private bool _needFallDown;
+        private IPickableItemsSettings _pickableItemsSettings;
+        private Rigidbody _rigidbody;
+        private IStrategyForPickableController _strategyForPickableController;
 
         [Inject]
-        private void Construct(IGroundLayerMaskSetting groundLayerMaskSetting,
+        private void GetDependencies(IGroundLayerMaskSetting groundLayerMaskSetting,
             IPickableItemsSettings pickableItemsSettings)
         {
             _groundLayerMaskSetting = groundLayerMaskSetting;
@@ -40,8 +38,7 @@ namespace Pickable_Items.Setup
         protected sealed override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             new List<IInitializable>(AdditionalObjectsToWaitBeforeInitialization)
             {
-                _groundChecker,
-                _externalDependenciesInitializationWaiter
+                _groundChecker, _externalDependenciesInitializationWaiter
             };
 
         public void SetStrategyForPickableController(IStrategyForPickableController strategyForPickableController,
@@ -62,26 +59,19 @@ namespace Pickable_Items.Setup
         protected abstract void Initialize(IPickableItemControllerBaseSetupData baseSetupData,
             TController controllerToSetup);
 
+        protected override void Initialize()
+        {
+            var setupData = new PickableItemControllerBaseSetupData(_needFallDown, _strategyForPickableController,
+                _groundLayerMaskSetting, _pickableItemsSettings, _visualObjectTransform, _groundChecker, _pickerTrigger,
+                _rigidbody);
+            Initialize(setupData, _controllerToSetup);
+        }
+
         protected override void Prepare()
         {
             _externalDependenciesInitializationWaiter ??= new ExternalDependenciesInitializationWaiter(false);
             _rigidbody = GetComponent<Rigidbody>();
             _controllerToSetup = GetComponent<TController>();
-        }
-
-        protected override void Initialize()
-        {
-            var setupData = new PickableItemControllerBaseSetupData(
-                _needFallDown,
-                _strategyForPickableController,
-                _groundLayerMaskSetting,
-                _pickableItemsSettings,
-                _visualObjectTransform,
-                _groundChecker,
-                _pickerTrigger,
-                _rigidbody
-            );
-            Initialize(setupData, _controllerToSetup);
         }
     }
 }

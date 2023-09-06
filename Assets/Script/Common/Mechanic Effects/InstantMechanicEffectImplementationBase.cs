@@ -10,7 +10,7 @@ namespace Common.Mechanic_Effects
 
         public virtual void ApplyEffectToTargets(IReadOnlyCollection<IInteractable> targets)
         {
-            foreach (var interactableTarget in targets)
+            foreach (IInteractable interactableTarget in targets)
             {
                 ApplyEffectToTarget(interactableTarget);
             }

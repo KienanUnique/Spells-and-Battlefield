@@ -30,7 +30,10 @@ namespace UI.Managers.UI_Windows_Stack_Manager
 
         public void TryCloseCurrentElement()
         {
-            if (!CurrentOpenedWindow.CanBeClosedByPlayer) return;
+            if (!CurrentOpenedWindow.CanBeClosedByPlayer)
+            {
+                return;
+            }
 
             CurrentOpenedWindow.Disappear();
             _windowsStack.Pop();

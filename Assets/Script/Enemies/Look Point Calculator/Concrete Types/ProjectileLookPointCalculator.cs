@@ -18,10 +18,11 @@ namespace Enemies.Look_Point_Calculator.Concrete_Types
                 return DefaultRotation;
             }
 
-            var direction =
-                (TargetRigidbody.Position + TargetRigidbody.Velocity *
-                    Vector3.Distance(TargetRigidbody.Position, CurrentPosition) / _projectileSpeed)
-                - CurrentPosition;
+            Vector3 direction = TargetRigidbody.Position +
+                                TargetRigidbody.Velocity *
+                                Vector3.Distance(TargetRigidbody.Position, CurrentPosition) /
+                                _projectileSpeed -
+                                CurrentPosition;
             return direction.normalized;
         }
     }

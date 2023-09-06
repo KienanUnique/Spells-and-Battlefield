@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using ModestTree;
 using Spells.Spell;
-using UnityEngine;
 
-namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.
-    Disposable_Spells_Selector
+namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.Disposable
 {
     public class DisposableSpellsSelectorImplementation : SpellSelectorBase
     {

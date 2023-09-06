@@ -1,7 +1,5 @@
 ﻿using System;
-using Common.Abstract_Bases;
 using Common.Abstract_Bases.Factories;
-using Pickable_Items.Controllers.Concrete_Types._3D_Object;
 using Pickable_Items.Controllers.Concrete_Types.Card;
 using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Setup;
@@ -12,15 +10,15 @@ namespace Pickable_Items.Factory
 {
     public class PickableItemsFactory : FactoryWithInstantiatorBase, IPickableItemsFactory
     {
-        public PickableItemsFactory(IInstantiator instantiator, Transform parentTransform)
-            : base(instantiator, parentTransform)
+        public PickableItemsFactory(IInstantiator instantiator, Transform parentTransform) : base(instantiator,
+            parentTransform)
         {
         }
 
         public IPickableItem Create(IPickableItemDataForCreating dataForCreating, Vector3 position,
             bool needItemFallDown)
         {
-            var createdItem = InstantiatePrefab(dataForCreating.PickableItemPrefabProvider,
+            GameObject createdItem = InstantiatePrefab(dataForCreating.PickableItemPrefabProvider,
                 position, Quaternion.identity);
 
             var strategySettable = createdItem.GetComponent<IPickableItemStrategySettable>();
@@ -41,7 +39,6 @@ namespace Pickable_Items.Factory
                 default:
                     throw new InvalidPickableItemDataForCreatingType();
             }
-
 
             return createdItem.GetComponent<IPickableItem>();
         }

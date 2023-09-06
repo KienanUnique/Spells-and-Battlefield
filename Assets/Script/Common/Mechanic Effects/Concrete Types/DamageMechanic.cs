@@ -19,7 +19,10 @@ namespace Common.Mechanic_Effects.Concrete_Types
         {
             private readonly int _damage;
 
-            public DamageInstantMechanicImplementation(int damage) => _damage = damage;
+            public DamageInstantMechanicImplementation(int damage)
+            {
+                _damage = damage;
+            }
 
             public override void ApplyEffectToTarget(IInteractable target)
             {

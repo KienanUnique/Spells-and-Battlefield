@@ -4,8 +4,6 @@ using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using TMPro;
-using UI.Spells_Panel.Settings;
-using UI.Spells_Panel.Settings.Sections;
 using UI.Spells_Panel.Settings.Sections.Group;
 using UI.Spells_Panel.Slot.Presenter;
 using UI.Spells_Panel.Slot_Group.Base.Setup;

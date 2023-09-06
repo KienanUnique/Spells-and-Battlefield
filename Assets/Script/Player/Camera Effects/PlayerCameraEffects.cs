@@ -1,7 +1,6 @@
 ﻿using System;
 using DG.Tweening;
 using Player.Camera_Effects.Settings;
-using Player.Settings;
 using UnityEngine;
 
 namespace Player.Camera_Effects
@@ -9,14 +8,13 @@ namespace Player.Camera_Effects
     public class PlayerCameraEffects : IPlayerCameraEffects
     {
         private const RotateMode CameraRotateMode = RotateMode.Fast;
+        private readonly Transform _cachedTransform;
 
         private readonly Camera _camera;
         private readonly IPlayerCameraEffectsSettings _cameraEffectsSettings;
-        private readonly GameObject _effectsGameObject;
 
         private readonly Vector3 _defaultRotation;
-        private readonly Transform _cachedTransform;
-
+        private readonly GameObject _effectsGameObject;
 
         public PlayerCameraEffects(IPlayerCameraEffectsSettings cameraEffectsSettings, Camera camera,
             GameObject effectsGameObject)
@@ -39,26 +37,27 @@ namespace Player.Camera_Effects
                 WallDirection.Right => _cameraEffectsSettings.RotationAngle,
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
             });
-            _cachedTransform.DOLocalRotate(needRotation, _cameraEffectsSettings.RotateDuration, CameraRotateMode)
-                .SetLink(_effectsGameObject);
+            _cachedTransform.DOLocalRotate(needRotation, _cameraEffectsSettings.RotateDuration)
+                            .SetLink(_effectsGameObject);
         }
 
         public void ResetRotation()
         {
             _cachedTransform.DOKill();
-            _cachedTransform.DOLocalRotate(_defaultRotation, _cameraEffectsSettings.RotateDuration, CameraRotateMode)
-                .SetLink(_effectsGameObject);
+            _cachedTransform.DOLocalRotate(_defaultRotation, _cameraEffectsSettings.RotateDuration)
+                            .SetLink(_effectsGameObject);
         }
 
         public void PlayIncreaseFieldOfViewAnimation()
         {
             _camera.DOKill();
             _camera.DOFieldOfView(_cameraEffectsSettings.CameraIncreasedFOV,
-                    _cameraEffectsSettings.ChangeCameraFOVAnimationDuration)
-                .SetEase(_cameraEffectsSettings.ChangeCameraFOVAnimationEase).OnComplete(() => _camera
-                    .DOFieldOfView(_cameraEffectsSettings.CameraNormalFOV,
-                        _cameraEffectsSettings.ChangeCameraFOVAnimationDuration)
-                    .SetEase(_cameraEffectsSettings.ChangeCameraFOVAnimationEase));
+                       _cameraEffectsSettings.ChangeCameraFOVAnimationDuration)
+                   .SetEase(_cameraEffectsSettings.ChangeCameraFOVAnimationEase)
+                   .OnComplete(() =>
+                       _camera.DOFieldOfView(_cameraEffectsSettings.CameraNormalFOV,
+                                  _cameraEffectsSettings.ChangeCameraFOVAnimationDuration)
+                              .SetEase(_cameraEffectsSettings.ChangeCameraFOVAnimationEase));
         }
     }
 }

@@ -4,6 +4,5 @@ namespace Player.Spawn
 {
     public class PlayerSpawnMarker : SpawnMarkerBase
     {
-        
     }
 }

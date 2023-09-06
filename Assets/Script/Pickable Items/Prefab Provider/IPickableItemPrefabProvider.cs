@@ -1,4 +1,4 @@
-﻿using IPrefabProvider = Common.IPrefabProvider;
+﻿using Common;
 
 namespace Pickable_Items.Prefab_Provider
 {

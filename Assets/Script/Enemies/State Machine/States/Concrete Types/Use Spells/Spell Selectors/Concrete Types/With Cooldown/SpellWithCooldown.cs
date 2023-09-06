@@ -4,13 +4,12 @@ using Interfaces;
 using Spells.Spell;
 using UnityEngine;
 
-namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.
-    Spells_With_Cooldown_Selector
+namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.With_Cooldown
 {
     public class SpellWithCooldown : ISpellWithCooldown
     {
-        private readonly ISpellWithCooldownData _data;
         private readonly ICoroutineStarter _coroutineStarter;
+        private readonly ISpellWithCooldownData _data;
 
         public SpellWithCooldown(ISpellWithCooldownData data, ICoroutineStarter coroutineStarter)
         {

@@ -2,7 +2,6 @@
 {
     public enum InitializationStatus
     {
-        NonInitialized,
-        Initialized
+        NonInitialized, Initialized
     }
 }

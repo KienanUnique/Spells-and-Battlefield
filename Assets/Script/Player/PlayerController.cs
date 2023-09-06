@@ -26,18 +26,20 @@ using UnityEngine;
 namespace Player
 {
     [RequireComponent(typeof(PlayerControllerSetup))]
-    public class PlayerController : InitializableMonoBehaviourBase, IPlayer, ICoroutineStarter,
+    public class PlayerController : InitializableMonoBehaviourBase,
+        IPlayer,
+        ICoroutineStarter,
         IInitializablePlayerController
     {
+        private IEventInvokerForActionAnimations _eventInvokerForAnimations;
         private IIdHolder _idHolder;
+        private IPlayerCameraEffects _playerCameraEffects;
+        private IPlayerCharacter _playerCharacter;
+        private IPlayerInput _playerInput;
         private IPlayerLook _playerLook;
         private IPlayerMovement _playerMovement;
-        private IPlayerInput _playerInput;
         private IPlayerSpellsManager _playerSpellsManager;
-        private IPlayerCharacter _playerCharacter;
         private IPlayerVisual _playerVisual;
-        private IPlayerCameraEffects _playerCameraEffects;
-        private IEventInvokerForActionAnimations _eventInvokerForAnimations;
 
         public void Initialize(IPlayerControllerSetupData setupData)
         {
@@ -58,31 +60,27 @@ namespace Player
 
         public event Action<CharacterState> CharacterStateChanged;
         public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
+        public event Action<float> DashCooldownRatioChanged;
         public event Action Dashed;
         public event Action DashAiming;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
-        public event Action<float> DashCooldownRatioChanged;
 
         public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
-        public int Id => _idHolder.Id;
-        public IReadonlyRigidbody MainRigidbody => _playerMovement.MainRigidbody;
-        public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
-        public ISpellType SelectedType => _playerSpellsManager.SelectedType;
+        public IReadonlyRigidbody MainRigidbody => _playerMovement.MainRigidbody;
+        public int Id => _idHolder.Id;
+        public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public float CurrentDashCooldownRatio => _playerMovement.CurrentDashCooldownRatio;
         public IReadonlyTransform CameraTransform { get; private set; }
+        public ISpellType SelectedType => _playerSpellsManager.SelectedType;
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
             _playerSpellsManager.Spells;
 
-        public void InteractAsSpellType(ISpellType spellType)
+        public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {
-        }
-
-        public void HandleHeal(int countOfHitPoints)
-        {
-            _playerCharacter.HandleHeal(countOfHitPoints);
+            _playerCharacter.ApplyContinuousEffect(effect);
         }
 
         public void HandleDamage(int countOfHealthPoints)
@@ -90,24 +88,14 @@ namespace Player
             _playerCharacter.HandleDamage(countOfHealthPoints);
         }
 
-        public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
-        {
-            _playerCharacter.ApplyContinuousEffect(effect);
-        }
-
-        public void AddSpell(ISpell newSpell)
-        {
-            _playerSpellsManager.AddSpell(newSpell);
-        }
-
         public bool Equals(IIdHolder other)
         {
             return _idHolder.Equals(other);
         }
 
-        public void AddForce(Vector3 force, ForceMode mode)
+        public void HandleHeal(int countOfHitPoints)
         {
-            _playerMovement.AddForce(force, mode);
+            _playerCharacter.HandleHeal(countOfHitPoints);
         }
 
         public void MultiplySpeedRatioBy(float speedRatio)
@@ -118,6 +106,20 @@ namespace Player
         public void DivideSpeedRatioBy(float speedRatio)
         {
             _playerMovement.DivideSpeedRatioBy(speedRatio);
+        }
+
+        public void AddForce(Vector3 force, ForceMode mode)
+        {
+            _playerMovement.AddForce(force, mode);
+        }
+
+        public void AddSpell(ISpell newSpell)
+        {
+            _playerSpellsManager.AddSpell(newSpell);
+        }
+
+        public void InteractAsSpellType(ISpellType spellType)
+        {
         }
 
         public void StickToPlatform(Transform platformTransform)
@@ -223,8 +225,10 @@ namespace Player
         }
 
         private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
-            TypeOfHitPointsChange typeOfHitPointsChange) =>
+            TypeOfHitPointsChange typeOfHitPointsChange)
+        {
             HitPointsCountChanged?.Invoke(hitPointsLeft, hitPointsChangeValue, typeOfHitPointsChange);
+        }
 
         private void OnDashed()
         {

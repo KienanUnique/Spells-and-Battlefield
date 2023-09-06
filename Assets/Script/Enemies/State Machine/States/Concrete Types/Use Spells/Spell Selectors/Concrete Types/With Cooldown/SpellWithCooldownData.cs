@@ -3,7 +3,7 @@ using Spells.Spell;
 using Spells.Spell.Scriptable_Objects;
 using UnityEngine;
 
-namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.Spells_With_Cooldown_Selector
+namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.With_Cooldown
 {
     [Serializable]
     public class SpellWithCooldownData : ISpellWithCooldownData

@@ -10,14 +10,19 @@ namespace Common.Mechanic_Effects.Concrete_Types
     {
         [SerializeField] private int _healPoints;
 
-        public override IMechanicEffect GetImplementationObject() =>
-            new HealInstantMechanicImplementation(_healPoints);
+        public override IMechanicEffect GetImplementationObject()
+        {
+            return new HealInstantMechanicImplementation(_healPoints);
+        }
 
         private class HealInstantMechanicImplementation : InstantMechanicEffectImplementationBase
         {
             private readonly int _healPoints;
 
-            public HealInstantMechanicImplementation(int healPoints) => _healPoints = healPoints;
+            public HealInstantMechanicImplementation(int healPoints)
+            {
+                _healPoints = healPoints;
+            }
 
             public override void ApplyEffectToTarget(IInteractable target)
             {

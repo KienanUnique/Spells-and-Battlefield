@@ -1,13 +1,12 @@
 ﻿using System;
-using Common;
+using Common.Abstract_Bases.Movement;
 using Common.Readonly_Rigidbody;
-using Common.Readonly_Transform;
 using Interfaces;
 using UnityEngine;
 
 namespace Player.Movement
 {
-    public interface IPlayerMovement : IPlayerDashInformation
+    public interface IPlayerMovement : IMovementBase, IPlayerDashInformation
     {
         public event Action Land;
         public event Action GroundJump;
@@ -25,8 +24,6 @@ namespace Player.Movement
         public void TryDash(Vector3 cameraForwardDirection);
         public void MoveInputted(Vector2 direction2d);
         public void AddForce(Vector3 force, ForceMode mode);
-        public void MultiplySpeedRatioBy(float speedRatio);
-        public void DivideSpeedRatioBy(float speedRatio);
         public void UnstickFromPlatform();
         public void StickToPlatform(Transform platformTransform);
     }

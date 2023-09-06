@@ -19,8 +19,8 @@ namespace Common.Mechanic_Effects.Concrete_Types
         private class ChangeSpeedMechanicImplementation : InstantMechanicEffectImplementationBase,
             IMechanicEffectWithRollback
         {
-            private readonly float _changeSpeedRatio;
             private readonly List<IMovable> _affectedTargets = new List<IMovable>();
+            private readonly float _changeSpeedRatio;
 
             public ChangeSpeedMechanicImplementation(float changeSpeedRatio)
             {
@@ -38,7 +38,7 @@ namespace Common.Mechanic_Effects.Concrete_Types
 
             public void Rollback()
             {
-                foreach (var movable in _affectedTargets)
+                foreach (IMovable movable in _affectedTargets)
                 {
                     movable?.DivideSpeedRatioBy(_changeSpeedRatio);
                 }

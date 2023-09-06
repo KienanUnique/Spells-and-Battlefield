@@ -13,8 +13,8 @@ namespace Enemies.Target_Pathfinder
     public class TargetPathfinder : ITargetPathfinder
     {
         private const int CanBePassedAreasNavMeshMask = NavMesh.AllAreas;
-        private readonly ITargetPathfinderSettings _settings;
         private readonly ICoroutineStarter _coroutineStarter;
+        private readonly ITargetPathfinderSettings _settings;
         private readonly IReadonlyTransform _thisPosition;
         private Vector3[] _currentPathCorners;
         private int _currentWaypointIndex;
@@ -36,8 +36,7 @@ namespace Enemies.Target_Pathfinder
         {
             StopUpdatingPath();
             _updatePathToTargetCoroutine =
-                _coroutineStarter.StartCoroutine(
-                    UpdatePathToKeepTransformOnDistance(targetPosition, needDistance));
+                _coroutineStarter.StartCoroutine(UpdatePathToKeepTransformOnDistance(targetPosition, needDistance));
             _tryUpdateCurrentWaypointCoroutine = _coroutineStarter.StartCoroutine(TryUpdateCurrentWaypoint());
         }
 
@@ -57,9 +56,10 @@ namespace Enemies.Target_Pathfinder
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
             {
-                if (_currentPathCorners.Length > 0 && _currentWaypointIndex < _currentPathCorners.Length &&
-                    Vector3.Distance(_currentPathCorners[_currentWaypointIndex], _thisPosition.Position)
-                    <= _settings.NextWaypointDistance)
+                if (_currentPathCorners.Length > 0 &&
+                    _currentWaypointIndex < _currentPathCorners.Length &&
+                    Vector3.Distance(_currentPathCorners[_currentWaypointIndex], _thisPosition.Position) <=
+                    _settings.NextWaypointDistance)
                 {
                     _currentWaypointIndex++;
                 }
@@ -85,8 +85,8 @@ namespace Enemies.Target_Pathfinder
 
         private Vector3 CalculateNeedPosition(IReadonlyTransform target, float needDistance)
         {
-            var offsetVector = (_thisPosition.Position - target.Position).normalized * needDistance;
-            return NavMesh.SamplePosition(target.Position + offsetVector, out var hit,
+            Vector3 offsetVector = (_thisPosition.Position - target.Position).normalized * needDistance;
+            return NavMesh.SamplePosition(target.Position + offsetVector, out NavMeshHit hit,
                 _settings.MaxDistanceFromTargetToNavMesh, CanBePassedAreasNavMeshMask)
                 ? hit.position
                 : target.Position + offsetVector;

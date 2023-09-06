@@ -3,7 +3,8 @@ using Common.Abstract_Bases.Initializable_MonoBehaviour;
 
 namespace Enemies.State_Machine.Transition_Conditions
 {
-    public abstract class TransitionConditionEnemyAIBase : InitializableMonoBehaviourBase, ITransitionConditionEnemyAI,
+    public abstract class TransitionConditionEnemyAIBase : InitializableMonoBehaviourBase,
+        ITransitionConditionEnemyAI,
         IInitializableTransitionEnemyAI
     {
         public void Initialize(IEnemyStateMachineControllable stateMachineControllable)
@@ -13,10 +14,9 @@ namespace Enemies.State_Machine.Transition_Conditions
         }
 
         public event Action ConditionCompleted;
-
+        public abstract bool IsConditionCompleted { get; }
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
         protected bool IsEnabled { get; private set; }
-        public abstract bool IsConditionCompleted { get; }
 
         public void StartCheckingConditions()
         {

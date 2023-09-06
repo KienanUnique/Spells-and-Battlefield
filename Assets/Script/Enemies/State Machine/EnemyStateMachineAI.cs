@@ -8,14 +8,15 @@ using UnityEngine;
 
 namespace Enemies.State_Machine
 {
-    public class EnemyStateMachineAI : InitializableMonoBehaviourBase, IEnemyStateMachineAI,
+    public class EnemyStateMachineAI : InitializableMonoBehaviourBase,
+        IEnemyStateMachineAI,
         IInitializableEnemyStateMachineAI
     {
         [SerializeField] private StateEnemyAI _firstStateEnemyAI;
-        
+
         private IStateEnemyAI _currentStateEnemyAI;
-        private IEnemyStateMachineControllable _stateMachineControllable;
         private bool _isActive;
+        private IEnemyStateMachineControllable _stateMachineControllable;
 
         public void Initialize(IEnemyStateMachineControllable stateMachineControllable)
         {
@@ -52,6 +53,23 @@ namespace Enemies.State_Machine
             TransitToState(null);
         }
 
+        protected override void SubscribeOnEvents()
+        {
+            if (!_isActive)
+            {
+                return;
+            }
+
+            SubscribeOnTargetSelectorEvents();
+            SubscribeOnCurrentStateEvents();
+        }
+
+        protected override void UnsubscribeFromEvents()
+        {
+            UnsubscribeFromTargetSelectorEvents();
+            UnsubscribeFromCurrentStateEvents();
+        }
+
         private void TransitToState(IStateEnemyAI nextStateEnemyAI)
         {
             if (_currentStateEnemyAI != null)
@@ -82,19 +100,6 @@ namespace Enemies.State_Machine
             }
         }
 
-        protected override void SubscribeOnEvents()
-        {
-            if (!_isActive) return;
-            SubscribeOnTargetSelectorEvents();
-            SubscribeOnCurrentStateEvents();
-        }
-
-        protected override void UnsubscribeFromEvents()
-        {
-            UnsubscribeFromTargetSelectorEvents();
-            UnsubscribeFromCurrentStateEvents();
-        }
-
         private void SubscribeOnTargetSelectorEvents()
         {
             TargetFromTriggersSelector.CurrentTargetChanged += OnCurrentTargetFromTriggersChanged;
@@ -107,14 +112,22 @@ namespace Enemies.State_Machine
 
         private void SubscribeOnCurrentStateEvents()
         {
-            if (_currentStateEnemyAI == null) return;
+            if (_currentStateEnemyAI == null)
+            {
+                return;
+            }
+
             _currentStateEnemyAI.NeedToSwitchToNextState += TransitToState;
             _currentStateEnemyAI.NeedChangeLookPointCalculator += OnNeedChangeLookPointCalculator;
         }
 
         private void UnsubscribeFromCurrentStateEvents()
         {
-            if (_currentStateEnemyAI == null) return;
+            if (_currentStateEnemyAI == null)
+            {
+                return;
+            }
+
             _currentStateEnemyAI.NeedToSwitchToNextState -= TransitToState;
             _currentStateEnemyAI.NeedChangeLookPointCalculator -= OnNeedChangeLookPointCalculator;
         }

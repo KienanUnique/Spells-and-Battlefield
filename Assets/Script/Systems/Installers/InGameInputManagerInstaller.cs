@@ -13,15 +13,10 @@ namespace Systems.Installers
 
         public override void InstallBindings()
         {
-            Container
-                .Bind(new List<Type>
-                {
-                    typeof(IPlayerInput),
-                    typeof(IInGameSystemInputManager)
-                })
-                .FromComponentInNewPrefab(_inGameMenuInputProvider.Prefab)
-                .AsSingle()
-                .NonLazy();
+            Container.Bind(new List<Type> {typeof(IPlayerInput), typeof(IInGameSystemInputManager)})
+                     .FromComponentInNewPrefab(_inGameMenuInputProvider.Prefab)
+                     .AsSingle()
+                     .NonLazy();
         }
     }
 }

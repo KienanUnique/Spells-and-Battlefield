@@ -9,7 +9,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
         IInitializableSpawnedEnemiesDeathMechanismTrigger
     {
         private List<IEnemyDeathTrigger> _triggers;
-        private bool _wasTriggered = false;
+        private bool _wasTriggered;
 
         public void Initialize(List<IEnemyDeathTrigger> triggers)
         {
@@ -32,7 +32,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
                 return;
             }
 
-            foreach (var enemyDeathTrigger in _triggers)
+            foreach (IEnemyDeathTrigger enemyDeathTrigger in _triggers)
             {
                 enemyDeathTrigger.SpawnedEnemyDied += OnSpawnedEnemyDied;
             }
@@ -40,7 +40,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
 
         protected override void UnsubscribeFromEvents()
         {
-            foreach (var enemyDeathTrigger in _triggers)
+            foreach (IEnemyDeathTrigger enemyDeathTrigger in _triggers)
             {
                 enemyDeathTrigger.SpawnedEnemyDied -= OnSpawnedEnemyDied;
             }

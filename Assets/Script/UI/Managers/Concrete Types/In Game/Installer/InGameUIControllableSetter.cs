@@ -14,17 +14,17 @@ namespace UI.Managers.Concrete_Types.In_Game.Installer
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             Enumerable.Empty<IInitializable>();
 
-        protected override void Prepare()
-        {
-            _inGameUIControllableSettableObjects = GetComponentsInChildren<IUIWindowManagerSettable>();
-        }
-
         protected override void Initialize()
         {
-            foreach (var dependentOnIInGameUIControllable in _inGameUIControllableSettableObjects)
+            foreach (IUIWindowManagerSettable dependentOnIInGameUIControllable in _inGameUIControllableSettableObjects)
             {
                 dependentOnIInGameUIControllable.SetInGameUIControllable(_inGameManagerUI);
             }
+        }
+
+        protected override void Prepare()
+        {
+            _inGameUIControllableSettableObjects = GetComponentsInChildren<IUIWindowManagerSettable>();
         }
     }
 }
