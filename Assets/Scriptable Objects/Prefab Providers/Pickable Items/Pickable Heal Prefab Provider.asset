@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4bbf8fd19e894e359c2f557dcbc239e7, type: 3}
-  m_Name: 3D Object Prefab Provider
+  m_Name: Pickable Heal Prefab Provider
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 7097424893626516501, guid: 373a8f530e45d93428a96088e7158aa7, type: 3}
+  _prefab: {fileID: 6746185315334392553, guid: 32ceff622d8aaa54697cb29be14f70c6, type: 3}

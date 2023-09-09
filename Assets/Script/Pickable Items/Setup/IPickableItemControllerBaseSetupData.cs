@@ -8,7 +8,6 @@ namespace Pickable_Items.Setup
 {
     public interface IPickableItemControllerBaseSetupData
     {
-        public bool SetNeedFallDown { get; }
         public IStrategyForPickableController SetStrategyForPickableController { get; }
         public IGroundLayerMaskSetting SetGroundLayerMaskSetting { get; }
         public IPickableItemsSettings SetPickableItemsSettings { get; }
@@ -16,5 +15,6 @@ namespace Pickable_Items.Setup
         public GroundChecker SetGroundChecker { get; }
         public PickableItemsPickerTrigger SetPickerTrigger { get; }
         public Rigidbody SetRigidBody { get; }
+        public bool TryGetDropDirection(out Vector3? dropDirection);
     }
 }

@@ -53,7 +53,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4773416566356749373, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
       propertyPath: m_Name
-      value: Test Enemy
+      value: Test Passive Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 6049343359790611563, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
       propertyPath: _firstStateEnemyAI

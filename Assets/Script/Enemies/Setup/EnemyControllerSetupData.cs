@@ -5,6 +5,7 @@ using Common.Readonly_Transform;
 using Enemies.Character;
 using Enemies.General_Settings;
 using Enemies.Look;
+using Enemies.Loot_Dropper;
 using Enemies.Movement;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
@@ -18,37 +19,35 @@ namespace Enemies.Setup
 {
     public struct EnemyControllerSetupData : IEnemyBaseSetupData
     {
-        public EnemyControllerSetupData(IEnemyStateMachineAI stateMachineAI, IPickableItemDataForCreating itemToDrop,
-            IEnemyMovement movement, List<IDisableable> itemsNeedDisabling, IIdHolder idHolder,
-            IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
-            IEnemyTargetFromTriggersSelector targetFromTriggersSelector, IEnemyLook look,
-            IEventInvokerForActionAnimations eventInvokerForAnimations, IEnemyVisual visual, IEnemyCharacter character,
+        public EnemyControllerSetupData(IEnemyStateMachineAI setStateMachineAI, IEnemyMovement setMovement,
+            List<IDisableable> setItemsNeedDisabling, IIdHolder setIdHolder,
+            IGeneralEnemySettings setGeneralEnemySettings,
             IPopupHitPointsChangeTextFactory setPopupHitPointsChangeTextFactory,
-            IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint)
+            IEnemyTargetFromTriggersSelector setTargetFromTriggersSelector, IEnemyLook setLook,
+            IEventInvokerForActionAnimations setEventInvokerForAnimations, IEnemyVisual setVisual,
+            IEnemyCharacter setCharacter, IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint,
+            ILootDropper setLootDropper)
         {
-            SetStateMachineAI = stateMachineAI;
-            SetItemToDrop = itemToDrop;
-            SetMovement = movement;
-            SetItemsNeedDisabling = itemsNeedDisabling;
-            SetIdHolder = idHolder;
-            SetGeneralEnemySettings = generalEnemySettings;
-            SetPickableItemsFactory = itemsFactory;
-            SetTargetFromTriggersSelector = targetFromTriggersSelector;
-            SetLook = look;
-            SetEventInvokerForAnimations = eventInvokerForAnimations;
-            SetVisual = visual;
-            SetCharacter = character;
+            SetStateMachineAI = setStateMachineAI;
+            SetMovement = setMovement;
+            SetItemsNeedDisabling = setItemsNeedDisabling;
+            SetIdHolder = setIdHolder;
+            SetGeneralEnemySettings = setGeneralEnemySettings;
             SetPopupHitPointsChangeTextFactory = setPopupHitPointsChangeTextFactory;
+            SetTargetFromTriggersSelector = setTargetFromTriggersSelector;
+            SetLook = setLook;
+            SetEventInvokerForAnimations = setEventInvokerForAnimations;
+            SetVisual = setVisual;
+            SetCharacter = setCharacter;
             SetPopupTextHitPointsChangeAppearCenterPoint = setPopupTextHitPointsChangeAppearCenterPoint;
+            SetLootDropper = setLootDropper;
         }
 
         public IEnemyStateMachineAI SetStateMachineAI { get; }
-        public IPickableItemDataForCreating SetItemToDrop { get; }
         public IEnemyMovement SetMovement { get; }
         public List<IDisableable> SetItemsNeedDisabling { get; }
         public IIdHolder SetIdHolder { get; }
         public IGeneralEnemySettings SetGeneralEnemySettings { get; }
-        public IPickableItemsFactory SetPickableItemsFactory { get; }
         public IPopupHitPointsChangeTextFactory SetPopupHitPointsChangeTextFactory { get; }
         public IEnemyTargetFromTriggersSelector SetTargetFromTriggersSelector { get; }
         public IEnemyLook SetLook { get; }
@@ -56,5 +55,6 @@ namespace Enemies.Setup
         public IEnemyVisual SetVisual { get; }
         public IEnemyCharacter SetCharacter { get; }
         public IReadonlyTransform SetPopupTextHitPointsChangeAppearCenterPoint { get; }
+        public ILootDropper SetLootDropper { get; }
     }
 }

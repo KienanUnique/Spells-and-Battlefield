@@ -43,12 +43,24 @@ namespace Pickable_Items.Controllers
             _pickableItemsSettings = setupData.SetPickableItemsSettings;
             _rigidbody = setupData.SetRigidBody;
             _strategyForPickableController = setupData.SetStrategyForPickableController;
-            _needFallDown = setupData.SetNeedFallDown;
             SetInitializedStatus();
 
             PlayAppearAnimation();
             _visualObjectTransform.localScale = Vector3.zero;
-            _currentControllerState.Value = _needFallDown ? ControllerStates.Falling : ControllerStates.Idle;
+            if (setupData.TryGetDropDirection(out Vector3? dropDirection))
+            {
+                if (dropDirection == null)
+                {
+                    throw new InvalidOperationException("Drop direction is null");
+                }
+
+                _currentControllerState.Value = ControllerStates.Falling;
+                _rigidbody.AddForce(_pickableItemsSettings.DropForce * dropDirection.Value, ForceMode.Impulse);
+            }
+            else
+            {
+                _currentControllerState.Value = ControllerStates.Idle;
+            }
         }
 
         private enum ControllerStates
@@ -61,6 +73,7 @@ namespace Pickable_Items.Controllers
 
         public void DropItemTowardsDirection(Vector3 direction)
         {
+            Debug.Log($"DropItemTowardsDirection {direction}");
             _rigidbody.AddForce(_pickableItemsSettings.DropForce * direction, ForceMode.Impulse);
         }
 

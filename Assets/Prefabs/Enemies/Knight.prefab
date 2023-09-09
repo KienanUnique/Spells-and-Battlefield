@@ -960,6 +960,49 @@ Transform:
   m_Father: {fileID: 4767397390771342354}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2541768508922830681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2137622941332368858}
+  - component: {fileID: 253764022056155728}
+  m_Layer: 0
+  m_Name: Loot Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2137622941332368858
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2541768508922830681}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.883, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4773416566356749363}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &253764022056155728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2541768508922830681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582b6128dc944c159da5cb3a3f0d3ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2620747153172912821
 GameObject:
   m_ObjectHideFlags: 0
@@ -1889,7 +1932,6 @@ GameObject:
   - component: {fileID: 5880317241480453374}
   - component: {fileID: 6691309429120615332}
   - component: {fileID: 3234913087363775050}
-  - component: {fileID: 6043749213737795755}
   m_Layer: 9
   m_Name: Knight
   m_TagString: Untagged
@@ -1916,6 +1958,7 @@ Transform:
   - {fileID: 1951656331930342561}
   - {fileID: 5737268904998905445}
   - {fileID: 372168616811248857}
+  - {fileID: 2137622941332368858}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1995,6 +2038,7 @@ MonoBehaviour:
   _thisIKCenterPoint: {fileID: 3794248164729571245}
   _needDistanceFromIKCenterPoint: 3
   _popupTextHitPointsChangeAppearCenterPoint: {fileID: 9222820761270048107}
+  _lootSpawnPoint: {fileID: 253764022056155728}
   _thisRigidbody: {fileID: 4773416566356749375}
 --- !u!95 &6691309429120615332
 Animator:
@@ -2032,94 +2076,6 @@ MonoBehaviour:
   - m_Rig: {fileID: 8996694065657720887}
     m_Active: 1
   m_Effectors: []
---- !u!114 &6043749213737795755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4773416566356749373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boneShape: 1
-  drawBones: 1
-  drawTripods: 0
-  boneSize: 1
-  tripodSize: 1
-  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
-  m_Transforms:
-  - {fileID: 7768557367207981808}
-  - {fileID: 257257804779998092}
-  - {fileID: 5857745066840245711}
-  - {fileID: 8045553272689688931}
-  - {fileID: 3511172051496539531}
-  - {fileID: 2666540091567220192}
-  - {fileID: 8825344164093176221}
-  - {fileID: 8211106655558402279}
-  - {fileID: 6389194831557329929}
-  - {fileID: 2408441588695878314}
-  - {fileID: 957766030689505318}
-  - {fileID: 109167357798544763}
-  - {fileID: 8090776706001577655}
-  - {fileID: 5098881954552335222}
-  - {fileID: 8802842521991209036}
-  - {fileID: 591007928020708969}
-  - {fileID: 7357665805969062361}
-  - {fileID: 54504496084063317}
-  - {fileID: 3333940993192192057}
-  - {fileID: 615893781813478804}
-  - {fileID: 3630558046595563107}
-  - {fileID: 5363816427512633799}
-  - {fileID: 5046989487556635572}
-  - {fileID: 3192101927385878801}
-  - {fileID: 5946323440193552999}
-  - {fileID: 9134193549030174629}
-  - {fileID: 881418905340498834}
-  - {fileID: 5622872749899811505}
-  - {fileID: 8929172480915711440}
-  - {fileID: 3864684808236379068}
-  - {fileID: 1257673539055395636}
-  - {fileID: 5951467022802283405}
-  - {fileID: 7058948592831262730}
-  - {fileID: 8955744843863411256}
-  - {fileID: 3466929971691378883}
-  - {fileID: 2809463907907579845}
-  - {fileID: 4767397390771342354}
-  - {fileID: 8309181695772207754}
-  - {fileID: 254102208025428007}
-  - {fileID: 4152374655001561671}
-  - {fileID: 6138282330428662129}
-  - {fileID: 6052741948494220562}
-  - {fileID: 4313227082090038421}
-  - {fileID: 2545823066425693895}
-  - {fileID: 5850395662449783593}
-  - {fileID: 1439526624470453636}
-  - {fileID: 7397410172118105805}
-  - {fileID: 5627342775774843986}
-  - {fileID: 1365351787171210852}
-  - {fileID: 8653016690547567235}
-  - {fileID: 896346065597353109}
-  - {fileID: 3133468800222025126}
-  - {fileID: 6816735460142928515}
-  - {fileID: 8635284432543569163}
-  - {fileID: 3403769023036784346}
-  - {fileID: 23538901077693245}
-  - {fileID: 3501427130579123687}
-  - {fileID: 7681169703670581971}
-  - {fileID: 146349956667464679}
-  - {fileID: 8370500237434468959}
-  - {fileID: 6864023404888462953}
-  - {fileID: 4840029229730976594}
-  - {fileID: 39705326987094974}
-  - {fileID: 8762038180993221921}
-  - {fileID: 1732769636073603319}
-  - {fileID: 7788770764328139605}
-  - {fileID: 2910643805008778227}
-  - {fileID: 606899403301380903}
-  - {fileID: 5742641905788552069}
 --- !u!1 &4829227311415161147
 GameObject:
   m_ObjectHideFlags: 0

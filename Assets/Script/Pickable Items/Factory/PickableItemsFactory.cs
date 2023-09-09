@@ -16,13 +16,20 @@ namespace Pickable_Items.Factory
         }
 
         public IPickableItem Create(IPickableItemDataForCreating dataForCreating, Vector3 position,
-            bool needItemFallDown)
+            Vector3? dropDirection)
         {
             GameObject createdItem = InstantiatePrefab(dataForCreating.PickableItemPrefabProvider,
                 position, Quaternion.identity);
 
-            var strategySettable = createdItem.GetComponent<IPickableItemStrategySettable>();
-            strategySettable.SetStrategyForPickableController(dataForCreating.StrategyForController, needItemFallDown);
+            var strategySettable = createdItem.GetComponent<IPickableItemControllerSetupBase>();
+            if (dropDirection == null)
+            {
+                strategySettable.SetBaseSetupData(dataForCreating.StrategyForController);
+            }
+            else
+            {
+                strategySettable.SetBaseSetupData(dataForCreating.StrategyForController, dropDirection.Value);
+            }
 
             switch (dataForCreating)
             {
@@ -32,7 +39,7 @@ namespace Pickable_Items.Factory
                     cardInformationSettable.SetCardInformation(cardDataForCreating.CardInformation);
                     break;
                 }
-                case IPickable3DObjectDataForCreating object3DDataForCreating:
+                case IPickable3DObjectDataForCreating _:
                 {
                     break;
                 }

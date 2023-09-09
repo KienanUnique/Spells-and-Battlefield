@@ -36,6 +36,11 @@ namespace Enemies.Spawn.Spawner
 
         public void Spawn(List<IEnemyTargetTrigger> targetTriggers)
         {
+            if (!isActiveAndEnabled)
+            {
+                return;
+            }
+
             _spawnedEnemy = _enemyFactory.Create(_dataForSpawnMarker, targetTriggers, _positionDataForInstantiation);
             SubscribeOnSpawnedEnemyEvents();
         }

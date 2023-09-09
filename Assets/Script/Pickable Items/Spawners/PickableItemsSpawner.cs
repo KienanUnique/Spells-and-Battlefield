@@ -7,7 +7,6 @@ namespace Pickable_Items.Spawners
 {
     public class PickableItemsSpawner : SpawnerBase<IPickableItemMarker>
     {
-        private const bool NeedCreatedItemsFallDown = false;
         private IPickableItemsFactory _pickableItemsFactory;
 
         [Inject]
@@ -20,7 +19,7 @@ namespace Pickable_Items.Spawners
         {
             foreach (IPickableItemMarker marker in _markers)
             {
-                _pickableItemsFactory.Create(marker.DataForCreating, marker.SpawnPosition, NeedCreatedItemsFallDown);
+                _pickableItemsFactory.Create(marker.DataForCreating, marker.SpawnPosition);
             }
         }
     }

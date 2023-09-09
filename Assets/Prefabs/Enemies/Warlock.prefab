@@ -1919,6 +1919,7 @@ Transform:
   - {fileID: 3240255687697187532}
   - {fileID: 4111533701779420249}
   - {fileID: 3057059972061305756}
+  - {fileID: 2113358408793902085}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1998,6 +1999,7 @@ MonoBehaviour:
   _thisIKCenterPoint: {fileID: 7453517508591818135}
   _needDistanceFromIKCenterPoint: 3
   _popupTextHitPointsChangeAppearCenterPoint: {fileID: 466906644819066052}
+  _lootSpawnPoint: {fileID: 791267702716913284}
   _thisRigidbody: {fileID: 7166206672531240523}
 --- !u!95 &187948494797428274
 Animator:
@@ -3001,6 +3003,49 @@ Transform:
   m_Father: {fileID: 1278073420731497307}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7733388180264644660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2113358408793902085}
+  - component: {fileID: 791267702716913284}
+  m_Layer: 0
+  m_Name: Loot Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2113358408793902085
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7733388180264644660}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.389, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4693423325618152248}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &791267702716913284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7733388180264644660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582b6128dc944c159da5cb3a3f0d3ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7788776870260227867
 GameObject:
   m_ObjectHideFlags: 0

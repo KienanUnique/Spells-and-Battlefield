@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04ec0bed09714ef9970eca316ce0fa40, type: 3}
+  m_Name: Warlock Loot Dropper Provider
+  m_EditorClassIdentifier: 
+  _lootGenerator:
+    _alwaysDroppedItems:
+    - {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
+    _chanceDroppedItemsSection:
+      _chanceDroppedItems:
+      - _item: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+        _chanceCoefficient: 2
+      - _item: {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
+        _chanceCoefficient: 1
+      - _item: {fileID: 11400000, guid: 7ce1eb3282451694e83966f5e5ce9ec2, type: 2}
+        _chanceCoefficient: 1
+      _minimumInclusiveCount: 1
+      _maximumInclusiveCount: 2

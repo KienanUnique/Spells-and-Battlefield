@@ -15,4 +15,5 @@ MonoBehaviour:
   _movementProvider: {fileID: 11400000, guid: bde6fe943bc8c7046982850a0cabefd8, type: 2}
   _characterProvider: {fileID: 11400000, guid: 92e6f122cc06813408384c3c394afd22, type: 2}
   _targetPathfinderProvider: {fileID: 11400000, guid: 555edbf34a2d0f94f91ebe1bba623d4b, type: 2}
+  _lootDropperProvider: {fileID: 11400000, guid: d63f9346df910d14c91a1e495db81743, type: 2}
   _baseAnimatorOverrideController: {fileID: 22100000, guid: 100ee2665c011f8499615f1b064a0a20, type: 2}

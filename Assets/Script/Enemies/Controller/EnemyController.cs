@@ -14,6 +14,7 @@ using Enemies.Character;
 using Enemies.General_Settings;
 using Enemies.Look;
 using Enemies.Look_Point_Calculator;
+using Enemies.Loot_Dropper;
 using Enemies.Movement;
 using Enemies.Movement.Enemy_Data_For_Moving;
 using Enemies.Setup;
@@ -21,9 +22,6 @@ using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Visual;
 using Interfaces;
-using Pickable_Items;
-using Pickable_Items.Data_For_Creating;
-using Pickable_Items.Factory;
 using Spells.Implementations_Interfaces.Implementations;
 using UI.Popup_Text.Factory;
 using UnityEngine;
@@ -36,14 +34,12 @@ namespace Enemies.Controller
         ICoroutineStarter,
         IInitializableEnemyController
     {
-        private const bool NeedCreatedItemsFallDown = true;
         private IEnemyCharacter _character;
         private IEnemyStateMachineAI _enemyStateMachineAI;
         private IEventInvokerForActionAnimations _eventInvokerForAnimations;
         private IGeneralEnemySettings _generalEnemySettings;
         private IIdHolder _idHolder;
-        private IPickableItemsFactory _itemsFactory;
-        private IPickableItemDataForCreating _itemToDrop;
+        private ILootDropper _lootDropper;
         private IEnemyLook _look;
         private IEnemyMovement _movement;
         private IPopupHitPointsChangeTextFactory _popupHitPointsChangeTextFactory;
@@ -53,11 +49,10 @@ namespace Enemies.Controller
         public void Initialize(IEnemyBaseSetupData setupData)
         {
             _enemyStateMachineAI = setupData.SetStateMachineAI;
-            _itemToDrop = setupData.SetItemToDrop;
+            _lootDropper = setupData.SetLootDropper;
             _movement = setupData.SetMovement;
             _idHolder = setupData.SetIdHolder;
             _generalEnemySettings = setupData.SetGeneralEnemySettings;
-            _itemsFactory = setupData.SetPickableItemsFactory;
             _popupHitPointsChangeTextFactory = setupData.SetPopupHitPointsChangeTextFactory;
             TargetFromTriggersSelector = setupData.SetTargetFromTriggersSelector;
             _look = setupData.SetLook;
@@ -250,9 +245,7 @@ namespace Enemies.Controller
                 ? cashedTransform.forward
                 : (TargetFromTriggersSelector.CurrentTarget.MainRigidbody.Position - cashedTransform.position)
                 .normalized;
-            Vector3 spawnPosition = _generalEnemySettings.SpawnSpellOffset + cashedTransform.position;
-            IPickableItem pickableSpell = _itemsFactory.Create(_itemToDrop, spawnPosition, NeedCreatedItemsFallDown);
-            pickableSpell.AddActionAfterInitializing(() => pickableSpell.DropItemTowardsDirection(dropDirection));
+            _lootDropper.DropLoot(dropDirection);
         }
 
         private IEnumerator DestroyAfterDelay()

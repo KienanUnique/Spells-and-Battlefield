@@ -8,7 +8,10 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
     public abstract class InitializableMonoBehaviourBase : MonoBehaviour, IInitializableWithActionsPool
     {
         private readonly List<Action> _actionsAfterInitialization = new List<Action>();
-        private ValueWithReactionOnChange<InitializationStatus> _currentStatus;
+
+        private readonly ValueWithReactionOnChange<InitializationStatus> _currentStatus =
+            new ValueWithReactionOnChange<InitializationStatus>(InitializationStatus.NonInitialized);
+
         private List<IDisableable> _itemsNeedDisabling;
 
         public event Action<InitializationStatus> InitializationStatusChanged;
@@ -32,7 +35,6 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
 
         protected virtual void Awake()
         {
-            _currentStatus = new ValueWithReactionOnChange<InitializationStatus>(InitializationStatus.NonInitialized);
         }
 
         protected virtual void OnEnable()
