@@ -52,6 +52,8 @@ namespace Player.Setup
         private IIdHolder _idHolder;
         private List<IDisableable> _itemsNeedDisabling;
 
+        [Header("Other")] [SerializeField] private ReadonlyTransformGetter _pointForAiming;
+
         private IPlayerCameraEffects _playerCameraEffects;
         private ICaster _playerCaster;
         private IPlayerCharacter _playerCharacter;
@@ -94,7 +96,7 @@ namespace Player.Setup
             var controllerToSetup = GetComponent<IInitializablePlayerController>();
             var setupData = new PlayerControllerSetupData(_eventInvokerForAnimations, _playerCameraEffects,
                 _playerVisual, _playerCharacter, playerSpellsManager, _playerInput, playerMovement, playerLook,
-                _idHolder, _itemsNeedDisabling, _cameraTransform);
+                _idHolder, _itemsNeedDisabling, _cameraTransform, _pointForAiming.ReadonlyTransform);
             controllerToSetup.Initialize(setupData);
         }
 

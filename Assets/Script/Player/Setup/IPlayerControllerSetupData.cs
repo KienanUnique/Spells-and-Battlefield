@@ -26,5 +26,6 @@ namespace Player.Setup
         public IPlayerCameraEffects SetPlayerCameraEffects { get; }
         public IEventInvokerForActionAnimations SetPlayerEventInvokerForAnimations { get; }
         public IReadonlyTransform SetCameraTransform { get; }
+        public IReadonlyTransform SetPointForAiming { get; }
     }
 }

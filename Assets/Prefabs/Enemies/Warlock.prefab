@@ -1398,7 +1398,6 @@ MonoBehaviour:
   _useSpellsStateData: {fileID: 11400000, guid: 4a8e6e0ffd1779341bbcabd40107779a, type: 2}
   _enemyController: {fileID: 2342827156696725659}
   _spellSpawnObjectReadonlyTransformGetter: {fileID: 1124876562946862783}
-  _spellAimPointReadonlyTransformGetter: {fileID: 8893019228434104273}
 --- !u!114 &8124862480083203323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1420,7 +1419,6 @@ MonoBehaviour:
   _useSpellsStateData: {fileID: 11400000, guid: d0df34badf2c57a47977e207a48cee09, type: 2}
   _enemyController: {fileID: 2342827156696725659}
   _spellSpawnObjectReadonlyTransformGetter: {fileID: 1124876562946862783}
-  _spellAimPointReadonlyTransformGetter: {fileID: 8893019228434104273}
 --- !u!114 &8494981037482184549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1734,8 +1732,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.566, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 6893896400927498253}
+  m_Children: []
   m_Father: {fileID: 8692684759268667823}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1893,7 +1890,6 @@ GameObject:
   - component: {fileID: 6458958302228009291}
   - component: {fileID: 187948494797428274}
   - component: {fileID: 466582622939805502}
-  - component: {fileID: 8876543714069907317}
   m_Layer: 9
   m_Name: Warlock
   m_TagString: Untagged
@@ -2045,107 +2041,6 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
---- !u!114 &8876543714069907317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4693423325618152249}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boneShape: 1
-  drawBones: 1
-  drawTripods: 0
-  boneSize: 1
-  tripodSize: 1
-  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
-  m_Transforms:
-  - {fileID: 1219116378644693880}
-  - {fileID: 3810762823951876370}
-  - {fileID: 2223414577833768808}
-  - {fileID: 8698043778407954948}
-  - {fileID: 3057585970143163463}
-  - {fileID: 1478256224451440875}
-  - {fileID: 5448913852734219267}
-  - {fileID: 6783874811839190120}
-  - {fileID: 98434762024261653}
-  - {fileID: 781352375602458991}
-  - {fileID: 2562166649904575873}
-  - {fileID: 6505694829159676706}
-  - {fileID: 8534027751449534894}
-  - {fileID: 6975528826346074822}
-  - {fileID: 8838183448841602291}
-  - {fileID: 823147916346267455}
-  - {fileID: 4460393460405074686}
-  - {fileID: 75897661242986948}
-  - {fileID: 2107667266786314321}
-  - {fileID: 8927820750813275613}
-  - {fileID: 6152154089028573617}
-  - {fileID: 8333988104533439516}
-  - {fileID: 5279920163009138667}
-  - {fileID: 3554541564898125903}
-  - {fileID: 4408703071612770876}
-  - {fileID: 6298497304374173849}
-  - {fileID: 2999902640856789999}
-  - {fileID: 425434603064204845}
-  - {fileID: 8583636538904338970}
-  - {fileID: 3831484519082769209}
-  - {fileID: 58147909572105304}
-  - {fileID: 5658280884677220916}
-  - {fileID: 7660756336360592060}
-  - {fileID: 3004892292919220741}
-  - {fileID: 1932662712515805570}
-  - {fileID: 535203070248057776}
-  - {fileID: 5420465159519299915}
-  - {fileID: 6762549209515826765}
-  - {fileID: 4111061384439692698}
-  - {fileID: 609246665537788674}
-  - {fileID: 8692684759268667823}
-  - {fileID: 4793075306420419535}
-  - {fileID: 3105570669589752534}
-  - {fileID: 3317975790214664441}
-  - {fileID: 2944217933645888666}
-  - {fileID: 4683733762205611293}
-  - {fileID: 6372816330497337167}
-  - {fileID: 3032217758996136609}
-  - {fileID: 7556591512664013836}
-  - {fileID: 2129287265546096453}
-  - {fileID: 3835950155492566490}
-  - {fileID: 7626540374959216620}
-  - {fileID: 230227781987572491}
-  - {fileID: 8598545796661083421}
-  - {fileID: 5789394237004342318}
-  - {fileID: 2719530891859092235}
-  - {fileID: 933071232468706435}
-  - {fileID: 6059808542167355218}
-  - {fileID: 8896859579094475445}
-  - {fileID: 5454931497729641583}
-  - {fileID: 1278073420731497307}
-  - {fileID: 8729012529375242863}
-  - {fileID: 1084703107978103767}
-  - {fileID: 2788411507398869467}
-  - {fileID: 6948200112396879547}
-  - {fileID: 52129379045410005}
-  - {fileID: 7800189163715916676}
-  - {fileID: 1944818892142359664}
-  - {fileID: 4039556070321545946}
-  - {fileID: 8910743428553710134}
-  - {fileID: 197416669995627689}
-  - {fileID: 7145056374439195007}
-  - {fileID: 1671710232338713309}
-  - {fileID: 5999059933464355451}
-  - {fileID: 8307027971784987311}
-  - {fileID: 3789119671573819917}
-  - {fileID: 2786306822366131402}
-  - {fileID: 5126519517215816986}
-  - {fileID: 4514918108467744727}
-  - {fileID: 425226268229892922}
-  - {fileID: 7036092447105543308}
-  - {fileID: 4946911319643503951}
 --- !u!1 &4821278649848301160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2363,49 +2258,6 @@ Transform:
   m_Father: {fileID: 1219116378644693880}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5678834798529545001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6893896400927498253}
-  - component: {fileID: 8893019228434104273}
-  m_Layer: 8
-  m_Name: Spell Aim Point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6893896400927498253
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5678834798529545001}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: -0.395}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 3105570669589752534}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8893019228434104273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5678834798529545001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 582b6128dc944c159da5cb3a3f0d3ed6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6067686590546024973
 GameObject:
   m_ObjectHideFlags: 0

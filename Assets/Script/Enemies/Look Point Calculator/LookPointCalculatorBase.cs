@@ -12,6 +12,7 @@ namespace Enemies.Look_Point_Calculator
         protected IReadonlyTransform _thisPositionReferencePoint;
         protected IReadonlyRigidbody _thisRigidbody;
         protected IReadonlyRigidbody TargetRigidbody => _target.MainRigidbody;
+        protected Vector3 CurrentTargetPosition => _target.PointForAiming.Position;
         protected Vector3 CurrentPosition => _thisPositionReferencePoint.Position;
         protected Vector3 CurrentVelocity => _thisRigidbody.Velocity;
         protected Vector3 DefaultRotation => _thisRigidbody.Forward;

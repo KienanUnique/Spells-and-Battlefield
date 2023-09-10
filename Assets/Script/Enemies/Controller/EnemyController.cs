@@ -75,6 +75,7 @@ namespace Enemies.Controller
         public float HitPointCountRatio => _character.HitPointCountRatio;
 
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
+        public Vector3 CurrentLookDirection => _look.CurrentLookDirection;
         public IReadonlyTransform ThisPositionReferencePointForLook => _look.ThisPositionReferencePointForLook;
         public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
 

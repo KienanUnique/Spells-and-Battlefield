@@ -40,6 +40,7 @@ namespace Player
         private IPlayerMovement _playerMovement;
         private IPlayerSpellsManager _playerSpellsManager;
         private IPlayerVisual _playerVisual;
+        private IReadonlyTransform _pointForAiming;
 
         public void Initialize(IPlayerControllerSetupData setupData)
         {
@@ -53,6 +54,7 @@ namespace Player
             _playerCameraEffects = setupData.SetPlayerCameraEffects;
             _eventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
             CameraTransform = setupData.SetCameraTransform;
+            _pointForAiming = setupData.SetPointForAiming;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -69,6 +71,7 @@ namespace Player
         public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
         public IReadonlyRigidbody MainRigidbody => _playerMovement.MainRigidbody;
+        public IReadonlyTransform PointForAiming => _pointForAiming;
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
         public float CurrentDashCooldownRatio => _playerMovement.CurrentDashCooldownRatio;

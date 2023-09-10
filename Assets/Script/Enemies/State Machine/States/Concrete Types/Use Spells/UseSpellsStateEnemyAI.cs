@@ -17,14 +17,12 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         [SerializeField] private UseSpellsStateData _useSpellsStateData;
         [SerializeField] private EnemyController _enemyController;
         [SerializeField] private ReadonlyTransformGetter _spellSpawnObjectReadonlyTransformGetter;
-        [SerializeField] private ReadonlyTransformGetter _spellAimPointReadonlyTransformGetter;
         private ISpell _cachedSpell;
         private ILookPointCalculator _currentLookPointCalculator;
         private bool _isWaitingForAnimationFinish;
         private IReadonlyTransform _previousThisPositionReferencePointTransform;
-        private IReadonlyTransform _spellAimPoint;
         private ISpellObjectsFactory _spellObjectsFactory;
-        private IReadonlyTransform _spellSpawnObject;
+        private IReadonlyTransform _spellSpawnPoint;
         private ISpellSelector _spellsSelector;
 
         [Inject]
@@ -36,15 +34,16 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         public event Action CanUseSpellsAgain;
         public override ILookPointCalculator LookPointCalculator => _currentLookPointCalculator;
         public bool CanUseSpell => _spellsSelector.CanUseSpell;
-        private Quaternion SpellSpawnDirection => StateMachineControllable.ReadonlyRigidbody.Rotation;
+
+        private Quaternion SpellSpawnDirection =>
+            Quaternion.LookRotation(StateMachineControllable.CurrentLookDirection);
 
         protected override void SpecialInitializeAction()
         {
             base.SpecialInitializeAction();
             _currentLookPointCalculator = new FollowTargetLookPointCalculator();
             _spellsSelector = _useSpellsStateData.GetSpellSelector(this);
-            _spellSpawnObject = _spellSpawnObjectReadonlyTransformGetter.ReadonlyTransform;
-            _spellAimPoint = _spellAimPointReadonlyTransformGetter.ReadonlyTransform;
+            _spellSpawnPoint = _spellSpawnObjectReadonlyTransformGetter.ReadonlyTransform;
         }
 
         protected override void SubscribeOnEvents()
@@ -81,7 +80,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
                     _isWaitingForAnimationFinish = false;
                     _previousThisPositionReferencePointTransform =
                         StateMachineControllable.ThisPositionReferencePointForLook;
-                    StateMachineControllable.ChangeThisPositionReferencePointTransform(_spellAimPoint);
+                    StateMachineControllable.ChangeThisPositionReferencePointTransform(_spellSpawnPoint);
                     StateMachineControllable.StartKeepingCurrentTargetOnDistance(_useSpellsStateData.DataForMoving);
                     SubscribeOnLocalEvents();
                     TryCastSelectedSpell();
@@ -172,7 +171,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         private void CreateSelectedSpell()
         {
             _spellObjectsFactory.Create(_cachedSpell.SpellDataForSpellController, _cachedSpell.SpellPrefabProvider,
-                _enemyController, _spellSpawnObject.Position, SpellSpawnDirection);
+                _enemyController, _spellSpawnPoint.Position, SpellSpawnDirection);
         }
     }
 }

@@ -21,7 +21,6 @@ namespace Enemies.Look
         private Vector3 _cachedLookXZ;
         private Coroutine _lookCoroutine;
         private ILookPointCalculator _lookPointCalculator;
-        private Vector3 _needDirection;
 
         public EnemyLook(Transform transformToRotate, IReadonlyRigidbody thisRigidbody,
             IReadonlyTransform thisPositionReferencePoint,
@@ -38,6 +37,8 @@ namespace Enemies.Look
             _cachedLookXZ = Vector3.zero;
             _needDistanceFromIKCenterPoint = needDistanceFromIKCenterPoint;
         }
+
+        public Vector3 CurrentLookDirection { get; private set; }
 
         public IReadonlyTransform ThisPositionReferencePointForLook { get; private set; }
 
@@ -100,7 +101,8 @@ namespace Enemies.Look
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
             {
-                HandleLookPoint(_lookPointCalculator.CalculateLookPointDirection());
+                CurrentLookDirection = _lookPointCalculator.CalculateLookPointDirection();
+                HandleLookPoint(CurrentLookDirection);
                 yield return waitForFixedUpdate;
             }
         }
@@ -115,9 +117,9 @@ namespace Enemies.Look
                 _transformToRotate.rotation = Quaternion.LookRotation(_cachedLookXZ);
             }
 
-            _needDirection = Vector3.Reflect(lookRotation, _thisIKCenterPoint.Up);
+            Vector3 needDirection = Vector3.Reflect(lookRotation, _thisIKCenterPoint.Up);
             _transformToRotateForIK.position =
-                _needDistanceFromIKCenterPoint * _needDirection + _thisIKCenterPoint.Position;
+                _needDistanceFromIKCenterPoint * needDirection + _thisIKCenterPoint.Position;
         }
 
         private void OnCurrentTargetChanged(IEnemyTarget oldTarget, IEnemyTarget newTarget)
