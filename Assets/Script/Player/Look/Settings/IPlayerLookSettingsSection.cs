@@ -1,8 +1,11 @@
-﻿namespace Player.Look.Settings
+﻿using UnityEngine;
+
+namespace Player.Look.Settings
 {
     public interface IPlayerLookSettings
     {
-        float UpperLimit { get; }
-        float BottomLimit { get; }
+        public float UpperLimit { get; }
+        public float BottomLimit { get; }
+        public LayerMask AimLayerMask { get; }
     }
 }

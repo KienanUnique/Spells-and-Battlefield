@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using UI.Aim_Icon.Presenter;
 using UI.Element;
 using UI.Gameplay_UI.Model;
 using UI.Gameplay_UI.Presenter;
@@ -14,11 +15,12 @@ namespace UI.Gameplay_UI.Setup
     {
         [SerializeField] private SpellPanelPresenter _spellPanel;
         [SerializeField] private PlayerInformationPanelPresenter _playerInformation;
+        [SerializeField] private UIAimIconPresenter _aim;
         private IGameplayUIModel _model;
         private IInitializableGameplayUIPresenter _presenter;
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
-            new List<IInitializable>(base.ObjectsToWaitBeforeInitialization) {_spellPanel, _playerInformation};
+            new List<IInitializable>(base.ObjectsToWaitBeforeInitialization) {_spellPanel, _playerInformation, _aim};
 
         protected override void Initialize()
         {
@@ -28,7 +30,8 @@ namespace UI.Gameplay_UI.Setup
         protected override void Prepare()
         {
             base.Prepare();
-            _model = new GameplayUIModel(IDHolder, Manager, new List<IUIElement> {_spellPanel, _playerInformation});
+            _model = new GameplayUIModel(IDHolder, Manager,
+                new List<IUIElement> {_spellPanel, _playerInformation, _aim});
             _presenter = GetComponent<IInitializableGameplayUIPresenter>();
         }
     }

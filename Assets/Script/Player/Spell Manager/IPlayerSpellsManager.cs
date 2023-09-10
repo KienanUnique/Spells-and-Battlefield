@@ -10,7 +10,7 @@ namespace Player.Spell_Manager
     {
         public event Action<IAnimationData> NeedPlaySpellAnimation;
         public void TryCastSelectedSpell();
-        public void CreateSelectedSpell(Quaternion direction);
+        public void CreateSelectedSpell(Vector3 aimPoint);
         public void SelectSpellType(ISpellType typeToSelect);
         public void AddSpell(ISpell newSpell);
         public void HandleAnimationEnd();

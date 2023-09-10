@@ -89,10 +89,10 @@ namespace Player.Spell_Manager
             }
         }
 
-        public void CreateSelectedSpell(Quaternion direction)
+        public void CreateSelectedSpell(Vector3 aimPoint)
         {
             _spellObjectsFactory.Create(_spellToCreate.SpellDataForSpellController, _spellToCreate.SpellPrefabProvider,
-                _player, _spellSpawnObject.Position, direction);
+                _player, _spellSpawnObject.Position, Quaternion.LookRotation(aimPoint - _spellSpawnObject.Position));
             if (!Equals(_typeOfSpellToCreate, _lastChanceSpellType))
             {
                 _spellGroupFromWhichToCreateSpell.RemoveAt(0);

@@ -290,7 +290,7 @@ namespace Player
 
         private void OnCastSpellEventInvokerForAnimationMoment()
         {
-            _playerSpellsManager.CreateSelectedSpell(_playerLook.CameraRotation);
+            _playerSpellsManager.CreateSelectedSpell(_playerLook.CameraLookPointPosition);
         }
 
         private void OnSelectedSpellTypeChanged(ISpellType spellType)
