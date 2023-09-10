@@ -148,6 +148,7 @@ namespace Player
             _playerInput.SelectSpellType += _playerSpellsManager.SelectSpellType;
 
             _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger += OnCastSpellEventInvokerForAnimationMoment;
+            _eventInvokerForAnimations.ActionAnimationEnd += _playerSpellsManager.HandleAnimationEnd;
 
             _playerMovement.GroundJump += _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.Fall += _playerVisual.PlayFallAnimation;
@@ -180,6 +181,7 @@ namespace Player
             _playerInput.SelectSpellType -= _playerSpellsManager.SelectSpellType;
 
             _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger -= OnCastSpellEventInvokerForAnimationMoment;
+            _eventInvokerForAnimations.ActionAnimationEnd -= _playerSpellsManager.HandleAnimationEnd;
 
             _playerMovement.GroundJump -= _playerVisual.PlayGroundJumpAnimation;
             _playerMovement.Fall -= _playerVisual.PlayFallAnimation;

@@ -13,5 +13,6 @@ namespace Player.Spell_Manager
         public void CreateSelectedSpell(Quaternion direction);
         public void SelectSpellType(ISpellType typeToSelect);
         public void AddSpell(ISpell newSpell);
+        public void HandleAnimationEnd();
     }
 }

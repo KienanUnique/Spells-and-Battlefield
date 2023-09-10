@@ -25,9 +25,10 @@ namespace Player.Spell_Manager
         private readonly ISpellObjectsFactory _spellObjectsFactory;
         private readonly IReadonlyTransform _spellSpawnObject;
         private readonly Dictionary<ISpellType, ListWithReactionOnChange<ISpell>> _spellsStorage;
-        private bool _isWaitingForAnimationFinish;
+        private bool _isWaitingForAnimationEnd;
         private IList<ISpell> _spellGroupFromWhichToCreateSpell;
         private ISpell _spellToCreate;
+        private ISpellType _typeOfSpellToCreate;
 
         public PlayerSpellsManager(List<ISpell> startTestSpells, IReadonlyTransform spellSpawnObject, ICaster player,
             ISpellObjectsFactory spellObjectsFactory, ISpellTypesSetting spellTypesSetting)
@@ -78,12 +79,13 @@ namespace Player.Spell_Manager
             {
                 TryingToUseEmptySpellTypeGroup?.Invoke(_selectedSpellType.Value);
             }
-            else if (!_isWaitingForAnimationFinish)
+            else if (!_isWaitingForAnimationEnd)
             {
+                _isWaitingForAnimationEnd = true;
+                _typeOfSpellToCreate = _selectedSpellType.Value;
                 _spellGroupFromWhichToCreateSpell = SelectedSpellGroup;
                 _spellToCreate = SelectedSpell;
                 NeedPlaySpellAnimation?.Invoke(_spellToCreate.SpellAnimationData);
-                _isWaitingForAnimationFinish = true;
             }
         }
 
@@ -91,12 +93,15 @@ namespace Player.Spell_Manager
         {
             _spellObjectsFactory.Create(_spellToCreate.SpellDataForSpellController, _spellToCreate.SpellPrefabProvider,
                 _player, _spellSpawnObject.Position, direction);
-            if (!Equals(_selectedSpellType.Value, _lastChanceSpellType))
+            if (!Equals(_typeOfSpellToCreate, _lastChanceSpellType))
             {
                 _spellGroupFromWhichToCreateSpell.RemoveAt(0);
             }
+        }
 
-            _isWaitingForAnimationFinish = false;
+        public void HandleAnimationEnd()
+        {
+            _isWaitingForAnimationEnd = false;
         }
 
         public void SelectSpellType(ISpellType typeToSelect)
