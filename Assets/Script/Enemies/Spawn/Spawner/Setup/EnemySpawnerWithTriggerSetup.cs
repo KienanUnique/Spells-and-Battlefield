@@ -3,6 +3,7 @@ using System.Linq;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
 using Common.Editor_Label_Text_Display;
+using Common.Settings.Ground_Layer_Mask;
 using Enemies.Spawn.Data_For_Spawn;
 using Enemies.Spawn.Factory;
 using UnityEngine;
@@ -14,15 +15,18 @@ namespace Enemies.Spawn.Spawner.Setup
     [RequireComponent(typeof(EditorLabelTextDisplay))]
     public class EnemySpawnerWithTriggerSetup : SetupMonoBehaviourBase, ITextForEditorLabelProvider
     {
+        private const float MaxGroundRaycastDistance = 100f;
         [SerializeField] private EnemyDataForSpawnMarker _objectToSpawn;
         private IEnemyFactory _enemyFactory;
         private IInitializableEnemySpawnerWithTrigger _spawner;
         private IPositionDataForInstantiation _thisPositionData;
+        private IGroundLayerMaskSetting _groundLayerMaskSetting;
 
         [Inject]
-        private void GetDependencies(IEnemyFactory enemyFactory)
+        private void GetDependencies(IEnemyFactory enemyFactory, IGroundLayerMaskSetting groundLayerMaskSetting)
         {
             _enemyFactory = enemyFactory;
+            _groundLayerMaskSetting = groundLayerMaskSetting;
         }
 
         public string TextForEditorLabel => _objectToSpawn == null ? string.Empty : _objectToSpawn.name;
@@ -38,7 +42,12 @@ namespace Enemies.Spawn.Spawner.Setup
         protected override void Prepare()
         {
             _spawner = GetComponent<IInitializableEnemySpawnerWithTrigger>();
-            _thisPositionData = new PositionDataForInstantiation(transform.position, transform.rotation);
+            Vector3 spawnPosition =
+                Physics.Raycast(transform.position, Vector3.down, out RaycastHit downRaycastHit,
+                    MaxGroundRaycastDistance, _groundLayerMaskSetting.Mask, QueryTriggerInteraction.Ignore)
+                    ? downRaycastHit.point
+                    : transform.position;
+            _thisPositionData = new PositionDataForInstantiation(spawnPosition, transform.rotation);
         }
     }
 }
