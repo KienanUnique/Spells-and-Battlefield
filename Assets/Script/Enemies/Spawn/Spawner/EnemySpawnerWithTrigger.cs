@@ -16,17 +16,17 @@ namespace Enemies.Spawn.Spawner
         IInitializableEnemySpawnerWithTrigger,
         IEnemyDeathTrigger
     {
-        private IEnemyDataForSpawnMarker _dataForSpawnMarker;
+        private IEnemyDataForSpawning _dataForSpawning;
         private IEnemyFactory _enemyFactory;
         private IPositionDataForInstantiation _positionDataForInstantiation;
         private IEnemy _spawnedEnemy;
 
         public void Initialize(IEnemyFactory enemyFactory, IPositionDataForInstantiation positionDataForInstantiation,
-            IEnemyDataForSpawnMarker dataForSpawnMarker)
+            IEnemyDataForSpawning dataForSpawning)
         {
             _enemyFactory = enemyFactory;
             _positionDataForInstantiation = positionDataForInstantiation;
-            _dataForSpawnMarker = dataForSpawnMarker;
+            _dataForSpawning = dataForSpawning;
             SetInitializedStatus();
         }
 
@@ -41,7 +41,7 @@ namespace Enemies.Spawn.Spawner
                 return;
             }
 
-            _spawnedEnemy = _enemyFactory.Create(_dataForSpawnMarker, targetTriggers, _positionDataForInstantiation);
+            _spawnedEnemy = _enemyFactory.Create(_dataForSpawning, targetTriggers, _positionDataForInstantiation);
             SubscribeOnSpawnedEnemyEvents();
         }
 

@@ -16,7 +16,7 @@ namespace Enemies.Spawn.Spawner.Setup
     public class EnemySpawnerWithTriggerSetup : SetupMonoBehaviourBase, ITextForEditorLabelProvider
     {
         private const float MaxGroundRaycastDistance = 100f;
-        [SerializeField] private EnemyDataForSpawnMarker _objectToSpawn;
+        [SerializeField] private EnemyDataForSpawning _objectToSpawn;
         private IEnemyFactory _enemyFactory;
         private IInitializableEnemySpawnerWithTrigger _spawner;
         private IPositionDataForInstantiation _thisPositionData;

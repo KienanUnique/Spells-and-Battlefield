@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Abstract_Bases;
+using Common.Abstract_Bases.Box_Collider_Trigger;
 using Interfaces;
 using UnityEngine;
 
@@ -17,6 +18,11 @@ namespace Enemies.Trigger
         public bool IsTargetInTrigger(IEnemyTarget target)
         {
             return _requiredObjectsInside.Contains(target);
+        }
+
+        public void ForgetTarget(IEnemyTarget targetToForget)
+        {
+            _requiredObjectsInside.Remove(targetToForget);
         }
 
         private void OnEnable()

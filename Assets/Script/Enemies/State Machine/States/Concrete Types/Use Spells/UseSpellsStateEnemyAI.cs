@@ -137,6 +137,8 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 
                     TryCastSelectedSpell();
                     break;
+                case StateEnemyAIStatus.NonActive:
+                    break;
                 default:
                     throw new InvalidOperationException();
             }

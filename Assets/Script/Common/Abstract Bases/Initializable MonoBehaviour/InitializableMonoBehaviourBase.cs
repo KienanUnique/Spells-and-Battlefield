@@ -47,7 +47,10 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
 
         protected virtual void OnDisable()
         {
-            UnsubscribeFromBaseEvents();
+            if (_currentStatus.Value != InitializationStatus.NonInitialized)
+            {
+                UnsubscribeFromBaseEvents();
+            }
         }
 
         protected void SetInitializedStatus()

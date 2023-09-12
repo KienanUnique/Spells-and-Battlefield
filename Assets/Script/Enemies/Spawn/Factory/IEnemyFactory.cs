@@ -9,10 +9,10 @@ namespace Enemies.Spawn.Factory
 {
     public interface IEnemyFactory
     {
-        public IEnemy Create(IEnemyDataForSpawnMarker dataForSpawnMarker, List<IEnemyTargetTrigger> enemyTargetTriggers,
+        public IEnemy Create(IEnemyDataForSpawning dataForSpawning, List<IEnemyTargetTrigger> enemyTargetTriggers,
             Vector3 spawnPosition, Quaternion spawnRotation);
 
-        public IEnemy Create(IEnemyDataForSpawnMarker dataForSpawnMarker, List<IEnemyTargetTrigger> enemyTargetTriggers,
+        public IEnemy Create(IEnemyDataForSpawning dataForSpawning, List<IEnemyTargetTrigger> enemyTargetTriggers,
             IPositionDataForInstantiation positionDataForInstantiation);
     }
 }

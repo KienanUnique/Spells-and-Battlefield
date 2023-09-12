@@ -17,10 +17,11 @@ using Enemies.Look_Point_Calculator;
 using Enemies.Loot_Dropper;
 using Enemies.Movement;
 using Enemies.Movement.Enemy_Data_For_Moving;
-using Enemies.Setup;
+using Enemies.Setup.Controller_Setup_Data;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Visual;
+using Factions;
 using Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
 using UI.Popup_Text.Factory;
@@ -46,7 +47,7 @@ namespace Enemies.Controller
         private IReadonlyTransform _popupTextHitPointsChangeAppearCenterPoint;
         private IEnemyVisual _visual;
 
-        public void Initialize(IEnemyBaseSetupData setupData)
+        public void Initialize(IEnemyControllerSetupData setupData)
         {
             _enemyStateMachineAI = setupData.SetStateMachineAI;
             _lootDropper = setupData.SetLootDropper;
@@ -60,6 +61,8 @@ namespace Enemies.Controller
             _visual = setupData.SetVisual;
             _character = setupData.SetCharacter;
             _popupTextHitPointsChangeAppearCenterPoint = setupData.SetPopupTextHitPointsChangeAppearCenterPoint;
+            PointForAiming = setupData.SetPointForAiming;
+            Faction = setupData.SetFaction;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -71,6 +74,7 @@ namespace Enemies.Controller
         public event Action ActionAnimationKeyMomentTrigger;
         public event Action ActionAnimationStart;
         public event Action ActionAnimationEnd;
+        public event Action<IEnemyTarget> Destroying;
 
         public float HitPointCountRatio => _character.HitPointCountRatio;
 
@@ -82,6 +86,9 @@ namespace Enemies.Controller
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; private set; }
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _movement.CurrentPosition;
+        public IFaction Faction { get; private set; }
+        public IReadonlyTransform PointForAiming { get; private set; }
+        public IReadonlyRigidbody MainRigidbody => _movement.ReadonlyRigidbody;
 
         public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {
@@ -252,6 +259,7 @@ namespace Enemies.Controller
         private IEnumerator DestroyAfterDelay()
         {
             yield return new WaitForSeconds(_generalEnemySettings.DelayInSecondsBeforeDestroy);
+            Destroying?.Invoke(this);
             Destroy(gameObject);
         }
     }

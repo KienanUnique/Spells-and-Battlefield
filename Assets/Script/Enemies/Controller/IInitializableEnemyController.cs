@@ -1,9 +1,10 @@
 ﻿using Enemies.Setup;
+using Enemies.Setup.Controller_Setup_Data;
 
 namespace Enemies.Controller
 {
     public interface IInitializableEnemyController
     {
-        void Initialize(IEnemyBaseSetupData setupData);
+        void Initialize(IEnemyControllerSetupData setupData);
     }
 }

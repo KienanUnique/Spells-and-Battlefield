@@ -10,14 +10,13 @@ using Enemies.Movement;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Visual;
+using Factions;
 using Interfaces;
-using Pickable_Items.Data_For_Creating;
-using Pickable_Items.Factory;
 using UI.Popup_Text.Factory;
 
-namespace Enemies.Setup
+namespace Enemies.Setup.Controller_Setup_Data
 {
-    public interface IEnemyBaseSetupData
+    public interface IEnemyControllerSetupData
     {
         public IEnemyStateMachineAI SetStateMachineAI { get; }
         public IEnemyMovement SetMovement { get; }
@@ -32,5 +31,7 @@ namespace Enemies.Setup
         public IEnemyCharacter SetCharacter { get; }
         public IReadonlyTransform SetPopupTextHitPointsChangeAppearCenterPoint { get; }
         public ILootDropper SetLootDropper { get; }
+        public IFaction SetFaction { get; }
+        public IReadonlyTransform SetPointForAiming { get; }
     }
 }

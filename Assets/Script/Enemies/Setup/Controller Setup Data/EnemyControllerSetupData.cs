@@ -10,14 +10,13 @@ using Enemies.Movement;
 using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Visual;
+using Factions;
 using Interfaces;
-using Pickable_Items.Data_For_Creating;
-using Pickable_Items.Factory;
 using UI.Popup_Text.Factory;
 
-namespace Enemies.Setup
+namespace Enemies.Setup.Controller_Setup_Data
 {
-    public struct EnemyControllerSetupData : IEnemyBaseSetupData
+    public struct EnemyControllerSetupData : IEnemyControllerSetupData
     {
         public EnemyControllerSetupData(IEnemyStateMachineAI setStateMachineAI, IEnemyMovement setMovement,
             List<IDisableable> setItemsNeedDisabling, IIdHolder setIdHolder,
@@ -26,7 +25,7 @@ namespace Enemies.Setup
             IEnemyTargetFromTriggersSelector setTargetFromTriggersSelector, IEnemyLook setLook,
             IEventInvokerForActionAnimations setEventInvokerForAnimations, IEnemyVisual setVisual,
             IEnemyCharacter setCharacter, IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint,
-            ILootDropper setLootDropper)
+            ILootDropper setLootDropper, IFaction setFaction, IReadonlyTransform setPointForAiming)
         {
             SetStateMachineAI = setStateMachineAI;
             SetMovement = setMovement;
@@ -41,6 +40,8 @@ namespace Enemies.Setup
             SetCharacter = setCharacter;
             SetPopupTextHitPointsChangeAppearCenterPoint = setPopupTextHitPointsChangeAppearCenterPoint;
             SetLootDropper = setLootDropper;
+            SetFaction = setFaction;
+            SetPointForAiming = setPointForAiming;
         }
 
         public IEnemyStateMachineAI SetStateMachineAI { get; }
@@ -56,5 +57,7 @@ namespace Enemies.Setup
         public IEnemyCharacter SetCharacter { get; }
         public IReadonlyTransform SetPopupTextHitPointsChangeAppearCenterPoint { get; }
         public ILootDropper SetLootDropper { get; }
+        public IFaction SetFaction { get; }
+        public IReadonlyTransform SetPointForAiming { get; }
     }
 }

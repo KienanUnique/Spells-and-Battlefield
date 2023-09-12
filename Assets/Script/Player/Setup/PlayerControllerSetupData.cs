@@ -2,6 +2,7 @@
 using Common.Abstract_Bases.Disableable;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Readonly_Transform;
+using Factions;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
@@ -19,7 +20,7 @@ namespace Player.Setup
             IPlayerCameraEffects playerCameraEffects, IPlayerVisual playerVisual, IPlayerCharacter playerCharacter,
             IPlayerSpellsManager playerSpellsManager, IPlayerInput playerInput, IPlayerMovement playerMovement,
             IPlayerLook playerLook, IIdHolder idHolder, List<IDisableable> itemsNeedDisabling,
-            IReadonlyTransform cameraTransform, IReadonlyTransform setPointForAiming)
+            IReadonlyTransform cameraTransform, IReadonlyTransform setPointForAiming, IFaction setFaction)
         {
             SetPlayerEventInvokerForAnimations = playerEventInvokerForAnimations;
             SetPlayerCameraEffects = playerCameraEffects;
@@ -33,6 +34,7 @@ namespace Player.Setup
             SetItemsNeedDisabling = itemsNeedDisabling;
             SetCameraTransform = cameraTransform;
             SetPointForAiming = setPointForAiming;
+            SetFaction = setFaction;
         }
 
         public List<IDisableable> SetItemsNeedDisabling { get; }
@@ -47,5 +49,6 @@ namespace Player.Setup
         public IEventInvokerForActionAnimations SetPlayerEventInvokerForAnimations { get; }
         public IReadonlyTransform SetCameraTransform { get; }
         public IReadonlyTransform SetPointForAiming { get; }
+        public IFaction SetFaction { get; }
     }
 }

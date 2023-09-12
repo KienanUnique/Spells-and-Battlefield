@@ -83,8 +83,11 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
 
         private void OnActionAnimationKeyMomentTrigger()
         {
-            StateMachineControllable.ApplyEffectsToTargets(_damageTargetSelector.GetTargetsInCollider(),
-                _data.HitMechanicEffects);
+            if (CurrentStatus == StateEnemyAIStatus.Active)
+            {
+                StateMachineControllable.ApplyEffectsToTargets(_damageTargetSelector.GetTargetsInCollider(),
+                    _data.HitMechanicEffects);
+            }
         }
 
         private void Attack()

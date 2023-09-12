@@ -10,6 +10,7 @@ using Common.Event_Invoker_For_Action_Animations;
 using Common.Mechanic_Effects.Continuous_Effect;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
+using Factions;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
@@ -55,6 +56,7 @@ namespace Player
             _eventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
             CameraTransform = setupData.SetCameraTransform;
             _pointForAiming = setupData.SetPointForAiming;
+            Faction = setupData.SetFaction;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -67,9 +69,11 @@ namespace Player
         public event Action DashAiming;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
+        public event Action<IEnemyTarget> Destroying;
 
         public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
+        public IFaction Faction { get; private set; }
         public IReadonlyRigidbody MainRigidbody => _playerMovement.MainRigidbody;
         public IReadonlyTransform PointForAiming => _pointForAiming;
         public int Id => _idHolder.Id;
@@ -199,6 +203,11 @@ namespace Player
             _playerSpellsManager.NeedPlaySpellAnimation -= OnNeedPlaySpellAnimation;
             _playerSpellsManager.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellCanNotBeUsed;
             _playerSpellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
+        }
+
+        private void OnDestroy()
+        {
+            Destroying?.Invoke(this);
         }
 
         private void OnDashCooldownRatioChanged(float newCooldownRatio)

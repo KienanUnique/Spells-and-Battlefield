@@ -4,7 +4,7 @@ using Enemies.Movement.Provider;
 using Enemies.Target_Pathfinder.Provider;
 using UnityEngine;
 
-namespace Enemies.Setup
+namespace Enemies.Setup.Settings
 {
     [CreateAssetMenu(fileName = "Enemy Settings",
         menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory + "Enemy Settings", order = 0)]

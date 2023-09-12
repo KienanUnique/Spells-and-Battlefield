@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Common.Abstract_Bases
+namespace Common.Abstract_Bases.Box_Collider_Trigger
 {
     [RequireComponent(typeof(BoxCollider))]
     public abstract class BoxColliderTriggerBase<TRequiredObject> : MonoBehaviour

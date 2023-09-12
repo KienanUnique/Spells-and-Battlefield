@@ -8,7 +8,8 @@ namespace Interfaces
         IPhysicsInteractable,
         IMovable,
         IToMovingPlatformStickable,
-        ICaster
+        ICaster,
+        IEnemyTarget
     {
     }
 }

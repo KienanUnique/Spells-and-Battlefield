@@ -96,7 +96,8 @@ namespace Player.Setup
             var controllerToSetup = GetComponent<IInitializablePlayerController>();
             var setupData = new PlayerControllerSetupData(_eventInvokerForAnimations, _playerCameraEffects,
                 _playerVisual, _playerCharacter, playerSpellsManager, _playerInput, playerMovement, playerLook,
-                _idHolder, _itemsNeedDisabling, _cameraTransform, _pointForAiming.ReadonlyTransform);
+                _idHolder, _itemsNeedDisabling, _cameraTransform, _pointForAiming.ReadonlyTransform,
+                _settings.Faction);
             controllerToSetup.Initialize(setupData);
         }
 

@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2119776047973463125, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+      propertyPath: _transitionManager._singleSubManagers.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4773416566356749363, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -58,22 +62,17 @@ PrefabInstance:
     - target: {fileID: 6049343359790611563, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
       propertyPath: _firstStateEnemyAI
       value: 
-      objectReference: {fileID: 7234306314773833987}
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4546137287824208936, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
     - {fileID: 1147730886, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
     - {fileID: 4456813416636164007, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
     - {fileID: 3703067096898767848, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
     - {fileID: 3843991235069755057, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+    - {fileID: 1778004797254982539, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+    - {fileID: 5051693660154012416, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+    - {fileID: 8818841677001170540, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+    - {fileID: 3867161037413442854, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+    - {fileID: 5629608073953939406, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+    - {fileID: 6493552756842843751, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
---- !u!114 &7234306314773833987 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1147730887, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
-  m_PrefabInstance: {fileID: 7234306315908895428}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 085f88a4b51c28540b4739662a54682a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -12,6 +12,8 @@ using Enemies.Look;
 using Enemies.Loot_Dropper;
 using Enemies.Movement;
 using Enemies.Movement.Setup_Data;
+using Enemies.Setup.Controller_Setup_Data;
+using Enemies.Setup.Settings;
 using Enemies.State_Machine;
 using Enemies.State_Machine.States;
 using Enemies.State_Machine.Transition_Conditions;
@@ -20,8 +22,8 @@ using Enemies.Target_Pathfinder.Setup_Data;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Trigger;
 using Enemies.Visual;
+using Factions;
 using Interfaces;
-using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
 using UI.Popup_Text.Factory;
 using UnityEngine;
@@ -47,6 +49,7 @@ namespace Enemies.Setup
         [SerializeField] private ReadonlyTransformGetter _popupTextHitPointsChangeAppearCenterPoint;
         [SerializeField] private ReadonlyTransformGetter _lootSpawnPoint;
         [SerializeField] private Rigidbody _thisRigidbody;
+        [SerializeField] private ReadonlyTransformGetter _pointForAiming;
 
         private EnemyController _controller;
         private ExternalDependenciesInitializationWaiter _externalDependenciesInitializationWaiter;
@@ -58,8 +61,8 @@ namespace Enemies.Setup
         private IPopupHitPointsChangeTextFactory _popupHitPointsChangeTextFactory;
         private IEnemySettings _settings;
         private IInitializableStateEnemyAI[] _states;
-        private EnemyTargetFromTriggersSelector _targetFromTriggersSelector;
         private IInitializableTransitionEnemyAI[] _transitions;
+        private IFaction _faction;
 
         [Inject]
         private void GetDependencies(IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
@@ -73,13 +76,21 @@ namespace Enemies.Setup
         public IEnemy InitializedEnemy => _initializedEnemy ??= GetComponent<IEnemy>();
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
-            new List<IInitializable> {_externalDependenciesInitializationWaiter, _thisIKCenterPoint};
+            new List<IInitializable>
+            {
+                _externalDependenciesInitializationWaiter,
+                _thisIKCenterPoint,
+                _popupTextHitPointsChangeAppearCenterPoint,
+                _lootSpawnPoint,
+                _pointForAiming
+            };
 
-        public void SetDataForInitialization(IEnemySettings settings, IPickableItemDataForCreating itemToDrop,
+        public void SetDataForInitialization(IEnemySettings settings, IFaction faction,
             List<IEnemyTargetTrigger> targetTriggers)
         {
             _settings = settings;
             _externalTargetTriggers = targetTriggers;
+            _faction = faction;
 
             if (_externalDependenciesInitializationWaiter == null)
             {
@@ -98,35 +109,39 @@ namespace Enemies.Setup
             ITargetPathfinder targetPathfinder =
                 _settings.TargetPathfinderProvider.GetImplementationObject(targetPathfinderSetupData);
 
+            var targetFromTriggersSelector = new EnemyTargetFromTriggersSelector(_faction, thisReadonlyRigidbody, this,
+                _generalEnemySettings.TargetSelectorUpdateCooldownInSeconds);
+
             var enemyLook = new EnemyLook(_thisRigidbody.transform, thisReadonlyRigidbody, thisReadonlyRigidbody,
-                _targetFromTriggersSelector, this, _transformToRotateForIK, _thisIKCenterPoint.ReadonlyTransform,
+                targetFromTriggersSelector, this, _transformToRotateForIK, _thisIKCenterPoint.ReadonlyTransform,
                 _needDistanceFromIKCenterPoint);
 
             var enemyVisual = new EnemyVisual(_rigBuilder, _characterAnimator, _settings.BaseAnimatorOverrideController,
                 _generalEnemySettings.EmptyActionAnimationClip);
 
             var movementSetupData =
-                new EnemyMovementSetupData(_thisRigidbody, _targetFromTriggersSelector, this, targetPathfinder);
+                new EnemyMovementSetupData(_thisRigidbody, targetFromTriggersSelector, this, targetPathfinder);
             IDisableableEnemyMovement enemyMovement =
                 _settings.MovementProvider.GetImplementationObject(movementSetupData);
 
             IDisableableEnemyCharacter enemyCharacter = _settings.CharacterProvider.GetImplementationObject(this);
 
-            _targetFromTriggersSelector.AddTriggers(_externalTargetTriggers);
-            _targetFromTriggersSelector.AddTriggers(_localTargetTriggers);
+            targetFromTriggersSelector.AddTriggers(_externalTargetTriggers);
+            targetFromTriggersSelector.AddTriggers(_localTargetTriggers);
 
             ILootDropper lootDropper =
                 _settings.LootDropperProvider.GetImplementation(_itemsFactory, _lootSpawnPoint.ReadonlyTransform);
 
             var itemsNeedDisabling = new List<IDisableable>
             {
-                enemyMovement, enemyCharacter, _targetFromTriggersSelector, enemyLook
+                enemyMovement, enemyCharacter, targetFromTriggersSelector, enemyLook
             };
 
             var baseSetupData = new EnemyControllerSetupData(_enemyStateMachineAI, enemyMovement, itemsNeedDisabling,
-                _idHolder, _generalEnemySettings, _popupHitPointsChangeTextFactory, _targetFromTriggersSelector,
+                _idHolder, _generalEnemySettings, _popupHitPointsChangeTextFactory, targetFromTriggersSelector,
                 enemyLook, _eventInvokerForAnimations, enemyVisual, enemyCharacter,
-                _popupTextHitPointsChangeAppearCenterPoint.ReadonlyTransform, lootDropper);
+                _popupTextHitPointsChangeAppearCenterPoint.ReadonlyTransform, lootDropper, _faction,
+                _pointForAiming.ReadonlyTransform);
 
             _enemyStateMachineAI.Initialize(_controller);
 
@@ -153,10 +168,8 @@ namespace Enemies.Setup
             _thisRigidbody = GetComponent<Rigidbody>();
             _controller = GetComponent<EnemyController>();
 
-            _targetFromTriggersSelector = new EnemyTargetFromTriggersSelector();
-
-            _states = _enemyStateMachineAI.GetComponents<IInitializableStateEnemyAI>();
-            _transitions = _enemyStateMachineAI.GetComponents<IInitializableTransitionEnemyAI>();
+            _states = _enemyStateMachineAI.GetComponentsInChildren<IInitializableStateEnemyAI>();
+            _transitions = _enemyStateMachineAI.GetComponentsInChildren<IInitializableTransitionEnemyAI>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Player.Camera_Effects.Settings;
+﻿using Factions;
+using Player.Camera_Effects.Settings;
 using Player.Character.Settings;
 using Player.Look.Settings;
 using Player.Movement.Settings;
@@ -18,6 +19,7 @@ namespace Player.Settings
         [SerializeField] private PlayerCharacterSettingsSection _character;
         [SerializeField] private PlayerSpellManagerSettingsSection _spellManager;
         [SerializeField] private PlayerVisualSettingsSection _visual;
+        [SerializeField] private FactionScriptableObject _faction;
 
         public IPlayerCameraEffectsSettings CameraEffects => _cameraEffects;
         public IPlayerLookSettings Look => _look;
@@ -25,5 +27,6 @@ namespace Player.Settings
         public IPlayerCharacterSettings Character => _character;
         public IPlayerSpellManagerSettings SpellManager => _spellManager;
         public IPlayerVisualSettings Visual => _visual;
+        public IFaction Faction => _faction;
     }
 }

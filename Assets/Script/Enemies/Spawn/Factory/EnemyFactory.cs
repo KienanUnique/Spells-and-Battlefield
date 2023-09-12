@@ -15,20 +15,20 @@ namespace Enemies.Spawn.Factory
         {
         }
 
-        public IEnemy Create(IEnemyDataForSpawnMarker dataForSpawnMarker, List<IEnemyTargetTrigger> enemyTargetTriggers,
+        public IEnemy Create(IEnemyDataForSpawning dataForSpawning, List<IEnemyTargetTrigger> enemyTargetTriggers,
             IPositionDataForInstantiation positionDataForInstantiation)
         {
-            return Create(dataForSpawnMarker, enemyTargetTriggers, positionDataForInstantiation.SpawnPosition,
+            return Create(dataForSpawning, enemyTargetTriggers, positionDataForInstantiation.SpawnPosition,
                 positionDataForInstantiation.SpawnRotation);
         }
 
-        public IEnemy Create(IEnemyDataForSpawnMarker dataForSpawnMarker, List<IEnemyTargetTrigger> enemyTargetTriggers,
+        public IEnemy Create(IEnemyDataForSpawning dataForSpawning, List<IEnemyTargetTrigger> enemyTargetTriggers,
             Vector3 spawnPosition, Quaternion spawnRotation)
         {
             var enemySetup =
-                InstantiatePrefabForComponent<IEnemySetup>(dataForSpawnMarker.PrefabProvider, spawnPosition,
+                InstantiatePrefabForComponent<IEnemySetup>(dataForSpawning.PrefabProvider, spawnPosition,
                     spawnRotation);
-            enemySetup.SetDataForInitialization(dataForSpawnMarker.Settings, dataForSpawnMarker.ItemToDrop,
+            enemySetup.SetDataForInitialization(dataForSpawning.Settings, dataForSpawning.Faction,
                 enemyTargetTriggers);
             return enemySetup.InitializedEnemy;
         }

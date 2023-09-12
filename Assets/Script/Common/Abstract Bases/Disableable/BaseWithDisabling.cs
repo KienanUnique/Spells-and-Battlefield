@@ -2,28 +2,28 @@
 {
     public abstract class BaseWithDisabling : IDisableable
     {
-        private bool _isEnabled;
+        protected bool IsEnabled { get; private set; }
 
         public void Enable()
         {
-            if (_isEnabled)
+            if (IsEnabled)
             {
                 return;
             }
 
             SubscribeOnEvents();
-            _isEnabled = true;
+            IsEnabled = true;
         }
 
         public void Disable()
         {
-            if (!_isEnabled)
+            if (!IsEnabled)
             {
                 return;
             }
 
             UnsubscribeFromEvents();
-            _isEnabled = false;
+            IsEnabled = false;
         }
 
         protected abstract void SubscribeOnEvents();

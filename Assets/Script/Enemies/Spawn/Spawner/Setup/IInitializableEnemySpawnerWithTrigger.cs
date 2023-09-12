@@ -7,6 +7,6 @@ namespace Enemies.Spawn.Spawner.Setup
     public interface IInitializableEnemySpawnerWithTrigger
     {
         void Initialize(IEnemyFactory enemyFactory, IPositionDataForInstantiation positionDataForInstantiation,
-            IEnemyDataForSpawnMarker dataForSpawnMarker);
+            IEnemyDataForSpawning dataForSpawning);
     }
 }
