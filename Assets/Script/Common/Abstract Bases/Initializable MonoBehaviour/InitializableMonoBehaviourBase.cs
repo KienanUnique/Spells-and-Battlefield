@@ -9,18 +9,19 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
     {
         private readonly List<Action> _actionsAfterInitialization = new List<Action>();
 
-        private readonly ValueWithReactionOnChange<InitializationStatus> _currentStatus =
-            new ValueWithReactionOnChange<InitializationStatus>(InitializationStatus.NonInitialized);
+        private readonly ValueWithReactionOnChange<InitializableMonoBehaviourStatus> _currentStatus =
+            new ValueWithReactionOnChange<InitializableMonoBehaviourStatus>(InitializableMonoBehaviourStatus
+                .NonInitialized);
 
         private List<IDisableable> _itemsNeedDisabling;
 
-        public event Action<InitializationStatus> InitializationStatusChanged;
+        public event Action<InitializableMonoBehaviourStatus> InitializationStatusChanged;
 
-        public InitializationStatus CurrentInitializationStatus => _currentStatus.Value;
+        public InitializableMonoBehaviourStatus CurrentInitializableMonoBehaviourStatus => _currentStatus.Value;
 
         public void AddActionAfterInitializing(Action action)
         {
-            if (CurrentInitializationStatus == InitializationStatus.NonInitialized)
+            if (CurrentInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.NonInitialized)
             {
                 _actionsAfterInitialization.Add(action);
             }
@@ -39,7 +40,7 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
 
         protected virtual void OnEnable()
         {
-            if (_currentStatus.Value != InitializationStatus.NonInitialized)
+            if (_currentStatus.Value != InitializableMonoBehaviourStatus.NonInitialized)
             {
                 SubscribeOnBaseEvents();
             }
@@ -47,16 +48,22 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
 
         protected virtual void OnDisable()
         {
-            if (_currentStatus.Value != InitializationStatus.NonInitialized)
+            if (_currentStatus.Value != InitializableMonoBehaviourStatus.NonInitialized)
             {
                 UnsubscribeFromBaseEvents();
             }
         }
 
+        protected void OnDestroy()
+        {
+            _currentStatus.Value = InitializableMonoBehaviourStatus.Destroying;
+            InitializationStatusChanged?.Invoke(InitializableMonoBehaviourStatus.Destroying);
+        }
+
         protected void SetInitializedStatus()
         {
             SubscribeOnBaseEvents();
-            _currentStatus.Value = InitializationStatus.Initialized;
+            _currentStatus.Value = InitializableMonoBehaviourStatus.Initialized;
             foreach (Action action in _actionsAfterInitialization)
             {
                 action.Invoke();
@@ -84,7 +91,7 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
             UnsubscribeFromEvents();
         }
 
-        private void OnInitializationStatusChanged(InitializationStatus newStatus)
+        private void OnInitializationStatusChanged(InitializableMonoBehaviourStatus newStatus)
         {
             InitializationStatusChanged?.Invoke(newStatus);
         }

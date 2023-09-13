@@ -69,7 +69,6 @@ namespace Player
         public event Action DashAiming;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
-        public event Action<IEnemyTarget> Destroying;
 
         public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
         public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
@@ -205,24 +204,19 @@ namespace Player
             _playerSpellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
         }
 
-        private void OnDestroy()
-        {
-            Destroying?.Invoke(this);
-        }
-
         private void OnDashCooldownRatioChanged(float newCooldownRatio)
         {
             DashCooldownRatioChanged?.Invoke(newCooldownRatio);
         }
 
-        private void OnInitializationStatusChanged(InitializationStatus newStatus)
+        private void OnInitializationStatusChanged(InitializableMonoBehaviourStatus newStatus)
         {
             switch (newStatus)
             {
-                case InitializationStatus.Initialized:
+                case InitializableMonoBehaviourStatus.Initialized:
                     StartCoroutine(UpdateMovingDataCoroutine());
                     break;
-                case InitializationStatus.NonInitialized:
+                case InitializableMonoBehaviourStatus.NonInitialized:
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
             }

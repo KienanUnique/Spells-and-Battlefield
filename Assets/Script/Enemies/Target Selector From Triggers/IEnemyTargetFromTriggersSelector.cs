@@ -4,6 +4,8 @@ namespace Enemies.Target_Selector_From_Triggers
 {
     public interface IEnemyTargetFromTriggersSelector : IReadonlyEnemyTargetFromTriggersSelector
     {
+        public void StartSelecting();
+        public void StopSelecting();
     }
 
     public interface IReadonlyEnemyTargetFromTriggersSelector

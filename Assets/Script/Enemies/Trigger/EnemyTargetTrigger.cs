@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Abstract_Bases;
 using Common.Abstract_Bases.Box_Collider_Trigger;
 using Interfaces;
 using UnityEngine;
@@ -8,7 +7,7 @@ using UnityEngine;
 namespace Enemies.Trigger
 {
     [RequireComponent(typeof(BoxCollider))]
-    public class EnemyTargetTrigger : BoxColliderTriggerBase<IEnemyTarget>, IEnemyTargetTrigger
+    public class EnemyTargetTrigger : TriggerForInitializableObjectsBase<IEnemyTarget>, IEnemyTargetTrigger
     {
         public event Action<IEnemyTarget> TargetDetected;
         public event Action<IEnemyTarget> TargetLost;
@@ -25,24 +24,26 @@ namespace Enemies.Trigger
             _requiredObjectsInside.Remove(targetToForget);
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            RequiredObjectEnteringDetected += OnRequiredObjectEnteringDetected;
-            RequiredObjectExitingDetected += OnRequiredObjectExitingDetected;
+            base.OnEnable();
+            RequiredObjectEnteringDetected += OnTargetEnteringDetected;
+            RequiredObjectExitingDetected += OnTargetExitingDetected;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
-            RequiredObjectEnteringDetected -= OnRequiredObjectEnteringDetected;
-            RequiredObjectExitingDetected -= OnRequiredObjectExitingDetected;
+            base.OnDisable();
+            RequiredObjectEnteringDetected -= OnTargetEnteringDetected;
+            RequiredObjectExitingDetected -= OnTargetExitingDetected;
         }
 
-        private void OnRequiredObjectEnteringDetected(IEnemyTarget obj)
+        private void OnTargetEnteringDetected(IEnemyTarget obj)
         {
             TargetDetected?.Invoke(obj);
         }
 
-        private void OnRequiredObjectExitingDetected(IEnemyTarget obj)
+        private void OnTargetExitingDetected(IEnemyTarget obj)
         {
             TargetLost?.Invoke(obj);
         }

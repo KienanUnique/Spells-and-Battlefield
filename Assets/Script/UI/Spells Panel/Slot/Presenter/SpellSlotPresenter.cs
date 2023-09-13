@@ -67,11 +67,11 @@ namespace UI.Spells_Panel.Slot.Presenter
             InitializationStatusChanged -= OnInitializationStatusChanged;
         }
 
-        private void OnInitializationStatusChanged(InitializationStatus newStatus)
+        private void OnInitializationStatusChanged(InitializableMonoBehaviourStatus newStatus)
         {
             switch (newStatus)
             {
-                case InitializationStatus.Initialized:
+                case InitializableMonoBehaviourStatus.Initialized:
                     if (_model.IsVisible)
                     {
                         if (_model.CurrentSpell == null)
@@ -89,7 +89,7 @@ namespace UI.Spells_Panel.Slot.Presenter
                     }
 
                     break;
-                case InitializationStatus.NonInitialized:
+                case InitializableMonoBehaviourStatus.NonInitialized:
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
             }

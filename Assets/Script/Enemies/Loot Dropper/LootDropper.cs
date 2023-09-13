@@ -39,7 +39,6 @@ namespace Enemies.Loot_Dropper
             for (var i = 0; i < lootToDrop.Count; i++)
             {
                 Vector3 dropDirection = directions[i];
-                Debug.DrawRay(_itemsSpawnPoint.Position, dropDirection, Color.red, 9999f);
                 _pickableItemsFactory.Create(lootToDrop[i], _itemsSpawnPoint.Position, dropDirection);
             }
         }

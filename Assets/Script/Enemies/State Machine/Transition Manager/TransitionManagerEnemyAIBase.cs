@@ -12,15 +12,15 @@ namespace Enemies.State_Machine.Transition_Manager
         public void StartCheckingConditions()
         {
             _isActive = true;
-            HandleStartCheckingConditions();
             SubscribeOnTransitionEvents();
+            HandleStartCheckingConditions();
         }
 
         public void StopCheckingConditions()
         {
             _isActive = false;
-            HandleStopCheckingConditions();
             UnsubscribeFromTransitionEvents();
+            HandleStopCheckingConditions();
         }
 
         protected abstract void HandleStartCheckingConditions();

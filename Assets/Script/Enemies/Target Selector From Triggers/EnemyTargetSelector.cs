@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Disableable;
-using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Readonly_Transform;
 using Enemies.Trigger;
 using Factions;
@@ -15,11 +14,13 @@ namespace Enemies.Target_Selector_From_Triggers
     public class EnemyTargetFromTriggersSelector : BaseWithDisabling, IEnemyTargetFromTriggersSelector
     {
         private readonly IFaction _thisFaction;
-        private readonly HashSet<IEnemyTarget> _waitingInitializationTargets = new HashSet<IEnemyTarget>();
         private readonly List<IEnemyTarget> _targets = new List<IEnemyTarget>();
         private readonly List<IEnemyTargetTrigger> _triggers = new List<IEnemyTargetTrigger>();
         private readonly IReadonlyTransform _thisTransform;
         private readonly float _targetSelectorUpdateCooldownInSeconds;
+        private readonly ICoroutineStarter _coroutineStarter;
+        private Coroutine _selectingTargetsCoroutine;
+        private bool IsActive => _selectingTargetsCoroutine != null;
 
         public EnemyTargetFromTriggersSelector(IFaction thisFaction, IReadonlyTransform thisTransform,
             ICoroutineStarter coroutineStarter, float targetSelectorUpdateCooldownInSeconds)
@@ -27,7 +28,7 @@ namespace Enemies.Target_Selector_From_Triggers
             _thisFaction = thisFaction;
             _thisTransform = thisTransform;
             _targetSelectorUpdateCooldownInSeconds = targetSelectorUpdateCooldownInSeconds;
-            coroutineStarter.StartCoroutine(UpdateCurrentTargetCoroutine());
+            _coroutineStarter = coroutineStarter;
         }
 
         public event IReadonlyEnemyTargetFromTriggersSelector.CurrentTargetChangedEventHandler CurrentTargetChanged;
@@ -53,6 +54,22 @@ namespace Enemies.Target_Selector_From_Triggers
             }
         }
 
+        public void StartSelecting()
+        {
+            _selectingTargetsCoroutine ??= _coroutineStarter.StartCoroutine(UpdateCurrentTargetCoroutine());
+        }
+
+        public void StopSelecting()
+        {
+            if (_selectingTargetsCoroutine == null)
+            {
+                return;
+            }
+
+            _coroutineStarter.StopCoroutine(_selectingTargetsCoroutine);
+            _selectingTargetsCoroutine = null;
+        }
+
         protected sealed override void SubscribeOnEvents()
         {
             foreach (IEnemyTargetTrigger trigger in _triggers)
@@ -64,11 +81,6 @@ namespace Enemies.Target_Selector_From_Triggers
             foreach (IEnemyTarget target in _targets)
             {
                 SubscribeOnInitializedTarget(target);
-            }
-
-            foreach (IEnemyTarget target in _waitingInitializationTargets)
-            {
-                SubscribeOnNonInitializedTarget(target);
             }
         }
 
@@ -84,11 +96,6 @@ namespace Enemies.Target_Selector_From_Triggers
             {
                 UnsubscribeFromInitializedTarget(target);
             }
-
-            foreach (IEnemyTarget target in _waitingInitializationTargets)
-            {
-                UnsubscribeFromNonInitializedTarget(target);
-            }
         }
 
         private void OnTargetDetected(IEnemyTarget newTarget)
@@ -98,60 +105,16 @@ namespace Enemies.Target_Selector_From_Triggers
                 return;
             }
 
-            switch (newTarget.CurrentInitializationStatus)
-            {
-                case InitializationStatus.NonInitialized:
-                    _waitingInitializationTargets.Add(newTarget);
-                    if (IsEnabled)
-                    {
-                        SubscribeOnNonInitializedTarget(newTarget);
-                    }
-
-                    break;
-                case InitializationStatus.Initialized:
-                    HandleNewDetectedTarget(newTarget);
-                    break;
-            }
-        }
-
-        private void OnTargetInitializationStatusChanged(InitializationStatus newInitializationStatus)
-        {
-            if (newInitializationStatus == InitializationStatus.NonInitialized)
-            {
-                return;
-            }
-
-            bool IsTargetInitialized(IEnemyTarget target) =>
-                target.CurrentInitializationStatus == InitializationStatus.Initialized;
-
-            foreach (IEnemyTarget enemyTarget in _waitingInitializationTargets.Where(IsTargetInitialized))
-            {
-                UnsubscribeFromNonInitializedTarget(enemyTarget);
-                HandleNewDetectedTarget(enemyTarget);
-            }
-
-            _waitingInitializationTargets.RemoveWhere(IsTargetInitialized);
-        }
-
-        private void SubscribeOnNonInitializedTarget(IInitializable target)
-        {
-            target.InitializationStatusChanged += OnTargetInitializationStatusChanged;
-        }
-
-        private void UnsubscribeFromNonInitializedTarget(IInitializable target)
-        {
-            target.InitializationStatusChanged -= OnTargetInitializationStatusChanged;
+            HandleNewDetectedTarget(newTarget);
         }
 
         private void SubscribeOnInitializedTarget(IEnemyTarget target)
         {
-            target.Destroying += OnTargetStartDestroying;
             target.CharacterStateChanged += OnTargetStateChanged;
         }
 
         private void UnsubscribeFromInitializedTarget(IEnemyTarget target)
         {
-            target.Destroying -= OnTargetStartDestroying;
             target.CharacterStateChanged -= OnTargetStateChanged;
         }
 
@@ -171,11 +134,6 @@ namespace Enemies.Target_Selector_From_Triggers
             }
         }
 
-        private void OnTargetStartDestroying(IEnemyTarget destroyingTarget)
-        {
-            RemoveTarget(destroyingTarget);
-        }
-
         private IEnumerator UpdateCurrentTargetCoroutine()
         {
             var waitForCooldown = new WaitForSeconds(_targetSelectorUpdateCooldownInSeconds);
@@ -189,8 +147,7 @@ namespace Enemies.Target_Selector_From_Triggers
         private void HandleNewDetectedTarget(IEnemyTarget newTarget)
         {
             if (_targets.Contains(newTarget) ||
-                _thisFaction.GetRelationshipToOtherFraction(newTarget.Faction) ==
-                OtherFactionRelationship.Friendly ||
+                _thisFaction.GetRelationshipToOtherFraction(newTarget.Faction) == OtherFactionRelationship.Friendly ||
                 newTarget.CurrentCharacterState == CharacterState.Dead)
             {
                 return;
@@ -240,6 +197,11 @@ namespace Enemies.Target_Selector_From_Triggers
 
         private void UpdateSelectedTarget()
         {
+            if (!IsActive)
+            {
+                return;
+            }
+
             IEnemyTarget nextTarget = _targets.Count switch
             {
                 0 => null,

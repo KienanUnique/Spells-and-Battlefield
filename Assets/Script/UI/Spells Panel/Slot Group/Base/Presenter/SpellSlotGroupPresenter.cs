@@ -53,11 +53,11 @@ namespace UI.Spells_Panel.Slot_Group.Base.Presenter
             InitializationStatusChanged -= OnInitializationStatusChanged;
         }
 
-        private void OnInitializationStatusChanged(InitializationStatus newStatus)
+        private void OnInitializationStatusChanged(InitializableMonoBehaviourStatus newStatus)
         {
             switch (newStatus)
             {
-                case InitializationStatus.Initialized:
+                case InitializableMonoBehaviourStatus.Initialized:
                     if (_model.IsSelected)
                     {
                         _view.Unselect();
@@ -69,7 +69,7 @@ namespace UI.Spells_Panel.Slot_Group.Base.Presenter
                     }
 
                     break;
-                case InitializationStatus.NonInitialized:
+                case InitializableMonoBehaviourStatus.NonInitialized:
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
             }

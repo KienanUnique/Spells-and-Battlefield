@@ -1,5 +1,4 @@
-﻿using System;
-using Common.Abstract_Bases.Initializable_MonoBehaviour;
+﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Factions;
@@ -11,6 +10,5 @@ namespace Interfaces
         public IFaction Faction { get; }
         public IReadonlyRigidbody MainRigidbody { get; }
         public IReadonlyTransform PointForAiming { get; }
-        public event Action<IEnemyTarget> Destroying;
     }
 }

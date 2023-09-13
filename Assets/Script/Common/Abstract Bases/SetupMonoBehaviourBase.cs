@@ -70,7 +70,7 @@ namespace Common.Abstract_Bases
             }
         }
 
-        private void OnInitializableObjectStatusChanged(InitializationStatus obj)
+        private void OnInitializableObjectStatusChanged(InitializableMonoBehaviourStatus obj)
         {
             if (_wasInitialized || !_wasStartPhasePassed)
             {
@@ -86,7 +86,7 @@ namespace Common.Abstract_Bases
         private bool IsAllRequiredObjectsInitialized()
         {
             return _objectsToWaitBeforeInitialization.All(initializableObject =>
-                initializableObject.CurrentInitializationStatus == InitializationStatus.Initialized);
+                initializableObject.CurrentInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Initialized);
         }
 
         private void RunInitialization()

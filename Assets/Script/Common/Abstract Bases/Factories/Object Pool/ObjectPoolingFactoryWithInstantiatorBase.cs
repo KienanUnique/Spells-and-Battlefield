@@ -108,12 +108,12 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
             HandleNewFreeItem(obj);
         }
 
-        private void OnNewItemInitializationStatusChanged(InitializationStatus newInitializationStatus)
+        private void OnNewItemInitializationStatusChanged(InitializableMonoBehaviourStatus newInitializableMonoBehaviourStatus)
         {
-            if (newInitializationStatus == InitializationStatus.Initialized)
+            if (newInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Initialized)
             {
                 TPoolItem initializedItem = _waitingInitializationItems.First(item =>
-                    item.CurrentInitializationStatus == InitializationStatus.Initialized);
+                    item.CurrentInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Initialized);
                 UnsubscribeFromWaitingInitializationItem(initializedItem);
                 _waitingInitializationItems.Remove(initializedItem);
                 _items.Add(initializedItem);
@@ -125,7 +125,7 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
         {
             var newItem =
                 InstantiatePrefabForComponent<TPoolItem>(_prefabProvider, _defaultPositionDataForInstantiation);
-            if (newItem.CurrentInitializationStatus == InitializationStatus.NonInitialized)
+            if (newItem.CurrentInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.NonInitialized)
             {
                 _waitingInitializationItems.Add(newItem);
                 SubscribeOnWaitingInitializationItem(newItem);

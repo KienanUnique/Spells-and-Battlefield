@@ -1,27 +1,28 @@
 ﻿using System;
-using Common.Abstract_Bases;
 using Common.Abstract_Bases.Box_Collider_Trigger;
 using Interfaces.Pickers;
 
 namespace Pickable_Items
 {
-    public class PickableItemsPickerTrigger : BoxColliderTriggerBase<IPickableItemsPicker>
+    public class PickableItemsPickerTrigger : TriggerForInitializableObjectsBase<IPickableItemsPicker>
     {
         public event Action<IPickableItemsPicker> PickerDetected;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            RequiredObjectEnteringDetected += OnRequiredObjectEnteringDetected;
+            base.OnEnable();
+            RequiredObjectEnteringDetected += OnPickerEnteringDetected;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
-            RequiredObjectEnteringDetected -= OnRequiredObjectEnteringDetected;
+            base.OnDisable();
+            RequiredObjectEnteringDetected -= OnPickerEnteringDetected;
         }
 
-        private void OnRequiredObjectEnteringDetected(IPickableItemsPicker obj)
+        private void OnPickerEnteringDetected(IPickableItemsPicker picker)
         {
-            PickerDetected?.Invoke(obj);
+            PickerDetected?.Invoke(picker);
         }
     }
 }

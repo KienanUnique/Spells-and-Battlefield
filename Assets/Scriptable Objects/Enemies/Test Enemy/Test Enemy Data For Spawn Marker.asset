@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabProvider: {fileID: 11400000, guid: 0b25384c07cebb14eb44535cae9e2df9, type: 2}
   _settings: {fileID: 11400000, guid: 6b35f59eef65aad4090164294aea35d3, type: 2}
-  _fraction: {fileID: 11400000, guid: 532fc442916f5fb418225d66e415a2b7, type: 2}
+  _faction: {fileID: 11400000, guid: 532fc442916f5fb418225d66e415a2b7, type: 2}

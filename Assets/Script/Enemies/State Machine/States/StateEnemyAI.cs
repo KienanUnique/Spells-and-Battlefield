@@ -60,7 +60,7 @@ namespace Enemies.State_Machine.States
 
         protected override void SubscribeOnEvents()
         {
-            _currentStateStatus.AfterValueChanged += OnAfterStateStatus;
+            _currentStateStatus.AfterValueChanged += OnAfterStateStatusChanged;
             if (CurrentStatus == StateEnemyAIStatus.Active)
             {
                 SubscribeOnTransitionEvents();
@@ -69,7 +69,7 @@ namespace Enemies.State_Machine.States
 
         protected override void UnsubscribeFromEvents()
         {
-            _currentStateStatus.AfterValueChanged -= OnAfterStateStatus;
+            _currentStateStatus.AfterValueChanged -= OnAfterStateStatusChanged;
             UnsubscribeFromTransitionEvents();
         }
 
@@ -83,7 +83,7 @@ namespace Enemies.State_Machine.States
             NeedToSwitchToNextState?.Invoke(_cachedNextState);
         }
 
-        private void OnAfterStateStatus(StateEnemyAIStatus newStatus)
+        private void OnAfterStateStatusChanged(StateEnemyAIStatus newStatus)
         {
             switch (newStatus)
             {

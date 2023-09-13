@@ -7,20 +7,20 @@ namespace Common
     {
         public ExternalDependenciesInitializationWaiter(bool needInstantlyHandleExternalDependenciesInitialization)
         {
-            CurrentInitializationStatus = InitializationStatus.NonInitialized;
+            CurrentInitializableMonoBehaviourStatus = InitializableMonoBehaviourStatus.NonInitialized;
             if (needInstantlyHandleExternalDependenciesInitialization)
             {
                 HandleExternalDependenciesInitialization();
             }
         }
 
-        public event Action<InitializationStatus> InitializationStatusChanged;
-        public InitializationStatus CurrentInitializationStatus { get; private set; }
+        public event Action<InitializableMonoBehaviourStatus> InitializationStatusChanged;
+        public InitializableMonoBehaviourStatus CurrentInitializableMonoBehaviourStatus { get; private set; }
 
         public void HandleExternalDependenciesInitialization()
         {
-            CurrentInitializationStatus = InitializationStatus.Initialized;
-            InitializationStatusChanged?.Invoke(CurrentInitializationStatus);
+            CurrentInitializableMonoBehaviourStatus = InitializableMonoBehaviourStatus.Initialized;
+            InitializationStatusChanged?.Invoke(CurrentInitializableMonoBehaviourStatus);
         }
     }
 }

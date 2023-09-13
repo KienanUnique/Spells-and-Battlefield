@@ -74,7 +74,6 @@ namespace Enemies.Controller
         public event Action ActionAnimationKeyMomentTrigger;
         public event Action ActionAnimationStart;
         public event Action ActionAnimationEnd;
-        public event Action<IEnemyTarget> Destroying;
 
         public float HitPointCountRatio => _character.HitPointCountRatio;
 
@@ -189,15 +188,16 @@ namespace Enemies.Controller
             _enemyStateMachineAI.NeedChangeLookPointCalculator -= OnNeedChangeLookPointCalculator;
         }
 
-        private void OnInitializationStatusChanged(InitializationStatus newStatus)
+        private void OnInitializationStatusChanged(InitializableMonoBehaviourStatus newStatus)
         {
             switch (newStatus)
             {
-                case InitializationStatus.Initialized:
+                case InitializableMonoBehaviourStatus.Initialized:
+                    TargetFromTriggersSelector.StartSelecting();
                     _look.StartLooking();
                     _enemyStateMachineAI.StartStateMachine();
                     break;
-                case InitializationStatus.NonInitialized:
+                case InitializableMonoBehaviourStatus.NonInitialized:
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
             }
@@ -212,6 +212,7 @@ namespace Enemies.Controller
         {
             if (newState == CharacterState.Dead)
             {
+                TargetFromTriggersSelector.StopSelecting();
                 _look.StopLooking();
                 _enemyStateMachineAI.StopStateMachine();
                 _movement.DisableMoving();
@@ -259,7 +260,6 @@ namespace Enemies.Controller
         private IEnumerator DestroyAfterDelay()
         {
             yield return new WaitForSeconds(_generalEnemySettings.DelayInSecondsBeforeDestroy);
-            Destroying?.Invoke(this);
             Destroy(gameObject);
         }
     }

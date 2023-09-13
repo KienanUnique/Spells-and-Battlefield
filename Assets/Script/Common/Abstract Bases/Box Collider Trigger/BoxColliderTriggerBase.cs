@@ -7,17 +7,21 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
     [RequireComponent(typeof(BoxCollider))]
     public abstract class BoxColliderTriggerBase<TRequiredObject> : MonoBehaviour
     {
-        protected List<TRequiredObject> _requiredObjectsInside;
+        protected readonly List<TRequiredObject> _requiredObjectsInside = new List<TRequiredObject>();
 
         protected event Action<TRequiredObject> RequiredObjectEnteringDetected;
         protected event Action<TRequiredObject> RequiredObjectExitingDetected;
 
-        protected virtual void OnRequiredObjectEnteringDetected()
+        protected virtual void OnRequiredObjectEnteringDetected(TRequiredObject requiredObject)
         {
+            _requiredObjectsInside.Add(requiredObject);
+            RequiredObjectEnteringDetected?.Invoke(requiredObject);
         }
 
-        protected virtual void OnRequiredObjectExitingDetected()
+        protected virtual void OnRequiredObjectExitingDetected(TRequiredObject requiredObject)
         {
+            _requiredObjectsInside.Remove(requiredObject);
+            RequiredObjectExitingDetected?.Invoke(requiredObject);
         }
 
         protected IReadOnlyCollection<TRequiredObject> GetRequiredObjectsInCollider()
@@ -25,18 +29,11 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
             return _requiredObjectsInside;
         }
 
-        private void Awake()
-        {
-            _requiredObjectsInside = new List<TRequiredObject>();
-        }
-
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out TRequiredObject requiredObject))
             {
-                _requiredObjectsInside.Add(requiredObject);
-                OnRequiredObjectEnteringDetected();
-                RequiredObjectEnteringDetected?.Invoke(requiredObject);
+                OnRequiredObjectEnteringDetected(requiredObject);
             }
         }
 
@@ -45,9 +42,7 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
             if (other.TryGetComponent(out TRequiredObject requiredObject) &&
                 _requiredObjectsInside.Contains(requiredObject))
             {
-                _requiredObjectsInside.Remove(requiredObject);
-                OnRequiredObjectExitingDetected();
-                RequiredObjectExitingDetected?.Invoke(requiredObject);
+                OnRequiredObjectExitingDetected(requiredObject);
             }
         }
     }

@@ -71,12 +71,6 @@ namespace Pickable_Items.Controllers
             PickedUp
         }
 
-        public void DropItemTowardsDirection(Vector3 direction)
-        {
-            Debug.Log($"DropItemTowardsDirection {direction}");
-            _rigidbody.AddForce(_pickableItemsSettings.DropForce * direction, ForceMode.Impulse);
-        }
-
         protected override void SubscribeOnEvents()
         {
             _pickerTrigger.PickerDetected += OnPickerDetected;
