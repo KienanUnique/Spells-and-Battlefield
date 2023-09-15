@@ -6,6 +6,9 @@ using Common.Abstract_Bases.Checkers.Wall_Checker;
 using Common.Abstract_Bases.Disableable;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Readonly_Transform;
+using Common.Settings.Ground_Layer_Mask;
+using Enemies.Spawn.Factory;
+using Enemies.Trigger;
 using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
@@ -53,6 +56,7 @@ namespace Player.Setup
         private List<IDisableable> _itemsNeedDisabling;
 
         [Header("Other")] [SerializeField] private ReadonlyTransformGetter _pointForAiming;
+        [SerializeField] private List<EnemyTargetTrigger> _triggersForSummonedEnemies;
 
         private IPlayerCameraEffects _playerCameraEffects;
         private ICaster _playerCaster;
@@ -63,15 +67,18 @@ namespace Player.Setup
         private ISpellObjectsFactory _spellObjectsFactory;
         private ISpellTypesSetting _spellTypesSetting;
         private Rigidbody _thisRigidbody;
+        private IToolsForSummon _toolsForSummon;
 
         [Inject]
         private void GetDependencies(IPlayerInput playerInput, IPlayerSettings settings,
-            ISpellObjectsFactory spellObjectsFactory, ISpellTypesSetting spellTypesSetting)
+            ISpellObjectsFactory spellObjectsFactory, ISpellTypesSetting spellTypesSetting,
+            IGroundLayerMaskSetting groundLayerMaskSetting, IEnemyFactory enemyFactory)
         {
             _playerInput = playerInput;
             _settings = settings;
             _spellObjectsFactory = spellObjectsFactory;
             _spellTypesSetting = spellTypesSetting;
+            _toolsForSummon = new ToolsForSummon(enemyFactory, groundLayerMaskSetting);
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
@@ -94,10 +101,12 @@ namespace Player.Setup
             _itemsNeedDisabling.Add(playerSpellsManager);
 
             var controllerToSetup = GetComponent<IInitializablePlayerController>();
+            var informationOfSummoner = new InformationForSummon(GetComponent<ISummoner>(), _settings.Faction,
+                new List<IEnemyTargetTrigger>(_triggersForSummonedEnemies));
             var setupData = new PlayerControllerSetupData(_eventInvokerForAnimations, _playerCameraEffects,
                 _playerVisual, _playerCharacter, playerSpellsManager, _playerInput, playerMovement, playerLook,
-                _idHolder, _itemsNeedDisabling, _cameraTransform, _pointForAiming.ReadonlyTransform,
-                _settings.Faction);
+                _idHolder, _itemsNeedDisabling, _cameraTransform, _pointForAiming.ReadonlyTransform, _settings.Faction,
+                informationOfSummoner, _toolsForSummon);
             controllerToSetup.Initialize(setupData);
         }
 

@@ -10,7 +10,8 @@ namespace Enemies.Character
         private readonly string _name;
 
         protected EnemyCharacterBase(ICoroutineStarter coroutineStarter,
-            EnemyCharacterSettingsSection characterSettings) : base(coroutineStarter, characterSettings)
+            EnemyCharacterSettingsSection characterSettings, ISummoner summoner = null) : base(coroutineStarter,
+            characterSettings, summoner)
         {
             _name = characterSettings.Name;
         }

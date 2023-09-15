@@ -16,5 +16,6 @@ namespace Enemies.State_Machine
         ICharacterInformationProvider
     {
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; }
+        public ISummoner Summoner { get; }
     }
 }

@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using Common.Readonly_Transform;
 
 namespace Interfaces
 {
     public interface ICaster
     {
-        public Vector3 CurrentPosition { get; }
+        public IReadonlyTransform MainTransform { get; }
+        public IReadonlyTransform UpperPointForSummonPointCalculating { get; }
+        public IInformationForSummon InformationForSummon { get; }
+        public IToolsForSummon ToolsForSummon { get; }
     }
 }

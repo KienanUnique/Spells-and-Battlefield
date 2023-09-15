@@ -38,7 +38,7 @@ namespace Spells.Concrete_Types.Movements
                     return;
                 }
 
-                Vector3 fromCastObjectPosition = Caster.CurrentPosition;
+                Vector3 fromCastObjectPosition = Caster.MainTransform.Position;
                 if (!Mathf.Approximately(_radius,
                         Vector3.Distance(fromCastObjectPosition, _spellRigidbodyTransform.position)))
                 {

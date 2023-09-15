@@ -34,29 +34,31 @@ namespace Player
     {
         private IEventInvokerForActionAnimations _eventInvokerForAnimations;
         private IIdHolder _idHolder;
-        private IPlayerCameraEffects _playerCameraEffects;
-        private IPlayerCharacter _playerCharacter;
-        private IPlayerInput _playerInput;
-        private IPlayerLook _playerLook;
-        private IPlayerMovement _playerMovement;
-        private IPlayerSpellsManager _playerSpellsManager;
-        private IPlayerVisual _playerVisual;
+        private IPlayerCameraEffects _cameraEffects;
+        private IPlayerCharacter _character;
+        private IPlayerInput _input;
+        private IPlayerLook _look;
+        private IPlayerMovement _movement;
+        private IPlayerSpellsManager _spellsManager;
+        private IPlayerVisual _visual;
         private IReadonlyTransform _pointForAiming;
 
         public void Initialize(IPlayerControllerSetupData setupData)
         {
             _idHolder = setupData.SetIDHolder;
-            _playerLook = setupData.SetPlayerLook;
-            _playerMovement = setupData.SetPlayerMovement;
-            _playerInput = setupData.SetPlayerInput;
-            _playerSpellsManager = setupData.SetPlayerSpellsManager;
-            _playerCharacter = setupData.SetPlayerCharacter;
-            _playerVisual = setupData.SetPlayerVisual;
-            _playerCameraEffects = setupData.SetPlayerCameraEffects;
+            _look = setupData.SetPlayerLook;
+            _movement = setupData.SetPlayerMovement;
+            _input = setupData.SetPlayerInput;
+            _spellsManager = setupData.SetPlayerSpellsManager;
+            _character = setupData.SetPlayerCharacter;
+            _visual = setupData.SetPlayerVisual;
+            _cameraEffects = setupData.SetPlayerCameraEffects;
             _eventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
             CameraTransform = setupData.SetCameraTransform;
             _pointForAiming = setupData.SetPointForAiming;
             Faction = setupData.SetFaction;
+            InformationForSummon = setupData.SetInformationForSummon;
+            ToolsForSummon = setupData.SetToolsForSummon;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -70,28 +72,33 @@ namespace Player
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
 
-        public float HitPointCountRatio => _playerCharacter.HitPointCountRatio;
-        public CharacterState CurrentCharacterState => _playerCharacter.CurrentCharacterState;
+        public float HitPointCountRatio => _character.HitPointCountRatio;
+        public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public IFaction Faction { get; private set; }
-        public IReadonlyRigidbody MainRigidbody => _playerMovement.MainRigidbody;
+        public IReadonlyRigidbody MainRigidbody => _movement.MainRigidbody;
         public IReadonlyTransform PointForAiming => _pointForAiming;
         public int Id => _idHolder.Id;
-        public Vector3 CurrentPosition => _playerMovement.CurrentPosition;
-        public float CurrentDashCooldownRatio => _playerMovement.CurrentDashCooldownRatio;
+        public Vector3 CurrentPosition => _movement.CurrentPosition;
+        public float CurrentDashCooldownRatio => _movement.CurrentDashCooldownRatio;
         public IReadonlyTransform CameraTransform { get; private set; }
-        public ISpellType SelectedType => _playerSpellsManager.SelectedType;
+        public ISpellType SelectedType => _spellsManager.SelectedType;
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
-            _playerSpellsManager.Spells;
+            _spellsManager.Spells;
+
+        public IReadonlyTransform MainTransform => MainRigidbody;
+        public IReadonlyTransform UpperPointForSummonPointCalculating => _pointForAiming;
+        public IInformationForSummon InformationForSummon { get; private set; }
+        public IToolsForSummon ToolsForSummon { get; private set; }
 
         public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {
-            _playerCharacter.ApplyContinuousEffect(effect);
+            _character.ApplyContinuousEffect(effect);
         }
 
         public void HandleDamage(int countOfHealthPoints)
         {
-            _playerCharacter.HandleDamage(countOfHealthPoints);
+            _character.HandleDamage(countOfHealthPoints);
         }
 
         public bool Equals(IIdHolder other)
@@ -101,27 +108,27 @@ namespace Player
 
         public void HandleHeal(int countOfHitPoints)
         {
-            _playerCharacter.HandleHeal(countOfHitPoints);
+            _character.HandleHeal(countOfHitPoints);
         }
 
         public void MultiplySpeedRatioBy(float speedRatio)
         {
-            _playerMovement.MultiplySpeedRatioBy(speedRatio);
+            _movement.MultiplySpeedRatioBy(speedRatio);
         }
 
         public void DivideSpeedRatioBy(float speedRatio)
         {
-            _playerMovement.DivideSpeedRatioBy(speedRatio);
+            _movement.DivideSpeedRatioBy(speedRatio);
         }
 
         public void AddForce(Vector3 force, ForceMode mode)
         {
-            _playerMovement.AddForce(force, mode);
+            _movement.AddForce(force, mode);
         }
 
         public void AddSpell(ISpell newSpell)
         {
-            _playerSpellsManager.AddSpell(newSpell);
+            _spellsManager.AddSpell(newSpell);
         }
 
         public void InteractAsSpellType(ISpellType spellType)
@@ -130,78 +137,78 @@ namespace Player
 
         public void StickToPlatform(Transform platformTransform)
         {
-            _playerMovement.StickToPlatform(platformTransform);
+            _movement.StickToPlatform(platformTransform);
         }
 
         public void UnstickFromPlatform()
         {
-            _playerMovement.UnstickFromPlatform();
+            _movement.UnstickFromPlatform();
         }
 
         protected override void SubscribeOnEvents()
         {
             InitializationStatusChanged += OnInitializationStatusChanged;
 
-            _playerInput.JumpInputted += _playerMovement.TryJumpInputted;
-            _playerInput.StartDashAimingInputted += _playerMovement.TryStartDashAiming;
-            _playerInput.DashInputted += OnDashInputted;
-            _playerInput.UseSpellInputted += OnUseSpellInputted;
-            _playerInput.MoveInputted += _playerMovement.MoveInputted;
-            _playerInput.LookInputted += _playerLook.LookInputtedWith;
-            _playerInput.SelectSpellType += _playerSpellsManager.SelectSpellType;
+            _input.JumpInputted += _movement.TryJumpInputted;
+            _input.StartDashAimingInputted += _movement.TryStartDashAiming;
+            _input.DashInputted += OnDashInputted;
+            _input.UseSpellInputted += OnUseSpellInputted;
+            _input.MoveInputted += _movement.MoveInputted;
+            _input.LookInputted += _look.LookInputtedWith;
+            _input.SelectSpellType += _spellsManager.SelectSpellType;
 
             _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger += OnCastSpellEventInvokerForAnimationMoment;
-            _eventInvokerForAnimations.ActionAnimationEnd += _playerSpellsManager.HandleAnimationEnd;
+            _eventInvokerForAnimations.ActionAnimationEnd += _spellsManager.HandleAnimationEnd;
 
-            _playerMovement.GroundJump += _playerVisual.PlayGroundJumpAnimation;
-            _playerMovement.Fall += _playerVisual.PlayFallAnimation;
-            _playerMovement.Land += _playerVisual.PlayLandAnimation;
-            _playerMovement.StartWallRunning += OnStartWallRunning;
-            _playerMovement.WallRunningDirectionChanged += OnWallRunningDirectionChanged;
-            _playerMovement.EndWallRunning += OnEndWallRunning;
-            _playerMovement.DashAiming += OnDashAiming;
-            _playerMovement.Dashed += OnDashed;
-            _playerMovement.DashCooldownRatioChanged += OnDashCooldownRatioChanged;
+            _movement.GroundJump += _visual.PlayGroundJumpAnimation;
+            _movement.Fall += _visual.PlayFallAnimation;
+            _movement.Land += _visual.PlayLandAnimation;
+            _movement.StartWallRunning += OnStartWallRunning;
+            _movement.WallRunningDirectionChanged += OnWallRunningDirectionChanged;
+            _movement.EndWallRunning += OnEndWallRunning;
+            _movement.DashAiming += OnDashAiming;
+            _movement.Dashed += OnDashed;
+            _movement.DashCooldownRatioChanged += OnDashCooldownRatioChanged;
 
-            _playerCharacter.CharacterStateChanged += OnCharacterStateChanged;
-            _playerCharacter.HitPointsCountChanged += OnHitPointsCountChanged;
+            _character.CharacterStateChanged += OnCharacterStateChanged;
+            _character.HitPointsCountChanged += OnHitPointsCountChanged;
 
-            _playerSpellsManager.NeedPlaySpellAnimation += OnNeedPlaySpellAnimation;
-            _playerSpellsManager.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellCanNotBeUsed;
-            _playerSpellsManager.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
+            _spellsManager.NeedPlaySpellAnimation += OnNeedPlaySpellAnimation;
+            _spellsManager.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellCanNotBeUsed;
+            _spellsManager.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
         }
 
         protected override void UnsubscribeFromEvents()
         {
             InitializationStatusChanged -= OnInitializationStatusChanged;
 
-            _playerInput.JumpInputted -= _playerMovement.TryJumpInputted;
-            _playerInput.StartDashAimingInputted -= _playerMovement.TryStartDashAiming;
-            _playerInput.DashInputted -= OnDashInputted;
-            _playerInput.UseSpellInputted -= OnUseSpellInputted;
-            _playerInput.MoveInputted -= _playerMovement.MoveInputted;
-            _playerInput.LookInputted -= _playerLook.LookInputtedWith;
-            _playerInput.SelectSpellType -= _playerSpellsManager.SelectSpellType;
+            _input.JumpInputted -= _movement.TryJumpInputted;
+            _input.StartDashAimingInputted -= _movement.TryStartDashAiming;
+            _input.DashInputted -= OnDashInputted;
+            _input.UseSpellInputted -= OnUseSpellInputted;
+            _input.MoveInputted -= _movement.MoveInputted;
+            _input.LookInputted -= _look.LookInputtedWith;
+            _input.SelectSpellType -= _spellsManager.SelectSpellType;
 
             _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger -= OnCastSpellEventInvokerForAnimationMoment;
-            _eventInvokerForAnimations.ActionAnimationEnd -= _playerSpellsManager.HandleAnimationEnd;
+            _eventInvokerForAnimations.ActionAnimationEnd -= _spellsManager.HandleAnimationEnd;
 
-            _playerMovement.GroundJump -= _playerVisual.PlayGroundJumpAnimation;
-            _playerMovement.Fall -= _playerVisual.PlayFallAnimation;
-            _playerMovement.Land -= _playerVisual.PlayLandAnimation;
-            _playerMovement.StartWallRunning -= OnStartWallRunning;
-            _playerMovement.WallRunningDirectionChanged -= OnWallRunningDirectionChanged;
-            _playerMovement.EndWallRunning -= OnEndWallRunning;
-            _playerMovement.DashAiming -= OnDashAiming;
-            _playerMovement.Dashed -= OnDashed;
-            _playerMovement.DashCooldownRatioChanged -= OnDashCooldownRatioChanged;
+            _movement.GroundJump -= _visual.PlayGroundJumpAnimation;
+            _movement.Fall -= _visual.PlayFallAnimation;
+            _movement.Land -= _visual.PlayLandAnimation;
+            _movement.StartWallRunning -= OnStartWallRunning;
+            _movement.WallRunningDirectionChanged -= OnWallRunningDirectionChanged;
+            _movement.EndWallRunning -= OnEndWallRunning;
+            _movement.DashAiming -= OnDashAiming;
+            _movement.Dashed -= OnDashed;
+            _movement.DashCooldownRatioChanged -= OnDashCooldownRatioChanged;
 
-            _playerCharacter.CharacterStateChanged -= OnCharacterStateChanged;
-            _playerCharacter.HitPointsCountChanged -= OnHitPointsCountChanged;
+            _character.CharacterStateChanged -= OnCharacterStateChanged;
+            _character.HitPointsCountChanged -= OnHitPointsCountChanged;
 
-            _playerSpellsManager.NeedPlaySpellAnimation -= OnNeedPlaySpellAnimation;
-            _playerSpellsManager.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellCanNotBeUsed;
-            _playerSpellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
+            _spellsManager.NeedPlaySpellAnimation -= OnNeedPlaySpellAnimation;
+            _spellsManager.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellCanNotBeUsed;
+            _spellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
         }
 
         private void OnDashCooldownRatioChanged(float newCooldownRatio)
@@ -226,8 +233,8 @@ namespace Player
         {
             while (true)
             {
-                _playerVisual.UpdateMovingData(_playerMovement.NormalizedVelocityDirectionXY,
-                    _playerMovement.RatioOfCurrentVelocityToMaximumVelocity);
+                _visual.UpdateMovingData(_movement.NormalizedVelocityDirectionXY,
+                    _movement.RatioOfCurrentVelocityToMaximumVelocity);
                 yield return null;
             }
         }
@@ -241,7 +248,7 @@ namespace Player
         private void OnDashed()
         {
             Dashed?.Invoke();
-            _playerCameraEffects.PlayIncreaseFieldOfViewAnimation();
+            _cameraEffects.PlayIncreaseFieldOfViewAnimation();
         }
 
         private void OnDashAiming()
@@ -251,31 +258,31 @@ namespace Player
 
         private void OnStartWallRunning(WallDirection direction)
         {
-            _playerCameraEffects.Rotate(direction);
-            _playerVisual.PlayLandAnimation();
+            _cameraEffects.Rotate(direction);
+            _visual.PlayLandAnimation();
         }
 
         private void OnWallRunningDirectionChanged(WallDirection direction)
         {
-            _playerCameraEffects.Rotate(direction);
+            _cameraEffects.Rotate(direction);
         }
 
         private void OnEndWallRunning()
         {
-            _playerCameraEffects.ResetRotation();
-            _playerVisual.PlayFallAnimation();
+            _cameraEffects.ResetRotation();
+            _visual.PlayFallAnimation();
         }
 
         private void OnDashInputted()
         {
-            _playerMovement.TryDash(_playerLook.CameraForward);
+            _movement.TryDash(_look.CameraForward);
         }
 
         private void OnCharacterStateChanged(CharacterState newState)
         {
             if (newState == CharacterState.Dead)
             {
-                _playerVisual.PlayDieAnimation();
+                _visual.PlayDieAnimation();
             }
 
             CharacterStateChanged?.Invoke(newState);
@@ -283,17 +290,17 @@ namespace Player
 
         private void OnUseSpellInputted()
         {
-            _playerSpellsManager.TryCastSelectedSpell();
+            _spellsManager.TryCastSelectedSpell();
         }
 
         private void OnNeedPlaySpellAnimation(IAnimationData spellAnimationData)
         {
-            _playerVisual.PlayUseSpellAnimation(spellAnimationData);
+            _visual.PlayUseSpellAnimation(spellAnimationData);
         }
 
         private void OnCastSpellEventInvokerForAnimationMoment()
         {
-            _playerSpellsManager.CreateSelectedSpell(_playerLook.CameraLookPointPosition);
+            _spellsManager.CreateSelectedSpell(_look.CameraLookPointPosition);
         }
 
         private void OnSelectedSpellTypeChanged(ISpellType spellType)

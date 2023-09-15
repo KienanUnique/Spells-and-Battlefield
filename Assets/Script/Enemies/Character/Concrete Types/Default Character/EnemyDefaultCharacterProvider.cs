@@ -11,9 +11,9 @@ namespace Enemies.Character.Concrete_Types.Default_Character
     {
         [SerializeField] private EnemyCharacterSettingsSection _settings;
 
-        public override IDisableableEnemyCharacter GetImplementationObject(ICoroutineStarter coroutineStarter)
+        public override IDisableableEnemyCharacter GetImplementationObject(ICoroutineStarter coroutineStarter, ISummoner summoner = null)
         {
-            return new EnemyDefaultCharacter(coroutineStarter, _settings);
+            return new EnemyDefaultCharacter(coroutineStarter, _settings, summoner);
         }
     }
 }

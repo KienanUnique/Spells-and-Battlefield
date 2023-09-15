@@ -292,6 +292,11 @@ MonoBehaviour:
   _groundChecker: {fileID: 7524277153600398822}
   _wallChecker: {fileID: 1408449592405486887}
   _startTestSpells:
+  - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
+  - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
+  - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
+  - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
+  - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
   - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
   - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
   - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
@@ -299,6 +304,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
   _spellSpawnObject: {fileID: 9028757726379468074}
   _pointForAiming: {fileID: 8522833826739729542}
+  _triggersForSummonedEnemies: []
 --- !u!1 &2284558118937813315
 GameObject:
   m_ObjectHideFlags: 0

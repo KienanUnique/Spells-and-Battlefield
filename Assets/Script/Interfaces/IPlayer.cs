@@ -6,6 +6,7 @@ namespace Interfaces
     public interface IPlayer : IPlayerInformationProvider,
         ISpellInteractable,
         ICaster,
+        ISummoner,
         IInteractableCharacter,
         IIdHolder,
         IEnemyTarget,

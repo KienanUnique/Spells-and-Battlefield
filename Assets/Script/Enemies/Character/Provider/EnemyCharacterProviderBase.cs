@@ -5,6 +5,7 @@ namespace Enemies.Character.Provider
 {
     public abstract class EnemyCharacterProviderBase : ScriptableObject, IEnemyCharacterProvider
     {
-        public abstract IDisableableEnemyCharacter GetImplementationObject(ICoroutineStarter coroutineStarter);
+        public abstract IDisableableEnemyCharacter GetImplementationObject(ICoroutineStarter coroutineStarter,
+            ISummoner summoner = null);
     }
 }

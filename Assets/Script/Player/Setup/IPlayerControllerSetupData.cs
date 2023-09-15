@@ -29,5 +29,7 @@ namespace Player.Setup
         public IReadonlyTransform SetCameraTransform { get; }
         public IReadonlyTransform SetPointForAiming { get; }
         public IFaction SetFaction { get; }
+        public IInformationForSummon SetInformationForSummon { get; }
+        public IToolsForSummon SetToolsForSummon { get; }
     }
 }

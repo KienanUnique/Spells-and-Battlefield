@@ -5,6 +5,7 @@ using Common.Abstract_Bases.Disableable;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
+using Common.Settings.Ground_Layer_Mask;
 using Enemies.Character;
 using Enemies.Controller;
 using Enemies.General_Settings;
@@ -14,6 +15,7 @@ using Enemies.Movement;
 using Enemies.Movement.Setup_Data;
 using Enemies.Setup.Controller_Setup_Data;
 using Enemies.Setup.Settings;
+using Enemies.Spawn.Factory;
 using Enemies.State_Machine;
 using Enemies.State_Machine.States;
 using Enemies.State_Machine.Transition_Conditions;
@@ -63,14 +65,18 @@ namespace Enemies.Setup
         private IInitializableStateEnemyAI[] _states;
         private IInitializableTransitionEnemyAI[] _transitions;
         private IFaction _faction;
+        private ISummoner _summoner;
+        private IToolsForSummon _toolsForSummon;
 
         [Inject]
         private void GetDependencies(IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
-            IPopupHitPointsChangeTextFactory popupHitPointsChangeTextFactory)
+            IPopupHitPointsChangeTextFactory popupHitPointsChangeTextFactory,
+            IGroundLayerMaskSetting groundLayerMaskSetting, IEnemyFactory enemyFactory)
         {
             _generalEnemySettings = generalEnemySettings;
             _itemsFactory = itemsFactory;
             _popupHitPointsChangeTextFactory = popupHitPointsChangeTextFactory;
+            _toolsForSummon = new ToolsForSummon(enemyFactory, groundLayerMaskSetting);
         }
 
         public IEnemy InitializedEnemy => _initializedEnemy ??= GetComponent<IEnemy>();
@@ -102,6 +108,12 @@ namespace Enemies.Setup
             }
         }
 
+        public void SetDataForInitialization(IEnemySettings settings, IInformationForSummon informationForSummon)
+        {
+            _summoner = informationForSummon.Summoner;
+            SetDataForInitialization(settings, informationForSummon.Faction, informationForSummon.TargetTriggers);
+        }
+
         protected override void Initialize()
         {
             var thisReadonlyRigidbody = new ReadonlyRigidbody(_thisRigidbody);
@@ -124,10 +136,11 @@ namespace Enemies.Setup
             IDisableableEnemyMovement enemyMovement =
                 _settings.MovementProvider.GetImplementationObject(movementSetupData);
 
-            IDisableableEnemyCharacter enemyCharacter = _settings.CharacterProvider.GetImplementationObject(this);
+            IDisableableEnemyCharacter enemyCharacter = _settings.CharacterProvider.GetImplementationObject(this, _summoner);
 
-            targetFromTriggersSelector.AddTriggers(_externalTargetTriggers);
-            targetFromTriggersSelector.AddTriggers(_localTargetTriggers);
+            var targetTriggers = new List<IEnemyTargetTrigger>(_externalTargetTriggers);
+            targetTriggers.AddRange(_localTargetTriggers);
+            targetFromTriggersSelector.AddTriggers(targetTriggers);
 
             ILootDropper lootDropper =
                 _settings.LootDropperProvider.GetImplementation(_itemsFactory, _lootSpawnPoint.ReadonlyTransform);
@@ -137,11 +150,13 @@ namespace Enemies.Setup
                 enemyMovement, enemyCharacter, targetFromTriggersSelector, enemyLook
             };
 
+            var informationOfSummoner = new InformationForSummon(GetComponent<ISummoner>(), _faction, targetTriggers);
+
             var baseSetupData = new EnemyControllerSetupData(_enemyStateMachineAI, enemyMovement, itemsNeedDisabling,
                 _idHolder, _generalEnemySettings, _popupHitPointsChangeTextFactory, targetFromTriggersSelector,
                 enemyLook, _eventInvokerForAnimations, enemyVisual, enemyCharacter,
                 _popupTextHitPointsChangeAppearCenterPoint.ReadonlyTransform, lootDropper, _faction,
-                _pointForAiming.ReadonlyTransform);
+                _pointForAiming.ReadonlyTransform, informationOfSummoner, _toolsForSummon);
 
             _enemyStateMachineAI.Initialize(_controller);
 

@@ -1,4 +1,5 @@
-﻿using Enemies.Character;
+﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Enemies.Character;
 
 namespace Interfaces
 {
@@ -9,7 +10,9 @@ namespace Interfaces
         IMovable,
         IToMovingPlatformStickable,
         ICaster,
-        IEnemyTarget
+        ISummoner,
+        IEnemyTarget,
+        IInitializableWithActionsPool
     {
     }
 }

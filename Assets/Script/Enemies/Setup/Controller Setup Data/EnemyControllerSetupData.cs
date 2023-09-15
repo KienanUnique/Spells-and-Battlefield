@@ -25,7 +25,8 @@ namespace Enemies.Setup.Controller_Setup_Data
             IEnemyTargetFromTriggersSelector setTargetFromTriggersSelector, IEnemyLook setLook,
             IEventInvokerForActionAnimations setEventInvokerForAnimations, IEnemyVisual setVisual,
             IEnemyCharacter setCharacter, IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint,
-            ILootDropper setLootDropper, IFaction setFaction, IReadonlyTransform setPointForAiming)
+            ILootDropper setLootDropper, IFaction setFaction, IReadonlyTransform setPointForAiming,
+            IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon)
         {
             SetStateMachineAI = setStateMachineAI;
             SetMovement = setMovement;
@@ -42,6 +43,8 @@ namespace Enemies.Setup.Controller_Setup_Data
             SetLootDropper = setLootDropper;
             SetFaction = setFaction;
             SetPointForAiming = setPointForAiming;
+            SetInformationForSummon = setInformationForSummon;
+            SetToolsForSummon = setToolsForSummon;
         }
 
         public IEnemyStateMachineAI SetStateMachineAI { get; }
@@ -59,5 +62,7 @@ namespace Enemies.Setup.Controller_Setup_Data
         public ILootDropper SetLootDropper { get; }
         public IFaction SetFaction { get; }
         public IReadonlyTransform SetPointForAiming { get; }
+        public IInformationForSummon SetInformationForSummon { get; }
+        public IToolsForSummon SetToolsForSummon { get; }
     }
 }

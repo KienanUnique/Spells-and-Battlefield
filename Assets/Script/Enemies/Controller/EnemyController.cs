@@ -63,6 +63,8 @@ namespace Enemies.Controller
             _popupTextHitPointsChangeAppearCenterPoint = setupData.SetPopupTextHitPointsChangeAppearCenterPoint;
             PointForAiming = setupData.SetPointForAiming;
             Faction = setupData.SetFaction;
+            InformationForSummon = setupData.SetInformationForSummon;
+            ToolsForSummon = setupData.SetToolsForSummon;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -77,17 +79,28 @@ namespace Enemies.Controller
 
         public float HitPointCountRatio => _character.HitPointCountRatio;
 
+        public void DieInstantly()
+        {
+            _character.DieInstantly();
+        }
+
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public Vector3 CurrentLookDirection => _look.CurrentLookDirection;
         public IReadonlyTransform ThisPositionReferencePointForLook => _look.ThisPositionReferencePointForLook;
         public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
 
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; private set; }
+        public ISummoner Summoner => this;
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _movement.CurrentPosition;
         public IFaction Faction { get; private set; }
         public IReadonlyTransform PointForAiming { get; private set; }
         public IReadonlyRigidbody MainRigidbody => _movement.ReadonlyRigidbody;
+
+        public IReadonlyTransform MainTransform => MainRigidbody;
+        public IReadonlyTransform UpperPointForSummonPointCalculating => PointForAiming;
+        public IInformationForSummon InformationForSummon { get; private set; }
+        public IToolsForSummon ToolsForSummon { get; private set; }
 
         public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {

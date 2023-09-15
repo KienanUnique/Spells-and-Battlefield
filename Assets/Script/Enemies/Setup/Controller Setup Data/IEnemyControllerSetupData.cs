@@ -33,5 +33,7 @@ namespace Enemies.Setup.Controller_Setup_Data
         public ILootDropper SetLootDropper { get; }
         public IFaction SetFaction { get; }
         public IReadonlyTransform SetPointForAiming { get; }
+        public IInformationForSummon SetInformationForSummon { get; }
+        public IToolsForSummon SetToolsForSummon { get; }
     }
 }

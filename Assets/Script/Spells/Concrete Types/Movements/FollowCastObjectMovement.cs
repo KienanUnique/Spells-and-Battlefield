@@ -25,7 +25,7 @@ namespace Spells.Concrete_Types.Movements
                     return;
                 }
 
-                _spellRigidbody.position = Caster.CurrentPosition;
+                _spellRigidbody.position = Caster.MainTransform.Position;
             }
 
             public override ILookPointCalculator GetLookPointCalculator()

@@ -20,7 +20,8 @@ namespace Player.Setup
             IPlayerCameraEffects playerCameraEffects, IPlayerVisual playerVisual, IPlayerCharacter playerCharacter,
             IPlayerSpellsManager playerSpellsManager, IPlayerInput playerInput, IPlayerMovement playerMovement,
             IPlayerLook playerLook, IIdHolder idHolder, List<IDisableable> itemsNeedDisabling,
-            IReadonlyTransform cameraTransform, IReadonlyTransform setPointForAiming, IFaction setFaction)
+            IReadonlyTransform cameraTransform, IReadonlyTransform setPointForAiming, IFaction setFaction,
+            IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon)
         {
             SetPlayerEventInvokerForAnimations = playerEventInvokerForAnimations;
             SetPlayerCameraEffects = playerCameraEffects;
@@ -35,6 +36,8 @@ namespace Player.Setup
             SetCameraTransform = cameraTransform;
             SetPointForAiming = setPointForAiming;
             SetFaction = setFaction;
+            SetInformationForSummon = setInformationForSummon;
+            SetToolsForSummon = setToolsForSummon;
         }
 
         public List<IDisableable> SetItemsNeedDisabling { get; }
@@ -50,5 +53,7 @@ namespace Player.Setup
         public IReadonlyTransform SetCameraTransform { get; }
         public IReadonlyTransform SetPointForAiming { get; }
         public IFaction SetFaction { get; }
+        public IInformationForSummon SetInformationForSummon { get; }
+        public IToolsForSummon SetToolsForSummon { get; }
     }
 }

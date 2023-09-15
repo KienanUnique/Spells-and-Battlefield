@@ -14,14 +14,17 @@ namespace Common.Abstract_Bases.Character
         protected readonly List<IAppliedContinuousEffect> _currentEffects;
         protected readonly ValueWithReactionOnChange<CharacterState> _currentState;
         protected readonly HitPointsCalculator _hitPointsCalculator;
+        protected readonly ISummoner _summoner;
 
-        protected CharacterBase(ICoroutineStarter coroutineStarter, ICharacterSettings characterSettings)
+        protected CharacterBase(ICoroutineStarter coroutineStarter, ICharacterSettings characterSettings,
+            ISummoner summoner = null)
         {
             _coroutineStarter = coroutineStarter;
             _characterSettings = characterSettings;
             _currentState = new ValueWithReactionOnChange<CharacterState>(CharacterState.Alive);
             _hitPointsCalculator = new HitPointsCalculator(_characterSettings.MaximumCountOfHitPoints);
             _currentEffects = new List<IAppliedContinuousEffect>();
+            _summoner = summoner;
         }
 
         public event Action<CharacterState> CharacterStateChanged;
@@ -62,11 +65,20 @@ namespace Common.Abstract_Bases.Character
             _hitPointsCalculator.HandleHeal(countOfHitPoints);
         }
 
+        public void DieInstantly()
+        {
+            _currentState.Value = CharacterState.Dead;
+        }
+
         protected sealed override void SubscribeOnEvents()
         {
             _currentState.AfterValueChanged += OnCharacterStateChanged;
             _hitPointsCalculator.HitPointsCountChanged += OnHitPointsCountChanged;
             _currentEffects.ForEach(effect => effect.EffectEnded += OnEffectEnded);
+            if (_summoner != null)
+            {
+                _summoner.CharacterStateChanged += OnSummonerCharacterStateChanged;
+            }
         }
 
         protected sealed override void UnsubscribeFromEvents()
@@ -74,6 +86,18 @@ namespace Common.Abstract_Bases.Character
             _currentState.AfterValueChanged -= OnCharacterStateChanged;
             _hitPointsCalculator.HitPointsCountChanged -= OnHitPointsCountChanged;
             _currentEffects.ForEach(effect => effect.EffectEnded -= OnEffectEnded);
+            if (_summoner != null)
+            {
+                _summoner.CharacterStateChanged -= OnSummonerCharacterStateChanged;
+            }
+        }
+
+        private void OnSummonerCharacterStateChanged(CharacterState newState)
+        {
+            if (newState == CharacterState.Dead)
+            {
+                DieInstantly();
+            }
         }
 
         private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
