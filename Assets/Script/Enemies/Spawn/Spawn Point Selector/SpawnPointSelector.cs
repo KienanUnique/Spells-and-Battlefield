@@ -6,8 +6,10 @@ namespace Enemies.Spawn.Spawn_Point_Selector
 {
     public class SpawnPointSelector : ISpawnPointSelector
     {
-        private const int CountOfCheckDirections = 12;
+        private const float SpawnObjectOffsetRadius = 0.5f;
         private const float AngleBetweenCheckDirectories = 2 * Mathf.PI / CountOfCheckDirections;
+        private const int MaxCountOfDetectedCollisions = 20;
+        private const int CountOfCheckDirections = 12;
         private readonly Vector3 _upOffsetFromTheGround = Vector3.up * 0.2f;
 
         public Vector3 CalculateFreeSpawnPosition(LayerMask groundLayer, ICapsuleSizeInformation spawnObjectSize,
@@ -16,7 +18,7 @@ namespace Enemies.Spawn.Spawn_Point_Selector
             var minimumCountOfCollisions = int.MaxValue;
             Vector3 bestPointPosition = Vector3.zero;
             RaycastHit hit;
-            var overlapColliders = new Collider[] { };
+            var overlapColliders = new Collider[MaxCountOfDetectedCollisions];
 
             for (var i = 0; i < CountOfCheckDirections; i++)
             {
@@ -29,12 +31,13 @@ namespace Enemies.Spawn.Spawn_Point_Selector
                     continue;
                 }
 
-                int numCollisions = Physics.OverlapCapsuleNonAlloc(hit.point + _upOffsetFromTheGround,
-                    hit.point +
-                    _upOffsetFromTheGround +
-                    (spawnObjectSize.Height + spawnObjectSize.Radius * 2) * Vector3.up, spawnObjectSize.Radius,
-                    overlapColliders);
+                float radius = spawnObjectSize.Radius + SpawnObjectOffsetRadius;
+                Vector3 startCenterSpherePoint = hit.point + _upOffsetFromTheGround + radius * Vector3.up;
+                Vector3 endCenterSpherePoint = startCenterSpherePoint + (spawnObjectSize.Height + radius) * Vector3.up;
+
                 Array.Clear(overlapColliders, 0, overlapColliders.Length);
+                int numCollisions = Physics.OverlapCapsuleNonAlloc(startCenterSpherePoint, endCenterSpherePoint, radius,
+                    overlapColliders, ~0, QueryTriggerInteraction.Ignore);
 
                 if (numCollisions == 0)
                 {
