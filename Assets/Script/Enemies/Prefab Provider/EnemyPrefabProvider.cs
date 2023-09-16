@@ -11,7 +11,7 @@ namespace Enemies.Prefab_Provider
     {
         [SerializeField] private EnemyController _knightPrefab;
         [SerializeField] private CapsuleSizeInformation _capsuleSize;
-        public override GameObject Prefab => _knightPrefab.gameObject;
         public ICapsuleSizeInformation SizeInformation => _capsuleSize;
+        public override GameObject Prefab => _knightPrefab.gameObject;
     }
 }

@@ -1,5 +1,4 @@
-﻿using Interfaces;
-using Spells.Factory;
+﻿using Spells.Factory;
 using Spells.Spell.Interfaces;
 
 namespace Spells.Controllers

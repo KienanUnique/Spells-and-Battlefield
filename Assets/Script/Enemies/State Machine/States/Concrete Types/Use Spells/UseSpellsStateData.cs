@@ -1,6 +1,6 @@
-﻿using Enemies.Movement.Enemy_Data_For_Moving;
+﻿using Common.Interfaces;
+using Enemies.Movement.Enemy_Data_For_Moving;
 using Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells

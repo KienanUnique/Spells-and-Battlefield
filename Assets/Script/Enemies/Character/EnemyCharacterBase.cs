@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Character;
+using Common.Interfaces;
 using Common.Mechanic_Effects;
-using Interfaces;
+using Common.Mechanic_Effects.Concrete_Types.Summon;
 
 namespace Enemies.Character
 {

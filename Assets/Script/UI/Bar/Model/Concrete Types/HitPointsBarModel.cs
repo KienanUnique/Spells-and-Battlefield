@@ -1,5 +1,5 @@
 ﻿using Common;
-using Interfaces;
+using Common.Abstract_Bases.Character;
 
 namespace UI.Bar.Model.Concrete_Types
 {

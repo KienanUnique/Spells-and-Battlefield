@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Interfaces;
 using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
 using Puzzles.Mechanisms.Moving_Platforms.Settings;
 using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;

@@ -1,5 +1,5 @@
 ﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Interfaces;
+using Common.Id_Holder;
 using UI.Gameplay_UI.Model;
 
 namespace UI.Gameplay_UI.Presenter

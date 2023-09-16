@@ -2,6 +2,7 @@
 using System.Collections;
 using Common;
 using Common.Abstract_Bases.Movement;
+using Common.Interfaces;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Common.Settings.Sections.Movement;
@@ -9,7 +10,6 @@ using Enemies.Movement.Enemy_Data_For_Moving;
 using Enemies.Movement.Setup_Data;
 using Enemies.Target_Pathfinder;
 using Enemies.Target_Selector_From_Triggers;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.Movement

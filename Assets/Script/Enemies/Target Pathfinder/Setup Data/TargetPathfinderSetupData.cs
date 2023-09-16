@@ -1,5 +1,5 @@
-﻿using Common.Readonly_Transform;
-using Interfaces;
+﻿using Common.Interfaces;
+using Common.Readonly_Transform;
 
 namespace Enemies.Target_Pathfinder.Setup_Data
 {

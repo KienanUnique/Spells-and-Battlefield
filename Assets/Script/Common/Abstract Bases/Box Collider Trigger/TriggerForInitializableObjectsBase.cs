@@ -10,6 +10,32 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
     {
         private readonly HashSet<TRequiredObject> _waitingInitializationObjects = new HashSet<TRequiredObject>();
 
+        protected virtual void OnEnable()
+        {
+            foreach (TRequiredObject requiredObject in _requiredObjectsInside)
+            {
+                requiredObject.InitializationStatusChanged += OnObjectInitializationStatusChanged;
+            }
+
+            foreach (TRequiredObject waitingInitializationObject in _waitingInitializationObjects)
+            {
+                waitingInitializationObject.InitializationStatusChanged += OnObjectInitializationStatusChanged;
+            }
+        }
+
+        protected virtual void OnDisable()
+        {
+            foreach (TRequiredObject requiredObject in _requiredObjectsInside)
+            {
+                requiredObject.InitializationStatusChanged -= OnObjectInitializationStatusChanged;
+            }
+
+            foreach (TRequiredObject waitingInitializationObject in _waitingInitializationObjects)
+            {
+                waitingInitializationObject.InitializationStatusChanged -= OnObjectInitializationStatusChanged;
+            }
+        }
+
         protected sealed override void OnRequiredObjectEnteringDetected(TRequiredObject requiredObject)
         {
             switch (requiredObject.CurrentInitializableMonoBehaviourStatus)
@@ -38,32 +64,6 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
             base.OnRequiredObjectExitingDetected(requiredObject);
         }
 
-        protected virtual void OnEnable()
-        {
-            foreach (TRequiredObject requiredObject in _requiredObjectsInside)
-            {
-                requiredObject.InitializationStatusChanged += OnObjectInitializationStatusChanged;
-            }
-
-            foreach (TRequiredObject waitingInitializationObject in _waitingInitializationObjects)
-            {
-                waitingInitializationObject.InitializationStatusChanged += OnObjectInitializationStatusChanged;
-            }
-        }
-
-        protected virtual void OnDisable()
-        {
-            foreach (TRequiredObject requiredObject in _requiredObjectsInside)
-            {
-                requiredObject.InitializationStatusChanged -= OnObjectInitializationStatusChanged;
-            }
-
-            foreach (TRequiredObject waitingInitializationObject in _waitingInitializationObjects)
-            {
-                waitingInitializationObject.InitializationStatusChanged -= OnObjectInitializationStatusChanged;
-            }
-        }
-
         private void OnObjectInitializationStatusChanged(
             InitializableMonoBehaviourStatus newInitializableMonoBehaviourStatus)
         {
@@ -73,9 +73,11 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
                     break;
                 case InitializableMonoBehaviourStatus.Initialized:
 
-                    bool IsTargetInitialized(TRequiredObject requiredObject) =>
-                        requiredObject.CurrentInitializableMonoBehaviourStatus ==
-                        InitializableMonoBehaviourStatus.Initialized;
+                    bool IsTargetInitialized(TRequiredObject requiredObject)
+                    {
+                        return requiredObject.CurrentInitializableMonoBehaviourStatus ==
+                               InitializableMonoBehaviourStatus.Initialized;
+                    }
 
                     foreach (TRequiredObject requiredObject in _waitingInitializationObjects.Where(IsTargetInitialized))
                     {
@@ -87,9 +89,11 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
                     break;
                 case InitializableMonoBehaviourStatus.Destroying:
 
-                    bool IsTargetDestroying(TRequiredObject requiredObject) =>
-                        requiredObject.CurrentInitializableMonoBehaviourStatus ==
-                        InitializableMonoBehaviourStatus.Destroying;
+                    bool IsTargetDestroying(TRequiredObject requiredObject)
+                    {
+                        return requiredObject.CurrentInitializableMonoBehaviourStatus ==
+                               InitializableMonoBehaviourStatus.Destroying;
+                    }
 
                     var destroyingObjects = new List<TRequiredObject>(_requiredObjectsInside.Where(IsTargetDestroying));
                     foreach (TRequiredObject requiredObject in destroyingObjects)

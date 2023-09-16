@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Interfaces;
+using Common.Id_Holder;
 using UI.Element.Setup;
 using UI.Managers.Concrete_Types.In_Game;
 using UI.Managers.Concrete_Types.In_Game.Installer;

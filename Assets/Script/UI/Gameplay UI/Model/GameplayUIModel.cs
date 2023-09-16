@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Interfaces;
+using Common.Id_Holder;
 using UI.Element;
 using UI.Managers.Concrete_Types.In_Game;
 using UI.Window.Model;

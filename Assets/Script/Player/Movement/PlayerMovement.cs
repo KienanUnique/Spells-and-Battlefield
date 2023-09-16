@@ -4,8 +4,8 @@ using Common;
 using Common.Abstract_Bases.Checkers.Ground_Checker;
 using Common.Abstract_Bases.Checkers.Wall_Checker;
 using Common.Abstract_Bases.Movement;
+using Common.Interfaces;
 using Common.Readonly_Rigidbody;
-using Interfaces;
 using Player.Movement.Settings;
 using UnityEngine;
 
@@ -83,15 +83,21 @@ namespace Player.Movement
             DashAiming
         }
 
+        public Vector3 CurrentPosition => _rigidbody.position;
+
         public float CurrentDashCooldownRatio { get; set; }
 
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
         public IReadonlyRigidbody MainRigidbody { get; }
-        public Vector3 CurrentPosition => _rigidbody.position;
 
         private bool IsGrounded => _groundChecker.IsColliding;
         private bool IsInContactWithWall => _wallChecker.IsColliding;
+
+        public void AddForce(Vector3 force, ForceMode mode)
+        {
+            _rigidbody.AddForce(force, mode);
+        }
 
         public void TryJumpInputted()
         {
@@ -142,11 +148,6 @@ namespace Player.Movement
         {
             NormalizedVelocityDirectionXY = direction2d;
             _inputMoveDirection = direction2d;
-        }
-
-        public void AddForce(Vector3 force, ForceMode mode)
-        {
-            _rigidbody.AddForce(force, mode);
         }
 
         public void StickToPlatform(Transform platformTransform)

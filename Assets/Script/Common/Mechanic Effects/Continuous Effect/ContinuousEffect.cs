@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Interfaces;
+using Common.Interfaces;
 using UnityEngine;
 
 namespace Common.Mechanic_Effects.Continuous_Effect

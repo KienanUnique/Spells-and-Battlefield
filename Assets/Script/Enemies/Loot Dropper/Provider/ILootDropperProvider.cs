@@ -5,7 +5,6 @@ namespace Enemies.Loot_Dropper.Provider
 {
     public interface ILootDropperProvider
     {
-        ILootDropper GetImplementation(IPickableItemsFactory pickableItemsFactory,
-            IReadonlyTransform itemsSpawnPoint);
+        ILootDropper GetImplementation(IPickableItemsFactory pickableItemsFactory, IReadonlyTransform itemsSpawnPoint);
     }
 }

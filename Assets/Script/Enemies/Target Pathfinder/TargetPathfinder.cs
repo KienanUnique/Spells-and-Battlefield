@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
+using Common.Interfaces;
 using Common.Readonly_Transform;
 using Enemies.Target_Pathfinder.Settings;
 using Enemies.Target_Pathfinder.Setup_Data;
-using Interfaces;
 using ModestTree;
 using UnityEngine;
 using UnityEngine.AI;

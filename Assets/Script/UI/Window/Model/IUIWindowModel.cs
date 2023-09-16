@@ -1,4 +1,4 @@
-﻿using Interfaces;
+﻿using Common.Id_Holder;
 
 namespace UI.Window.Model
 {

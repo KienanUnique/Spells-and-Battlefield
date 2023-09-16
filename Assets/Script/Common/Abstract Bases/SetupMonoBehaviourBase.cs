@@ -86,7 +86,8 @@ namespace Common.Abstract_Bases
         private bool IsAllRequiredObjectsInitialized()
         {
             return _objectsToWaitBeforeInitialization.All(initializableObject =>
-                initializableObject.CurrentInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Initialized);
+                initializableObject.CurrentInitializableMonoBehaviourStatus ==
+                InitializableMonoBehaviourStatus.Initialized);
         }
 
         private void RunInitialization()

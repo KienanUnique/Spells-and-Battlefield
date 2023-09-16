@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using Common.Abstract_Bases.Disableable;
+using Common.Interfaces;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Enemies.Look_Point_Calculator;
 using Enemies.Target_Selector_From_Triggers;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.Look

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Abstract_Bases.Box_Collider_Trigger;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.Trigger

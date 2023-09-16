@@ -7,11 +7,13 @@ using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animation_Data;
 using Common.Collection_With_Reaction_On_Change;
 using Common.Event_Invoker_For_Action_Animations;
+using Common.Id_Holder;
+using Common.Interfaces;
+using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Mechanic_Effects.Continuous_Effect;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Factions;
-using Interfaces;
 using Player.Camera_Effects;
 using Player.Character;
 using Player.Look;
@@ -41,7 +43,6 @@ namespace Player
         private IPlayerMovement _movement;
         private IPlayerSpellsManager _spellsManager;
         private IPlayerVisual _visual;
-        private IReadonlyTransform _pointForAiming;
 
         public void Initialize(IPlayerControllerSetupData setupData)
         {
@@ -55,7 +56,7 @@ namespace Player
             _cameraEffects = setupData.SetPlayerCameraEffects;
             _eventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
             CameraTransform = setupData.SetCameraTransform;
-            _pointForAiming = setupData.SetPointForAiming;
+            UpperPointForSummonPointCalculating = setupData.SetPointForAiming;
             Faction = setupData.SetFaction;
             InformationForSummon = setupData.SetInformationForSummon;
             ToolsForSummon = setupData.SetToolsForSummon;
@@ -72,11 +73,17 @@ namespace Player
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
 
+        public IReadonlyTransform MainTransform => MainRigidbody;
+        public IReadonlyTransform UpperPointForSummonPointCalculating { get; private set; }
+
+        public IInformationForSummon InformationForSummon { get; private set; }
+        public IToolsForSummon ToolsForSummon { get; private set; }
+
         public float HitPointCountRatio => _character.HitPointCountRatio;
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public IFaction Faction { get; private set; }
         public IReadonlyRigidbody MainRigidbody => _movement.MainRigidbody;
-        public IReadonlyTransform PointForAiming => _pointForAiming;
+        public IReadonlyTransform PointForAiming => UpperPointForSummonPointCalculating;
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _movement.CurrentPosition;
         public float CurrentDashCooldownRatio => _movement.CurrentDashCooldownRatio;
@@ -85,11 +92,6 @@ namespace Player
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
             _spellsManager.Spells;
-
-        public IReadonlyTransform MainTransform => MainRigidbody;
-        public IReadonlyTransform UpperPointForSummonPointCalculating => _pointForAiming;
-        public IInformationForSummon InformationForSummon { get; private set; }
-        public IToolsForSummon ToolsForSummon { get; private set; }
 
         public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Common.Interfaces;
 using Common.Mechanic_Effects.Scriptable_Objects;
-using Interfaces;
+using Spells;
 using UnityEngine;
 
 namespace Common.Mechanic_Effects.Concrete_Types

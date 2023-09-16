@@ -1,6 +1,7 @@
 ﻿using System;
 using DG.Tweening;
 using Player.Camera_Effects.Settings;
+using Player.Movement;
 using UnityEngine;
 
 namespace Player.Camera_Effects

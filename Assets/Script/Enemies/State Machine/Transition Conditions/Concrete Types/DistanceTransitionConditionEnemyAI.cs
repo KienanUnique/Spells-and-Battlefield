@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using Common;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types

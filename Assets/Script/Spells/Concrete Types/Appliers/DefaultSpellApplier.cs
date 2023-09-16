@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Common.Interfaces;
 using Common.Mechanic_Effects;
 using Common.Mechanic_Effects.Scriptable_Objects;
-using Interfaces;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces;

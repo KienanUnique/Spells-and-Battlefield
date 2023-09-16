@@ -1,6 +1,4 @@
-﻿using Interfaces;
-
-namespace Enemies.Target_Selector_From_Triggers
+﻿namespace Enemies.Target_Selector_From_Triggers
 {
     public interface IEnemyTargetFromTriggersSelector : IReadonlyEnemyTargetFromTriggersSelector
     {

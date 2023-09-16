@@ -1,6 +1,7 @@
 ﻿using System;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Interfaces;
+using Common.Id_Holder;
+using Spells;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 

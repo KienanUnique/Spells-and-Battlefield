@@ -6,8 +6,7 @@ using UnityEngine;
 namespace Enemies.Loot_Dropper.Provider
 {
     [CreateAssetMenu(fileName = "Loot Dropper Provider",
-        menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory + "Loot Dropper Provider",
-        order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.EnemiesDirectory + "Loot Dropper Provider", order = 0)]
     public class LootDropperProvider : ScriptableObject, ILootDropperProvider
     {
         [SerializeField] private LootGenerator _lootGenerator;

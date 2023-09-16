@@ -1,4 +1,4 @@
-﻿using Interfaces;
+﻿using Player;
 using Systems.In_Game_Systems.Time_Controller.Settings;
 
 namespace Systems.In_Game_Systems.Time_Controller

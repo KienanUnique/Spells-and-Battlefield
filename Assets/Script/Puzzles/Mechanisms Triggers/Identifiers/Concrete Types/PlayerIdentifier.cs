@@ -1,4 +1,4 @@
-﻿using Interfaces;
+﻿using Player;
 using UnityEngine;
 
 namespace Puzzles.Mechanisms_Triggers.Identifiers.Concrete_Types

@@ -1,6 +1,6 @@
 using Common.Abstract_Bases.Character;
+using Common.Interfaces;
 using Common.Settings.Sections.Character;
-using Interfaces;
 
 namespace Player.Character
 {

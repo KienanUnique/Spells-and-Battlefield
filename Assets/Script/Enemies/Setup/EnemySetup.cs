@@ -3,6 +3,8 @@ using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Disableable;
 using Common.Event_Invoker_For_Action_Animations;
+using Common.Interfaces;
+using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Common.Settings.Ground_Layer_Mask;
@@ -25,7 +27,6 @@ using Enemies.Target_Selector_From_Triggers;
 using Enemies.Trigger;
 using Enemies.Visual;
 using Factions;
-using Interfaces;
 using Pickable_Items.Factory;
 using UI.Popup_Text.Factory;
 using UnityEngine;
@@ -136,7 +137,8 @@ namespace Enemies.Setup
             IDisableableEnemyMovement enemyMovement =
                 _settings.MovementProvider.GetImplementationObject(movementSetupData);
 
-            IDisableableEnemyCharacter enemyCharacter = _settings.CharacterProvider.GetImplementationObject(this, _summoner);
+            IDisableableEnemyCharacter enemyCharacter =
+                _settings.CharacterProvider.GetImplementationObject(this, _summoner);
 
             var targetTriggers = new List<IEnemyTargetTrigger>(_externalTargetTriggers);
             targetTriggers.AddRange(_localTargetTriggers);

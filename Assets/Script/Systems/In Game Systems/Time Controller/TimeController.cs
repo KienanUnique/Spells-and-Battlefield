@@ -1,5 +1,5 @@
 ﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Interfaces;
+using Player;
 using Systems.In_Game_Systems.Time_Controller.Settings;
 using UnityEngine;
 

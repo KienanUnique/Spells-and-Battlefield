@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Disableable;
+using Common.Interfaces;
 using Common.Readonly_Transform;
 using Enemies.Trigger;
 using Factions;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.Target_Selector_From_Triggers
@@ -20,7 +20,6 @@ namespace Enemies.Target_Selector_From_Triggers
         private readonly float _targetSelectorUpdateCooldownInSeconds;
         private readonly ICoroutineStarter _coroutineStarter;
         private Coroutine _selectingTargetsCoroutine;
-        private bool IsActive => _selectingTargetsCoroutine != null;
 
         public EnemyTargetFromTriggersSelector(IFaction thisFaction, IReadonlyTransform thisTransform,
             ICoroutineStarter coroutineStarter, float targetSelectorUpdateCooldownInSeconds)
@@ -33,6 +32,7 @@ namespace Enemies.Target_Selector_From_Triggers
 
         public event IReadonlyEnemyTargetFromTriggersSelector.CurrentTargetChangedEventHandler CurrentTargetChanged;
         public IEnemyTarget CurrentTarget { get; private set; }
+        private bool IsActive => _selectingTargetsCoroutine != null;
 
         public void AddTrigger(IEnemyTargetTrigger trigger)
         {
@@ -125,7 +125,10 @@ namespace Enemies.Target_Selector_From_Triggers
                 return;
             }
 
-            bool IsTargetDead(IEnemyTarget target) => target.CurrentCharacterState == CharacterState.Dead;
+            bool IsTargetDead(IEnemyTarget target)
+            {
+                return target.CurrentCharacterState == CharacterState.Dead;
+            }
 
             var targetsToRemove = new List<IEnemyTarget>(_targets.Where(IsTargetDead));
             foreach (IEnemyTarget enemyTarget in targetsToRemove)

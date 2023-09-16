@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
+using Common.Interfaces;
+using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Mechanic_Effects.Continuous_Effect;
 using Common.Settings.Sections.Character;
-using Interfaces;
 
 namespace Common.Abstract_Bases.Character
 {
@@ -32,6 +33,11 @@ namespace Common.Abstract_Bases.Character
 
         public CharacterState CurrentCharacterState => _currentState.Value;
         public float HitPointCountRatio => _hitPointsCalculator.HitPointCountRatio;
+
+        public void DieInstantly()
+        {
+            _currentState.Value = CharacterState.Dead;
+        }
 
         public virtual void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {
@@ -63,11 +69,6 @@ namespace Common.Abstract_Bases.Character
             }
 
             _hitPointsCalculator.HandleHeal(countOfHitPoints);
-        }
-
-        public void DieInstantly()
-        {
-            _currentState.Value = CharacterState.Dead;
         }
 
         protected sealed override void SubscribeOnEvents()

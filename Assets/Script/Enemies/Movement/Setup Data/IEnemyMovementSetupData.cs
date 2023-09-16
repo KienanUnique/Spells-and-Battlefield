@@ -1,6 +1,6 @@
-﻿using Enemies.Target_Pathfinder;
+﻿using Common.Interfaces;
+using Enemies.Target_Pathfinder;
 using Enemies.Target_Selector_From_Triggers;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.Movement.Setup_Data

@@ -7,7 +7,6 @@ using Enemies.Spawn.Data_For_Spawn;
 using Enemies.Spawn.Factory;
 using Enemies.Spawn.Spawner.Setup;
 using Enemies.Trigger;
-using Interfaces;
 
 namespace Enemies.Spawn.Spawner
 {

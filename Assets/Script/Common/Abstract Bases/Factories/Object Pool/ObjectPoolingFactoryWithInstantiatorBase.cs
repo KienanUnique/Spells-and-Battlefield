@@ -108,7 +108,8 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
             HandleNewFreeItem(obj);
         }
 
-        private void OnNewItemInitializationStatusChanged(InitializableMonoBehaviourStatus newInitializableMonoBehaviourStatus)
+        private void OnNewItemInitializationStatusChanged(
+            InitializableMonoBehaviourStatus newInitializableMonoBehaviourStatus)
         {
             if (newInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Initialized)
             {

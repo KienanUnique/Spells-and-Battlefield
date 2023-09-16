@@ -1,6 +1,6 @@
 ﻿using System;
 using Common.Abstract_Bases.Box_Collider_Trigger;
-using Interfaces.Pickers;
+using Pickable_Items.Picker_Interfaces;
 
 namespace Pickable_Items
 {

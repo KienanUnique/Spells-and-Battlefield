@@ -1,5 +1,4 @@
 ﻿using System;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types

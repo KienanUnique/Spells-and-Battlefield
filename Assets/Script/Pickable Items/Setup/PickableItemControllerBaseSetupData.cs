@@ -33,7 +33,7 @@ namespace Pickable_Items.Setup
         {
             _dropDirection = dropDirection;
         }
-        
+
         public IStrategyForPickableController SetStrategyForPickableController { get; }
         public IGroundLayerMaskSetting SetGroundLayerMaskSetting { get; }
         public IPickableItemsSettings SetPickableItemsSettings { get; }

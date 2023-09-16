@@ -1,10 +1,10 @@
 ﻿using System;
+using Common.Interfaces;
 using Common.Readonly_Transform;
 using Enemies.Controller;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
 using Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors;
-using Interfaces;
 using Spells.Factory;
 using Spells.Spell;
 using UnityEngine;

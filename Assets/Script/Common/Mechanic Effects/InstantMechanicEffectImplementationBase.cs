@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Interfaces;
+using Common.Interfaces;
 using Spells.Abstract_Types.Implementation_Bases;
 
 namespace Common.Mechanic_Effects

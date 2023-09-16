@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases;
-using Interfaces;
+using Player;
 using TMPro;
 using UI.Popup_Text.Settings;
 using UnityEngine;

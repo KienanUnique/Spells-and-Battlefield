@@ -8,17 +8,17 @@ namespace Factions
     {
         public int Id => GetInstanceID();
 
+        public bool Equals(IFaction other)
+        {
+            return other != null && Id.Equals(other.Id);
+        }
+
         public OtherFactionRelationship GetRelationshipToOtherFraction(IFaction other)
         {
             OtherFactionRelationship result = Equals(this, other)
                 ? OtherFactionRelationship.Friendly
                 : OtherFactionRelationship.Aggressive;
             return result;
-        }
-
-        public bool Equals(IFaction other)
-        {
-            return other != null && Id.Equals(other.Id);
         }
     }
 }

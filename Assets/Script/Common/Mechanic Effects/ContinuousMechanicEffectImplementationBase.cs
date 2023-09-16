@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Common.Interfaces;
 using Common.Mechanic_Effects.Continuous_Effect;
-using Interfaces;
 using Spells.Abstract_Types.Implementation_Bases;
 
 namespace Common.Mechanic_Effects

@@ -1,4 +1,4 @@
-﻿using Interfaces;
+﻿using Player;
 
 namespace UI.Bar.Model.Concrete_Types
 {

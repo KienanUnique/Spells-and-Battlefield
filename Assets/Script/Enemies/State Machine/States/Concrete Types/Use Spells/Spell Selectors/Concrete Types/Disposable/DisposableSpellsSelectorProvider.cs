@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Interfaces;
+using Common.Interfaces;
 using Spells.Spell;
 using Spells.Spell.Scriptable_Objects;
 using UnityEngine;

@@ -1,4 +1,6 @@
-﻿namespace Player.Camera_Effects
+﻿using Player.Movement;
+
+namespace Player.Camera_Effects
 {
     public interface IPlayerCameraEffects
     {

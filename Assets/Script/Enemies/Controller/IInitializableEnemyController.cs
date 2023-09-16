@@ -1,5 +1,4 @@
-﻿using Enemies.Setup;
-using Enemies.Setup.Controller_Setup_Data;
+﻿using Enemies.Setup.Controller_Setup_Data;
 
 namespace Enemies.Controller
 {

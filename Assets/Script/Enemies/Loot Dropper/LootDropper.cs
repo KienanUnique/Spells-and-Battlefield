@@ -26,6 +26,21 @@ namespace Enemies.Loot_Dropper
             _itemsSpawnPoint = itemsSpawnPoint;
         }
 
+        private static IReadOnlyList<Vector3> CalculateRandomDropDirections(int count)
+        {
+            var dropDirections = new List<Vector3>();
+            for (var i = 0; i < count; i++)
+            {
+                float x = Random.Range(-1f, 1f);
+                float y = Random.Range(-1f, 1f);
+                float z = Random.Range(-1f, 1f);
+                Vector3 direction = new Vector3(x, y, z).normalized;
+                dropDirections.Add(direction);
+            }
+
+            return dropDirections;
+        }
+
         public void DropLoot(Vector3 priorityDropDirection)
         {
             IReadOnlyList<IPickableItemDataForCreating> lootToDrop = _generator.GetLoot();
@@ -48,21 +63,6 @@ namespace Enemies.Loot_Dropper
             return 360f / count < MinimumAngleBetweenDropDirections
                 ? CalculateRandomDropDirections(count)
                 : CalculateOrderedDropDirections(count, priorityDropDirection);
-        }
-
-        private static IReadOnlyList<Vector3> CalculateRandomDropDirections(int count)
-        {
-            var dropDirections = new List<Vector3>();
-            for (var i = 0; i < count; i++)
-            {
-                float x = Random.Range(-1f, 1f);
-                float y = Random.Range(-1f, 1f);
-                float z = Random.Range(-1f, 1f);
-                Vector3 direction = new Vector3(x, y, z).normalized;
-                dropDirections.Add(direction);
-            }
-
-            return dropDirections;
         }
 
         private IReadOnlyList<Vector3> CalculateOrderedDropDirections(int count, Vector3 priorityDropDirection)

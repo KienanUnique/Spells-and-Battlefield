@@ -3,7 +3,6 @@ using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Enemies.Look_Point_Calculator;
 using Enemies.State_Machine.States;
 using Enemies.Target_Selector_From_Triggers;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.State_Machine

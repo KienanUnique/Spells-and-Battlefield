@@ -1,6 +1,5 @@
 ﻿using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
-using Interfaces;
 using UnityEngine;
 
 namespace Enemies.Look_Point_Calculator

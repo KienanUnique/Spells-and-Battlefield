@@ -3,7 +3,7 @@ using System.Linq;
 using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Interfaces;
+using Common.Id_Holder;
 using UnityEngine;
 
 namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone.Trigger_On_Spell_Interaction

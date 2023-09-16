@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Common.Mechanic_Effects;
-using Interfaces;
 
 namespace Enemies.Character
 {

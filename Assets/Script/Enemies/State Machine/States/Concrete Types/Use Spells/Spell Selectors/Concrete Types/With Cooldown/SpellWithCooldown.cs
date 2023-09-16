@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Interfaces;
+using Common.Interfaces;
 using Spells.Spell;
 using UnityEngine;
 

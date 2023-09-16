@@ -6,7 +6,10 @@ using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animation_Data;
 using Common.Event_Invoker_For_Action_Animations;
+using Common.Id_Holder;
+using Common.Interfaces;
 using Common.Mechanic_Effects;
+using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Mechanic_Effects.Continuous_Effect;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
@@ -22,7 +25,6 @@ using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Visual;
 using Factions;
-using Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
 using UI.Popup_Text.Factory;
 using UnityEngine;
@@ -77,12 +79,12 @@ namespace Enemies.Controller
         public event Action ActionAnimationStart;
         public event Action ActionAnimationEnd;
 
-        public float HitPointCountRatio => _character.HitPointCountRatio;
+        public IReadonlyTransform MainTransform => MainRigidbody;
+        public IReadonlyTransform UpperPointForSummonPointCalculating => PointForAiming;
+        public IInformationForSummon InformationForSummon { get; private set; }
+        public IToolsForSummon ToolsForSummon { get; private set; }
 
-        public void DieInstantly()
-        {
-            _character.DieInstantly();
-        }
+        public float HitPointCountRatio => _character.HitPointCountRatio;
 
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public Vector3 CurrentLookDirection => _look.CurrentLookDirection;
@@ -91,16 +93,16 @@ namespace Enemies.Controller
 
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; private set; }
         public ISummoner Summoner => this;
-        public int Id => _idHolder.Id;
-        public Vector3 CurrentPosition => _movement.CurrentPosition;
         public IFaction Faction { get; private set; }
         public IReadonlyTransform PointForAiming { get; private set; }
         public IReadonlyRigidbody MainRigidbody => _movement.ReadonlyRigidbody;
+        public int Id => _idHolder.Id;
+        public Vector3 CurrentPosition => _movement.CurrentPosition;
 
-        public IReadonlyTransform MainTransform => MainRigidbody;
-        public IReadonlyTransform UpperPointForSummonPointCalculating => PointForAiming;
-        public IInformationForSummon InformationForSummon { get; private set; }
-        public IToolsForSummon ToolsForSummon { get; private set; }
+        public void DieInstantly()
+        {
+            _character.DieInstantly();
+        }
 
         public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {

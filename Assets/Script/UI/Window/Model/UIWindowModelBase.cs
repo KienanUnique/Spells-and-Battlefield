@@ -1,4 +1,4 @@
-﻿using Interfaces;
+﻿using Common.Id_Holder;
 using UI.Managers.Concrete_Types.In_Game;
 
 namespace UI.Window.Model

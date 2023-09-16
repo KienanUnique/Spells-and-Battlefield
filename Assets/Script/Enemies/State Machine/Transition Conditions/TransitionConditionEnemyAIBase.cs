@@ -1,6 +1,5 @@
 ﻿using System;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using UnityEngine;
 
 namespace Enemies.State_Machine.Transition_Conditions
 {

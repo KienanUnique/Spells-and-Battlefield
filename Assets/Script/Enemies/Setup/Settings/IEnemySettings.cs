@@ -11,7 +11,7 @@ namespace Enemies.Setup.Settings
         public IEnemyCharacterProvider CharacterProvider { get; }
         public IEnemyMovementProvider MovementProvider { get; }
         public ITargetPathfinderProvider TargetPathfinderProvider { get; }
-        public ILootDropperProvider LootDropperProvider  { get; }
+        public ILootDropperProvider LootDropperProvider { get; }
         public AnimatorOverrideController BaseAnimatorOverrideController { get; }
     }
 }
