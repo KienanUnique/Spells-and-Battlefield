@@ -3,6 +3,7 @@ using System.Collections;
 using Common;
 using Common.Abstract_Bases.Movement;
 using Common.Interfaces;
+using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Common.Settings.Sections.Movement;
@@ -28,6 +29,7 @@ namespace Enemies.Movement
         private readonly Transform _originalParent;
         private readonly ITargetPathfinderForMovement _targetPathfinder;
         private readonly IReadonlyEnemyTargetFromTriggersSelector _targetSelector;
+        private readonly ISummoner _summoner;
         private IEnemyDataForMoving _currentDataForMoving;
         private Coroutine _followPathCoroutine;
         private bool _needMove;
@@ -42,6 +44,7 @@ namespace Enemies.Movement
             _isMoving = new ValueWithReactionOnChange<bool>(false);
             _targetPathfinder = setupData.TargetPathfinderForMovement;
             _targetSelector = setupData.TargetSelector;
+            _summoner = setupData.Summoner;
         }
 
         public event Action<bool> MovingStateChanged;
@@ -74,21 +77,12 @@ namespace Enemies.Movement
 
         public void StartKeepingCurrentTargetOnDistance(IEnemyDataForMoving dataForMoving)
         {
-            _currentDataForMoving = dataForMoving;
+            StartKeepingTransformOnDistance(dataForMoving, CurrentTarget?.MainRigidbody);
+        }
 
-            if (_followPathCoroutine != null)
-            {
-                StopMoving();
-            }
-
-            _needMove = true;
-
-            if (CurrentTarget != null)
-            {
-                _isMoving.Value = true;
-                _followPathCoroutine = _coroutineStarter.StartCoroutine(
-                    KeepingTransformOnDistance(CurrentTarget.MainRigidbody, dataForMoving.NeedDistanceFromTarget));
-            }
+        public void StartKeepingSummonerOnDistance(IEnemyDataForMoving dataForMoving)
+        {
+            StartKeepingTransformOnDistance(dataForMoving, _summoner?.MainTransform);
         }
 
         public void StopMoving()
@@ -140,6 +134,25 @@ namespace Enemies.Movement
         private void OnIsMovingStatusChanged(bool b)
         {
             MovingStateChanged?.Invoke(b);
+        }
+
+        private void StartKeepingTransformOnDistance(IEnemyDataForMoving dataForMoving, IReadonlyTransform transform)
+        {
+            _currentDataForMoving = dataForMoving;
+
+            if (_followPathCoroutine != null)
+            {
+                StopMoving();
+            }
+
+            _needMove = true;
+
+            if (transform != null)
+            {
+                _isMoving.Value = true;
+                _followPathCoroutine = _coroutineStarter.StartCoroutine(
+                    KeepingTransformOnDistance(transform, dataForMoving.NeedDistanceFromTarget));
+            }
         }
 
         private IEnumerator KeepingTransformOnDistance(IReadonlyTransform targetPosition, float needDistance)

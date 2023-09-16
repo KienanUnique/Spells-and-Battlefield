@@ -7,6 +7,7 @@ namespace Enemies.Movement
     {
         public IReadonlyRigidbody ReadonlyRigidbody { get; }
         public void StartKeepingCurrentTargetOnDistance(IEnemyDataForMoving dataForMoving);
+        public void StartKeepingSummonerOnDistance(IEnemyDataForMoving dataForMoving);
         public void StopMoving();
     }
 }

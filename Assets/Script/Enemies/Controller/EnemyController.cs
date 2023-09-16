@@ -129,6 +129,11 @@ namespace Enemies.Controller
             _movement.StartKeepingCurrentTargetOnDistance(dataForMoving);
         }
 
+        public void StartKeepingSummonerOnDistance(IEnemyDataForMoving dataForMoving)
+        {
+            _movement.StartKeepingSummonerOnDistance(dataForMoving);
+        }
+
         public void StopMoving()
         {
             _movement.StopMoving();

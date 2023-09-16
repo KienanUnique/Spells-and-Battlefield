@@ -132,8 +132,8 @@ namespace Enemies.Setup
             var enemyVisual = new EnemyVisual(_rigBuilder, _characterAnimator, _settings.BaseAnimatorOverrideController,
                 _generalEnemySettings.EmptyActionAnimationClip);
 
-            var movementSetupData =
-                new EnemyMovementSetupData(_thisRigidbody, targetFromTriggersSelector, this, targetPathfinder);
+            var movementSetupData = new EnemyMovementSetupData(_thisRigidbody, targetFromTriggersSelector, this,
+                targetPathfinder, _summoner);
             IDisableableEnemyMovement enemyMovement =
                 _settings.MovementProvider.GetImplementationObject(movementSetupData);
 
