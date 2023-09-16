@@ -83,16 +83,14 @@ namespace Enemies.Controller
         public IReadonlyTransform UpperPointForSummonPointCalculating => PointForAiming;
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
-
         public float HitPointCountRatio => _character.HitPointCountRatio;
-
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public Vector3 CurrentLookDirection => _look.CurrentLookDirection;
         public IReadonlyTransform ThisPositionReferencePointForLook => _look.ThisPositionReferencePointForLook;
         public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
 
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; private set; }
-        public ISummoner Summoner => this;
+        public ISummoner Summoner => _character.Summoner;
         public IFaction Faction { get; private set; }
         public IReadonlyTransform PointForAiming { get; private set; }
         public IReadonlyRigidbody MainRigidbody => _movement.ReadonlyRigidbody;

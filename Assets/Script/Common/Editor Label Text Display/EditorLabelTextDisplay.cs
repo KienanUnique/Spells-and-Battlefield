@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Common.Editor_Label_Text_Display
@@ -23,6 +25,7 @@ namespace Common.Editor_Label_Text_Display
                    cameraPosition.z < distance;
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (!Application.isEditor || !IsSceneViewCameraInRange(transform.position, MaximumRenderDistance))
@@ -35,5 +38,6 @@ namespace Common.Editor_Label_Text_Display
                 Handles.Label(transform.position + _textOffset, _textProvider.TextForEditorLabel);
             }
         }
+#endif
     }
 }

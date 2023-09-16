@@ -17,6 +17,8 @@ namespace Enemies.Character
             _name = characterSettings.Name;
         }
 
+        public ISummoner Summoner => _summoner;
+
         public void ApplyEffectsToTargets(IReadOnlyCollection<IEnemyTarget> targets,
             IReadOnlyCollection<IMechanicEffect> mechanicEffects)
         {

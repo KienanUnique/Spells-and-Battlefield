@@ -49,9 +49,11 @@ MonoBehaviour:
     _singleSubManagers:
     - _nextState: {fileID: 0}
       _condition: {fileID: 4150771908210674117}
+    _conjunctionSubManagers:
     - _nextState: {fileID: 767341206277698441}
-      _condition: {fileID: 2886970794278579939}
-    _conjunctionSubManagers: []
+      _conditions:
+      - {fileID: 4760315531072971565}
+      - {fileID: 2886970794278579939}
     _disjunctionSubManagers: []
 --- !u!1 &2413946807451204674
 GameObject:
