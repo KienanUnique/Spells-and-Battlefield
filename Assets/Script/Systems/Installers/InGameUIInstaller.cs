@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using UI.Concrete_Scenes.In_Game.Prefab_Provider;
 using UI.Managers.Concrete_Types.In_Game;
-using UI.Prefab_Provider;
 using UnityEngine;
 using Zenject;
 

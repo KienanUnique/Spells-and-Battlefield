@@ -8,5 +8,10 @@ namespace Systems.Scene_Switcher.Scene_Data
     {
         [SerializeField] private string _sceneName;
         public string SceneName => _sceneName;
+
+        public bool Equals(ISceneData other)
+        {
+            return other != null && _sceneName.Equals(other.SceneName);
+        }
     }
 }

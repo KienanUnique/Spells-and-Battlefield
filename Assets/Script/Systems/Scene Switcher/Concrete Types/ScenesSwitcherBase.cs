@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace Systems.Scene_Switcher.Concrete_Types
 {
-    public class ScenesSwitcherBase
+    public class ScenesSwitcherBase : IScenesSwitcher
     {
         protected readonly IScenesSettings _settings;
         private bool _isAlreadyLoading;
@@ -22,6 +22,11 @@ namespace Systems.Scene_Switcher.Concrete_Types
         public void LoadGameLevel(IGameLevelData levelToLoad)
         {
             LoadScene(levelToLoad);
+        }
+
+        public void LoadCredits()
+        {
+            LoadScene(_settings.CreditsScene);
         }
 
         protected void LoadScene(ISceneData sceneToLoad)

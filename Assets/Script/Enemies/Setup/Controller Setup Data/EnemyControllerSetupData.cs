@@ -13,7 +13,7 @@ using Enemies.State_Machine;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Visual;
 using Factions;
-using UI.Popup_Text.Factory;
+using UI.Concrete_Scenes.In_Game.Popup_Text.Factory;
 
 namespace Enemies.Setup.Controller_Setup_Data
 {

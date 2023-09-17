@@ -91,13 +91,13 @@ namespace Systems.In_Game_Systems.Game_Controller
         private void SubscribeOnUIEvents()
         {
             _inGameSystemInput.CloseCurrentWindow += OnCloseCurrentWindow;
-            _inGameManagerUI.AllMenusClosed += OnCloseMenuInputted;
+            _inGameManagerUI.AllWindowsClosed += OnCloseWindowInputted;
         }
 
         private void UnsubscribeFromUIEvents()
         {
             _inGameSystemInput.CloseCurrentWindow -= OnCloseCurrentWindow;
-            _inGameManagerUI.AllMenusClosed -= OnCloseMenuInputted;
+            _inGameManagerUI.AllWindowsClosed -= OnCloseWindowInputted;
         }
 
         private void OnBeforeGameStateChanged(GameState previousState)
@@ -135,18 +135,18 @@ namespace Systems.In_Game_Systems.Game_Controller
                 case GameState.GameOver:
                     SubscribeOnUIEvents();
                     _inGameSystemInput.SwitchToUIInput();
-                    _inGameManagerUI.SwitchTo(InGameUIElementsGroup.GameOverMenu);
+                    _inGameManagerUI.SwitchTo(InGameUIElementsGroup.GameOverWindow);
                     break;
                 case GameState.Pause:
                     SubscribeOnUIEvents();
                     _timeController.StopTime();
                     _inGameSystemInput.SwitchToUIInput();
-                    _inGameManagerUI.SwitchTo(InGameUIElementsGroup.PauseMenu);
+                    _inGameManagerUI.SwitchTo(InGameUIElementsGroup.PauseWindow);
                     break;
                 case GameState.LevelCompleted:
                     SubscribeOnUIEvents();
                     _inGameSystemInput.SwitchToUIInput();
-                    _inGameManagerUI.SwitchTo(InGameUIElementsGroup.LevelCompletedMenu);
+                    _inGameManagerUI.SwitchTo(InGameUIElementsGroup.LevelCompletedWindow);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -176,7 +176,7 @@ namespace Systems.In_Game_Systems.Game_Controller
             _currentGameState.Value = GameState.Pause;
         }
 
-        private void OnCloseMenuInputted()
+        private void OnCloseWindowInputted()
         {
             _currentGameState.Value = _lastState;
         }

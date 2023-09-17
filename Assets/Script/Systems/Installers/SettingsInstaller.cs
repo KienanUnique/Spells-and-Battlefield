@@ -9,12 +9,12 @@ using Spells.Spell_Types_Settings;
 using Systems.In_Game_Systems.Post_Processing_Controller.Settings;
 using Systems.In_Game_Systems.Time_Controller.Settings;
 using Systems.Input_Manager.Settings;
-using UI.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes.Settings;
-using UI.Bar.View.Concrete_Types.Filling_Bar.Settings;
+using UI.Concrete_Scenes.In_Game.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes.Settings;
+using UI.Concrete_Scenes.In_Game.Bar.View.Concrete_Types.Filling_Bar.Settings;
+using UI.Concrete_Scenes.In_Game.Popup_Text.Settings;
+using UI.Concrete_Scenes.In_Game.Spells_Panel.Settings;
 using UI.Element.View.Settings;
 using UI.Loading_Window.View;
-using UI.Popup_Text.Settings;
-using UI.Spells_Panel.Settings;
 using UnityEngine;
 using Zenject;
 

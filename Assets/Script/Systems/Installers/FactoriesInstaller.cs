@@ -6,8 +6,8 @@ using Pickable_Items.Factory;
 using Spells.Factory;
 using Systems.In_Game_Systems.Factory;
 using Systems.In_Game_Systems.Prefab_Provider;
-using UI.Popup_Text.Factory;
-using UI.Popup_Text.Factory.Settings;
+using UI.Concrete_Scenes.In_Game.Popup_Text.Factory;
+using UI.Concrete_Scenes.In_Game.Popup_Text.Factory.Settings;
 using UnityEngine;
 using Zenject;
 

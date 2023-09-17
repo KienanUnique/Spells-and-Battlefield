@@ -26,7 +26,7 @@ using Enemies.Target_Selector_From_Triggers;
 using Enemies.Visual;
 using Factions;
 using Spells.Implementations_Interfaces.Implementations;
-using UI.Popup_Text.Factory;
+using UI.Concrete_Scenes.In_Game.Popup_Text.Factory;
 using UnityEngine;
 
 namespace Enemies.Controller

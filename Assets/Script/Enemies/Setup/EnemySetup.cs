@@ -28,7 +28,7 @@ using Enemies.Trigger;
 using Enemies.Visual;
 using Factions;
 using Pickable_Items.Factory;
-using UI.Popup_Text.Factory;
+using UI.Concrete_Scenes.In_Game.Popup_Text.Factory;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using Zenject;

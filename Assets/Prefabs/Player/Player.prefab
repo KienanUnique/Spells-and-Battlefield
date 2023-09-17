@@ -294,10 +294,6 @@ MonoBehaviour:
   _wallChecker: {fileID: 1408449592405486887}
   _startTestSpells:
   - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
-  - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
-  - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
-  - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
-  - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
   - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
   - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
   - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}

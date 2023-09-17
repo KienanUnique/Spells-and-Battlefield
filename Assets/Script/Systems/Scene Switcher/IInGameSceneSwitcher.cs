@@ -1,12 +1,10 @@
-﻿using Systems.Scene_Switcher.Scene_Data.Game_Level_Data;
+﻿using Systems.Scene_Switcher.Concrete_Types;
 
 namespace Systems.Scene_Switcher
 {
-    public interface IInGameSceneSwitcher
+    public interface IInGameSceneSwitcher : IScenesSwitcher
     {
         public void LoadNextLevel();
         public void RestartLevel();
-        public void LoadMainMenu();
-        public void LoadGameLevel(IGameLevelData levelToLoad);
     }
 }
