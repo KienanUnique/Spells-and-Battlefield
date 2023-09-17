@@ -1,0 +1,27 @@
+﻿using System.Collections.Generic;
+using Common.Abstract_Bases;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using UI.Managers.UI_Windows_Stack_Manager;
+using UI.Window.Presenter;
+using UnityEngine;
+
+namespace UI.Managers.Concrete_Types.Default
+{
+    public class DefaultManagerUISetup : SetupMonoBehaviourBase
+    {
+        [SerializeField] private WindowPresenterBase _startWindow;
+        private IInitializableDefaultManagerUI _manager;
+        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization => new[] {_startWindow};
+
+        protected override void Prepare()
+        {
+            _manager = GetComponent<IInitializableDefaultManagerUI>();
+        }
+
+        protected override void Initialize()
+        {
+            var stackManager = new UIWindowsStackManager(_startWindow);
+            _manager.Initialize(stackManager);
+        }
+    }
+}

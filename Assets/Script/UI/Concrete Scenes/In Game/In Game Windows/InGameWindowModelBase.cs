@@ -8,26 +8,26 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
 {
     public abstract class InGameWindowModelBase : UIWindowModelBase
     {
-        protected readonly IInGameSceneSwitcher _inGameSceneSwitcher;
+        protected readonly IInGameSceneManager InGameSceneManager;
         private readonly ILoadingWindow _loadingWindow;
 
         protected InGameWindowModelBase(IIdHolder idHolder, IUIWindowManager manager,
-            IInGameSceneSwitcher inGameSceneSwitcher, ILoadingWindow loadingWindow) : base(idHolder, manager)
+            IInGameSceneManager inGameSceneManager, ILoadingWindow loadingWindow) : base(idHolder, manager)
         {
-            _inGameSceneSwitcher = inGameSceneSwitcher;
+            InGameSceneManager = inGameSceneManager;
             _loadingWindow = loadingWindow;
         }
 
         public void OnQuitMainWindowButtonPressed()
         {
             Manager.OpenWindow(_loadingWindow);
-            _inGameSceneSwitcher.LoadMainMenu();
+            InGameSceneManager.LoadMainMenu();
         }
 
         public void OnRestartLevelWindowButtonPressed()
         {
             Manager.OpenWindow(_loadingWindow);
-            _inGameSceneSwitcher.RestartLevel();
+            InGameSceneManager.RestartLevel();
         }
     }
 }

@@ -456,7 +456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _loadingWindow: {fileID: 0}
-  _goToMainMenuButton: {fileID: 941077703739490492}
+  _goToMainWindowButton: {fileID: 941077703739490492}
   _restartLevelButton: {fileID: 9083050626381609082}
   _continueGameButton: {fileID: 3735062008094018773}
 --- !u!114 &3017658607906025245

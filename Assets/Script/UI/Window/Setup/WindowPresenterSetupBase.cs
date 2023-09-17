@@ -4,7 +4,7 @@ using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Id_Holder;
 using UI.Element.Setup;
 using UI.Managers.Concrete_Types.In_Game;
-using UI.Managers.Concrete_Types.In_Game.Installer;
+using UI.Managers.Installer;
 using UnityEngine;
 
 namespace UI.Window.Setup
@@ -20,7 +20,7 @@ namespace UI.Window.Setup
         protected IIdHolder IDHolder { get; private set; }
         protected IUIWindowManager Manager { get; private set; }
 
-        public void SetInGameUIControllable(IUIWindowManager manager)
+        public void SetUIWindowManager(IUIWindowManager manager)
         {
             Manager = manager;
             if (_externalDependenciesInitializationWaiter == null)

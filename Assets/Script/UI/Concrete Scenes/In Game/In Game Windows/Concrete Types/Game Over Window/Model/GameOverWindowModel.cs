@@ -7,8 +7,8 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Game_Over_Wi
 {
     public class GameOverWindowModel : InGameWindowModelBase, IGameOverWindowModel
     {
-        public GameOverWindowModel(IIdHolder idHolder, IUIWindowManager manager, IInGameSceneSwitcher inGameSceneSwitcher,
-            ILoadingWindow loadingWindow) : base(idHolder, manager, inGameSceneSwitcher, loadingWindow)
+        public GameOverWindowModel(IIdHolder idHolder, IUIWindowManager manager, IInGameSceneManager inGameSceneManager,
+            ILoadingWindow loadingWindow) : base(idHolder, manager, inGameSceneManager, loadingWindow)
         {
         }
 

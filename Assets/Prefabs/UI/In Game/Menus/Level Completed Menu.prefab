@@ -347,7 +347,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dd08104c7d442069eba841489f5a3c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goToMainMenuButton: {fileID: 5649208588433930794}
+  _loadingWindow: {fileID: 0}
+  _goToMainWindowButton: {fileID: 941077703739490492}
   _restartLevelButton: {fileID: 9083050626381609082}
   _loadNextLevelButton: {fileID: 941077703739490492}
 --- !u!114 &7640352642689672947
@@ -471,14 +472,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7c28aaf71f3f0e4eafa78a00ab99caa, type: 3}
---- !u!114 &5649208588433930794 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3883676525397884265, guid: a7c28aaf71f3f0e4eafa78a00ab99caa, type: 3}
-  m_PrefabInstance: {fileID: 8900118362259818307}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

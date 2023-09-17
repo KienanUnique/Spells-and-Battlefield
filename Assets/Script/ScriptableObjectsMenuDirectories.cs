@@ -67,6 +67,7 @@
     #region PrefabProviders
 
     public const string SystemsPrefabProvidersDirectory = RootDirectory + "System/";
+    public const string UIPrefabProvidersDirectory = RootDirectory + "UI/";
     public const string PickableItemsProvidersDirectory = RootDirectory + "Pickable Items/";
     public const string PopupTextProvidersDirectory = RootDirectory + "Popup Texts/";
 

@@ -371,5 +371,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c1eea30a3454b21ad62ba7a6c0ec204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goToMainMenuButton: {fileID: 941077703739490492}
+  _loadingWindow: {fileID: 0}
+  _goToMainWindowButton: {fileID: 941077703739490492}
   _restartLevelButton: {fileID: 9083050626381609082}

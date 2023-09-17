@@ -132,9 +132,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameplayUI: {fileID: 2731305089583987120}
-  _gameOverMenu: {fileID: 8447651615608495423}
-  _pauseMenu: {fileID: 866779127299798512}
-  _levelCompletedMenu: {fileID: 5755731979707050882}
+  _gameOverWindow: {fileID: 8447651615608495423}
+  _pauseWindow: {fileID: 866779127299798512}
+  _levelCompletedWindow: {fileID: 5755731979707050882}
 --- !u!114 &2731305090528449065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57b2b19623954da492ae83e631cc8eed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inGameManagerUI: {fileID: 2731305090528449066}
+  _managerUI: {fileID: 2731305090528449066}
 --- !u!1001 &2731305089535266161
 PrefabInstance:
   m_ObjectHideFlags: 0

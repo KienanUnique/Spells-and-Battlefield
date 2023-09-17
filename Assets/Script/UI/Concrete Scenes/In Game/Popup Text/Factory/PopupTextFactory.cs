@@ -11,9 +11,9 @@ namespace UI.Concrete_Scenes.In_Game.Popup_Text.Factory
             IPopupTextControllerDataForActivation>,
         IPopupTextFactory
     {
-        public PopupTextFactory(IInstantiator instantiator, Transform parentTransform, int needItemsCount,
+        public PopupTextFactory(IInstantiator instantiator, Transform defaultParentTransform, int needItemsCount,
             IPrefabProvider prefabProvider, IPositionDataForInstantiation defaultPositionDataForInstantiation) : base(
-            instantiator, parentTransform, needItemsCount, prefabProvider, defaultPositionDataForInstantiation)
+            instantiator, defaultParentTransform, needItemsCount, prefabProvider, defaultPositionDataForInstantiation)
         {
         }
 

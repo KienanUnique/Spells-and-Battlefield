@@ -14,14 +14,14 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
         [SerializeField] private Button _restartLevelButton;
 
         [Inject]
-        private void GetDependencies(IInGameSceneSwitcher inGameSceneSwitcher)
+        private void GetDependencies(IInGameSceneManager inGameSceneManager)
         {
-            InGameSceneSwitcher = inGameSceneSwitcher;
+            InGameSceneManager = inGameSceneManager;
         }
 
         protected LoadingWindowPresenter LoadingWindow => _loadingWindow;
         protected Button GoToMainWindowButton => _goToMainWindowButton;
         protected Button RestartLevelButton => _restartLevelButton;
-        protected IInGameSceneSwitcher InGameSceneSwitcher { private set; get; }
+        protected IInGameSceneManager InGameSceneManager { private set; get; }
     }
 }

@@ -8,8 +8,8 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Level_Comple
     public class LevelCompletedWindowModel : InGameWindowModelBase, ILevelCompletedWindowModel
     {
         public LevelCompletedWindowModel(IIdHolder idHolder, IUIWindowManager manager,
-            IInGameSceneSwitcher inGameSceneSwitcher, ILoadingWindow loadingWindow) : base(idHolder, manager,
-            inGameSceneSwitcher, loadingWindow)
+            IInGameSceneManager inGameSceneManager, ILoadingWindow loadingWindow) : base(idHolder, manager,
+            inGameSceneManager, loadingWindow)
         {
         }
 
@@ -17,7 +17,7 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Level_Comple
 
         public void OnLoadNextLevelButtonPressed()
         {
-            _inGameSceneSwitcher.LoadNextLevel();
+            InGameSceneManager.LoadNextLevel();
         }
     }
 }

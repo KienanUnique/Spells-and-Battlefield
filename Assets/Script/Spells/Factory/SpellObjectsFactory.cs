@@ -9,8 +9,8 @@ namespace Spells.Factory
 {
     public class SpellObjectsFactory : FactoryWithInstantiatorBase, ISpellObjectsFactory
     {
-        public SpellObjectsFactory(IInstantiator instantiator, Transform parentTransform) : base(instantiator,
-            parentTransform)
+        public SpellObjectsFactory(IInstantiator instantiator, Transform defaultParentTransform) : base(instantiator,
+            defaultParentTransform)
         {
         }
 

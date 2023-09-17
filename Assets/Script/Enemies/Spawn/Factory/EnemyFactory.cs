@@ -11,7 +11,7 @@ namespace Enemies.Spawn.Factory
 {
     public class EnemyFactory : FactoryWithInstantiatorBase, IEnemyFactory
     {
-        public EnemyFactory(IInstantiator instantiator, Transform parentTransform) : base(instantiator, parentTransform)
+        public EnemyFactory(IInstantiator instantiator, Transform defaultParentTransform) : base(instantiator, defaultParentTransform)
         {
         }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UI.Concrete_Scenes.In_Game.Prefab_Provider
 {
     [CreateAssetMenu(fileName = "In Game UI Prefab Provider",
-        menuName = ScriptableObjectsMenuDirectories.SystemsPrefabProvidersDirectory + "In Game UI Prefab Provider",
+        menuName = ScriptableObjectsMenuDirectories.UIPrefabProvidersDirectory + "In Game UI Prefab Provider",
         order = 0)]
     public class InGameUIPrefabProvider : PrefabProviderScriptableObjectBase
     {

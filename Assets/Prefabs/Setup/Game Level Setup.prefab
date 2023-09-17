@@ -153,14 +153,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8945726531586246359, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
-      propertyPath: _monoInstallers.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945726531586246359, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
-      propertyPath: _monoInstallers.Array.data[5]
-      value: 
-      objectReference: {fileID: 6877201861384166468}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
 --- !u!4 &6939430437685933042 stripped
@@ -168,14 +160,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8945726531586246358, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
   m_PrefabInstance: {fileID: 2046980404647425316}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6877201861384166468 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4834877476197149024, guid: ae7e8c5155592694f9c5a1d49fa8cbab, type: 3}
-  m_PrefabInstance: {fileID: 2046980404647425316}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c8dfbad74e7450b8b6e2403f5a79cab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

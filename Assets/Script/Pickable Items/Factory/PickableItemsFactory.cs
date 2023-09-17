@@ -10,8 +10,8 @@ namespace Pickable_Items.Factory
 {
     public class PickableItemsFactory : FactoryWithInstantiatorBase, IPickableItemsFactory
     {
-        public PickableItemsFactory(IInstantiator instantiator, Transform parentTransform) : base(instantiator,
-            parentTransform)
+        public PickableItemsFactory(IInstantiator instantiator, Transform defaultParentTransform) : base(instantiator,
+            defaultParentTransform)
         {
         }
 

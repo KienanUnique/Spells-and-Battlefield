@@ -7,8 +7,8 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Pause_Window
 {
     public class PauseWindowModel : InGameWindowModelBase, IPauseWindowModel
     {
-        public PauseWindowModel(IIdHolder idHolder, IUIWindowManager manager, IInGameSceneSwitcher inGameSceneSwitcher,
-            ILoadingWindow loadingWindow) : base(idHolder, manager, inGameSceneSwitcher, loadingWindow)
+        public PauseWindowModel(IIdHolder idHolder, IUIWindowManager manager, IInGameSceneManager inGameSceneManager,
+            ILoadingWindow loadingWindow) : base(idHolder, manager, inGameSceneManager, loadingWindow)
         {
         }
 

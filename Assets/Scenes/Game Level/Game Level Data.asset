@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Game Level Data
   m_EditorClassIdentifier: 
   _sceneName: Game Level
-  _icon: {fileID: 21300000, guid: 08c91a7677e66844281a99aaf6ea36f1, type: 3}
-  _nameToShow: Current Game Level
+  _icon: {fileID: 21300000, guid: e33073c12a1212141bb271ff12a51209, type: 3}
+  _nameToShow: Level 0
