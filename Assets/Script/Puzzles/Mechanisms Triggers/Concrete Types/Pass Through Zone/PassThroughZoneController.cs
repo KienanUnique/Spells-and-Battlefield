@@ -9,15 +9,17 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Pass_Through_Zone
     {
         private IColliderTrigger _colliderTrigger;
         private IIdentifier _identifier;
+        private bool _needTriggerOneTime;
 
-        public void Initialize(IIdentifier identifier, IColliderTrigger colliderTrigger)
+        public void Initialize(IIdentifier identifier, bool needTriggerOneTime, IColliderTrigger colliderTrigger)
         {
             _identifier = identifier;
             _colliderTrigger = colliderTrigger;
+            _needTriggerOneTime = needTriggerOneTime;
             SetInitializedStatus();
         }
 
-        public override event Action Triggered;
+        protected override bool NeedTriggerOneTime => _needTriggerOneTime;
 
         protected override void SubscribeOnEvents()
         {
@@ -33,7 +35,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Pass_Through_Zone
         {
             if (_identifier.IsObjectOfRequiredType(obj))
             {
-                Triggered?.Invoke();
+                TryInvokeTriggerEvent();
             }
         }
     }

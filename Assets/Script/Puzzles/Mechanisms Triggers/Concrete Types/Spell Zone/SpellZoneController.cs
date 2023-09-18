@@ -9,15 +9,17 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone
     {
         private ITriggerOnSpellInteraction _triggerOnSpellInteraction;
         private List<ISpellType> _typesToTriggerOn;
+        private bool _needTriggerOneTime;
 
-        public void Initialize(List<ISpellType> typesToTriggerOn, ITriggerOnSpellInteraction triggerOnSpellInteraction)
+        public void Initialize(List<ISpellType> typesToTriggerOn,bool needTriggerOneTime, ITriggerOnSpellInteraction triggerOnSpellInteraction)
         {
             _typesToTriggerOn = typesToTriggerOn;
             _triggerOnSpellInteraction = triggerOnSpellInteraction;
+            _needTriggerOneTime = needTriggerOneTime;
             SetInitializedStatus();
         }
 
-        public override event Action Triggered;
+        protected override bool NeedTriggerOneTime => _needTriggerOneTime;
 
         protected override void SubscribeOnEvents()
         {
@@ -33,7 +35,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone
         {
             if (_typesToTriggerOn.Contains(spellType))
             {
-                Triggered?.Invoke();
+                TryInvokeTriggerEvent();
             }
         }
     }

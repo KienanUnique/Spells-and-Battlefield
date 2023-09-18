@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Pass_Through_Zone
 {
-    public class PassThroughZoneControllerSetup : SetupMonoBehaviourBase
+    public class PassThroughZoneControllerSetup : MechanismsTriggerSetupBase
     {
         [SerializeField] private ColliderTrigger _colliderTrigger;
         [SerializeField] private IdentifierScriptableObjectBase _identifier;
@@ -19,7 +19,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Pass_Through_Zone
 
         protected override void Initialize()
         {
-            _controller.Initialize(_identifier, _colliderTrigger);
+            _controller.Initialize(_identifier, NeedTriggerOneTime, _colliderTrigger);
         }
 
         protected override void Prepare()

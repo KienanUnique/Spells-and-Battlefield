@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone
 {
-    public class SpellZoneControllerSetup : SetupMonoBehaviourBase
+    public class SpellZoneControllerSetup : MechanismsTriggerSetupBase
     {
         [SerializeField] private TriggerOnSpellInteractionController _triggerOnSpellInteraction;
         [SerializeField] private List<SpellTypeScriptableObject> _spellTypesToTriggerOn;
@@ -20,7 +20,8 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone
 
         protected override void Initialize()
         {
-            _controller.Initialize(_spellTypesToTriggerOnImplementations, _triggerOnSpellInteraction);
+            _controller.Initialize(_spellTypesToTriggerOnImplementations, NeedTriggerOneTime,
+                _triggerOnSpellInteraction);
         }
 
         protected override void Prepare()

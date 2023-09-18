@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DG.Tweening;
 using ModestTree;
 using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
@@ -18,20 +17,22 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
         private IPlateSettings _plateSettings;
         private Transform _plateTransform;
         private List<Collider> _requiredObjectsOnPanel;
+        private bool _needTriggerOneTime;
 
-        public void Initialize(IIdentifier identifier, Transform plateTransform, IPlateSettings plateSettings,
-            IColliderTrigger colliderTrigger)
+        public void Initialize(IIdentifier identifier, bool needTriggerOneTime, Transform plateTransform,
+            IPlateSettings plateSettings, IColliderTrigger colliderTrigger)
         {
             _identifier = identifier;
             _requiredObjectsOnPanel = new List<Collider>();
             _plateTransform = plateTransform;
             _plateSettings = plateSettings;
             _colliderTrigger = colliderTrigger;
+            _needTriggerOneTime = needTriggerOneTime;
             SetInitializedStatus();
             ProcessPressingUp();
         }
 
-        public override event Action Triggered;
+        protected override bool NeedTriggerOneTime => _needTriggerOneTime;
 
         protected override void SubscribeOnEvents()
         {
@@ -76,7 +77,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
 
         private void ProcessPressingDown()
         {
-            Triggered?.Invoke();
+            TryInvokeTriggerEvent();
             _plateTransform.DOComplete();
             _plateTransform.DOScaleY(_plateSettings.PressedScaleY, _plateSettings.AnimationDuration)
                            .SetEase(_plateSettings.AnimationEase)

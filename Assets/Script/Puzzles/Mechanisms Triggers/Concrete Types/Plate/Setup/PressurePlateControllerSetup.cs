@@ -10,7 +10,7 @@ using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitia
 
 namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Setup
 {
-    public class PressurePlateControllerSetup : SetupMonoBehaviourBase
+    public class PressurePlateControllerSetup : MechanismsTriggerSetupBase
     {
         [SerializeField] private ColliderTrigger _colliderTrigger;
         [SerializeField] private Transform _visualObject;
@@ -29,7 +29,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Setup
 
         protected override void Initialize()
         {
-            _controller.Initialize(_identifier, _visualObject, _plateSettings, _colliderTrigger);
+            _controller.Initialize(_identifier, NeedTriggerOneTime, _visualObject, _plateSettings, _colliderTrigger);
         }
 
         protected override void Prepare()
