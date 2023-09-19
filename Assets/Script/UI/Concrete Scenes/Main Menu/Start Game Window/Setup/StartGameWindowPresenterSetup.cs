@@ -16,13 +16,13 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Setup
         [SerializeField] private Button _backButton;
         [SerializeField] private Button _loadButton;
         [SerializeField] private GameLevelSelectorPresenter _gameLevelSelector;
-        private IScenesManager _scenesManager;
+        private IScenesController _scenesController;
         private IInitializableStartGameWindowPresenter _presenter;
 
         [Inject]
-        private void GetDependencies(IScenesManager scenesManager)
+        private void GetDependencies(IScenesController scenesController)
         {
-            _scenesManager = scenesManager;
+            _scenesController = scenesController;
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
@@ -36,7 +36,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Setup
 
         protected override void Initialize()
         {
-            var model = new StartGameWindowModel(IDHolder, Manager, _gameLevelSelector, _scenesManager);
+            var model = new StartGameWindowModel(IDHolder, Manager, _gameLevelSelector, _scenesController);
             _presenter.Initialize(model, View, _backButton, _loadButton);
         }
     }

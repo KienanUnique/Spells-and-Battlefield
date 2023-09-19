@@ -11,8 +11,8 @@ namespace Systems.Installers.Concrete_Types
 
         public override void InstallBindings()
         {
-            var inGameSceneSwitcher = new ScenesManager(_scenesSettings);
-            Container.Bind<IScenesManager>().FromInstance(inGameSceneSwitcher).AsSingle();
+            var inGameSceneSwitcher = new ScenesController(_scenesSettings);
+            Container.Bind<IScenesController>().FromInstance(inGameSceneSwitcher).AsSingle();
         }
     }
 }

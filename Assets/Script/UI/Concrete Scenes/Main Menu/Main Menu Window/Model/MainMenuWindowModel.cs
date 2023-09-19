@@ -10,13 +10,13 @@ namespace UI.Concrete_Scenes.Main_Menu.Main_Menu_Window.Model
     public class MainMenuWindowModel : UIWindowModelBase, IMainMenuWindowModel
     {
         private readonly IStartGameWindow _startGameWindow;
-        private readonly IScenesManager _scenesManager;
+        private readonly IScenesController _scenesController;
 
         public MainMenuWindowModel(IIdHolder idHolder, IUIWindowManager manager, IStartGameWindow startGameWindow,
-            IScenesManager scenesManager) : base(idHolder, manager)
+            IScenesController scenesController) : base(idHolder, manager)
         {
             _startGameWindow = startGameWindow;
-            _scenesManager = scenesManager;
+            _scenesController = scenesController;
         }
 
         public override bool CanBeClosedByPlayer => false;
@@ -28,7 +28,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Main_Menu_Window.Model
 
         public void OnCreditsButtonPressed()
         {
-            _scenesManager.LoadCredits();
+            _scenesController.LoadCredits();
         }
 
         public void OnQuitButtonPressed()

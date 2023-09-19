@@ -15,7 +15,7 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Level_Comple
 
         protected override void Initialize()
         {
-            _model = new LevelCompletedWindowModel(IDHolder, Manager, InGameSceneManager, LoadingWindow);
+            _model = new LevelCompletedWindowModel(IDHolder, Manager, InGameSceneController);
             _presenter.Initialize(View, _model, new List<IDisableable>(), RestartLevelButton, GoToMainWindowButton,
                 _loadNextLevelButton);
         }

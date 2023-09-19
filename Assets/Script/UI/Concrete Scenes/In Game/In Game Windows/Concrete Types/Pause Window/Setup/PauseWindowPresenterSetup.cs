@@ -15,7 +15,7 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Pause_Window
 
         protected override void Initialize()
         {
-            _model = new PauseWindowModel(IDHolder, Manager, InGameSceneManager, LoadingWindow);
+            _model = new PauseWindowModel(IDHolder, Manager, InGameSceneController);
             _presenter.Initialize(View, _model, new List<IDisableable>(), RestartLevelButton, GoToMainWindowButton,
                 _continueGameButton);
         }

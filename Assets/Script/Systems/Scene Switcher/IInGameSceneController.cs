@@ -2,7 +2,7 @@
 
 namespace Systems.Scene_Switcher
 {
-    public interface IInGameSceneManager : IScenesManager
+    public interface IInGameSceneController : IScenesController
     {
         public void LoadNextLevel();
         public void RestartLevel();

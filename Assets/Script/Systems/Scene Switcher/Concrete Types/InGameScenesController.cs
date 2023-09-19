@@ -4,13 +4,13 @@ using UnityEngine.SceneManagement;
 
 namespace Systems.Scene_Switcher.Concrete_Types
 {
-    public class InGameScenesManager : ScenesManager, IInGameSceneManager
+    public class InGameScenesController : ScenesController, IInGameSceneController
     {
         private readonly IGameLevelData _currentLevel;
         private readonly int _currentLevelIndex;
         private readonly bool _isCurrentLevelLast;
 
-        public InGameScenesManager(IScenesSettings settings) : base(settings)
+        public InGameScenesController(IScenesSettings settings) : base(settings)
         {
             string currentName = SceneManager.GetActiveScene().name;
             _currentLevel = _settings.GameLevels.First(level => level.SceneName == currentName);

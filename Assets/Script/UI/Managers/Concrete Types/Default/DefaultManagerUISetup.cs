@@ -1,17 +1,30 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases;
-using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Systems.Scene_Switcher.Concrete_Types;
+using UI.Loading_Window.Presenter;
 using UI.Managers.UI_Windows_Stack_Manager;
 using UI.Window.Presenter;
 using UnityEngine;
+using Zenject;
+using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
 namespace UI.Managers.Concrete_Types.Default
 {
     public class DefaultManagerUISetup : SetupMonoBehaviourBase
     {
         [SerializeField] private WindowPresenterBase _startWindow;
+        [SerializeField] private LoadingWindowPresenter _loadingWindow;
+        private IScenesController _scenesController;
         private IInitializableDefaultManagerUI _manager;
-        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization => new[] {_startWindow};
+
+        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
+            new[] {_startWindow, _loadingWindow};
+
+        [Inject]
+        private void GetDependencies(IScenesController scenesController)
+        {
+            _scenesController = scenesController;
+        }
 
         protected override void Prepare()
         {
@@ -21,7 +34,7 @@ namespace UI.Managers.Concrete_Types.Default
         protected override void Initialize()
         {
             var stackManager = new UIWindowsStackManager(_startWindow);
-            _manager.Initialize(stackManager);
+            _manager.Initialize(stackManager, _scenesController, _loadingWindow);
         }
     }
 }

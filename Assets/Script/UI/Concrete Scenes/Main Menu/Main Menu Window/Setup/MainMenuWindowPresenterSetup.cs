@@ -18,12 +18,12 @@ namespace UI.Concrete_Scenes.Main_Menu.Main_Menu_Window.Setup
         [SerializeField] private Button _quitButton;
         [SerializeField] private StartGameWindowPresenter _startGameWindow;
         private IInitializableMainMenuWindowPresenter _presenter;
-        private IScenesManager _scenesManager;
+        private IScenesController _scenesController;
 
         [Inject]
-        private void GetDependencies(IScenesManager scenesManager)
+        private void GetDependencies(IScenesController scenesController)
         {
-            _scenesManager = scenesManager;
+            _scenesController = scenesController;
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
@@ -37,7 +37,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Main_Menu_Window.Setup
 
         protected override void Initialize()
         {
-            var model = new MainMenuWindowModel(IDHolder, Manager, _startGameWindow, _scenesManager);
+            var model = new MainMenuWindowModel(IDHolder, Manager, _startGameWindow, _scenesController);
             _presenter.Initialize(model, View, _startGameButton, _creditsButton, _quitButton);
         }
     }

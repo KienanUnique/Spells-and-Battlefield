@@ -135,6 +135,7 @@ MonoBehaviour:
   _gameOverWindow: {fileID: 8447651615608495423}
   _pauseWindow: {fileID: 866779127299798512}
   _levelCompletedWindow: {fileID: 5755731979707050882}
+  _loadingWindow: {fileID: 9023161443701717841}
 --- !u!114 &2731305090528449065
 MonoBehaviour:
   m_ObjectHideFlags: 0

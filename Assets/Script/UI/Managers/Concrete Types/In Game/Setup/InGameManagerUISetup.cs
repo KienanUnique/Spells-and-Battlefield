@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases;
-using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Systems.Scene_Switcher.Concrete_Types;
 using UI.Concrete_Scenes.In_Game.Gameplay_UI.Presenter;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Game_Over_Window.Presenter;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Level_Completed_Window.Presenter;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Pause_Window.Presenter;
+using UI.Loading_Window.Presenter;
 using UI.Managers.UI_Windows_Stack_Manager;
 using UnityEngine;
+using Zenject;
+using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
 namespace UI.Managers.Concrete_Types.In_Game.Setup
 {
@@ -16,17 +19,32 @@ namespace UI.Managers.Concrete_Types.In_Game.Setup
         [SerializeField] private GameOverPresenter _gameOverWindow;
         [SerializeField] private PauseInGameWindowPresenter _pauseWindow;
         [SerializeField] private LevelCompletedWindowPresenter _levelCompletedWindow;
+        [SerializeField] private LoadingWindowPresenter _loadingWindow;
         private IInitializableInGameManagerUI _presenter;
-
+        private IScenesController _scenesController;
         private IUIWindowsStackManager _stackManager;
 
+        [Inject]
+        private void GetDependencies(IScenesController scenesController)
+        {
+            _scenesController = scenesController;
+        }
+
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
-            new List<IInitializable> {_gameplayUI, _gameOverWindow, _pauseWindow, _levelCompletedWindow};
+            new List<IInitializable>
+            {
+                _gameplayUI,
+                _gameOverWindow,
+                _pauseWindow,
+                _levelCompletedWindow,
+                _loadingWindow
+            };
 
         protected override void Initialize()
         {
             _stackManager = new UIWindowsStackManager(_gameplayUI);
-            _presenter.Initialize(_gameplayUI, _gameOverWindow, _pauseWindow, _levelCompletedWindow, _stackManager);
+            _presenter.Initialize(_gameplayUI, _gameOverWindow, _pauseWindow, _levelCompletedWindow, _scenesController,
+                _loadingWindow, _stackManager);
         }
 
         protected override void Prepare()

@@ -1,20 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Systems.Scene_Switcher.Scene_Data;
 using Systems.Scene_Switcher.Scene_Data.Game_Level_Data;
 using UnityEngine.SceneManagement;
 
 namespace Systems.Scene_Switcher.Concrete_Types
 {
-    public class ScenesManager : IScenesManager
+    public class ScenesController : IScenesController
     {
         protected readonly IScenesSettings _settings;
         private bool _isAlreadyLoading;
 
-        public ScenesManager(IScenesSettings settings)
+        public ScenesController(IScenesSettings settings)
         {
             _settings = settings;
         }
 
+        public event Action LoadingNextSceneStarted;
         public IReadOnlyCollection<IGameLevelData> GameLevels => _settings.GameLevels;
 
         public void LoadMainMenu()
@@ -45,6 +47,7 @@ namespace Systems.Scene_Switcher.Concrete_Types
             }
 
             _isAlreadyLoading = true;
+            LoadingNextSceneStarted?.Invoke();
             SceneManager.LoadSceneAsync(sceneName);
         }
     }

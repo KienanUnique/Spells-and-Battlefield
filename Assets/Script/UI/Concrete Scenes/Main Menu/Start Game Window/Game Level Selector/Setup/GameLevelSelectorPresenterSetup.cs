@@ -17,15 +17,15 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Set
         [SerializeField] private Transform _scrollView;
         private IGameLevelSelectorModel _model;
         private IInitializableGameLevelSelectorPresenter _presenter;
-        private IScenesManager _scenesManager;
+        private IScenesController _scenesController;
         private IGameLevelItemFactory _gameLevelItemFactory;
         private IReadOnlyCollection<IGameLevelData> _gameLevels;
         private ICollection<IInitializableGameLevelItem> _levelItems;
 
         [Inject]
-        private void GetDependencies(IScenesManager scenesManager, IGameLevelItemFactory gameLevelItemFactory)
+        private void GetDependencies(IScenesController scenesController, IGameLevelItemFactory gameLevelItemFactory)
         {
-            _gameLevels = scenesManager.GameLevels;
+            _gameLevels = scenesController.GameLevels;
             _gameLevelItemFactory = gameLevelItemFactory;
         }
 

@@ -8,26 +8,22 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
 {
     public abstract class InGameWindowModelBase : UIWindowModelBase
     {
-        protected readonly IInGameSceneManager InGameSceneManager;
-        private readonly ILoadingWindow _loadingWindow;
+        protected readonly IInGameSceneController InGameSceneController;
 
         protected InGameWindowModelBase(IIdHolder idHolder, IUIWindowManager manager,
-            IInGameSceneManager inGameSceneManager, ILoadingWindow loadingWindow) : base(idHolder, manager)
+            IInGameSceneController inGameSceneController) : base(idHolder, manager)
         {
-            InGameSceneManager = inGameSceneManager;
-            _loadingWindow = loadingWindow;
+            InGameSceneController = inGameSceneController;
         }
 
         public void OnQuitMainWindowButtonPressed()
         {
-            Manager.OpenWindow(_loadingWindow);
-            InGameSceneManager.LoadMainMenu();
+            InGameSceneController.LoadMainMenu();
         }
 
         public void OnRestartLevelWindowButtonPressed()
         {
-            Manager.OpenWindow(_loadingWindow);
-            InGameSceneManager.RestartLevel();
+            InGameSceneController.RestartLevel();
         }
     }
 }

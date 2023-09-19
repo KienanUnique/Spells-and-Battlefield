@@ -9,13 +9,13 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Model
     public class StartGameWindowModel : UIWindowModelBase, IStartGameWindowModel
     {
         private readonly IGameLevelSelector _gameLevelSelector;
-        private readonly IScenesManager _scenesManager;
+        private readonly IScenesController _scenesController;
 
         public StartGameWindowModel(IIdHolder idHolder, IUIWindowManager manager, IGameLevelSelector gameLevelSelector,
-            IScenesManager scenesManager) : base(idHolder, manager)
+            IScenesController scenesController) : base(idHolder, manager)
         {
             _gameLevelSelector = gameLevelSelector;
-            _scenesManager = scenesManager;
+            _scenesController = scenesController;
         }
 
         public override bool CanBeClosedByPlayer => true;
@@ -27,7 +27,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Model
 
         public void OnLoadButtonPressed()
         {
-            _scenesManager.LoadGameLevel(_gameLevelSelector.SelectedLevel);
+            _scenesController.LoadGameLevel(_gameLevelSelector.SelectedLevel);
         }
     }
 }
