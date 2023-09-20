@@ -56,7 +56,7 @@ namespace Player
             _cameraEffects = setupData.SetPlayerCameraEffects;
             _eventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
             CameraTransform = setupData.SetCameraTransform;
-            UpperPointForSummonPointCalculating = setupData.SetPointForAiming;
+            UpperPointForSummonedEnemiesPositionCalculating = setupData.SetUpperPointForSummonedEnemiesPositionCalculating;
             Faction = setupData.SetFaction;
             InformationForSummon = setupData.SetInformationForSummon;
             ToolsForSummon = setupData.SetToolsForSummon;
@@ -74,14 +74,14 @@ namespace Player
         public event Action<ISpellType> SelectedSpellTypeChanged;
 
         public IReadonlyTransform MainTransform => MainRigidbody;
-        public IReadonlyTransform UpperPointForSummonPointCalculating { get; private set; }
+        public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
         public float HitPointCountRatio => _character.HitPointCountRatio;
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public IFaction Faction { get; private set; }
         public IReadonlyRigidbody MainRigidbody => _movement.MainRigidbody;
-        public IReadonlyTransform PointForAiming => UpperPointForSummonPointCalculating;
+        public IReadonlyTransform PointForAiming => UpperPointForSummonedEnemiesPositionCalculating;
         public int Id => _idHolder.Id;
         public Vector3 CurrentPosition => _movement.CurrentPosition;
         public float CurrentDashCooldownRatio => _movement.CurrentDashCooldownRatio;

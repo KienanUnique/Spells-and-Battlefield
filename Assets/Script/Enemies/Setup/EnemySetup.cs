@@ -158,7 +158,8 @@ namespace Enemies.Setup
                 _idHolder, _generalEnemySettings, _popupHitPointsChangeTextFactory, targetFromTriggersSelector,
                 enemyLook, _eventInvokerForAnimations, enemyVisual, enemyCharacter,
                 _popupTextHitPointsChangeAppearCenterPoint.ReadonlyTransform, lootDropper, _faction,
-                _pointForAiming.ReadonlyTransform, informationOfSummoner, _toolsForSummon);
+                _pointForAiming.ReadonlyTransform, informationOfSummoner, _toolsForSummon,
+                _lootSpawnPoint.ReadonlyTransform);
 
             _enemyStateMachineAI.Initialize(_controller);
 

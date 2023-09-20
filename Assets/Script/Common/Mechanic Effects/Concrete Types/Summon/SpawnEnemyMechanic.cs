@@ -43,7 +43,7 @@ namespace Common.Mechanic_Effects.Concrete_Types.Summon
                 Vector3 spawnPoint = _spawnPointSelector.CalculateFreeSpawnPosition(
                     targetAsCaster.ToolsForSummon.GroundLayerMaskSetting.Mask,
                     _dataForSpawning.PrefabProvider.SizeInformation, _spawnAreaRadius,
-                    targetAsCaster.UpperPointForSummonPointCalculating.Position);
+                    targetAsCaster.UpperPointForSummonedEnemiesPositionCalculating);
                 targetAsCaster.ToolsForSummon.Factory.Create(_dataForSpawning, targetAsCaster.InformationForSummon,
                     spawnPoint, targetAsCaster.MainTransform.Rotation);
             }

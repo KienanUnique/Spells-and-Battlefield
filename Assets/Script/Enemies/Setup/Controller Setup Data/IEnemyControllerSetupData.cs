@@ -36,5 +36,6 @@ namespace Enemies.Setup.Controller_Setup_Data
         public IReadonlyTransform SetPointForAiming { get; }
         public IInformationForSummon SetInformationForSummon { get; }
         public IToolsForSummon SetToolsForSummon { get; }
+        public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
     }
 }

@@ -22,7 +22,7 @@ namespace Player.Setup
             IPlayerSpellsManager playerSpellsManager, IPlayerInput playerInput, IPlayerMovement playerMovement,
             IPlayerLook playerLook, IIdHolder idHolder, List<IDisableable> itemsNeedDisabling,
             IReadonlyTransform cameraTransform, IReadonlyTransform setPointForAiming, IFaction setFaction,
-            IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon)
+            IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon, IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating)
         {
             SetPlayerEventInvokerForAnimations = playerEventInvokerForAnimations;
             SetPlayerCameraEffects = playerCameraEffects;
@@ -39,6 +39,7 @@ namespace Player.Setup
             SetFaction = setFaction;
             SetInformationForSummon = setInformationForSummon;
             SetToolsForSummon = setToolsForSummon;
+            SetUpperPointForSummonedEnemiesPositionCalculating = setUpperPointForSummonedEnemiesPositionCalculating;
         }
 
         public List<IDisableable> SetItemsNeedDisabling { get; }
@@ -56,5 +57,6 @@ namespace Player.Setup
         public IFaction SetFaction { get; }
         public IInformationForSummon SetInformationForSummon { get; }
         public IToolsForSummon SetToolsForSummon { get; }
+        public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
     }
 }

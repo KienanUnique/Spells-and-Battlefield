@@ -32,5 +32,6 @@ namespace Player.Setup
         public IFaction SetFaction { get; }
         public IInformationForSummon SetInformationForSummon { get; }
         public IToolsForSummon SetToolsForSummon { get; }
+        public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
     }
 }

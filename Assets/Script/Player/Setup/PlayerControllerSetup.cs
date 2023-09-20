@@ -59,6 +59,7 @@ namespace Player.Setup
         private List<IDisableable> _itemsNeedDisabling;
 
         [Header("Other")] [SerializeField] private ReadonlyTransformGetter _pointForAiming;
+        [SerializeField] private ReadonlyTransformGetter _upperPointForSummonedEnemiesPositionCalculating;
         [SerializeField] private List<EnemyTargetTrigger> _triggersForSummonedEnemies;
 
         private IPlayerCameraEffects _playerCameraEffects;
@@ -85,7 +86,14 @@ namespace Player.Setup
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
-            new List<IInitializable> {_cameraFollowObject, _spellSpawnObject, _wallChecker, _groundChecker};
+            new List<IInitializable>
+            {
+                _cameraFollowObject,
+                _spellSpawnObject,
+                _wallChecker,
+                _groundChecker,
+                _upperPointForSummonedEnemiesPositionCalculating
+            };
 
         protected override void Initialize()
         {
@@ -109,7 +117,7 @@ namespace Player.Setup
             var setupData = new PlayerControllerSetupData(_eventInvokerForAnimations, _playerCameraEffects,
                 _playerVisual, _playerCharacter, playerSpellsManager, _playerInput, playerMovement, playerLook,
                 _idHolder, _itemsNeedDisabling, _cameraTransform, _pointForAiming.ReadonlyTransform, _settings.Faction,
-                informationOfSummoner, _toolsForSummon);
+                informationOfSummoner, _toolsForSummon, _upperPointForSummonedEnemiesPositionCalculating.ReadonlyTransform);
             controllerToSetup.Initialize(setupData);
         }
 

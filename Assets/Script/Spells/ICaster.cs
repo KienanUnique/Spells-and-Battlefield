@@ -6,7 +6,7 @@ namespace Spells
     public interface ICaster
     {
         public IReadonlyTransform MainTransform { get; }
-        public IReadonlyTransform UpperPointForSummonPointCalculating { get; }
+        public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; }
         public IInformationForSummon InformationForSummon { get; }
         public IToolsForSummon ToolsForSummon { get; }
     }

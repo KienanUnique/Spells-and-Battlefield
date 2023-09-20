@@ -67,6 +67,7 @@ namespace Enemies.Controller
             Faction = setupData.SetFaction;
             InformationForSummon = setupData.SetInformationForSummon;
             ToolsForSummon = setupData.SetToolsForSummon;
+            UpperPointForSummonedEnemiesPositionCalculating = setupData.SetUpperPointForSummonedEnemiesPositionCalculating;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -80,7 +81,7 @@ namespace Enemies.Controller
         public event Action ActionAnimationEnd;
 
         public IReadonlyTransform MainTransform => MainRigidbody;
-        public IReadonlyTransform UpperPointForSummonPointCalculating => PointForAiming;
+        public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
         public float HitPointCountRatio => _character.HitPointCountRatio;
