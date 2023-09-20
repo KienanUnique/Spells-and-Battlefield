@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Common.Interfaces;
 using Common.Readonly_Transform;
 using Enemies.Controller;
@@ -24,6 +26,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
         private ISpellObjectsFactory _spellObjectsFactory;
         private IReadonlyTransform _spellSpawnPoint;
         private ISpellSelector _spellsSelector;
+        private Coroutine _tryUseSpellCoroutine;
 
         [Inject]
         private void GetDependencies(ISpellObjectsFactory spellObjectsFactory)
@@ -70,6 +73,12 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
             {
                 case StateEnemyAIStatus.NonActive:
                     UnsubscribeFromLocalEvents();
+                    if (_tryUseSpellCoroutine != null)
+                    {
+                        StopCoroutine(_tryUseSpellCoroutine);
+                        _tryUseSpellCoroutine = null;
+                    }
+
                     StateMachineControllable.ChangeThisPositionReferencePointTransform(
                         _previousThisPositionReferencePointTransform);
                     StateMachineControllable.StopMoving();
@@ -83,7 +92,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
                     StateMachineControllable.ChangeThisPositionReferencePointTransform(_spellSpawnPoint);
                     StateMachineControllable.StartKeepingCurrentTargetOnDistance(_useSpellsStateData.DataForMoving);
                     SubscribeOnLocalEvents();
-                    TryCastSelectedSpell();
+                    _tryUseSpellCoroutine = StartCoroutine(TryCastSelectedSpellContinuously());
                     break;
 
                 case StateEnemyAIStatus.Exiting:
@@ -96,6 +105,16 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
+            }
+        }
+
+        private IEnumerator TryCastSelectedSpellContinuously()
+        {
+            var waitForFixedUpdate = new WaitForFixedUpdate();
+            while (true)
+            {
+                TryCastSelectedSpell();
+                yield return waitForFixedUpdate;
             }
         }
 
