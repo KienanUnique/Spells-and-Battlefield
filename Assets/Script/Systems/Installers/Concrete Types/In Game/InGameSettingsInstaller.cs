@@ -14,12 +14,13 @@ using UI.Concrete_Scenes.In_Game.Bar.View.Concrete_Types.Filling_Bar.Settings;
 using UI.Concrete_Scenes.In_Game.Popup_Text.Settings;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Settings;
 using UnityEngine;
+using Zenject;
 
 namespace Systems.Installers.Concrete_Types.In_Game
 {
     [CreateAssetMenu(fileName = "In Game Settings Installer",
         menuName = ScriptableObjectsMenuDirectories.InstallersDirectory + "In Game Settings Installer")]
-    public class InGameSettingsInstaller : SettingsInstallerBase
+    public class InGameSettingsInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private GroundLayerMaskSetting _groundLayerMaskSetting;
         [SerializeField] private PickableItemsSettings _pickableItemsSettings;
@@ -46,7 +47,6 @@ namespace Systems.Installers.Concrete_Types.In_Game
 
         public override void InstallBindings()
         {
-            base.InstallBindings();
             BindGeneralSettings();
             BindEnemiesSettings();
             BindUISettings();

@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e89a7a4936c24ba1a2d1b1c637d049c9, type: 3}
+  m_Name: UI Base Settings Installer
+  m_EditorClassIdentifier: 
+  _defaultUIElementViewSettings: {fileID: 11400000, guid: 56bf131e31d75194e8f15a3f4bb5ed31, type: 2}
+  _loadingWindowSettings: {fileID: 11400000, guid: d9587f79fb7f7a846b21ece164dbb765, type: 2}

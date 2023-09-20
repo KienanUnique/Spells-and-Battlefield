@@ -5,7 +5,9 @@ using Zenject;
 
 namespace Systems.Installers
 {
-    public abstract class SettingsInstallerBase : ScriptableObjectInstaller
+    [CreateAssetMenu(fileName = "UI Base Settings Installer",
+        menuName = ScriptableObjectsMenuDirectories.InstallersDirectory + "UI Base Settings Installer")]
+    public sealed class UiBaseSettingsInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private DefaultUIElementViewSettings _defaultUIElementViewSettings;
         [SerializeField] private LoadingWindowSettings _loadingWindowSettings;
