@@ -75,10 +75,8 @@ namespace Player
 
         public IReadonlyTransform MainTransform => MainRigidbody;
         public IReadonlyTransform UpperPointForSummonPointCalculating { get; private set; }
-
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
-
         public float HitPointCountRatio => _character.HitPointCountRatio;
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public IFaction Faction { get; private set; }
@@ -92,6 +90,11 @@ namespace Player
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
             _spellsManager.Spells;
+
+        public void DieInstantly()
+        {
+            _character.DieInstantly();
+        }
 
         public void ApplyContinuousEffect(IAppliedContinuousEffect effect)
         {
@@ -284,6 +287,7 @@ namespace Player
         {
             if (newState == CharacterState.Dead)
             {
+                _movement.DisableMoving();
                 _visual.PlayDieAnimation();
             }
 

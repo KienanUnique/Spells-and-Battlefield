@@ -24,5 +24,6 @@ namespace Player.Movement
         public void MoveInputted(Vector2 direction2d);
         public void UnstickFromPlatform();
         public void StickToPlatform(Transform platformTransform);
+        public void DisableMoving();
     }
 }

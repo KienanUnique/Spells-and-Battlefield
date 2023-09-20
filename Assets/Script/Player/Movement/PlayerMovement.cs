@@ -19,6 +19,9 @@ namespace Player.Movement
         private const float WallRunningPlayerInputForceMultiplier = 1.5f;
         private const float DashAimingPlayerInputForceMultiplier = 0;
 
+        private const RigidbodyConstraints RigidbodyConstraintsFreezeRotationAndPosition =
+            RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+
         private readonly Transform _cashedTransform;
         private readonly ICoroutineStarter _coroutineStarter;
         private readonly ValueWithReactionOnChange<MovingState> _currentMovingState;
@@ -159,6 +162,11 @@ namespace Player.Movement
         public void StickToPlatform(Transform platformTransform)
         {
             _cashedTransform.SetParent(platformTransform);
+        }
+
+        public void DisableMoving()
+        {
+            _rigidbody.constraints = RigidbodyConstraintsFreezeRotationAndPosition;
         }
 
         public void UnstickFromPlatform()

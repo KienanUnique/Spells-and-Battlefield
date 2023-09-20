@@ -9,7 +9,6 @@ using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitia
 
 namespace Systems.In_Game_Systems.Post_Processing_Controller.Setup
 {
-    [RequireComponent(typeof(Volume))]
     public class PostProcessingControllerSetup : SetupMonoBehaviourBase
     {
         [SerializeField] private Volume _dashEffectsVolume;

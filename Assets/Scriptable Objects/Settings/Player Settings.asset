@@ -32,9 +32,10 @@ MonoBehaviour:
     _normalGravityForce: 30
     _jumpForce: 800
     _dashForce: 1500
-    _wallRunningGravityForce: 2
+    _wallRunningGravityForceMultiplier: 0.08
     _dashCooldownSeconds: 5
     _dashSpeedLimitationsDisablingForSeconds: 0.3
+    _coyoteTimeInSeconds: 0.1
     _flyingFrictionCoefficient: 0.2
   _character:
     _maximumCountOfHitPoints: 30

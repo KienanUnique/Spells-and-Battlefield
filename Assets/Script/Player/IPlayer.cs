@@ -14,7 +14,7 @@ namespace Player
         ISpellInteractable,
         ICaster,
         ISummoner,
-        IInteractableCharacter,
+        ICharacter,
         IIdHolder,
         IEnemyTarget,
         IPickableItemsPicker,

@@ -36,6 +36,7 @@ namespace Common.Abstract_Bases.Character
 
         public void DieInstantly()
         {
+            _hitPointsCalculator.HandleInstantDeath();
             _currentState.Value = CharacterState.Dead;
         }
 
@@ -183,6 +184,11 @@ namespace Common.Abstract_Bases.Character
 
                 HitPointsCountChanged?.Invoke(CurrentCountOfHitPoints, CurrentCountOfHitPoints - oldCountOfHitPoints,
                     TypeOfHitPointsChange.Heal);
+            }
+
+            public void HandleInstantDeath()
+            {
+                HandleDamage(_maximumCountOfHitPoints);
             }
         }
     }

@@ -6,7 +6,7 @@ using Common.Mechanic_Effects.Continuous_Effect;
 
 namespace Common.Abstract_Bases.Character
 {
-    public interface IInteractableCharacter : ICharacterInformationProvider,
+    public interface IInteractableCharacter : ICharacter,
         IDamageable,
         IHealable,
         IContinuousEffectApplicable,
