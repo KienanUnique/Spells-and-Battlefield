@@ -2,6 +2,7 @@
 {
     public interface IMovementOnGroundSettingsSection : IMovementSettingsSection
     {
-        float NormalGravityForce { get; }
+        public float NormalGravityForce { get; }
+        public float NormalGravityForceMultiplier { get; }
     }
 }

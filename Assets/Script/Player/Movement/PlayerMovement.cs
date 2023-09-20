@@ -27,9 +27,11 @@ namespace Player.Movement
         private readonly IPlayerMovementSettings _movementSettings;
         private readonly Transform _originalParent;
         private readonly WallChecker _wallChecker;
+        private readonly CoyoteTimeWaiter _airCoyoteTimeWaiter;
+
         private bool _canDash = true;
         private int _currentCountOfAirJumps;
-        private float _currentGravityForce;
+        private float _currentGravityForceMultiplier;
         private float _currentPlayerInputForceMultiplier;
         private Coroutine _frictionCoroutine;
 
@@ -51,6 +53,8 @@ namespace Player.Movement
 
             _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.NotInitialized);
             _currentWallDirection = new ValueWithReactionOnChange<WallDirection>(WallDirection.Right);
+
+            _airCoyoteTimeWaiter = new CoyoteTimeWaiter(_coroutineStarter);
 
             _coroutineStarter.StartCoroutine(HandleInputMovement());
             _coroutineStarter.StartCoroutine(UpdateRatioOfCurrentVelocityToMaximumVelocity());
@@ -85,7 +89,7 @@ namespace Player.Movement
 
         public Vector3 CurrentPosition => _rigidbody.position;
 
-        public float CurrentDashCooldownRatio { get; set; }
+        public float CurrentDashCooldownRatio { get; private set; }
 
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
@@ -93,6 +97,7 @@ namespace Player.Movement
 
         private bool IsGrounded => _groundChecker.IsColliding;
         private bool IsInContactWithWall => _wallChecker.IsColliding;
+        private float CurrentGravityForce => _movementSettings.NormalGravityForce * _currentGravityForceMultiplier;
 
         public void AddForce(Vector3 force, ForceMode mode)
         {
@@ -101,14 +106,15 @@ namespace Player.Movement
 
         public void TryJumpInputted()
         {
-            if (_currentMovingState.Value == MovingState.OnGround ||
-                _currentMovingState.Value == MovingState.WallRunning ||
-                _currentMovingState.Value == MovingState.InAir && _currentCountOfAirJumps < MaxCountOfAirJumps)
+            if ((_currentMovingState.Value == MovingState.OnGround ||
+                 _currentMovingState.Value == MovingState.WallRunning ||
+                 _currentMovingState.Value == MovingState.InAir) &&
+                _currentCountOfAirJumps < MaxCountOfAirJumps)
             {
                 Vector3 newVelocity = _rigidbody.velocity;
                 newVelocity.y = 0;
                 _rigidbody.velocity = newVelocity;
-                _rigidbody.AddForce(_movementSettings.JumpForce * Vector3.up);
+                _rigidbody.AddForce(_movementSettings.JumpForce * _currentGravityForceMultiplier * Vector3.up);
 
                 if (_currentMovingState.Value == MovingState.InAir ||
                     _currentMovingState.Value == MovingState.WallRunning)
@@ -164,6 +170,7 @@ namespace Player.Movement
         {
             _groundChecker.ContactStateChanged += OnGroundedStatusChanged;
             _wallChecker.ContactStateChanged += OnWallContactStatusChanged;
+            _airCoyoteTimeWaiter.Finished += OnAirCoyoteTimeFinished;
             _currentMovingState.BeforeValueChanged += OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged += OnAfterMovingStateChanged;
             _currentWallDirection.AfterValueChanged += OnWallDirectionChanged;
@@ -173,6 +180,7 @@ namespace Player.Movement
         {
             _groundChecker.ContactStateChanged -= OnGroundedStatusChanged;
             _wallChecker.ContactStateChanged -= OnWallContactStatusChanged;
+            _airCoyoteTimeWaiter.Finished -= OnAirCoyoteTimeFinished;
             _currentMovingState.BeforeValueChanged -= OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged -= OnAfterMovingStateChanged;
             _currentWallDirection.AfterValueChanged -= OnWallDirectionChanged;
@@ -183,7 +191,7 @@ namespace Player.Movement
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
             {
-                ApplyGravity(_currentGravityForce);
+                ApplyGravity(CurrentGravityForce);
 
                 _rigidbody.AddForce(_inputMoveDirection.x *
                                     _movementSettings.MoveForce *
@@ -285,6 +293,11 @@ namespace Player.Movement
             DashCooldownRatioChanged?.Invoke(CurrentDashCooldownRatio);
         }
 
+        private void OnAirCoyoteTimeFinished()
+        {
+            _currentMovingState.Value = MovingState.InAir;
+        }
+
         private void OnWallDirectionChanged(WallDirection newWallDirection)
         {
             WallRunningDirectionChanged?.Invoke(newWallDirection);
@@ -292,18 +305,27 @@ namespace Player.Movement
 
         private void OnGroundedStatusChanged(bool isGrounded)
         {
+            _airCoyoteTimeWaiter.Cancel();
             if (isGrounded)
             {
                 _currentMovingState.Value = MovingState.OnGround;
             }
             else
             {
-                _currentMovingState.Value = IsInContactWithWall ? MovingState.WallRunning : MovingState.InAir;
+                if (IsInContactWithWall)
+                {
+                    _currentMovingState.Value = MovingState.WallRunning;
+                }
+                else
+                {
+                    _airCoyoteTimeWaiter.Start(_movementSettings.CoyoteTimeInSeconds);
+                }
             }
         }
 
         private void OnWallContactStatusChanged(bool isContactedWithWall)
         {
+            _airCoyoteTimeWaiter.Cancel();
             if (isContactedWithWall && _currentMovingState.Value == MovingState.InAir)
             {
                 _currentMovingState.Value = MovingState.WallRunning;
@@ -323,6 +345,7 @@ namespace Player.Movement
 
         private void OnBeforeMovingStateChanged(MovingState movingState)
         {
+            _airCoyoteTimeWaiter.Cancel();
             switch (movingState)
             {
                 case MovingState.OnGround:
@@ -360,7 +383,7 @@ namespace Player.Movement
                 case MovingState.OnGround:
                     _currentCountOfAirJumps = 0;
                     _currentPlayerInputForceMultiplier = NormalPlayerInputForceMultiplier;
-                    _currentGravityForce = _movementSettings.NormalGravityForce;
+                    _currentGravityForceMultiplier = _movementSettings.NormalGravityForceMultiplier;
                     _frictionCoroutine ??=
                         _coroutineStarter.StartCoroutine(
                             ApplyFrictionContinuously(_movementSettings.NormalFrictionCoefficient));
@@ -369,7 +392,7 @@ namespace Player.Movement
                 case MovingState.InAir:
                     _currentCountOfAirJumps = 0;
                     _currentPlayerInputForceMultiplier = AirPlayerInputForceMultiplier;
-                    _currentGravityForce = _movementSettings.NormalGravityForce;
+                    _currentGravityForceMultiplier = _movementSettings.NormalGravityForceMultiplier;
                     _frictionCoroutine ??=
                         _coroutineStarter.StartCoroutine(
                             ApplyFrictionContinuously(_movementSettings.FlyingFrictionCoefficient));
@@ -378,7 +401,7 @@ namespace Player.Movement
                 case MovingState.WallRunning:
                     _currentCountOfAirJumps = 0;
                     _currentPlayerInputForceMultiplier = WallRunningPlayerInputForceMultiplier;
-                    _currentGravityForce = _movementSettings.WallRunningGravityForce;
+                    _currentGravityForceMultiplier = _movementSettings.WallRunningGravityForceMultiplier;
                     _currentWallDirection.Value = CalculateCurrentWallDirection();
                     StartWallRunning?.Invoke(_currentWallDirection.Value);
                     _wallRunningCalculationCoroutine ??=
@@ -391,6 +414,44 @@ namespace Player.Movement
                 case MovingState.NotInitialized:
                 default:
                     throw new ArgumentOutOfRangeException(nameof(movingState), movingState, null);
+            }
+        }
+
+        private class CoyoteTimeWaiter
+        {
+            private readonly ICoroutineStarter _coroutineStarter;
+            private Coroutine _waitForCoyoteTimeCoroutine;
+
+            public CoyoteTimeWaiter(ICoroutineStarter coroutineStarter)
+            {
+                _coroutineStarter = coroutineStarter;
+            }
+
+            public event Action Finished;
+
+            public void Start(float coyoteTimeInSeconds)
+            {
+                _waitForCoyoteTimeCoroutine ??=
+                    _coroutineStarter.StartCoroutine(WaitForCoyoteTimeCoroutine(coyoteTimeInSeconds));
+            }
+
+            public void Cancel()
+            {
+                if (_waitForCoyoteTimeCoroutine == null)
+                {
+                    return;
+                }
+
+                _coroutineStarter.StopCoroutine(_waitForCoyoteTimeCoroutine);
+                _waitForCoyoteTimeCoroutine = null;
+            }
+
+            private IEnumerator WaitForCoyoteTimeCoroutine(float coyoteTimeInSeconds)
+            {
+                var waitForSeconds = new WaitForSeconds(coyoteTimeInSeconds);
+                yield return waitForSeconds;
+                Finished?.Invoke();
+                _waitForCoyoteTimeCoroutine = null;
             }
         }
     }

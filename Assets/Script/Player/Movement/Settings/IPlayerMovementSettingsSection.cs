@@ -4,11 +4,12 @@ namespace Player.Movement.Settings
 {
     public interface IPlayerMovementSettings : IMovementOnGroundSettingsSection
     {
-        float FlyingFrictionCoefficient { get; }
-        float JumpForce { get; }
-        float DashForce { get; }
-        float WallRunningGravityForce { get; }
-        float DashCooldownSeconds { get; }
-        float DashSpeedLimitationsDisablingForSeconds { get; }
+        public float FlyingFrictionCoefficient { get; }
+        public float JumpForce { get; }
+        public float DashForce { get; }
+        public float WallRunningGravityForceMultiplier { get; }
+        public float DashCooldownSeconds { get; }
+        public float DashSpeedLimitationsDisablingForSeconds { get; }
+        public float CoyoteTimeInSeconds { get; }
     }
 }

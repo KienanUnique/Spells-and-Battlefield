@@ -9,5 +9,6 @@ namespace Common.Settings.Sections.Movement.Movement_With_Gravity
         [SerializeField] private float _normalGravityForce = 30;
 
         public float NormalGravityForce => _normalGravityForce;
+        public float NormalGravityForceMultiplier => 1;
     }
 }
