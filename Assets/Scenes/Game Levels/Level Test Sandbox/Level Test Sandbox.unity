@@ -887,7 +887,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 360076574}
-  - component: {fileID: 360076575}
   m_Layer: 0
   m_Name: Pickable Items
   m_TagString: Untagged
@@ -912,18 +911,6 @@ Transform:
   m_Father: {fileID: 301102286}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &360076575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 360076573}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8202d1a6aa574f2a9d9b44fef63185f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &367433945
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1733,7 +1720,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1531855389029876839, guid: dff2c068397c7af44be3c493d14f5f2c, type: 3}
       propertyPath: m_Name
-      value: Friendly To Player Knight Spawn Marker (1)
+      value: Friendly To Player Knight Spawner
       objectReference: {fileID: 0}
     - target: {fileID: 2316118586506344916, guid: dff2c068397c7af44be3c493d14f5f2c, type: 3}
       propertyPath: m_RootOrder
@@ -2132,7 +2119,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1531855389029876839, guid: dff2c068397c7af44be3c493d14f5f2c, type: 3}
       propertyPath: m_Name
-      value: Friendly To Player Knight Spawn Marker
+      value: Friendly To Player Knight Spawner
       objectReference: {fileID: 0}
     - target: {fileID: 2316118586506344916, guid: dff2c068397c7af44be3c493d14f5f2c, type: 3}
       propertyPath: m_RootOrder
@@ -2658,7 +2645,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1531855389029876839, guid: dff2c068397c7af44be3c493d14f5f2c, type: 3}
       propertyPath: m_Name
-      value: Friendly To Player Knight Spawn Marker (2)
+      value: Friendly To Player Knight Spawner
       objectReference: {fileID: 0}
     - target: {fileID: 2316118586506344916, guid: dff2c068397c7af44be3c493d14f5f2c, type: 3}
       propertyPath: m_RootOrder

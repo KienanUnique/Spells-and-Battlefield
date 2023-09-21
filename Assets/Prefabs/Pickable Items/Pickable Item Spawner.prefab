@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4087435070311778587}
   - component: {fileID: 4087435070311778586}
   m_Layer: 0
-  m_Name: Pickable Item Marker
+  m_Name: Pickable Item Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
