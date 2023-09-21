@@ -24,6 +24,12 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
             return oldSelectedSpell;
         }
 
+        public override void Enable()
+        {
+            base.Enable();
+            SelectMostPrioritizedReadyToUseSpell();
+        }
+
         protected override void SubscribeOnEvents()
         {
             foreach (ISpellWithCooldown spell in _spellsToUseInPriorityOrder)

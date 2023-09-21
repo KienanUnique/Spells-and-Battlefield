@@ -4,7 +4,7 @@
     {
         protected bool IsEnabled { get; private set; }
 
-        public void Enable()
+        public virtual void Enable()
         {
             if (IsEnabled)
             {
@@ -15,7 +15,7 @@
             IsEnabled = true;
         }
 
-        public void Disable()
+        public virtual void Disable()
         {
             if (!IsEnabled)
             {
