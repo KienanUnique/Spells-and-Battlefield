@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9061553614261600378}
   - component: {fileID: 1840548619181597455}
   m_Layer: 0
-  m_Name: Enemy Spawn Marker Base
+  m_Name: Enemy Spawner Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

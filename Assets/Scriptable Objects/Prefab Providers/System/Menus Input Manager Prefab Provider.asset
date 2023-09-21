@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50a071fab4804052980b878efa38a111, type: 3}
   m_Name: Menus Input Manager Prefab Provider
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 0}
+  _prefab: {fileID: 5603023565113352098, guid: 103c1491b0e892b4098f4f015f8e23f4, type: 3}
