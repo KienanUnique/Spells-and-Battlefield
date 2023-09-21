@@ -1,4 +1,6 @@
 ﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Systems.Input_Manager;
+using Systems.Input_Manager.Concrete_Types.In_Game;
 using Systems.Scene_Switcher.Concrete_Types;
 using UI.Loading_Window;
 using UI.Managers.Concrete_Types.In_Game;
@@ -14,6 +16,7 @@ namespace UI.Managers
         protected abstract ILoadingWindow LoadingWindow { get; }
         protected abstract IUIWindowsStackManager WindowsManager { get; }
         protected abstract IScenesController ScenesController { get; }
+        protected abstract IInputManagerForUI InputManagerForUI { get; }
 
         public void OpenWindow(IUIWindow windowToOpen)
         {
@@ -28,11 +31,13 @@ namespace UI.Managers
         protected override void SubscribeOnEvents()
         {
             ScenesController.LoadingNextSceneStarted += OnLoadingNextSceneStarted;
+            InputManagerForUI.CloseCurrentWindow += TryCloseCurrentWindow;
         }
 
         protected override void UnsubscribeFromEvents()
         {
             ScenesController.LoadingNextSceneStarted -= OnLoadingNextSceneStarted;
+            InputManagerForUI.CloseCurrentWindow -= TryCloseCurrentWindow;
         }
 
         private void OnLoadingNextSceneStarted()

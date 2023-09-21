@@ -2,18 +2,17 @@ using System;
 using System.Collections;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell_Types_Settings;
-using Systems.Input_Manager.Settings;
+using Systems.Input_Manager.Concrete_Types.In_Game.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-namespace Systems.Input_Manager
+namespace Systems.Input_Manager.Concrete_Types.In_Game
 {
-    public class InGameInputManager : MonoBehaviour, IPlayerInput, IInGameSystemInputManager
+    public class InGameInputManager : InputManagerBase, IPlayerInput, IInGameSystemInputManager
     {
         private const float MinimalInputMagnitude = 0.5f;
 
-        private MainControls _mainControls;
         private float _mouseX, _mouseY;
         private IInputManagerSettings _settings;
         private ISpellTypesSetting _spellTypesSetting;
@@ -26,8 +25,6 @@ namespace Systems.Input_Manager
         }
 
         public event Action GamePauseInputted;
-        public event Action CloseCurrentWindow;
-
         public event Action JumpInputted;
         public event Action StartDashAimingInputted;
         public event Action DashInputted;
@@ -36,25 +33,17 @@ namespace Systems.Input_Manager
         public event Action<Vector2> LookInputted;
         public event Action<ISpellType> SelectSpellType;
 
-        public void SwitchToUIInput()
+        public new void SwitchToUIInput()
         {
-            _mainControls.Character.Disable();
-            _mainControls.UI.Enable();
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
+            base.SwitchToUIInput();
         }
 
         public void SwitchToGameInput()
         {
-            _mainControls.UI.Disable();
-            _mainControls.Character.Enable();
+            Controls.UI.Disable();
+            Controls.Character.Enable();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-        }
-
-        private void Awake()
-        {
-            _mainControls = new MainControls();
         }
 
         private void Start()
@@ -62,34 +51,32 @@ namespace Systems.Input_Manager
             StartCoroutine(UpdateLookData());
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            _mainControls.Enable();
-            _mainControls.Character.Jump.performed += OnJumpPerformed;
-            _mainControls.Character.Dash.started += OnDashStarted;
-            _mainControls.Character.Dash.canceled += OnDashCanceled;
-            _mainControls.Character.UseSpell.performed += OnUseSpellPerformed;
-            _mainControls.Character.PauseGame.performed += OnPauseGamePerformed;
-            _mainControls.Character.SwitchToSpellType1.performed += OnPerformedSwitchToSpellType1;
-            _mainControls.Character.SwitchToSpellType2.performed += OnPerformedSwitchToSpellType2;
-            _mainControls.Character.SwitchToSpellType3.performed += OnPerformedSwitchToSpellType3;
-            _mainControls.Character.SwitchToLastChanceSpellType.performed += OnPerformedSwitchToLastChanceSpellType;
-            _mainControls.UI.ContinueGame.performed += OnContinueGamePerformed;
+            base.OnEnable();
+            Controls.Character.Jump.performed += OnJumpPerformed;
+            Controls.Character.Dash.started += OnDashStarted;
+            Controls.Character.Dash.canceled += OnDashCanceled;
+            Controls.Character.UseSpell.performed += OnUseSpellPerformed;
+            Controls.Character.PauseGame.performed += OnPauseGamePerformed;
+            Controls.Character.SwitchToSpellType1.performed += OnPerformedSwitchToSpellType1;
+            Controls.Character.SwitchToSpellType2.performed += OnPerformedSwitchToSpellType2;
+            Controls.Character.SwitchToSpellType3.performed += OnPerformedSwitchToSpellType3;
+            Controls.Character.SwitchToLastChanceSpellType.performed += OnPerformedSwitchToLastChanceSpellType;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
-            _mainControls.Disable();
-            _mainControls.Character.Jump.performed -= OnJumpPerformed;
-            _mainControls.Character.Dash.started -= OnDashStarted;
-            _mainControls.Character.Dash.canceled -= OnDashCanceled;
-            _mainControls.Character.UseSpell.performed -= OnUseSpellPerformed;
-            _mainControls.Character.PauseGame.performed -= OnPauseGamePerformed;
-            _mainControls.Character.SwitchToSpellType1.performed -= OnPerformedSwitchToSpellType1;
-            _mainControls.Character.SwitchToSpellType2.performed -= OnPerformedSwitchToSpellType2;
-            _mainControls.Character.SwitchToSpellType3.performed -= OnPerformedSwitchToSpellType3;
-            _mainControls.Character.SwitchToLastChanceSpellType.performed -= OnPerformedSwitchToLastChanceSpellType;
-            _mainControls.UI.ContinueGame.performed -= OnContinueGamePerformed;
+            base.OnDisable();
+            Controls.Character.Jump.performed -= OnJumpPerformed;
+            Controls.Character.Dash.started -= OnDashStarted;
+            Controls.Character.Dash.canceled -= OnDashCanceled;
+            Controls.Character.UseSpell.performed -= OnUseSpellPerformed;
+            Controls.Character.PauseGame.performed -= OnPauseGamePerformed;
+            Controls.Character.SwitchToSpellType1.performed -= OnPerformedSwitchToSpellType1;
+            Controls.Character.SwitchToSpellType2.performed -= OnPerformedSwitchToSpellType2;
+            Controls.Character.SwitchToSpellType3.performed -= OnPerformedSwitchToSpellType3;
+            Controls.Character.SwitchToLastChanceSpellType.performed -= OnPerformedSwitchToLastChanceSpellType;
         }
 
         private void OnJumpPerformed(InputAction.CallbackContext obj)
@@ -115,11 +102,6 @@ namespace Systems.Input_Manager
         private void OnPauseGamePerformed(InputAction.CallbackContext obj)
         {
             GamePauseInputted?.Invoke();
-        }
-
-        private void OnContinueGamePerformed(InputAction.CallbackContext obj)
-        {
-            CloseCurrentWindow?.Invoke();
         }
 
         private void OnPerformedSwitchToLastChanceSpellType(InputAction.CallbackContext obj)
@@ -152,11 +134,11 @@ namespace Systems.Input_Manager
             Vector2 readDirection;
             while (true)
             {
-                readDirection = _mainControls.Character.Move.ReadValue<Vector2>().normalized;
+                readDirection = Controls.Character.Move.ReadValue<Vector2>().normalized;
                 MoveInputted?.Invoke(readDirection.magnitude > MinimalInputMagnitude ? readDirection : Vector2.zero);
                 LookInputted?.Invoke(_settings.InGameMouseSensitivity *
                                      Time.unscaledDeltaTime *
-                                     _mainControls.Character.Look.ReadValue<Vector2>());
+                                     Controls.Character.Look.ReadValue<Vector2>());
                 yield return null;
             }
         }

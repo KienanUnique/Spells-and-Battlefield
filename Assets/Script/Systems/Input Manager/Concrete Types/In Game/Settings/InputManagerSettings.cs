@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Systems.Input_Manager.Settings
+namespace Systems.Input_Manager.Concrete_Types.In_Game.Settings
 {
     [CreateAssetMenu(fileName = "Input Manager Settings",
         menuName = ScriptableObjectsMenuDirectories.SystemsSettingsDirectory + "Input Manager Settings", order = 0)]

@@ -6,6 +6,7 @@ using Player;
 using Systems.In_Game_Systems.Level_Finish_Zone;
 using Systems.In_Game_Systems.Time_Controller;
 using Systems.Input_Manager;
+using Systems.Input_Manager.Concrete_Types.In_Game;
 using UI.Managers.Concrete_Types.In_Game;
 
 namespace Systems.In_Game_Systems.Game_Controller
@@ -90,13 +91,11 @@ namespace Systems.In_Game_Systems.Game_Controller
 
         private void SubscribeOnUIEvents()
         {
-            _inGameSystemInput.CloseCurrentWindow += OnCloseCurrentWindow;
             _inGameManagerUI.AllWindowsClosed += OnCloseWindowInputted;
         }
 
         private void UnsubscribeFromUIEvents()
         {
-            _inGameSystemInput.CloseCurrentWindow -= OnCloseCurrentWindow;
             _inGameManagerUI.AllWindowsClosed -= OnCloseWindowInputted;
         }
 
@@ -151,11 +150,6 @@ namespace Systems.In_Game_Systems.Game_Controller
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
             }
-        }
-
-        private void OnCloseCurrentWindow()
-        {
-            _inGameManagerUI.TryCloseCurrentWindow();
         }
 
         private void OnPlayerStateChanged(CharacterState newState)

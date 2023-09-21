@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace Systems.Installers.Concrete_Types.Main_Menu
+namespace Systems.Installers.Concrete_Types.Menus.Main_Menu
 {
     [CreateAssetMenu(fileName = "Main Menu Settings Installer",
         menuName = ScriptableObjectsMenuDirectories.InstallersDirectory + "Main Menu Settings Installer")]

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6245270299220610368
+--- !u!1001 &6367117663681806352
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -14,15 +14,7 @@ PrefabInstance:
     - target: {fileID: 7896532306125554752, guid: d14aa44e1113c0c47b07c9199818ba72, type: 3}
       propertyPath: _monoInstallers.Array.data[1]
       value: 
-      objectReference: {fileID: 3568285784961744175}
-    - target: {fileID: 7896532306125554752, guid: d14aa44e1113c0c47b07c9199818ba72, type: 3}
-      propertyPath: _scriptableObjectInstallers.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7896532306125554752, guid: d14aa44e1113c0c47b07c9199818ba72, type: 3}
-      propertyPath: _scriptableObjectInstallers.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: a3e536112f0eb5e439c8c9435d7bce2d, type: 2}
+      objectReference: {fileID: -6888773593245221095}
     - target: {fileID: 7896532306125554753, guid: d14aa44e1113c0c47b07c9199818ba72, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -69,25 +61,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7896532306125554783, guid: d14aa44e1113c0c47b07c9199818ba72, type: 3}
       propertyPath: m_Name
-      value: Main Menu Scene Context
+      value: Menus Scene Context Base
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d14aa44e1113c0c47b07c9199818ba72, type: 3}
---- !u!1 &4268768635299105055 stripped
+--- !u!1 &3876074860566021199 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7896532306125554783, guid: d14aa44e1113c0c47b07c9199818ba72, type: 3}
-  m_PrefabInstance: {fileID: 6245270299220610368}
+  m_PrefabInstance: {fileID: 6367117663681806352}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3568285784961744175
+--- !u!114 &-6888773593245221095
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4268768635299105055}
+  m_GameObject: {fileID: 3876074860566021199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e081f21267524695ba0fa36f65895086, type: 3}
+  m_Script: {fileID: 11500000, guid: fc5638d8a8df482889441ea71845d4a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameLevelItemPrefabProvider: {fileID: 11400000, guid: f1213e51aa391d94fa8782168f87b7e0, type: 2}
+  _menusInputManagerPrefabProvider: {fileID: 11400000, guid: 14aac5e8297c3874bb7d9cbd199cbf67, type: 2}

@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3536074161889581834
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3876074860566021199, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_Name
+      value: Main Menu Scene Context
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021200, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: _monoInstallers.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021200, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: _monoInstallers.Array.data[2]
+      value: 
+      objectReference: {fileID: -8229263425026699800}
+    - target: {fileID: 3876074860566021200, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: _scriptableObjectInstallers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021200, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: _scriptableObjectInstallers.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: a3e536112f0eb5e439c8c9435d7bce2d, type: 2}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+--- !u!1 &349096297887801157 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3876074860566021199, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+  m_PrefabInstance: {fileID: 3536074161889581834}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-8229263425026699800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349096297887801157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e081f21267524695ba0fa36f65895086, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameLevelItemPrefabProvider: {fileID: 11400000, guid: f1213e51aa391d94fa8782168f87b7e0, type: 2}

@@ -1,7 +1,7 @@
 ﻿using Common.Abstract_Bases;
 using UnityEngine;
 
-namespace Systems.Input_Manager.Prefab_Provider
+namespace Systems.Input_Manager.Concrete_Types.In_Game.Prefab_Provider
 {
     [CreateAssetMenu(fileName = "In Game Input Manager Prefab Provider",
         menuName = ScriptableObjectsMenuDirectories.SystemsPrefabProvidersDirectory +

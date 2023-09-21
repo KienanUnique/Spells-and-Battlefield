@@ -3,7 +3,7 @@ using UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Game_Le
 using UnityEngine;
 using Zenject;
 
-namespace Systems.Installers.Concrete_Types.Main_Menu
+namespace Systems.Installers.Concrete_Types.Menus.Main_Menu
 {
     public class MainMenuFactoriesInstaller : MonoInstaller
     {

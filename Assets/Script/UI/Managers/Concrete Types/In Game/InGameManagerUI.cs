@@ -1,4 +1,5 @@
 ﻿using System;
+using Systems.Input_Manager;
 using Systems.Scene_Switcher.Concrete_Types;
 using UI.Concrete_Scenes.In_Game.Gameplay_UI;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Game_Over_Window;
@@ -20,11 +21,13 @@ namespace UI.Managers.Concrete_Types.In_Game
         private IUIWindowsStackManager _windowsManager;
         private IScenesController _scenesController;
         private ILoadingWindow _loadingWindow;
+        private IInputManagerForUI _inputManagerForUI;
 
-        public void Initialize(IGameplayUI gameplayUI, IGameOverWindow gameOverWindow, IPauseWindow pauseWindow,
-            ILevelCompletedWindow levelCompletedWindow, IScenesController scenesController,
-            ILoadingWindow loadingWindow, IUIWindowsStackManager windowsManager)
+        public void Initialize(IInputManagerForUI inputManagerForUI, IGameplayUI gameplayUI,
+            IGameOverWindow gameOverWindow, IPauseWindow pauseWindow, ILevelCompletedWindow levelCompletedWindow,
+            IScenesController scenesController, ILoadingWindow loadingWindow, IUIWindowsStackManager windowsManager)
         {
+            _inputManagerForUI = inputManagerForUI;
             _gameplayUI = gameplayUI;
             _gameOverWindow = gameOverWindow;
             _pauseWindow = pauseWindow;
@@ -40,6 +43,7 @@ namespace UI.Managers.Concrete_Types.In_Game
         protected override ILoadingWindow LoadingWindow => _loadingWindow;
         protected override IUIWindowsStackManager WindowsManager => _windowsManager;
         protected override IScenesController ScenesController => _scenesController;
+        protected override IInputManagerForUI InputManagerForUI => _inputManagerForUI;
 
         public void SwitchTo(InGameUIElementsGroup needElementsGroup)
         {

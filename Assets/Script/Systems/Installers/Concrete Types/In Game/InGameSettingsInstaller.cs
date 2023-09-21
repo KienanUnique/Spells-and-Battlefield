@@ -8,7 +8,7 @@ using Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Settings;
 using Spells.Spell_Types_Settings;
 using Systems.In_Game_Systems.Post_Processing_Controller.Settings;
 using Systems.In_Game_Systems.Time_Controller.Settings;
-using Systems.Input_Manager.Settings;
+using Systems.Input_Manager.Concrete_Types.In_Game.Settings;
 using UI.Concrete_Scenes.In_Game.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes.Settings;
 using UI.Concrete_Scenes.In_Game.Bar.View.Concrete_Types.Filling_Bar.Settings;
 using UI.Concrete_Scenes.In_Game.Popup_Text.Settings;
