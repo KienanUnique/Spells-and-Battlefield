@@ -112,11 +112,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1305986779851690022, guid: 7d16e6f375271c941b81e791ca7f29a1, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 90
+      value: 357.759
       objectReference: {fileID: 0}
     - target: {fileID: 1305986779851690022, guid: 7d16e6f375271c941b81e791ca7f29a1, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 30
+      value: 8.2488
       objectReference: {fileID: 0}
     - target: {fileID: 1305986779851690022, guid: 7d16e6f375271c941b81e791ca7f29a1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -169,6 +169,14 @@ PrefabInstance:
     - target: {fileID: 1305986779851690023, guid: 7d16e6f375271c941b81e791ca7f29a1, type: 3}
       propertyPath: m_Name
       value: Health Bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 1305986780326023550, guid: 7d16e6f375271c941b81e791ca7f29a1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1305986780326023550, guid: 7d16e6f375271c941b81e791ca7f29a1, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1305986781597795617, guid: 7d16e6f375271c941b81e791ca7f29a1, type: 3}
       propertyPath: m_Color.b
