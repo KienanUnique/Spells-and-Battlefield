@@ -6,7 +6,6 @@ using UnityEngine;
 namespace Common.Editor_Label_Text_Display
 {
     [ExecuteInEditMode]
-    [RequireComponent(typeof(ITextForEditorLabelProvider))]
     public class EditorLabelTextDisplay : MonoBehaviour
     {
         private const float MaximumRenderDistance = 100f;

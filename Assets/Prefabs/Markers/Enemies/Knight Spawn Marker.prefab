@@ -10,10 +10,10 @@ PrefabInstance:
     - target: {fileID: 1840548619181597455, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: _objectToSpawn
       value: 
-      objectReference: {fileID: 11400000, guid: 15b11d445564ed3498eab86424326c06, type: 2}
+      objectReference: {fileID: 11400000, guid: e06bb7ab515c4e4488df34cbb923fa97, type: 2}
     - target: {fileID: 6093150385468070801, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: m_Name
-      value: Knight Spawn Marker
+      value: Friendly To Player Knight Spawn Marker
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: m_RootOrder
@@ -21,15 +21,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 46.79
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 4.34
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -9.67
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -37,15 +37,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7055320062413825570, guid: e34056c90aa0f074182abdf450c04caf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
