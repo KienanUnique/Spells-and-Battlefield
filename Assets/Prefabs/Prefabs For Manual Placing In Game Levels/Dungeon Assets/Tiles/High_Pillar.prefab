@@ -39,6 +39,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8628244484548240847}
     m_Modifications:
+    - target: {fileID: 2954323153509355459, guid: 4cd248ecb5dd495468c0a783da4a4ae9, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2954323153509355459, guid: 4cd248ecb5dd495468c0a783da4a4ae9, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 83a0a63a89d2ee045a9a39349b0754b6, type: 2}
     - target: {fileID: 2954323153511457123, guid: 4cd248ecb5dd495468c0a783da4a4ae9, type: 3}
       propertyPath: m_Name
       value: HoleFix_Half
@@ -101,6 +109,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8628244484548240847}
     m_Modifications:
+    - target: {fileID: 4342671295866488773, guid: 27f210ed52b6c0f409f410ac194d0a7c, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342671295866488773, guid: 27f210ed52b6c0f409f410ac194d0a7c, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 83a0a63a89d2ee045a9a39349b0754b6, type: 2}
     - target: {fileID: 4342671295866585447, guid: 27f210ed52b6c0f409f410ac194d0a7c, type: 3}
       propertyPath: m_Name
       value: Pillar

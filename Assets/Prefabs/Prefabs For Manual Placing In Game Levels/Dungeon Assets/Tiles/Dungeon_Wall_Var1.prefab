@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 936655011710290159}
   - component: {fileID: 936655011709291055}
   - component: {fileID: 936655011713595983}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Dungeon_Wall_Var1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -53,7 +52,6 @@ MeshRenderer:
   m_CastShadows: 2
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -91,10 +89,10 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 936655011711489263}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 83a0a63a89d2ee045a9a39349b0754b6, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7322927112031727365, guid: ab61c646b6bbc5c498e1e835ea9ac264, type: 3}
