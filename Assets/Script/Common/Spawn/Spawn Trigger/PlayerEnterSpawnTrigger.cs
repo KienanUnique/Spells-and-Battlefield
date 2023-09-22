@@ -1,10 +1,12 @@
 ﻿using System;
 using Common.Abstract_Bases.Box_Collider_Trigger;
+using Enemies;
 using ModestTree;
+using Player;
 
-namespace Enemies.Spawn.Spawn_Trigger
+namespace Common.Spawn.Spawn_Trigger
 {
-    public class EnemySpawnTrigger : TriggerForInitializableObjectsBase<IEnemyTarget>, IEnemySpawnTrigger
+    public class PlayerEnterSpawnTrigger : TriggerForInitializableObjectsBase<IPlayer>, ISpawnTrigger
     {
         public event Action SpawnRequired;
         public bool IsSpawnRequired => !_requiredObjectsInside.IsEmpty();

@@ -1,5 +1,7 @@
-﻿using Common.Abstract_Bases.Spawn_Markers_System.Markers;
+﻿using System;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Editor_Label_Text_Display;
+using Common.Spawn;
 using Pickable_Items.Data_For_Creating.Scriptable_Object;
 using Pickable_Items.Factory;
 using UnityEngine;
@@ -8,7 +10,7 @@ using Zenject;
 namespace Pickable_Items.Spawner
 {
     [RequireComponent(typeof(EditorLabelTextDisplay))]
-    public class PickableItemSpawner : SpawnMarkerBase, ITextForEditorLabelProvider
+    public class PickableItemSpawner : MonoBehaviour, ISpawner, ITextForEditorLabelProvider
     {
         [SerializeField] private PickableItemScriptableObjectBase _objectToSpawn;
         private IPickableItemsFactory _pickableItemsFactory;
@@ -19,11 +21,20 @@ namespace Pickable_Items.Spawner
             _pickableItemsFactory = pickableItemsFactory;
         }
 
+        public event Action<InitializableMonoBehaviourStatus> InitializationStatusChanged;
         public string TextForEditorLabel => _objectToSpawn == null ? string.Empty : _objectToSpawn.name;
 
-        private void Start()
+        public InitializableMonoBehaviourStatus CurrentInitializableMonoBehaviourStatus =>
+            InitializableMonoBehaviourStatus.Initialized;
+
+        public void Spawn()
         {
             _pickableItemsFactory.Create(_objectToSpawn, transform.position);
+        }
+
+        private void Awake()
+        {
+            InitializationStatusChanged?.Invoke(CurrentInitializableMonoBehaviourStatus);
         }
     }
 }
