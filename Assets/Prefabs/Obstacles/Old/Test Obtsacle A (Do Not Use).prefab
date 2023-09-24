@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5525611228295602839}
   - component: {fileID: 5512664240668974580}
   m_Layer: 7
-  m_Name: Test Obtsacle A
+  m_Name: Test Obtsacle A (Do Not Use)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
