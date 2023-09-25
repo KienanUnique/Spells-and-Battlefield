@@ -2,8 +2,8 @@
 {
     public interface IMovementSettingsSection
     {
-        float NormalFrictionCoefficient { get; }
-        float MoveForce { get; }
-        float MaximumSpeed { get; }
+        public float NormalFrictionCoefficient { get; }
+        public float MoveForce { get; }
+        public float MaximumSpeed { get; }
     }
 }

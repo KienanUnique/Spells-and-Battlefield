@@ -2,6 +2,7 @@
 using System.Collections;
 using Common;
 using Common.Abstract_Bases.Movement;
+using Common.Abstract_Bases.Movement.Coefficients_Calculator;
 using Common.Interfaces;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Readonly_Rigidbody;
@@ -30,12 +31,13 @@ namespace Enemies.Movement
         private readonly ITargetPathfinderForMovement _targetPathfinder;
         private readonly IReadonlyEnemyTargetFromTriggersSelector _targetSelector;
         private readonly ISummoner _summoner;
+        private readonly EnemyMovementValuesCalculator _enemyMovementValuesCalculator;
         private IEnemyDataForMoving _currentDataForMoving;
         private Coroutine _followPathCoroutine;
         private bool _needMove;
 
         protected EnemyMovementBase(IEnemyMovementSetupData setupData, IMovementSettingsSection movementSettings) :
-            base(setupData.Rigidbody, movementSettings)
+            base(setupData.Rigidbody)
         {
             _coroutineStarter = setupData.CoroutineStarter;
             ReadonlyRigidbody = new ReadonlyRigidbody(_rigidbody);
@@ -45,6 +47,8 @@ namespace Enemies.Movement
             _targetPathfinder = setupData.TargetPathfinderForMovement;
             _targetSelector = setupData.TargetSelector;
             _summoner = setupData.Summoner;
+            _enemyMovementValuesCalculator = new EnemyMovementValuesCalculator(movementSettings);
+            MovementValuesCalculator = _enemyMovementValuesCalculator;
         }
 
         public event Action<bool> MovingStateChanged;
@@ -53,6 +57,8 @@ namespace Enemies.Movement
 
         protected virtual Vector3 VelocityForLimitations => _rigidbody.velocity;
         private IEnemyTarget CurrentTarget => _targetSelector.CurrentTarget;
+
+        protected override IMovementValuesCalculator MovementValuesCalculator { get; }
 
         public void DisableMoving()
         {
@@ -172,7 +178,9 @@ namespace Enemies.Movement
                 {
                     _isMoving.Value = true;
                     SetDirectionTowardsPoint(_targetPathfinder.CurrentWaypoint, ref direction);
-                    _rigidbody.AddForce(MovementSettings.MoveForce * Time.deltaTime * _currentSpeedRatio * direction);
+                    _rigidbody.AddForce(_enemyMovementValuesCalculator.MoveForceCalculated *
+                                        Time.deltaTime *
+                                        direction);
                     ApplyFriction(direction);
                     TryLimitCurrentSpeed();
                 }
@@ -192,10 +200,8 @@ namespace Enemies.Movement
         {
             Vector3 currentVelocity = VelocityForLimitations;
             Vector3 needFrictionDirection = Time.deltaTime *
-                                            _currentSpeedRatio *
-                                            MovementSettings.NormalFrictionCoefficient *
-                                            MovementSettings.MoveForce *
-                                            currentVelocity.magnitude *
+                                            MovementValuesCalculator.CalculateFrictionForce(currentVelocity
+                                                .magnitude) *
                                             (needMoveDirection - currentVelocity.normalized);
             _rigidbody.AddForce(needFrictionDirection);
         }

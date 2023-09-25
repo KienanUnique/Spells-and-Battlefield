@@ -6,6 +6,7 @@ namespace Player.Movement.Settings
     {
         public float FlyingFrictionCoefficient { get; }
         public float JumpForce { get; }
+        public float WallRunningJumpAngleTowardsUp { get; }
         public float DashForce { get; }
         public float WallRunningGravityForceMultiplier { get; }
         public float DashCooldownSeconds { get; }

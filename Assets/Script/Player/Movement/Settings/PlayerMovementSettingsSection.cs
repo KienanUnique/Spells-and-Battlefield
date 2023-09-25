@@ -9,6 +9,7 @@ namespace Player.Movement.Settings
     {
         [SerializeField] private float _jumpForce = 800f;
         [SerializeField] private float _dashForce = 1500f;
+        [SerializeField] private float _wallRunningJumpAngleFromWall = 20f;
         [SerializeField] private float _wallRunningGravityForceMultiplier = 0.08f;
         [SerializeField] private float _dashCooldownSeconds = 5f;
         [SerializeField] private float _dashSpeedLimitationsDisablingForSeconds = 0.3f;
@@ -17,6 +18,7 @@ namespace Player.Movement.Settings
 
         public float FlyingFrictionCoefficient => _flyingFrictionCoefficient;
         public float JumpForce => _jumpForce;
+        public float WallRunningJumpAngleTowardsUp => _wallRunningJumpAngleFromWall;
         public float DashForce => _dashForce;
         public float WallRunningGravityForceMultiplier => _wallRunningGravityForceMultiplier;
         public float DashCooldownSeconds => _dashCooldownSeconds;

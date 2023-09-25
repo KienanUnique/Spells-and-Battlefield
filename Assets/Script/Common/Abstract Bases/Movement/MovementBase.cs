@@ -1,5 +1,5 @@
 ﻿using Common.Abstract_Bases.Disableable;
-using Common.Settings.Sections.Movement;
+using Common.Abstract_Bases.Movement.Coefficients_Calculator;
 using UnityEngine;
 
 namespace Common.Abstract_Bases.Movement
@@ -9,34 +9,32 @@ namespace Common.Abstract_Bases.Movement
         protected const float StopVelocityMagnitude = 0.0001f;
 
         protected readonly Rigidbody _rigidbody;
-        protected readonly IMovementSettingsSection MovementSettings;
-        protected float _currentSpeedRatio = 1;
 
-        protected MovementBase(Rigidbody rigidbody, IMovementSettingsSection movementSettings)
+        protected MovementBase(Rigidbody rigidbody)
         {
             _rigidbody = rigidbody;
-            MovementSettings = movementSettings;
         }
 
-        protected float CurrentMaximumSpeed => MovementSettings.MaximumSpeed * _currentSpeedRatio;
+        protected abstract IMovementValuesCalculator MovementValuesCalculator { get; }
 
         public void MultiplySpeedRatioBy(float speedRatio)
         {
-            _currentSpeedRatio *= speedRatio;
+            MovementValuesCalculator.MultiplySpeedRatioBy(speedRatio);
             _rigidbody.velocity *= speedRatio;
         }
 
         public void DivideSpeedRatioBy(float speedRatio)
         {
-            _currentSpeedRatio /= speedRatio;
+            MovementValuesCalculator.DivideSpeedRatioBy(speedRatio);
             _rigidbody.velocity /= speedRatio;
         }
 
         protected virtual void TryLimitCurrentSpeed()
         {
-            if (_rigidbody.velocity.magnitude > CurrentMaximumSpeed)
+            if (_rigidbody.velocity.magnitude > MovementValuesCalculator.MaximumSpeedCalculated)
             {
-                _rigidbody.velocity = _rigidbody.velocity.normalized * CurrentMaximumSpeed;
+                _rigidbody.velocity = _rigidbody.velocity.normalized *
+                                      MovementValuesCalculator.MaximumSpeedCalculated;
             }
             else if (_rigidbody.velocity.magnitude < StopVelocityMagnitude)
             {

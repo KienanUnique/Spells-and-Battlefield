@@ -24,7 +24,6 @@ using Spells.Factory;
 using Spells.Spell;
 using Spells.Spell.Scriptable_Objects;
 using Spells.Spell_Types_Settings;
-using Systems.Input_Manager;
 using Systems.Input_Manager.Concrete_Types.In_Game;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -96,6 +95,24 @@ namespace Player.Setup
                 _upperPointForSummonedEnemiesPositionCalculating
             };
 
+        protected override void Prepare()
+        {
+            _playerCaster = GetComponent<ICaster>();
+            _idHolder = GetComponent<IdHolder>();
+            _thisRigidbody = GetComponent<Rigidbody>();
+
+            var playerCharacter = new PlayerCharacter(this, _settings.Character);
+
+            _itemsNeedDisabling = new List<IDisableable> {playerCharacter};
+
+            _playerCharacter = playerCharacter;
+
+            _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator, _settings.Visual);
+            _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
+
+            _cameraTransform = new ReadonlyTransform(_camera.transform);
+        }
+
         protected override void Initialize()
         {
             var playerMovement =
@@ -118,26 +135,9 @@ namespace Player.Setup
             var setupData = new PlayerControllerSetupData(_eventInvokerForAnimations, _playerCameraEffects,
                 _playerVisual, _playerCharacter, playerSpellsManager, _playerInput, playerMovement, playerLook,
                 _idHolder, _itemsNeedDisabling, _cameraTransform, _pointForAiming.ReadonlyTransform, _settings.Faction,
-                informationOfSummoner, _toolsForSummon, _upperPointForSummonedEnemiesPositionCalculating.ReadonlyTransform);
+                informationOfSummoner, _toolsForSummon,
+                _upperPointForSummonedEnemiesPositionCalculating.ReadonlyTransform);
             controllerToSetup.Initialize(setupData);
-        }
-
-        protected override void Prepare()
-        {
-            _playerCaster = GetComponent<ICaster>();
-            _idHolder = GetComponent<IdHolder>();
-            _thisRigidbody = GetComponent<Rigidbody>();
-
-            var playerCharacter = new PlayerCharacter(this, _settings.Character);
-
-            _itemsNeedDisabling = new List<IDisableable> {playerCharacter};
-
-            _playerCharacter = playerCharacter;
-
-            _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator, _settings.Visual);
-            _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
-
-            _cameraTransform = new ReadonlyTransform(_camera.transform);
         }
     }
 }

@@ -9,5 +9,7 @@ namespace Common.Readonly_Transform
         public Vector3 LocalScale { get; }
         public Vector3 Up { get; }
         public Vector3 Forward { get; }
+        public Vector3 Right { get; }
+        public Vector3 InverseTransformDirection(Vector3 direction);
     }
 }

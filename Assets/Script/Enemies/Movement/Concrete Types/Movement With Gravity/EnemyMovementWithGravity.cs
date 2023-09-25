@@ -29,9 +29,10 @@ namespace Enemies.Movement.Concrete_Types.Movement_With_Gravity
         protected override void TryLimitCurrentSpeed()
         {
             Vector3 velocityForLimitations = VelocityForLimitations;
-            if (velocityForLimitations.magnitude > CurrentMaximumSpeed)
+            if (velocityForLimitations.magnitude > MovementValuesCalculator.MaximumSpeedCalculated)
             {
-                Vector3 resultVelocity = velocityForLimitations.normalized * CurrentMaximumSpeed;
+                Vector3 resultVelocity = velocityForLimitations.normalized *
+                                         MovementValuesCalculator.MaximumSpeedCalculated;
                 resultVelocity.y += _rigidbody.velocity.y;
                 _rigidbody.velocity = resultVelocity;
             }
