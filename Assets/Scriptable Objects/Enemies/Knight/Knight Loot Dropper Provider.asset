@@ -14,8 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lootGenerator:
     _alwaysDroppedItems:
-    - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+      _items:
+      - _item: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+        _includingLevelStartDropping: {fileID: 11400000, guid: 605cd23546bb6d24d84d86e66ff4d13c, type: 2}
+      - _item: {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
+        _includingLevelStartDropping: {fileID: 11400000, guid: 04d935b224237514988ce1ccbf33c322, type: 2}
     _chanceDroppedItemsSection:
-      _chanceDroppedItems: []
+      _chanceDroppedItems:
+        _items: []
       _minimumInclusiveCount: 0
       _maximumInclusiveCount: 0

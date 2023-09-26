@@ -28,6 +28,7 @@ using Enemies.Trigger;
 using Enemies.Visual;
 using Factions;
 using Pickable_Items.Factory;
+using Systems.Scene_Switcher.Current_Game_Level_Information;
 using UI.Concrete_Scenes.In_Game.Popup_Text.Factory;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -68,16 +69,19 @@ namespace Enemies.Setup
         private IFaction _faction;
         private ISummoner _summoner;
         private IToolsForSummon _toolsForSummon;
+        private IGameLevelLootUnlocker _gameLevelLootUnlocker;
 
         [Inject]
         private void GetDependencies(IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
             IPopupHitPointsChangeTextFactory popupHitPointsChangeTextFactory,
-            IGroundLayerMaskSetting groundLayerMaskSetting, IEnemyFactory enemyFactory)
+            IGroundLayerMaskSetting groundLayerMaskSetting, IEnemyFactory enemyFactory,
+            IGameLevelLootUnlocker gameLevelLootUnlocker)
         {
             _generalEnemySettings = generalEnemySettings;
             _itemsFactory = itemsFactory;
             _popupHitPointsChangeTextFactory = popupHitPointsChangeTextFactory;
             _toolsForSummon = new ToolsForSummon(enemyFactory, groundLayerMaskSetting);
+            _gameLevelLootUnlocker = gameLevelLootUnlocker;
         }
 
         public IEnemy InitializedEnemy => _initializedEnemy ??= GetComponent<IEnemy>();
@@ -144,8 +148,8 @@ namespace Enemies.Setup
             targetTriggers.AddRange(_localTargetTriggers);
             targetFromTriggersSelector.AddTriggers(targetTriggers);
 
-            ILootDropper lootDropper =
-                _settings.LootDropperProvider.GetImplementation(_itemsFactory, _lootSpawnPoint.ReadonlyTransform);
+            ILootDropper lootDropper = _settings.LootDropperProvider.GetImplementation(_itemsFactory,
+                _lootSpawnPoint.ReadonlyTransform, _gameLevelLootUnlocker);
 
             var itemsNeedDisabling = new List<IDisableable>
             {

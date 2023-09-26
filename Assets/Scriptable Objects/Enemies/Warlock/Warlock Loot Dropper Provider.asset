@@ -14,14 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lootGenerator:
     _alwaysDroppedItems:
-    - {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
+      _items:
+      - _item: {fileID: 11400000, guid: 7ce1eb3282451694e83966f5e5ce9ec2, type: 2}
+        _includingLevelStartDropping: {fileID: 11400000, guid: 605cd23546bb6d24d84d86e66ff4d13c, type: 2}
+      - _item: {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
+        _includingLevelStartDropping: {fileID: 11400000, guid: 4515160a3406ba440b3d1235f6772c59, type: 2}
     _chanceDroppedItemsSection:
       _chanceDroppedItems:
-      - _item: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-        _chanceCoefficient: 2
-      - _item: {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
-        _chanceCoefficient: 1
-      - _item: {fileID: 11400000, guid: 7ce1eb3282451694e83966f5e5ce9ec2, type: 2}
-        _chanceCoefficient: 1
+        _items:
+        - _item:
+            _item: {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
+            _chanceCoefficient: 1
+          _includingLevelStartDropping: {fileID: 11400000, guid: 605cd23546bb6d24d84d86e66ff4d13c, type: 2}
+        - _item:
+            _item: {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+            _chanceCoefficient: 2
+          _includingLevelStartDropping: {fileID: 11400000, guid: 4515160a3406ba440b3d1235f6772c59, type: 2}
+        - _item:
+            _item: {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
+            _chanceCoefficient: 1
+          _includingLevelStartDropping: {fileID: 11400000, guid: 4515160a3406ba440b3d1235f6772c59, type: 2}
       _minimumInclusiveCount: 1
       _maximumInclusiveCount: 2

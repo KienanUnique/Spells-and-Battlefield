@@ -4,6 +4,7 @@ using Common.Readonly_Transform;
 using Enemies.Loot_Dropper.Generator;
 using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
+using Systems.Scene_Switcher.Current_Game_Level_Information;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,13 +18,32 @@ namespace Enemies.Loot_Dropper
         private readonly ILootGenerator _generator;
         private readonly IPickableItemsFactory _pickableItemsFactory;
         private readonly IReadonlyTransform _itemsSpawnPoint;
+        private readonly IGameLevelLootUnlocker _gameLevelLootUnlocker;
 
         public LootDropper(ILootGenerator generator, IPickableItemsFactory pickableItemsFactory,
-            IReadonlyTransform itemsSpawnPoint)
+            IReadonlyTransform itemsSpawnPoint, IGameLevelLootUnlocker gameLevelLootUnlocker)
         {
             _generator = generator;
             _pickableItemsFactory = pickableItemsFactory;
             _itemsSpawnPoint = itemsSpawnPoint;
+            _gameLevelLootUnlocker = gameLevelLootUnlocker;
+        }
+
+        public void DropLoot(Vector3 priorityDropDirection)
+        {
+            IReadOnlyList<IPickableItemDataForCreating> lootToDrop = _generator.GetLoot(_gameLevelLootUnlocker);
+            IReadOnlyList<Vector3> directions = CalculateDropDirections(lootToDrop.Count, priorityDropDirection);
+
+            if (lootToDrop.Count != directions.Count)
+            {
+                throw new InvalidOperationException("Calculated directions count isn't equal loot count");
+            }
+
+            for (var i = 0; i < lootToDrop.Count; i++)
+            {
+                Vector3 dropDirection = directions[i];
+                _pickableItemsFactory.Create(lootToDrop[i], _itemsSpawnPoint.Position, dropDirection);
+            }
         }
 
         private static IReadOnlyList<Vector3> CalculateRandomDropDirections(int count)
@@ -41,31 +61,7 @@ namespace Enemies.Loot_Dropper
             return dropDirections;
         }
 
-        public void DropLoot(Vector3 priorityDropDirection)
-        {
-            IReadOnlyList<IPickableItemDataForCreating> lootToDrop = _generator.GetLoot();
-            IReadOnlyList<Vector3> directions = CalculateDropDirections(lootToDrop.Count, priorityDropDirection);
-
-            if (lootToDrop.Count != directions.Count)
-            {
-                throw new InvalidOperationException("Calculated directions count isn't equal loot count");
-            }
-
-            for (var i = 0; i < lootToDrop.Count; i++)
-            {
-                Vector3 dropDirection = directions[i];
-                _pickableItemsFactory.Create(lootToDrop[i], _itemsSpawnPoint.Position, dropDirection);
-            }
-        }
-
-        private IReadOnlyList<Vector3> CalculateDropDirections(int count, Vector3 priorityDropDirection)
-        {
-            return 360f / count < MinimumAngleBetweenDropDirections
-                ? CalculateRandomDropDirections(count)
-                : CalculateOrderedDropDirections(count, priorityDropDirection);
-        }
-
-        private IReadOnlyList<Vector3> CalculateOrderedDropDirections(int count, Vector3 priorityDropDirection)
+        private static IReadOnlyList<Vector3> CalculateOrderedDropDirections(int count, Vector3 priorityDropDirection)
         {
             var dropDirections = new List<Vector3>();
             float angleBetweenLines;
@@ -89,6 +85,13 @@ namespace Enemies.Loot_Dropper
             }
 
             return dropDirections;
+        }
+
+        private IReadOnlyList<Vector3> CalculateDropDirections(int count, Vector3 priorityDropDirection)
+        {
+            return 360f / count < MinimumAngleBetweenDropDirections
+                ? CalculateRandomDropDirections(count)
+                : CalculateOrderedDropDirections(count, priorityDropDirection);
         }
     }
 }

@@ -6,17 +6,18 @@ namespace Systems.Scene_Switcher.Concrete_Types
 {
     public class InGameScenesController : ScenesController, IInGameSceneController
     {
-        private readonly IGameLevelData _currentLevel;
         private readonly int _currentLevelIndex;
         private readonly bool _isCurrentLevelLast;
 
         public InGameScenesController(IScenesSettings settings) : base(settings)
         {
             string currentName = SceneManager.GetActiveScene().name;
-            _currentLevel = _settings.GameLevels.First(level => level.SceneName == currentName);
-            _currentLevelIndex = _settings.GameLevels.IndexOf(_currentLevel);
+            CurrentLevel = _settings.GameLevels.First(level => level.SceneName == currentName);
+            _currentLevelIndex = _settings.GameLevels.IndexOf(CurrentLevel);
             _isCurrentLevelLast = _currentLevelIndex == _settings.GameLevels.Count - 1;
         }
+
+        public IGameLevelData CurrentLevel { get; }
 
         public void LoadNextLevel()
         {
@@ -27,7 +28,7 @@ namespace Systems.Scene_Switcher.Concrete_Types
 
         public void RestartLevel()
         {
-            LoadScene(_currentLevel);
+            LoadScene(CurrentLevel);
         }
     }
 }

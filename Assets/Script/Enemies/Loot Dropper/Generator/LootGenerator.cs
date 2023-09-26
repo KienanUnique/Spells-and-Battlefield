@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Enemies.Loot_Dropper.Generator.Chance_Item;
+using Enemies.Loot_Dropper.Generator.Unlockable_Items_List;
 using ModestTree;
 using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Data_For_Creating.Scriptable_Object;
+using Systems.Scene_Switcher.Current_Game_Level_Information;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -14,25 +16,26 @@ namespace Enemies.Loot_Dropper.Generator
     {
         [Header("Always dropped loot")]
         [SerializeField]
-        private List<PickableItemScriptableObjectBase> _alwaysDroppedItems;
+        private UnlockableItemsList<PickableItemScriptableObjectBase> _alwaysDroppedItems;
 
         [Header("Loot dropped with certain chance")]
         [SerializeField]
         private ChanceDroppedItemsSection _chanceDroppedItemsSection;
 
-        public IReadOnlyList<IPickableItemDataForCreating> GetLoot()
+        public IReadOnlyList<IPickableItemDataForCreating> GetLoot(IGameLevelLootUnlocker unlocker)
         {
             var loot = new List<IPickableItemDataForCreating>();
-            loot.AddRange(_alwaysDroppedItems);
+            loot.AddRange(_alwaysDroppedItems.GetUnlockedItems(unlocker));
 
-            if (_chanceDroppedItemsSection.ChanceDroppedItems.IsEmpty() ||
-                _chanceDroppedItemsSection.MaximumInclusiveCount == 0)
+            List<LootItemWithChance> chanceDroppedItems =
+                _chanceDroppedItemsSection.GetUnlockedChanceDroppedItems(unlocker);
+            if (chanceDroppedItems.IsEmpty() || _chanceDroppedItemsSection.MaximumInclusiveCount == 0)
             {
                 return loot;
             }
 
             var totalChance = 0f;
-            _chanceDroppedItemsSection.ChanceDroppedItems.ForEach(item => totalChance += item.ChanceCoefficient);
+            chanceDroppedItems.ForEach(item => totalChance += item.ChanceCoefficient);
 
             int countOfChanceDroppedItems = Random.Range(_chanceDroppedItemsSection.MinimumInclusiveCount,
                 _chanceDroppedItemsSection.MaximumInclusiveCount + 1);
@@ -41,7 +44,7 @@ namespace Enemies.Loot_Dropper.Generator
                 float randomValue = Random.Range(0f, totalChance);
                 var chanceSum = 0f;
 
-                foreach (LootItemWithChance item in _chanceDroppedItemsSection.ChanceDroppedItems)
+                foreach (LootItemWithChance item in chanceDroppedItems)
                 {
                     chanceSum += item.ChanceCoefficient;
 
@@ -59,7 +62,7 @@ namespace Enemies.Loot_Dropper.Generator
         [Serializable]
         private class ChanceDroppedItemsSection
         {
-            [SerializeField] private List<LootItemWithChance> _chanceDroppedItems;
+            [SerializeField] private UnlockableItemsList<LootItemWithChance> _chanceDroppedItems;
 
             [SerializeField] [Min(0)] private int _minimumInclusiveCount;
 
@@ -67,7 +70,11 @@ namespace Enemies.Loot_Dropper.Generator
 
             public int MaximumInclusiveCount => _maximumInclusiveCount;
             public int MinimumInclusiveCount => _minimumInclusiveCount;
-            public List<LootItemWithChance> ChanceDroppedItems => _chanceDroppedItems;
+
+            public List<LootItemWithChance> GetUnlockedChanceDroppedItems(IGameLevelLootUnlocker unlocker)
+            {
+                return _chanceDroppedItems.GetUnlockedItems(unlocker);
+            }
         }
     }
 }
