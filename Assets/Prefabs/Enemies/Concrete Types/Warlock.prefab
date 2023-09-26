@@ -3442,6 +3442,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4693423325618152248}
     m_Modifications:
+    - target: {fileID: 1274546653460391499, guid: 9e1ab1a780f674a4aa61b149990225ca, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1274546653864391500, guid: 9e1ab1a780f674a4aa61b149990225ca, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
@@ -3530,9 +3534,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2066130694113026701, guid: 9e1ab1a780f674a4aa61b149990225ca, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3087770370349429012, guid: 9e1ab1a780f674a4aa61b149990225ca, type: 3}
       propertyPath: m_Name
       value: Health Bar Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5374468350542262189, guid: 9e1ab1a780f674a4aa61b149990225ca, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6739956960940863301, guid: 9e1ab1a780f674a4aa61b149990225ca, type: 3}
       propertyPath: _enemyController

@@ -130,26 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 495929383}
     m_Modifications:
-    - target: {fileID: 24851080133907213, guid: ef02bc918545b694390ced87405ac968, type: 3}
-      propertyPath: m_text
-      value: Load
-      objectReference: {fileID: 0}
     - target: {fileID: 337937056372520367, guid: ef02bc918545b694390ced87405ac968, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3996679345845838054, guid: ef02bc918545b694390ced87405ac968, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3996679345845838054, guid: ef02bc918545b694390ced87405ac968, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3996679345845838054, guid: ef02bc918545b694390ced87405ac968, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4703095871456628778, guid: ef02bc918545b694390ced87405ac968, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -157,22 +141,6 @@ PrefabInstance:
     - target: {fileID: 4703095871456628778, guid: ef02bc918545b694390ced87405ac968, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4703095871456628778, guid: ef02bc918545b694390ced87405ac968, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4801505991563754990, guid: ef02bc918545b694390ced87405ac968, type: 3}
-      propertyPath: m_Name
-      value: Choose Level
-      objectReference: {fileID: 0}
-    - target: {fileID: 7039654923164812329, guid: ef02bc918545b694390ced87405ac968, type: 3}
-      propertyPath: m_text
-      value: Choose Level
-      objectReference: {fileID: 0}
-    - target: {fileID: 7556803458567963578, guid: ef02bc918545b694390ced87405ac968, type: 3}
-      propertyPath: m_text
-      value: Back
       objectReference: {fileID: 0}
     - target: {fileID: 8860182751953174168, guid: ef02bc918545b694390ced87405ac968, type: 3}
       propertyPath: m_Name

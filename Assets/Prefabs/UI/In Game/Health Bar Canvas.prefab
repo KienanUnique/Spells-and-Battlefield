@@ -82,7 +82,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &23255556775047385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,8 +108,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 1349513035689406086}
     m_Modifications:
     - target: {fileID: 1774863140089613719, guid: c9a720d13fce7034aa1413b9e1c2126f, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1774863140089613719, guid: c9a720d13fce7034aa1413b9e1c2126f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1774863140089613719, guid: c9a720d13fce7034aa1413b9e1c2126f, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1774863140089613719, guid: c9a720d13fce7034aa1413b9e1c2126f, type: 3}
       propertyPath: m_AnchorMin.y
@@ -117,11 +125,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1774863140089613719, guid: c9a720d13fce7034aa1413b9e1c2126f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -0.15000004
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1774863140089613719, guid: c9a720d13fce7034aa1413b9e1c2126f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -0.15
+      value: -0.10000001
       objectReference: {fileID: 0}
     - target: {fileID: 1774863140089613719, guid: c9a720d13fce7034aa1413b9e1c2126f, type: 3}
       propertyPath: m_AnchoredPosition.x
