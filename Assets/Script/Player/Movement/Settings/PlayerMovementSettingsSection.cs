@@ -15,12 +15,31 @@ namespace Player.Movement.Settings
         [SerializeField] private float _dashSpeedLimitationsDisablingForSeconds = 0.3f;
         [SerializeField] private float _coyoteTimeInSeconds = 0.1f;
         [Range(0, 1f)] [SerializeField] private float _flyingFrictionCoefficient = 0.175f;
+        [SerializeField] [Min(0)] private float _groundDecreaseAdditionalMaximumSpeedAcceleration = 5f;
+        [SerializeField] [Min(0)] private float _airDecreaseAdditionalMaximumSpeedAcceleration = 1f;
+        [SerializeField] [Min(0)] private float _wallRunningIncreaseAdditionalMaximumSpeedAcceleration = 4f;
+        [SerializeField] [Min(0)] private float _wallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration = 20f;
+        [SerializeField] [Min(0)] private float _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration = 99f;
 
+        public float GroundDecreaseAdditionalMaximumSpeedAcceleration =>
+            _groundDecreaseAdditionalMaximumSpeedAcceleration;
+
+        public float AirDecreaseAdditionalMaximumSpeedAcceleration => _airDecreaseAdditionalMaximumSpeedAcceleration;
         public float FlyingFrictionCoefficient => _flyingFrictionCoefficient;
         public float JumpForce => _jumpForce;
-        public float WallRunningJumpAngleTowardsUp => _wallRunningJumpAngleFromWall;
         public float DashForce => _dashForce;
+        public float WallRunningJumpAngleTowardsUp => _wallRunningJumpAngleFromWall;
         public float WallRunningGravityForceMultiplier => _wallRunningGravityForceMultiplier;
+
+        public float WallRunningIncreaseAdditionalMaximumSpeedAcceleration =>
+            _wallRunningIncreaseAdditionalMaximumSpeedAcceleration;
+
+        public float WallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration =>
+            _wallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration;
+
+        public float NoInputMovingDecreaseAdditionalMaximumSpeedAcceleration =>
+            _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration;
+
         public float DashCooldownSeconds => _dashCooldownSeconds;
         public float DashSpeedLimitationsDisablingForSeconds => _dashSpeedLimitationsDisablingForSeconds;
         public float CoyoteTimeInSeconds => _coyoteTimeInSeconds;

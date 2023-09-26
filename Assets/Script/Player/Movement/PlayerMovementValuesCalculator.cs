@@ -1,29 +1,75 @@
 ﻿using System;
+using System.Collections;
 using Common.Abstract_Bases.Movement.Coefficients_Calculator;
+using Common.Interfaces;
 using Common.Readonly_Rigidbody;
+using DG.Tweening;
 using Player.Movement.Settings;
 using UnityEngine;
 
 namespace Player.Movement
 {
-    public class PlayerMovementValuesCalculator : MovementValuesCalculatorBase
+    public class PlayerMovementValuesCalculator : MovementValuesCalculatorBase, IPlayerMovementValuesCalculator
     {
+        private const float MinimumLocalAdditionalMaximumSpeed = 0f;
+        private const float FloatComparisonTolerance = 0.001f;
         private readonly IPlayerMovementSettings _playerMovementSettings;
         private readonly IReadonlyRigidbody _readonlyRigidbody;
         private float _currentFrictionCoefficient;
         private float _currentPlayerInputForceMultiplier;
         private float _currentGravityForceMultiplier;
+        private float _localAdditionalMaximumSpeed;
+        private Tweener _currentLocalAdditionalMaximumSpeedChangeTween = null;
+        private Tweener _currentLocalAdditionalMaximumSpeedResetTween = null;
+        private Vector2 _inputMoveDirection = Vector2.zero;
 
         public PlayerMovementValuesCalculator(IPlayerMovementSettings movementSettings,
-            IReadonlyRigidbody readonlyRigidbody) : base(movementSettings)
+            IReadonlyRigidbody readonlyRigidbody, ICoroutineStarter coroutineStarter) : base(movementSettings)
         {
             _playerMovementSettings = movementSettings;
             _readonlyRigidbody = readonlyRigidbody;
+            coroutineStarter.StartCoroutine(HandleInputMovement());
         }
 
         public float GravityForce => _playerMovementSettings.NormalGravityForce * _currentGravityForceMultiplier;
+
+        public float BaseMaximumSpeed => _settings.MaximumSpeed;
+
+        public override float MaximumSpeedCalculated =>
+            (_settings.MaximumSpeed + _localAdditionalMaximumSpeed) * ExternalSetSpeedRatio;
+
         public float DashForce => _playerMovementSettings.DashForce;
-        private float JumpForce => _playerMovementSettings.JumpForce;
+
+        public Vector3 MoveForce =>
+            _settings.MoveForce *
+            _currentPlayerInputForceMultiplier *
+            ExternalSetSpeedRatio *
+            (_inputMoveDirection.x * _readonlyRigidbody.Right +
+             _inputMoveDirection.y * _currentPlayerInputForceMultiplier * _readonlyRigidbody.Forward);
+
+        public Vector3 FrictionForce
+        {
+            get
+            {
+                Vector3 inversedVelocity = -_readonlyRigidbody.InverseTransformDirection(_readonlyRigidbody.Velocity);
+                Vector3 finalFrictionForce = Vector3.zero;
+                if (_inputMoveDirection.x == 0)
+                {
+                    finalFrictionForce += inversedVelocity.x * _readonlyRigidbody.Right;
+                }
+
+                if (_inputMoveDirection.y == 0)
+                {
+                    finalFrictionForce += inversedVelocity.z * _readonlyRigidbody.Forward;
+                }
+
+                finalFrictionForce *= _settings.MoveForce * _currentFrictionCoefficient;
+
+                return finalFrictionForce;
+            }
+        }
+
+        private float BaseJumpForce => _playerMovementSettings.JumpForce;
 
         public void ChangeFrictionCoefficient(float newFrictionCoefficient)
         {
@@ -40,18 +86,19 @@ namespace Player.Movement
             _currentGravityForceMultiplier = newGravityForceMultiplier;
         }
 
-        public Vector3 CalculateMoveForce(Vector2 inputMoveDirection)
+        public void IncreaseAdditionalMaximumSpeed(float changeSpeed, float endValue)
         {
-            return _settings.MoveForce *
-                   _currentPlayerInputForceMultiplier *
-                   ExternalSetSpeedRatio *
-                   (inputMoveDirection.x * _readonlyRigidbody.Right +
-                    inputMoveDirection.y * _currentPlayerInputForceMultiplier * _readonlyRigidbody.Forward);
+            ChangeAdditionalMaximumSpeed(changeSpeed, endValue);
+        }
+
+        public void DecreaseAdditionalMaximumSpeed(float changeSpeed)
+        {
+            ChangeAdditionalMaximumSpeed(changeSpeed, MinimumLocalAdditionalMaximumSpeed);
         }
 
         public Vector3 CalculateJumpForce()
         {
-            return JumpForce * Vector3.up;
+            return BaseJumpForce * Vector3.up;
         }
 
         public Vector3 CalculateJumpForce(WallDirection wallDirection)
@@ -65,26 +112,12 @@ namespace Player.Movement
 
             needDirection = RotateTowardsUp(needDirection, _playerMovementSettings.WallRunningJumpAngleTowardsUp);
 
-            return needDirection * JumpForce;
+            return needDirection * BaseJumpForce;
         }
 
-        public Vector3 CalculateFrictionForce(Vector2 inputMoveDirection)
+        public void UpdateMoveInput(Vector2 direction2d)
         {
-            Vector3 inversedVelocity = -_readonlyRigidbody.InverseTransformDirection(_readonlyRigidbody.Velocity);
-            Vector3 finalFrictionForce = Vector3.zero;
-            if (inputMoveDirection.x == 0)
-            {
-                finalFrictionForce += inversedVelocity.x * _readonlyRigidbody.Right;
-            }
-
-            if (inputMoveDirection.y == 0)
-            {
-                finalFrictionForce += inversedVelocity.z * _readonlyRigidbody.Forward;
-            }
-
-            finalFrictionForce *= _settings.MoveForce * _currentFrictionCoefficient;
-
-            return finalFrictionForce;
+            _inputMoveDirection = direction2d;
         }
 
         private static Vector3 RotateTowardsUp(Vector3 start, float angle)
@@ -96,6 +129,92 @@ namespace Player.Movement
             }
 
             return Quaternion.AngleAxis(angle, axis) * start;
+        }
+
+        private void ChangeAdditionalMaximumSpeed(float changeSpeed, float endValue)
+        {
+            if (_currentLocalAdditionalMaximumSpeedChangeTween.IsActive())
+            {
+                _currentLocalAdditionalMaximumSpeedChangeTween.Kill();
+            }
+
+            _currentLocalAdditionalMaximumSpeedChangeTween = DOTween.To(ApplyLocalAdditionalMaximumSpeedChange,
+                                                                        _localAdditionalMaximumSpeed, endValue,
+                                                                        changeSpeed)
+                                                                    .SetSpeedBased()
+                                                                    .SetUpdate(UpdateType.Fixed);
+        }
+
+        private IEnumerator HandleInputMovement()
+        {
+            var waitForFixedUpdate = new WaitForFixedUpdate();
+            while (true)
+            {
+                if (_inputMoveDirection == Vector2.zero)
+                {
+                    TryResetAdditionalMaximumSpeed();
+                }
+                else
+                {
+                    TryContinueChangingAdditionalMaximumSpeed();
+                }
+
+                yield return waitForFixedUpdate;
+            }
+        }
+
+        private void TryResetAdditionalMaximumSpeed()
+        {
+            if (_currentLocalAdditionalMaximumSpeedChangeTween != null &&
+                _currentLocalAdditionalMaximumSpeedChangeTween.IsActive() &&
+                !_currentLocalAdditionalMaximumSpeedChangeTween.IsComplete())
+            {
+                _currentLocalAdditionalMaximumSpeedChangeTween.Pause();
+            }
+
+            if (_currentLocalAdditionalMaximumSpeedResetTween != null &&
+                _currentLocalAdditionalMaximumSpeedResetTween.IsActive() &&
+                !_currentLocalAdditionalMaximumSpeedResetTween.IsComplete())
+            {
+                _currentLocalAdditionalMaximumSpeedResetTween.Kill();
+                _currentLocalAdditionalMaximumSpeedResetTween = null;
+            }
+
+            if (Math.Abs(_localAdditionalMaximumSpeed - MinimumLocalAdditionalMaximumSpeed) < FloatComparisonTolerance)
+            {
+                return;
+            }
+
+            _currentLocalAdditionalMaximumSpeedResetTween = DOTween.To(ApplyLocalAdditionalMaximumSpeedChange,
+                                                                       _localAdditionalMaximumSpeed,
+                                                                       MinimumLocalAdditionalMaximumSpeed,
+                                                                       _playerMovementSettings
+                                                                           .NoInputMovingDecreaseAdditionalMaximumSpeedAcceleration)
+                                                                   .SetSpeedBased()
+                                                                   .SetUpdate(UpdateType.Fixed);
+        }
+
+        private void TryContinueChangingAdditionalMaximumSpeed()
+        {
+            if (_currentLocalAdditionalMaximumSpeedResetTween != null &&
+                _currentLocalAdditionalMaximumSpeedResetTween.IsActive() &&
+                !_currentLocalAdditionalMaximumSpeedResetTween.IsComplete())
+            {
+                _currentLocalAdditionalMaximumSpeedResetTween.Kill();
+                _currentLocalAdditionalMaximumSpeedResetTween = null;
+            }
+
+            if (_currentLocalAdditionalMaximumSpeedChangeTween != null &&
+                _currentLocalAdditionalMaximumSpeedChangeTween.IsActive() &&
+                !_currentLocalAdditionalMaximumSpeedChangeTween.IsComplete())
+            {
+                _currentLocalAdditionalMaximumSpeedChangeTween.Play();
+            }
+        }
+
+        private void ApplyLocalAdditionalMaximumSpeedChange(float newLocalAdditionalMaximumSpeed)
+        {
+            _localAdditionalMaximumSpeed = newLocalAdditionalMaximumSpeed;
         }
     }
 }

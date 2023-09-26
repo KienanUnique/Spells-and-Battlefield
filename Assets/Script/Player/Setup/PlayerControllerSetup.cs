@@ -8,6 +8,7 @@ using Common.Event_Invoker_For_Action_Animations;
 using Common.Id_Holder;
 using Common.Interfaces;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
+using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Common.Settings.Ground_Layer_Mask;
 using Enemies.Spawn.Factory;
@@ -115,8 +116,10 @@ namespace Player.Setup
 
         protected override void Initialize()
         {
-            var playerMovement =
-                new PlayerMovement(_thisRigidbody, _settings.Movement, _groundChecker, _wallChecker, this);
+            var playerMovementValuesCalculator =
+                new PlayerMovementValuesCalculator(_settings.Movement, new ReadonlyRigidbody(_thisRigidbody), this);
+            var playerMovement = new PlayerMovement(_thisRigidbody, _settings.Movement, _groundChecker, _wallChecker,
+                playerMovementValuesCalculator, this);
 
             var playerSpellsManager = new PlayerSpellsManager(new List<ISpell>(_startTestSpells),
                 _spellSpawnObject.ReadonlyTransform, _playerCaster, _spellObjectsFactory, _spellTypesSetting);

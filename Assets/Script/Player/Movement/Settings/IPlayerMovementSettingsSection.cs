@@ -12,5 +12,10 @@ namespace Player.Movement.Settings
         public float DashCooldownSeconds { get; }
         public float DashSpeedLimitationsDisablingForSeconds { get; }
         public float CoyoteTimeInSeconds { get; }
+        public float GroundDecreaseAdditionalMaximumSpeedAcceleration { get; }
+        public float AirDecreaseAdditionalMaximumSpeedAcceleration { get; }
+        public float WallRunningIncreaseAdditionalMaximumSpeedAcceleration { get; }
+        public float WallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration { get; }
+        public float NoInputMovingDecreaseAdditionalMaximumSpeedAcceleration { get; }
     }
 }

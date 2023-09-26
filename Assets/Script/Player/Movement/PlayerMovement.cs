@@ -27,23 +27,24 @@ namespace Player.Movement
         private readonly ICoroutineStarter _coroutineStarter;
         private readonly ValueWithReactionOnChange<MovingState> _currentMovingState;
         private readonly ValueWithReactionOnChange<WallDirection> _currentWallDirection;
-        private readonly GroundChecker _groundChecker;
+        private readonly IGroundChecker _groundChecker;
         private readonly IPlayerMovementSettings _movementSettings;
+        private readonly IWallChecker _wallChecker;
         private readonly Transform _originalParent;
-        private readonly WallChecker _wallChecker;
         private readonly CoyoteTimeWaiter _airCoyoteTimeWaiter;
-        private readonly PlayerMovementValuesCalculator _playerMovementValuesCalculator;
+        private readonly IPlayerMovementValuesCalculator _movementValuesCalculator;
 
         private bool _canDash = true;
         private int _currentCountOfAirJumps;
         private Coroutine _frictionCoroutine;
 
-        private Vector2 _inputMoveDirection = Vector2.zero;
         private bool _speedLimitationEnabled = true;
         private Coroutine _wallRunningCalculationCoroutine;
 
         public PlayerMovement(Rigidbody rigidbody, IPlayerMovementSettings movementSettings,
-            GroundChecker groundChecker, WallChecker wallChecker, ICoroutineStarter coroutineStarter) : base(rigidbody)
+            IGroundChecker groundChecker, IWallChecker wallChecker,
+            IPlayerMovementValuesCalculator movementValuesCalculator, ICoroutineStarter coroutineStarter) : base(
+            rigidbody)
         {
             _groundChecker = groundChecker;
             _wallChecker = wallChecker;
@@ -52,7 +53,7 @@ namespace Player.Movement
             _cashedTransform = _rigidbody.transform;
             _originalParent = _cashedTransform.parent;
             MainRigidbody = new ReadonlyRigidbody(rigidbody);
-            _playerMovementValuesCalculator = new PlayerMovementValuesCalculator(movementSettings, MainRigidbody);
+            _movementValuesCalculator = movementValuesCalculator;
 
             _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.NotInitialized);
             _currentWallDirection = new ValueWithReactionOnChange<WallDirection>(WallDirection.Right);
@@ -101,7 +102,7 @@ namespace Player.Movement
         private bool IsGrounded => _groundChecker.IsColliding;
         private bool IsInContactWithWall => _wallChecker.IsColliding;
 
-        protected override IMovementValuesCalculator MovementValuesCalculator => _playerMovementValuesCalculator;
+        protected override IMovementValuesCalculator MovementValuesCalculator => _movementValuesCalculator;
 
         public void AddForce(Vector3 force, ForceMode mode)
         {
@@ -119,8 +120,8 @@ namespace Player.Movement
                 newVelocity.y = 0;
                 _rigidbody.velocity = newVelocity;
                 Vector3 jumpForce = _currentMovingState.Value == MovingState.WallRunning
-                    ? _playerMovementValuesCalculator.CalculateJumpForce(_currentWallDirection.Value)
-                    : _playerMovementValuesCalculator.CalculateJumpForce();
+                    ? _movementValuesCalculator.CalculateJumpForce(_currentWallDirection.Value)
+                    : _movementValuesCalculator.CalculateJumpForce();
 
                 _rigidbody.AddForce(jumpForce);
 
@@ -153,7 +154,7 @@ namespace Player.Movement
             {
                 _coroutineStarter.StartCoroutine(DashDisableSpeedLimitation());
                 _rigidbody.velocity = Vector3.zero;
-                _rigidbody.AddForce(cameraForwardDirection * _playerMovementValuesCalculator.DashForce);
+                _rigidbody.AddForce(cameraForwardDirection * _movementValuesCalculator.DashForce);
                 _currentMovingState.Value = IsGrounded ? MovingState.OnGround : MovingState.InAir;
             }
         }
@@ -161,7 +162,7 @@ namespace Player.Movement
         public void MoveInputted(Vector2 direction2d)
         {
             NormalizedVelocityDirectionXY = direction2d;
-            _inputMoveDirection = direction2d;
+            _movementValuesCalculator.UpdateMoveInput(direction2d);
         }
 
         public void StickToPlatform(Transform platformTransform)
@@ -204,10 +205,9 @@ namespace Player.Movement
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
             {
-                ApplyGravity(_playerMovementValuesCalculator.GravityForce);
+                ApplyGravity(_movementValuesCalculator.GravityForce);
 
-                _rigidbody.AddForce(_playerMovementValuesCalculator.CalculateMoveForce(_inputMoveDirection) *
-                                    Time.fixedDeltaTime);
+                _rigidbody.AddForce(_movementValuesCalculator.MoveForce * Time.fixedDeltaTime);
 
                 if (_speedLimitationEnabled)
                 {
@@ -223,7 +223,7 @@ namespace Player.Movement
             while (true)
             {
                 RatioOfCurrentVelocityToMaximumVelocity =
-                    _rigidbody.velocity.magnitude / _movementSettings.MaximumSpeed;
+                    _rigidbody.velocity.magnitude / _movementValuesCalculator.BaseMaximumSpeed;
                 yield return null;
             }
         }
@@ -233,8 +233,7 @@ namespace Player.Movement
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
             {
-                _rigidbody.AddForce(_playerMovementValuesCalculator.CalculateFrictionForce(_inputMoveDirection) *
-                                    Time.fixedDeltaTime);
+                _rigidbody.AddForce(_movementValuesCalculator.FrictionForce * Time.fixedDeltaTime);
                 yield return waitForFixedUpdate;
             }
         }
@@ -367,38 +366,41 @@ namespace Player.Movement
             {
                 case MovingState.OnGround:
                     _currentCountOfAirJumps = 0;
-                    _playerMovementValuesCalculator.ChangePlayerInputForceMultiplier(NormalPlayerInputForceMultiplier);
-                    _playerMovementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
+                    _movementValuesCalculator.ChangePlayerInputForceMultiplier(NormalPlayerInputForceMultiplier);
+                    _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .NormalGravityForceMultiplier);
-                    _playerMovementValuesCalculator.ChangeFrictionCoefficient(_movementSettings
-                        .NormalFrictionCoefficient);
+                    _movementValuesCalculator.ChangeFrictionCoefficient(_movementSettings.NormalFrictionCoefficient);
+                    _movementValuesCalculator.DecreaseAdditionalMaximumSpeed(_movementSettings
+                        .GroundDecreaseAdditionalMaximumSpeedAcceleration);
                     _frictionCoroutine ??= _coroutineStarter.StartCoroutine(ApplyFrictionContinuously());
                     Land?.Invoke();
                     break;
                 case MovingState.InAir:
                     _currentCountOfAirJumps = 0;
-                    _playerMovementValuesCalculator.ChangePlayerInputForceMultiplier(AirPlayerInputForceMultiplier);
-                    _playerMovementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
+                    _movementValuesCalculator.ChangePlayerInputForceMultiplier(AirPlayerInputForceMultiplier);
+                    _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .NormalGravityForceMultiplier);
-                    _playerMovementValuesCalculator.ChangeFrictionCoefficient(_movementSettings
-                        .FlyingFrictionCoefficient);
+                    _movementValuesCalculator.ChangeFrictionCoefficient(_movementSettings.FlyingFrictionCoefficient);
+                    _movementValuesCalculator.DecreaseAdditionalMaximumSpeed(_movementSettings
+                        .AirDecreaseAdditionalMaximumSpeedAcceleration);
                     _frictionCoroutine ??= _coroutineStarter.StartCoroutine(ApplyFrictionContinuously());
                     Fall?.Invoke();
                     break;
                 case MovingState.WallRunning:
                     _currentCountOfAirJumps = 0;
-                    _playerMovementValuesCalculator.ChangePlayerInputForceMultiplier(
-                        WallRunningPlayerInputForceMultiplier);
-                    _playerMovementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
+                    _movementValuesCalculator.ChangePlayerInputForceMultiplier(WallRunningPlayerInputForceMultiplier);
+                    _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .WallRunningGravityForceMultiplier);
                     _currentWallDirection.Value = CalculateCurrentWallDirection();
                     StartWallRunning?.Invoke(_currentWallDirection.Value);
                     _wallRunningCalculationCoroutine ??=
                         _coroutineStarter.StartCoroutine(CalculateCurrentWallDirectionContinuously());
+                    _movementValuesCalculator.IncreaseAdditionalMaximumSpeed(
+                        _movementSettings.WallRunningIncreaseAdditionalMaximumSpeedAcceleration,
+                        _movementSettings.WallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration);
                     break;
                 case MovingState.DashAiming:
-                    _playerMovementValuesCalculator.ChangePlayerInputForceMultiplier(
-                        DashAimingPlayerInputForceMultiplier);
+                    _movementValuesCalculator.ChangePlayerInputForceMultiplier(DashAimingPlayerInputForceMultiplier);
                     DashAiming?.Invoke();
                     break;
                 case MovingState.NotInitialized:
