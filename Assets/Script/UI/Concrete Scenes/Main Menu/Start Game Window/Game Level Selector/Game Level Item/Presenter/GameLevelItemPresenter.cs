@@ -26,16 +26,6 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Gam
         public event Action<IGameLevelItem> Selected;
         public IGameLevelData LevelData => _model.LevelData;
 
-        public void Appear()
-        {
-            _view.Appear(LevelData, _model.IsSelected);
-        }
-
-        public void Disappear()
-        {
-            _view.Disappear();
-        }
-
         public void Select()
         {
             _model.Select();
@@ -44,6 +34,16 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Gam
         public void Unselect()
         {
             _model.Unselect();
+        }
+
+        public void Appear()
+        {
+            _view.Appear(LevelData, _model.IsSelected);
+        }
+
+        public void Disappear()
+        {
+            _view.Disappear();
         }
 
         protected override void SubscribeOnEvents()

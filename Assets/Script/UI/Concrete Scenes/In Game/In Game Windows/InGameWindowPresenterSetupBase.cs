@@ -1,5 +1,4 @@
 ﻿using Systems.Scene_Switcher;
-using UI.Loading_Window.Presenter;
 using UI.Window.Setup;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +16,7 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
         {
             InGameSceneController = inGameSceneController;
         }
-        
+
         protected Button GoToMainWindowButton => _goToMainWindowButton;
         protected Button RestartLevelButton => _restartLevelButton;
         protected IInGameSceneController InGameSceneController { private set; get; }

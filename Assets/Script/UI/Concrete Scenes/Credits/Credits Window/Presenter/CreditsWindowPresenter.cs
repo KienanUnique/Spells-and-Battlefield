@@ -1,7 +1,7 @@
 ﻿using UI.Concrete_Scenes.Credits.Credits_Window.Model;
-using UI.Element.View;
 using UI.Window.Model;
 using UI.Window.Presenter;
+using UI.Window.View;
 using UnityEngine.UI;
 
 namespace UI.Concrete_Scenes.Credits.Credits_Window.Presenter
@@ -9,9 +9,9 @@ namespace UI.Concrete_Scenes.Credits.Credits_Window.Presenter
     public class CreditsWindowPresenter : WindowPresenterBase, IInitializableCreditsWindowPresenter
     {
         private ICreditsWindowModel _model;
-        private IUIElementView _view;
+        private IUIWindowView _view;
 
-        public void Initialize(ICreditsWindowModel model, IUIElementView view, Button quitToMainMenuButton)
+        public void Initialize(ICreditsWindowModel model, IUIWindowView view, Button quitToMainMenuButton)
         {
             _view = view;
             _model = model;
@@ -19,8 +19,7 @@ namespace UI.Concrete_Scenes.Credits.Credits_Window.Presenter
             SetInitializedStatus();
         }
 
-        protected override IUIElementView View => _view;
-
-        protected override IUIWindowModel Model => _model;
+        protected override IUIWindowView WindowView => _view;
+        protected override IUIWindowModel WindowModel => _model;
     }
 }

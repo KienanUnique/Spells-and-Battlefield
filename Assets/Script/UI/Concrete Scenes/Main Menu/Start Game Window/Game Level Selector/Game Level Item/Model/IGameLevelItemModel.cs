@@ -5,12 +5,12 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Gam
 {
     public interface IGameLevelItemModel
     {
-        public void OnClicked();
-        public void Select();
-        public void Unselect();
         public event Action Selected;
         public event Action Unselected;
         public IGameLevelData LevelData { get; }
         public bool IsSelected { get; }
+        public void OnClicked();
+        public void Select();
+        public void Unselect();
     }
 }

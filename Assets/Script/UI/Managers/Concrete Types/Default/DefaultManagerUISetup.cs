@@ -19,15 +19,15 @@ namespace UI.Managers.Concrete_Types.Default
         private IInputManagerForUI _inputManagerForUI;
         private IInitializableDefaultManagerUI _manager;
 
-        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
-            new[] {_startWindow, _loadingWindow};
-
         [Inject]
         private void GetDependencies(IScenesController scenesController, IInputManagerForUI inputManagerForUI)
         {
             _scenesController = scenesController;
             _inputManagerForUI = inputManagerForUI;
         }
+
+        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
+            new[] {_startWindow, _loadingWindow};
 
         protected override void Prepare()
         {

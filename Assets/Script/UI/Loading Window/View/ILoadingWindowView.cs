@@ -1,8 +1,8 @@
-﻿using UI.Element.View;
+﻿using UI.Window.View;
 
 namespace UI.Loading_Window.View
 {
-    public interface ILoadingWindowView : IUIElementView
+    public interface ILoadingWindowView : IUIWindowView
     {
     }
 }

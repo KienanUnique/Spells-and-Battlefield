@@ -15,13 +15,14 @@ namespace UI.Concrete_Scenes.In_Game.Bar.Setup.Concrete_Types.Hit_Points
         [SerializeField] private Image _foregroundBackground;
         private IBarViewWithAdditionalDisplayOfChangesSettings _settings;
         private IBarView _view;
-        protected abstract ICharacterInformationProvider CharacterInformation { get; }
 
         [Inject]
         private void GetDependencies(IBarViewWithAdditionalDisplayOfChangesSettings settings)
         {
             _settings = settings;
         }
+
+        protected abstract ICharacterInformationProvider CharacterInformation { get; }
 
         protected override void Prepare()
         {

@@ -4,6 +4,5 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Gam
 {
     public interface IInitializableGameLevelItem : IGameLevelItem, IInitializable
     {
-        
     }
 }

@@ -5,8 +5,6 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Gam
 {
     public class GameLevelItemModel : IGameLevelItemModel
     {
-        private bool _isSelected;
-
         public GameLevelItemModel(IGameLevelData levelData)
         {
             LevelData = levelData;
@@ -15,7 +13,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Gam
         public event Action Selected;
         public event Action Unselected;
         public IGameLevelData LevelData { get; }
-        public bool IsSelected => _isSelected;
+        public bool IsSelected { get; private set; }
 
         public void OnClicked()
         {
@@ -24,23 +22,23 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Gam
 
         public void Select()
         {
-            if (_isSelected)
+            if (IsSelected)
             {
                 return;
             }
 
-            _isSelected = true;
+            IsSelected = true;
             Selected?.Invoke();
         }
 
         public void Unselect()
         {
-            if (!_isSelected)
+            if (!IsSelected)
             {
                 return;
             }
 
-            _isSelected = false;
+            IsSelected = false;
             Unselected?.Invoke();
         }
     }

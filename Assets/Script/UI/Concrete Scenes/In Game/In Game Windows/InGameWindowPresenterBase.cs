@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
-using UI.Element.View;
 using UI.Window.Model;
 using UI.Window.Presenter;
+using UI.Window.View;
 using UnityEngine.UI;
 
 namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
@@ -10,9 +10,9 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
     public abstract class InGameWindowPresenterBase : WindowPresenterBase
     {
         private IInGameWindowModelBase _model;
-        private IUIElementView _view;
-        protected override IUIElementView View => _view;
-        protected override IUIWindowModel Model => _model;
+        private IUIWindowView _view;
+        protected override IUIWindowView WindowView => _view;
+        protected override IUIWindowModel WindowModel => _model;
 
         protected override void SubscribeOnEvents()
         {
@@ -22,7 +22,7 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
         {
         }
 
-        protected void InitializeBase(IUIElementView view, IInGameWindowModelBase modelBase,
+        protected void InitializeBase(IUIWindowView view, IInGameWindowModelBase modelBase,
             List<IDisableable> itemsNeedDisabling, Button restartLevelButton, Button goToMainWindowButton)
         {
             _view = view;

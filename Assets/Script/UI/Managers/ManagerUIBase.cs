@@ -1,6 +1,5 @@
 ﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Systems.Input_Manager;
-using Systems.Input_Manager.Concrete_Types.In_Game;
 using Systems.Scene_Switcher.Concrete_Types;
 using UI.Loading_Window;
 using UI.Managers.Concrete_Types.In_Game;

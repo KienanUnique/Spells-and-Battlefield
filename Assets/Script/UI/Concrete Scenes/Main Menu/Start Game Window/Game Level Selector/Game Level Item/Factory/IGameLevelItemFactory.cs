@@ -6,6 +6,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Gam
 {
     public interface IGameLevelItemFactory
     {
-        ICollection<IInitializableGameLevelItem> CreateItems(IEnumerable<IGameLevelData> levelData, Transform parentTransform);
+        ICollection<IInitializableGameLevelItem> CreateItems(IEnumerable<IGameLevelData> levelData,
+            Transform parentTransform);
     }
 }

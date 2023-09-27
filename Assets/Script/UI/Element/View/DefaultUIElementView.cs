@@ -6,8 +6,8 @@ namespace UI.Element.View
 {
     public class DefaultUIElementView : IUIElementView
     {
-        private readonly GameObject _cachedGameObject;
-        private readonly Transform _cachedTransform;
+        protected readonly GameObject _cachedGameObject;
+        protected readonly Transform _cachedTransform;
         private readonly IDefaultUIElementViewSettings _settings;
 
         public DefaultUIElementView(Transform cachedTransform, IDefaultUIElementViewSettings settings)

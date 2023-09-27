@@ -34,10 +34,10 @@ namespace UI.Concrete_Scenes.Main_Menu.Start_Game_Window.Game_Level_Selector.Gam
             _settings = settings;
         }
 
+        public IInitializableGameLevelItem ItemPresenter => GetComponent<IInitializableGameLevelItem>();
+
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             new[] {_externalDependenciesInitializationWaiter};
-
-        public IInitializableGameLevelItem ItemPresenter => GetComponent<IInitializableGameLevelItem>();
 
         public void SetLevelData(IGameLevelData levelData)
         {

@@ -1,24 +1,24 @@
-﻿using UI.Element.View;
-using UI.Loading_Window.Model;
+﻿using UI.Loading_Window.Model;
 using UI.Loading_Window.View;
 using UI.Window.Model;
 using UI.Window.Presenter;
+using UI.Window.View;
 
 namespace UI.Loading_Window.Presenter
 {
     public class LoadingWindowPresenter : WindowPresenterBase, IInitializableLoadingWindowPresenter, ILoadingWindow
     {
-        private ILoadingWindowModel _model;
+        private ILoadingWindowModel _windowModel;
         private ILoadingWindowView _view;
 
         public void Initialize(ILoadingWindowModel model, ILoadingWindowView view)
         {
-            _model = model;
+            _windowModel = model;
             _view = view;
             SetInitializedStatus();
         }
 
-        protected override IUIElementView View => _view;
-        protected override IUIWindowModel Model => _model;
+        protected override IUIWindowView WindowView => _view;
+        protected override IUIWindowModel WindowModel => _windowModel;
     }
 }

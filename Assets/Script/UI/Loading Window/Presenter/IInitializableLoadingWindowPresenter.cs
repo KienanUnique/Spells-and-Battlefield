@@ -5,6 +5,6 @@ namespace UI.Loading_Window.Presenter
 {
     public interface IInitializableLoadingWindowPresenter
     {
-        void Initialize(ILoadingWindowModel model, ILoadingWindowView view);
+        public void Initialize(ILoadingWindowModel model, ILoadingWindowView view);
     }
 }
