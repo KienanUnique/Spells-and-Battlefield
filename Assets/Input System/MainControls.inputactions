@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Switch To Spell Type 1",
+                    "name": "Switch To Spell Type With Index 0",
                     "type": "Button",
                     "id": "669a2cf2-fdf6-4b4a-8c4d-9ad49ba6ce9d",
                     "expectedControlType": "Button",
@@ -78,7 +78,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Switch To Spell Type 2",
+                    "name": "Switch To Spell Type With Index 1",
                     "type": "Button",
                     "id": "98f95d89-5479-44eb-8cae-bfc18ee06d42",
                     "expectedControlType": "Button",
@@ -87,7 +87,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Switch To Spell Type 3",
+                    "name": "Switch To Spell Type With Index 2",
                     "type": "Button",
                     "id": "a855ebcb-8983-41da-bbfb-77870b51cc51",
                     "expectedControlType": "Button",
@@ -96,13 +96,22 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Switch To Last Chance Spell Type",
+                    "name": "Switch To Spell Type With Index 3",
                     "type": "Button",
                     "id": "ea194457-7249-4527-96a0-72b296495bd3",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Switch Spell Type",
+                    "type": "Value",
+                    "id": "385ea3c5-b8db-4b8e-b823-8d081f036109",
+                    "expectedControlType": "Integer",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -234,7 +243,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse and Keyboard",
-                    "action": "Switch To Spell Type 1",
+                    "action": "Switch To Spell Type With Index 0",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -245,7 +254,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse and Keyboard",
-                    "action": "Switch To Spell Type 2",
+                    "action": "Switch To Spell Type With Index 1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -256,7 +265,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse and Keyboard",
-                    "action": "Switch To Spell Type 3",
+                    "action": "Switch To Spell Type With Index 2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -267,7 +276,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse and Keyboard",
-                    "action": "Switch To Last Chance Spell Type",
+                    "action": "Switch To Spell Type With Index 3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "798e5259-4756-40ba-9032-1b3674d2bac5",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse and Keyboard",
+                    "action": "Switch Spell Type",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

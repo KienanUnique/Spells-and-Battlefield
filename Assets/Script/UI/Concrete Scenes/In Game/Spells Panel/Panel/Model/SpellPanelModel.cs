@@ -22,7 +22,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Panel.Model
                 _spellsTypeGroups.Add(group.Type, group);
             }
 
-            SelectSpellTypeGroup(_managerInformation.SelectedType);
+            SelectSpellTypeGroup(_managerInformation.SelectedSpellType);
         }
 
         protected override void SubscribeOnEvents()

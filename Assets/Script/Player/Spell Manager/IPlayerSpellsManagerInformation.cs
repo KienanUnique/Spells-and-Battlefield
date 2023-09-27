@@ -10,7 +10,7 @@ namespace Player.Spell_Manager
     {
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
-        public ISpellType SelectedType { get; }
+        public ISpellType SelectedSpellType { get; }
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells { get; }
     }
 }

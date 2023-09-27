@@ -57,7 +57,8 @@ namespace Player
             _cameraEffects = setupData.SetPlayerCameraEffects;
             _eventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
             CameraTransform = setupData.SetCameraTransform;
-            UpperPointForSummonedEnemiesPositionCalculating = setupData.SetUpperPointForSummonedEnemiesPositionCalculating;
+            UpperPointForSummonedEnemiesPositionCalculating =
+                setupData.SetUpperPointForSummonedEnemiesPositionCalculating;
             Faction = setupData.SetFaction;
             InformationForSummon = setupData.SetInformationForSummon;
             ToolsForSummon = setupData.SetToolsForSummon;
@@ -87,7 +88,7 @@ namespace Player
         public Vector3 CurrentPosition => _movement.CurrentPosition;
         public float CurrentDashCooldownRatio => _movement.CurrentDashCooldownRatio;
         public IReadonlyTransform CameraTransform { get; private set; }
-        public ISpellType SelectedType => _spellsManager.SelectedType;
+        public ISpellType SelectedSpellType => _spellsManager.SelectedSpellType;
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
             _spellsManager.Spells;
@@ -161,7 +162,10 @@ namespace Player
             _input.UseSpellInputted += OnUseSpellInputted;
             _input.MoveInputted += _movement.MoveInputted;
             _input.LookInputted += _look.LookInputtedWith;
-            _input.SelectSpellType += _spellsManager.SelectSpellType;
+            
+            _input.SelectSpellTypeWithIndex += _spellsManager.SelectSpellTypeWithIndex;
+            _input.SelectNextSpellType += _spellsManager.SelectNextSpellType;
+            _input.SelectPreviousSpellType += _spellsManager.SelectPreviousSpellType;
 
             _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger += OnCastSpellEventInvokerForAnimationMoment;
             _eventInvokerForAnimations.ActionAnimationEnd += _spellsManager.HandleAnimationEnd;
@@ -194,7 +198,10 @@ namespace Player
             _input.UseSpellInputted -= OnUseSpellInputted;
             _input.MoveInputted -= _movement.MoveInputted;
             _input.LookInputted -= _look.LookInputtedWith;
-            _input.SelectSpellType -= _spellsManager.SelectSpellType;
+            
+            _input.SelectSpellTypeWithIndex -= _spellsManager.SelectSpellTypeWithIndex;
+            _input.SelectNextSpellType -= _spellsManager.SelectNextSpellType;
+            _input.SelectPreviousSpellType -= _spellsManager.SelectPreviousSpellType;
 
             _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger -= OnCastSpellEventInvokerForAnimationMoment;
             _eventInvokerForAnimations.ActionAnimationEnd -= _spellsManager.HandleAnimationEnd;

@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using Spells.Implementations_Interfaces.Implementations;
-using Spells.Spell_Types_Settings;
 using Systems.Input_Manager.Concrete_Types.In_Game.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,12 +13,10 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
 
         private float _mouseX, _mouseY;
         private IInputManagerSettings _settings;
-        private ISpellTypesSetting _spellTypesSetting;
 
         [Inject]
-        private void GetDependencies(ISpellTypesSetting spellTypesSetting, IInputManagerSettings settings)
+        private void GetDependencies(IInputManagerSettings settings)
         {
-            _spellTypesSetting = spellTypesSetting;
             _settings = settings;
         }
 
@@ -31,7 +27,9 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
         public event Action UseSpellInputted;
         public event Action<Vector2> MoveInputted;
         public event Action<Vector2> LookInputted;
-        public event Action<ISpellType> SelectSpellType;
+        public event Action<int> SelectSpellTypeWithIndex;
+        public event Action SelectNextSpellType;
+        public event Action SelectPreviousSpellType;
 
         public new void SwitchToUIInput()
         {
@@ -59,10 +57,11 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
             Controls.Character.Dash.canceled += OnDashCanceled;
             Controls.Character.UseSpell.performed += OnUseSpellPerformed;
             Controls.Character.PauseGame.performed += OnPauseGamePerformed;
-            Controls.Character.SwitchToSpellType1.performed += OnPerformedSwitchToSpellType1;
-            Controls.Character.SwitchToSpellType2.performed += OnPerformedSwitchToSpellType2;
-            Controls.Character.SwitchToSpellType3.performed += OnPerformedSwitchToSpellType3;
-            Controls.Character.SwitchToLastChanceSpellType.performed += OnPerformedSwitchToLastChanceSpellType;
+            Controls.Character.SwitchToSpellTypeWithIndex0.performed += OnPerformedSwitchToSpellTypeWithIndex0;
+            Controls.Character.SwitchToSpellTypeWithIndex1.performed += OnPerformedSwitchToSpellTypeWithIndex1;
+            Controls.Character.SwitchToSpellTypeWithIndex2.performed += OnPerformedSwitchToSpellTypeWithIndex2;
+            Controls.Character.SwitchToSpellTypeWithIndex3.performed += OnPerformedSwitchToSpellTypeWithIndex3;
+            Controls.Character.SwitchSpellType.performed += OnSwitchSpellType;
         }
 
         protected override void OnDisable()
@@ -73,10 +72,11 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
             Controls.Character.Dash.canceled -= OnDashCanceled;
             Controls.Character.UseSpell.performed -= OnUseSpellPerformed;
             Controls.Character.PauseGame.performed -= OnPauseGamePerformed;
-            Controls.Character.SwitchToSpellType1.performed -= OnPerformedSwitchToSpellType1;
-            Controls.Character.SwitchToSpellType2.performed -= OnPerformedSwitchToSpellType2;
-            Controls.Character.SwitchToSpellType3.performed -= OnPerformedSwitchToSpellType3;
-            Controls.Character.SwitchToLastChanceSpellType.performed -= OnPerformedSwitchToLastChanceSpellType;
+            Controls.Character.SwitchToSpellTypeWithIndex0.performed -= OnPerformedSwitchToSpellTypeWithIndex0;
+            Controls.Character.SwitchToSpellTypeWithIndex1.performed -= OnPerformedSwitchToSpellTypeWithIndex1;
+            Controls.Character.SwitchToSpellTypeWithIndex2.performed -= OnPerformedSwitchToSpellTypeWithIndex2;
+            Controls.Character.SwitchToSpellTypeWithIndex3.performed -= OnPerformedSwitchToSpellTypeWithIndex3;
+            Controls.Character.SwitchSpellType.performed -= OnSwitchSpellType;
         }
 
         private void OnJumpPerformed(InputAction.CallbackContext obj)
@@ -104,29 +104,42 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
             GamePauseInputted?.Invoke();
         }
 
-        private void OnPerformedSwitchToLastChanceSpellType(InputAction.CallbackContext obj)
+        private void OnSwitchSpellType(InputAction.CallbackContext obj)
         {
-            SelectSpellType?.Invoke(_spellTypesSetting.LastChanceSpellType);
+            var readValue = Controls.Character.SwitchSpellType.ReadValue<float>();
+            if (readValue > 0)
+            {
+                SelectPreviousSpellType?.Invoke();
+            }
+            else
+            {
+                SelectNextSpellType?.Invoke();
+            }
         }
 
-        private void OnPerformedSwitchToSpellType1(InputAction.CallbackContext obj)
+        private void OnPerformedSwitchToSpellTypeWithIndex0(InputAction.CallbackContext obj)
         {
             InvokeSwitchToSpellType(0);
         }
 
-        private void OnPerformedSwitchToSpellType2(InputAction.CallbackContext obj)
+        private void OnPerformedSwitchToSpellTypeWithIndex1(InputAction.CallbackContext obj)
         {
             InvokeSwitchToSpellType(1);
         }
 
-        private void OnPerformedSwitchToSpellType3(InputAction.CallbackContext obj)
+        private void OnPerformedSwitchToSpellTypeWithIndex2(InputAction.CallbackContext obj)
         {
             InvokeSwitchToSpellType(2);
         }
 
-        private void InvokeSwitchToSpellType(int typeNumber)
+        private void OnPerformedSwitchToSpellTypeWithIndex3(InputAction.CallbackContext obj)
         {
-            SelectSpellType?.Invoke(_spellTypesSetting.TypesListInOrder[typeNumber]);
+            InvokeSwitchToSpellType(3);
+        }
+
+        private void InvokeSwitchToSpellType(int typeIndex)
+        {
+            SelectSpellTypeWithIndex?.Invoke(typeIndex);
         }
 
         private IEnumerator UpdateLookData()

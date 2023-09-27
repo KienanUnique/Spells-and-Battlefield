@@ -21,10 +21,11 @@ namespace Player.Spell_Manager
     {
         private readonly ISpellType _lastChanceSpellType;
         private readonly ICaster _player;
-        private readonly ValueWithReactionOnChange<ISpellType> _selectedSpellType;
+        private readonly ValueWithReactionOnChange<int> _selectedSpellTypeIndex;
         private readonly ISpellObjectsFactory _spellObjectsFactory;
         private readonly IReadonlyTransform _spellSpawnObject;
         private readonly Dictionary<ISpellType, ListWithReactionOnChange<ISpell>> _spellsStorage;
+        private readonly ISpellType[] _spellTypesInOrder;
         private bool _isWaitingForAnimationEnd;
         private IList<ISpell> _spellGroupFromWhichToCreateSpell;
         private ISpell _spellToCreate;
@@ -36,6 +37,7 @@ namespace Player.Spell_Manager
             _spellSpawnObject = spellSpawnObject;
             _player = player;
             _spellObjectsFactory = spellObjectsFactory;
+            _spellTypesInOrder = spellTypesSetting.TypesListInOrder.ToArray();
             _spellsStorage = new Dictionary<ISpellType, ListWithReactionOnChange<ISpell>>();
             foreach (ISpellType type in spellTypesSetting.TypesListInOrder)
             {
@@ -47,7 +49,7 @@ namespace Player.Spell_Manager
                     keyValuePair => (IReadonlyListWithReactionOnChange<ISpell>) keyValuePair.Value));
 
             startTestSpells.ForEach(AddSpell);
-            _selectedSpellType = new ValueWithReactionOnChange<ISpellType>(spellTypesSetting.TypesListInOrder[0]);
+            _selectedSpellTypeIndex = new ValueWithReactionOnChange<int>(0);
             _lastChanceSpellType = spellTypesSetting.LastChanceSpellType;
         }
 
@@ -55,10 +57,10 @@ namespace Player.Spell_Manager
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
 
-        public ISpellType SelectedType => _selectedSpellType.Value;
+        public ISpellType SelectedSpellType => _spellTypesInOrder[_selectedSpellTypeIndex.Value];
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells { get; }
 
-        private ListWithReactionOnChange<ISpell> SelectedSpellGroup => _spellsStorage[_selectedSpellType.Value];
+        private ListWithReactionOnChange<ISpell> SelectedSpellGroup => _spellsStorage[SelectedSpellType];
         private ISpell SelectedSpell => SelectedSpellGroup[0];
 
         public void AddSpell(ISpellType spellType, ISpell newSpell)
@@ -77,12 +79,12 @@ namespace Player.Spell_Manager
         {
             if (SelectedSpellGroup.IsEmpty())
             {
-                TryingToUseEmptySpellTypeGroup?.Invoke(_selectedSpellType.Value);
+                TryingToUseEmptySpellTypeGroup?.Invoke(SelectedSpellType);
             }
             else if (!_isWaitingForAnimationEnd)
             {
                 _isWaitingForAnimationEnd = true;
-                _typeOfSpellToCreate = _selectedSpellType.Value;
+                _typeOfSpellToCreate = SelectedSpellType;
                 _spellGroupFromWhichToCreateSpell = SelectedSpellGroup;
                 _spellToCreate = SelectedSpell;
                 NeedPlaySpellAnimation?.Invoke(_spellToCreate.SpellAnimationData);
@@ -99,34 +101,52 @@ namespace Player.Spell_Manager
             }
         }
 
-        public void HandleAnimationEnd()
-        {
-            _isWaitingForAnimationEnd = false;
-        }
-
-        public void SelectSpellType(ISpellType typeToSelect)
-        {
-            _selectedSpellType.Value = typeToSelect;
-        }
-
         public void AddSpell(ISpell newSpell)
         {
             AddSpell(newSpell.SpellType, newSpell);
         }
 
+        public void HandleAnimationEnd()
+        {
+            _isWaitingForAnimationEnd = false;
+        }
+
+        public void SelectNextSpellType()
+        {
+            int nextIndex = _selectedSpellTypeIndex.Value + 1;
+            if (nextIndex < _spellTypesInOrder.Length)
+            {
+                SelectSpellTypeWithIndex(nextIndex);
+            }
+        }
+
+        public void SelectPreviousSpellType()
+        {
+            int nextIndex = _selectedSpellTypeIndex.Value - 1;
+            if (nextIndex >= 0)
+            {
+                SelectSpellTypeWithIndex(nextIndex);
+            }
+        }
+
+        public void SelectSpellTypeWithIndex(int indexToSelect)
+        {
+            _selectedSpellTypeIndex.Value = indexToSelect;
+        }
+
         protected sealed override void SubscribeOnEvents()
         {
-            _selectedSpellType.AfterValueChanged += OnSelectedSpellTypeChanged;
+            _selectedSpellTypeIndex.AfterValueChanged += OnSelectedSpellTypeIndexChanged;
         }
 
         protected override void UnsubscribeFromEvents()
         {
-            _selectedSpellType.AfterValueChanged -= OnSelectedSpellTypeChanged;
+            _selectedSpellTypeIndex.AfterValueChanged -= OnSelectedSpellTypeIndexChanged;
         }
 
-        private void OnSelectedSpellTypeChanged(ISpellType selectedSpellType)
+        private void OnSelectedSpellTypeIndexChanged(int obj)
         {
-            SelectedSpellTypeChanged?.Invoke(_selectedSpellType.Value);
+            SelectedSpellTypeChanged?.Invoke(SelectedSpellType);
         }
     }
 
