@@ -464,7 +464,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.045
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 100
   orthographic: 0
@@ -549,7 +549,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4131291370623996627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.351, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 688934219952483243}
@@ -934,6 +934,26 @@ PrefabInstance:
     - target: {fileID: 1782778395989589091, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
       propertyPath: m_Name
       value: Setuped Kozel FPS
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404622819226430130, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0146
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404622819226430130, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1682
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404622819226430130, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0092
+      objectReference: {fileID: 0}
+    - target: {fileID: 3992669257433757734, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0293
+      objectReference: {fileID: 0}
+    - target: {fileID: 3992669257433757734, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.143
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
