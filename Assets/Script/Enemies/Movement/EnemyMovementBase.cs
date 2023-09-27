@@ -18,10 +18,8 @@ namespace Enemies.Movement
 {
     public abstract class EnemyMovementBase : MovementBase, IDisableableEnemyMovement
     {
-        private const RigidbodyConstraints RigidbodyConstraintsFreezeRotationAndPositionXY =
-            RigidbodyConstraints.FreezePositionX |
-            RigidbodyConstraints.FreezePositionZ |
-            RigidbodyConstraints.FreezeRotation;
+        private const RigidbodyConstraints RigidbodyConstraintsFreezeRotationAndPosition =
+            RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
 
         protected readonly ICoroutineStarter _coroutineStarter;
 
@@ -32,6 +30,7 @@ namespace Enemies.Movement
         private readonly IReadonlyEnemyTargetFromTriggersSelector _targetSelector;
         private readonly ISummoner _summoner;
         private readonly EnemyMovementValuesCalculator _enemyMovementValuesCalculator;
+        private readonly Collider _collider;
         private IEnemyDataForMoving _currentDataForMoving;
         private Coroutine _followPathCoroutine;
         private bool _needMove;
@@ -47,6 +46,7 @@ namespace Enemies.Movement
             _targetPathfinder = setupData.TargetPathfinderForMovement;
             _targetSelector = setupData.TargetSelector;
             _summoner = setupData.Summoner;
+            _collider = setupData.Collider;
             _enemyMovementValuesCalculator = new EnemyMovementValuesCalculator(movementSettings);
             MovementValuesCalculator = _enemyMovementValuesCalculator;
         }
@@ -63,7 +63,8 @@ namespace Enemies.Movement
         public void DisableMoving()
         {
             StopMoving();
-            _rigidbody.constraints = RigidbodyConstraintsFreezeRotationAndPositionXY;
+            _collider.enabled = false;
+            _rigidbody.constraints = RigidbodyConstraintsFreezeRotationAndPosition;
         }
 
         public void AddForce(Vector3 force, ForceMode mode)
@@ -200,8 +201,7 @@ namespace Enemies.Movement
         {
             Vector3 currentVelocity = VelocityForLimitations;
             Vector3 needFrictionDirection = Time.deltaTime *
-                                            MovementValuesCalculator.CalculateFrictionForce(currentVelocity
-                                                .magnitude) *
+                                            MovementValuesCalculator.CalculateFrictionForce(currentVelocity.magnitude) *
                                             (needMoveDirection - currentVelocity.normalized);
             _rigidbody.AddForce(needFrictionDirection);
         }

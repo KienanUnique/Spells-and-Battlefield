@@ -70,6 +70,7 @@ namespace Enemies.Setup
         private ISummoner _summoner;
         private IToolsForSummon _toolsForSummon;
         private IGameLevelLootUnlocker _gameLevelLootUnlocker;
+        private Collider _collider;
 
         [Inject]
         private void GetDependencies(IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
@@ -119,6 +120,21 @@ namespace Enemies.Setup
             SetDataForInitialization(settings, informationForSummon.Faction, informationForSummon.TargetTriggers);
         }
 
+        protected override void Prepare()
+        {
+            _externalDependenciesInitializationWaiter ??= new ExternalDependenciesInitializationWaiter(false);
+
+            _initializedEnemy ??= GetComponent<IEnemy>();
+
+            _idHolder = GetComponent<IdHolder>();
+            _thisRigidbody = GetComponent<Rigidbody>();
+            _collider = GetComponent<Collider>();
+            _controller = GetComponent<EnemyController>();
+
+            _states = _enemyStateMachineAI.GetComponentsInChildren<IInitializableStateEnemyAI>();
+            _transitions = _enemyStateMachineAI.GetComponentsInChildren<IInitializableTransitionEnemyAI>();
+        }
+
         protected override void Initialize()
         {
             var thisReadonlyRigidbody = new ReadonlyRigidbody(_thisRigidbody);
@@ -137,7 +153,7 @@ namespace Enemies.Setup
                 _generalEnemySettings.EmptyActionAnimationClip);
 
             var movementSetupData = new EnemyMovementSetupData(_thisRigidbody, targetFromTriggersSelector, this,
-                targetPathfinder, _summoner);
+                targetPathfinder, _summoner, _collider);
             IDisableableEnemyMovement enemyMovement =
                 _settings.MovementProvider.GetImplementationObject(movementSetupData);
 
@@ -178,20 +194,6 @@ namespace Enemies.Setup
             }
 
             _controller.Initialize(baseSetupData);
-        }
-
-        protected override void Prepare()
-        {
-            _externalDependenciesInitializationWaiter ??= new ExternalDependenciesInitializationWaiter(false);
-
-            _initializedEnemy ??= GetComponent<IEnemy>();
-
-            _idHolder = GetComponent<IdHolder>();
-            _thisRigidbody = GetComponent<Rigidbody>();
-            _controller = GetComponent<EnemyController>();
-
-            _states = _enemyStateMachineAI.GetComponentsInChildren<IInitializableStateEnemyAI>();
-            _transitions = _enemyStateMachineAI.GetComponentsInChildren<IInitializableTransitionEnemyAI>();
         }
     }
 }

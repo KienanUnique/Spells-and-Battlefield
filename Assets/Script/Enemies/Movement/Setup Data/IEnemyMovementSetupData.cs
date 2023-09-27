@@ -10,6 +10,7 @@ namespace Enemies.Movement.Setup_Data
     {
         public ICoroutineStarter CoroutineStarter { get; }
         public Rigidbody Rigidbody { get; }
+        public Collider Collider { get; }
         public IReadonlyEnemyTargetFromTriggersSelector TargetSelector { get; }
         public ITargetPathfinderForMovement TargetPathfinderForMovement { get; }
         public ISummoner Summoner { get; }

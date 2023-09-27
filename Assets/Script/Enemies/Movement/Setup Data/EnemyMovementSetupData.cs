@@ -10,16 +10,18 @@ namespace Enemies.Movement.Setup_Data
     {
         public EnemyMovementSetupData(Rigidbody rigidbody, IReadonlyEnemyTargetFromTriggersSelector targetSelector,
             ICoroutineStarter coroutineStarter, ITargetPathfinderForMovement targetPathfinderForMovement,
-            ISummoner summoner)
+            ISummoner summoner, Collider collider)
         {
             Rigidbody = rigidbody;
             TargetSelector = targetSelector;
             CoroutineStarter = coroutineStarter;
             TargetPathfinderForMovement = targetPathfinderForMovement;
             Summoner = summoner;
+            Collider = collider;
         }
 
         public Rigidbody Rigidbody { get; }
+        public Collider Collider { get; }
         public IReadonlyEnemyTargetFromTriggersSelector TargetSelector { get; }
         public ITargetPathfinderForMovement TargetPathfinderForMovement { get; }
         public ISummoner Summoner { get; }
