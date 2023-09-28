@@ -8,12 +8,9 @@ namespace Player.Camera_Effects
 {
     public class PlayerCameraEffects : IPlayerCameraEffects
     {
-        private const RotateMode CameraRotateMode = RotateMode.Fast;
         private readonly Transform _cachedTransform;
-
         private readonly Camera _camera;
         private readonly IPlayerCameraEffectsSettings _cameraEffectsSettings;
-
         private readonly Vector3 _defaultRotation;
         private readonly GameObject _effectsGameObject;
 

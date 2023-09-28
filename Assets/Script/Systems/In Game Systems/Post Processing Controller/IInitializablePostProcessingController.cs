@@ -6,7 +6,7 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller
 {
     public interface IInitializablePostProcessingController
     {
-        void Initialize(IPlayerInformationProvider playerInformationProvider, Volume dashEffectsVolume,
-            IPostProcessingControllerSettings settings);
+        public void Initialize(IPlayerInformationProvider playerInformationProvider, Volume dashEffectsVolume,
+            Volume dashAimingEffectsVolume, IPostProcessingControllerSettings settings);
     }
 }

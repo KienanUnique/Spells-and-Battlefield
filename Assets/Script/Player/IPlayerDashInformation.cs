@@ -6,5 +6,6 @@ namespace Player
     {
         public event Action Dashed;
         public event Action DashAiming;
+        public event Action DashAimingCanceled;
     }
 }

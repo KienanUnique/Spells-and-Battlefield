@@ -12,6 +12,7 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller.Setup
     public class PostProcessingControllerSetup : SetupMonoBehaviourBase
     {
         [SerializeField] private Volume _dashEffectsVolume;
+        [SerializeField] private Volume _dashAimingEffectsVolume;
         private IInitializablePostProcessingController _controller;
         private IPlayerInformationProvider _playerInformationProvider;
         private IPlayerInitializationStatus _playerInitializationStatus;
@@ -31,7 +32,7 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller.Setup
 
         protected override void Initialize()
         {
-            _controller.Initialize(_playerInformationProvider, _dashEffectsVolume, _settings);
+            _controller.Initialize(_playerInformationProvider, _dashEffectsVolume, _dashAimingEffectsVolume, _settings);
         }
 
         protected override void Prepare()

@@ -72,8 +72,8 @@ namespace Player.Movement
 
         public event Action<float> DashCooldownRatioChanged;
         public event Action DashAiming;
+        public event Action DashAimingCanceled;
         public event Action Dashed;
-
         public event Action Land;
         public event Action GroundJump;
         public event Action AirJump;
@@ -350,6 +350,7 @@ namespace Player.Movement
                     EndWallRunning?.Invoke();
                     break;
                 case MovingState.DashAiming:
+                    DashAimingCanceled?.Invoke();
                     Dashed?.Invoke();
                     _coroutineStarter.StartCoroutine(WaitForDashCooldownWithTicking());
                     break;

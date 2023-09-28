@@ -23,7 +23,6 @@ using Player.Spell_Manager;
 using Player.Visual;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
-using Systems.Input_Manager;
 using Systems.Input_Manager.Concrete_Types.In_Game;
 using UnityEngine;
 
@@ -72,6 +71,7 @@ namespace Player
         public event Action<float> DashCooldownRatioChanged;
         public event Action Dashed;
         public event Action DashAiming;
+        public event Action DashAimingCanceled;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
 
@@ -162,7 +162,7 @@ namespace Player
             _input.UseSpellInputted += OnUseSpellInputted;
             _input.MoveInputted += _movement.MoveInputted;
             _input.LookInputted += _look.LookInputtedWith;
-            
+
             _input.SelectSpellTypeWithIndex += _spellsManager.SelectSpellTypeWithIndex;
             _input.SelectNextSpellType += _spellsManager.SelectNextSpellType;
             _input.SelectPreviousSpellType += _spellsManager.SelectPreviousSpellType;
@@ -177,6 +177,7 @@ namespace Player
             _movement.WallRunningDirectionChanged += OnWallRunningDirectionChanged;
             _movement.EndWallRunning += OnEndWallRunning;
             _movement.DashAiming += OnDashAiming;
+            _movement.DashAimingCanceled += OnDashAimingCanceled;
             _movement.Dashed += OnDashed;
             _movement.DashCooldownRatioChanged += OnDashCooldownRatioChanged;
 
@@ -198,7 +199,7 @@ namespace Player
             _input.UseSpellInputted -= OnUseSpellInputted;
             _input.MoveInputted -= _movement.MoveInputted;
             _input.LookInputted -= _look.LookInputtedWith;
-            
+
             _input.SelectSpellTypeWithIndex -= _spellsManager.SelectSpellTypeWithIndex;
             _input.SelectNextSpellType -= _spellsManager.SelectNextSpellType;
             _input.SelectPreviousSpellType -= _spellsManager.SelectPreviousSpellType;
@@ -213,6 +214,7 @@ namespace Player
             _movement.WallRunningDirectionChanged -= OnWallRunningDirectionChanged;
             _movement.EndWallRunning -= OnEndWallRunning;
             _movement.DashAiming -= OnDashAiming;
+            _movement.DashAimingCanceled -= OnDashAimingCanceled;
             _movement.Dashed -= OnDashed;
             _movement.DashCooldownRatioChanged -= OnDashCooldownRatioChanged;
 
@@ -267,6 +269,11 @@ namespace Player
         private void OnDashAiming()
         {
             DashAiming?.Invoke();
+        }
+
+        private void OnDashAimingCanceled()
+        {
+            DashAimingCanceled?.Invoke();
         }
 
         private void OnStartWallRunning(WallDirection direction)
