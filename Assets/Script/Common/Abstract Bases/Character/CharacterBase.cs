@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using Common.Abstract_Bases.Disableable;
 using Common.Interfaces;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
@@ -29,7 +30,7 @@ namespace Common.Abstract_Bases.Character
         }
 
         public event Action<CharacterState> CharacterStateChanged;
-        public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
+        public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
 
         public CharacterState CurrentCharacterState => _currentState.Value;
         public float HitPointCountRatio => _hitPointsCalculator.HitPointCountRatio;
@@ -102,15 +103,14 @@ namespace Common.Abstract_Bases.Character
             }
         }
 
-        private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
-            TypeOfHitPointsChange typeOfHitPointsChange)
+        private void OnHitPointsCountChanged(IHitPointsCharacterChangeInformation changeInformation)
         {
             if (_hitPointsCalculator.CurrentCountOfHitPoints == 0)
             {
                 _currentState.Value = CharacterState.Dead;
             }
 
-            HitPointsCountChanged?.Invoke(hitPointsLeft, hitPointsChangeValue, typeOfHitPointsChange);
+            HitPointsCountChanged?.Invoke(changeInformation);
         }
 
         private void OnEffectEnded(IContinuousEffect obj)
@@ -145,7 +145,7 @@ namespace Common.Abstract_Bases.Character
                 CurrentCountOfHitPoints = _maximumCountOfHitPoints;
             }
 
-            public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
+            public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
 
             public float HitPointCountRatio => 1.0f * CurrentCountOfHitPoints / _maximumCountOfHitPoints;
             public int CurrentCountOfHitPoints { get; private set; }
@@ -164,8 +164,8 @@ namespace Common.Abstract_Bases.Character
                     CurrentCountOfHitPoints = 0;
                 }
 
-                HitPointsCountChanged?.Invoke(CurrentCountOfHitPoints, oldCountOfHitPoints - CurrentCountOfHitPoints,
-                    TypeOfHitPointsChange.Damage);
+                HitPointsCountChanged?.Invoke(new HitPointsCharacterChangeInformation(CurrentCountOfHitPoints,
+                    HitPointCountRatio, oldCountOfHitPoints - CurrentCountOfHitPoints, TypeOfHitPointsChange.Damage));
             }
 
             public void HandleHeal(int countOfHitPoints)
@@ -182,8 +182,8 @@ namespace Common.Abstract_Bases.Character
                     CurrentCountOfHitPoints = _maximumCountOfHitPoints;
                 }
 
-                HitPointsCountChanged?.Invoke(CurrentCountOfHitPoints, CurrentCountOfHitPoints - oldCountOfHitPoints,
-                    TypeOfHitPointsChange.Heal);
+                HitPointsCountChanged?.Invoke(new HitPointsCharacterChangeInformation(CurrentCountOfHitPoints,
+                    HitPointCountRatio, CurrentCountOfHitPoints - oldCountOfHitPoints, TypeOfHitPointsChange.Heal));
             }
 
             public void HandleInstantDeath()

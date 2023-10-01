@@ -1,5 +1,6 @@
 ﻿using System;
 using Common;
+using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using UnityEngine;
 
 namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
@@ -72,8 +73,7 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
             StateMachineControllable.HitPointsCountChanged -= OnHitPointsCountChanged;
         }
 
-        private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
-            TypeOfHitPointsChange typeOfHitPointsChange)
+        private void OnHitPointsCountChanged(IHitPointsCharacterChangeInformation changeInformation)
         {
             if (IsConditionCompleted)
             {

@@ -1,5 +1,5 @@
-﻿using Common;
-using Common.Abstract_Bases.Character;
+﻿using Common.Abstract_Bases.Character;
+using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 
 namespace UI.Concrete_Scenes.In_Game.Bar.Model.Concrete_Types
 {
@@ -25,8 +25,7 @@ namespace UI.Concrete_Scenes.In_Game.Bar.Model.Concrete_Types
             _characterInformation.HitPointsCountChanged -= OnHitPointsCountChanged;
         }
 
-        private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
-            TypeOfHitPointsChange typeOfHitPointsChange)
+        private void OnHitPointsCountChanged(IHitPointsCharacterChangeInformation changeInformation)
         {
             UpdateFillAmount();
         }

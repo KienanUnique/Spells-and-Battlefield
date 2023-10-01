@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Common;
 using Common.Abstract_Bases.Character;
+using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animation_Data;
 using Common.Event_Invoker_For_Action_Animations;
@@ -67,13 +67,14 @@ namespace Enemies.Controller
             Faction = setupData.SetFaction;
             InformationForSummon = setupData.SetInformationForSummon;
             ToolsForSummon = setupData.SetToolsForSummon;
-            UpperPointForSummonedEnemiesPositionCalculating = setupData.SetUpperPointForSummonedEnemiesPositionCalculating;
+            UpperPointForSummonedEnemiesPositionCalculating =
+                setupData.SetUpperPointForSummonedEnemiesPositionCalculating;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
         }
 
-        public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
+        public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
         public event Action<CharacterState> CharacterStateChanged;
 
         public event Action ActionAnimationKeyMomentTrigger;
@@ -258,12 +259,11 @@ namespace Enemies.Controller
             ActionAnimationKeyMomentTrigger?.Invoke();
         }
 
-        private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
-            TypeOfHitPointsChange typeOfHitPointsChange)
+        private void OnHitPointsCountChanged(IHitPointsCharacterChangeInformation changeInformation)
         {
-            _popupHitPointsChangeTextFactory.Create(typeOfHitPointsChange, hitPointsChangeValue,
-                _popupTextHitPointsChangeAppearCenterPoint.Position);
-            HitPointsCountChanged?.Invoke(hitPointsLeft, hitPointsChangeValue, typeOfHitPointsChange);
+            _popupHitPointsChangeTextFactory.Create(changeInformation.TypeOfHitPointsChange,
+                changeInformation.HitPointsChangeValue, _popupTextHitPointsChangeAppearCenterPoint.Position);
+            HitPointsCountChanged?.Invoke(changeInformation);
         }
 
         private void DropSpell()

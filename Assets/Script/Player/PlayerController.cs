@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using Common;
 using Common.Abstract_Bases.Character;
+using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animation_Data;
 using Common.Collection_With_Reaction_On_Change;
@@ -67,7 +68,7 @@ namespace Player
         }
 
         public event Action<CharacterState> CharacterStateChanged;
-        public event ICharacterInformationProvider.OnHitPointsCountChanged HitPointsCountChanged;
+        public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
         public event Action<float> DashCooldownRatioChanged;
         public event Action Dashed;
         public event Action DashAiming;
@@ -254,10 +255,9 @@ namespace Player
             }
         }
 
-        private void OnHitPointsCountChanged(int hitPointsLeft, int hitPointsChangeValue,
-            TypeOfHitPointsChange typeOfHitPointsChange)
+        private void OnHitPointsCountChanged(IHitPointsCharacterChangeInformation changeInformation)
         {
-            HitPointsCountChanged?.Invoke(hitPointsLeft, hitPointsChangeValue, typeOfHitPointsChange);
+            HitPointsCountChanged?.Invoke(changeInformation);
         }
 
         private void OnDashed()
