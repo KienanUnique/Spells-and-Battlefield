@@ -86,6 +86,7 @@ namespace Player.Movement
         {
             NotInitialized,
             OnGround,
+            CoyoteTime,
             InAir,
             WallRunning,
             DashAiming
@@ -112,12 +113,17 @@ namespace Player.Movement
         public void TryJumpInputted()
         {
             if ((_currentMovingState.Value == MovingState.OnGround ||
+                 _currentMovingState.Value == MovingState.CoyoteTime ||
                  _currentMovingState.Value == MovingState.WallRunning ||
                  _currentMovingState.Value == MovingState.InAir) &&
                 _currentCountOfAirJumps < MaxCountOfAirJumps)
             {
                 Vector3 newVelocity = _rigidbody.velocity;
-                newVelocity.y = 0;
+                if (newVelocity.y < 0)
+                {
+                    newVelocity.y = 0;
+                }
+
                 _rigidbody.velocity = newVelocity;
                 Vector3 jumpForce = _currentMovingState.Value == MovingState.WallRunning
                     ? _movementValuesCalculator.CalculateJumpForce(_currentWallDirection.Value)
@@ -131,7 +137,8 @@ namespace Player.Movement
                     _currentCountOfAirJumps++;
                     AirJump?.Invoke();
                 }
-                else if (_currentMovingState.Value == MovingState.OnGround)
+                else if (_currentMovingState.Value == MovingState.OnGround ||
+                         _currentMovingState.Value == MovingState.CoyoteTime)
                 {
                     GroundJump?.Invoke();
                 }
@@ -141,7 +148,8 @@ namespace Player.Movement
         public void TryStartDashAiming()
         {
             if ((_currentMovingState.Value == MovingState.InAir ||
-                 _currentMovingState.Value == MovingState.WallRunning) &&
+                 _currentMovingState.Value == MovingState.WallRunning ||
+                 _currentMovingState.Value == MovingState.CoyoteTime) &&
                 _canDash)
             {
                 _currentMovingState.Value = MovingState.DashAiming;
@@ -279,7 +287,10 @@ namespace Player.Movement
 
         private void OnAirCoyoteTimeFinished()
         {
-            _currentMovingState.Value = MovingState.InAir;
+            if (_currentMovingState.Value == MovingState.CoyoteTime)
+            {
+                _currentMovingState.Value = MovingState.InAir;
+            }
         }
 
         private void OnWallDirectionChanged(WallDirection newWallDirection)
@@ -289,7 +300,6 @@ namespace Player.Movement
 
         private void OnGroundedStatusChanged(bool isGrounded)
         {
-            _airCoyoteTimeWaiter.Cancel();
             if (isGrounded)
             {
                 _currentMovingState.Value = MovingState.OnGround;
@@ -302,14 +312,13 @@ namespace Player.Movement
                 }
                 else
                 {
-                    _airCoyoteTimeWaiter.Start(_movementSettings.CoyoteTimeInSeconds);
+                    _currentMovingState.Value = MovingState.CoyoteTime;
                 }
             }
         }
 
         private void OnWallContactStatusChanged(bool isContactedWithWall)
         {
-            _airCoyoteTimeWaiter.Cancel();
             if (isContactedWithWall && _currentMovingState.Value == MovingState.InAir)
             {
                 _currentMovingState.Value = MovingState.WallRunning;
@@ -329,10 +338,18 @@ namespace Player.Movement
 
         private void OnBeforeMovingStateChanged(MovingState movingState)
         {
-            _airCoyoteTimeWaiter.Cancel();
             switch (movingState)
             {
                 case MovingState.OnGround:
+                    if (_frictionCoroutine != null)
+                    {
+                        _coroutineStarter.StopCoroutine(_frictionCoroutine);
+                        _frictionCoroutine = null;
+                    }
+
+                    break;
+                case MovingState.CoyoteTime:
+                    _airCoyoteTimeWaiter.Cancel();
                     if (_frictionCoroutine != null)
                     {
                         _coroutineStarter.StopCoroutine(_frictionCoroutine);
@@ -376,6 +393,17 @@ namespace Player.Movement
                     _frictionCoroutine ??= _coroutineStarter.StartCoroutine(ApplyFrictionContinuously());
                     Land?.Invoke();
                     break;
+                case MovingState.CoyoteTime:
+                    _currentCountOfAirJumps = 0;
+                    _movementValuesCalculator.ChangePlayerInputForceMultiplier(NormalPlayerInputForceMultiplier);
+                    _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
+                        .NormalGravityForceMultiplier);
+                    _movementValuesCalculator.ChangeFrictionCoefficient(_movementSettings.NormalFrictionCoefficient);
+                    _movementValuesCalculator.DecreaseAdditionalMaximumSpeed(_movementSettings
+                        .GroundDecreaseAdditionalMaximumSpeedAcceleration);
+                    _frictionCoroutine ??= _coroutineStarter.StartCoroutine(ApplyFrictionContinuously());
+                    _airCoyoteTimeWaiter.Start(_movementSettings.CoyoteTimeInSeconds);
+                    break;
                 case MovingState.InAir:
                     _currentCountOfAirJumps = 0;
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(AirPlayerInputForceMultiplier);
@@ -386,6 +414,11 @@ namespace Player.Movement
                         .AirDecreaseAdditionalMaximumSpeedAcceleration);
                     _frictionCoroutine ??= _coroutineStarter.StartCoroutine(ApplyFrictionContinuously());
                     Fall?.Invoke();
+                    if (IsGrounded)
+                    {
+                        _currentMovingState.Value = MovingState.OnGround;
+                    }
+
                     break;
                 case MovingState.WallRunning:
                     _currentCountOfAirJumps = 0;
@@ -399,6 +432,11 @@ namespace Player.Movement
                     _movementValuesCalculator.IncreaseAdditionalMaximumSpeed(
                         _movementSettings.WallRunningIncreaseAdditionalMaximumSpeedAcceleration,
                         _movementSettings.WallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration);
+                    if (IsGrounded)
+                    {
+                        _currentMovingState.Value = MovingState.OnGround;
+                    }
+
                     break;
                 case MovingState.DashAiming:
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(DashAimingPlayerInputForceMultiplier);
