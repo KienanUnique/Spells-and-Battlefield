@@ -3,6 +3,7 @@ using Common.Interfaces;
 using Common.Mechanic_Effects;
 using Common.Mechanic_Effects.Scriptable_Objects;
 using Common.Mechanic_Effects.Source;
+using Common.Readonly_Transform;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces;
@@ -46,12 +47,12 @@ namespace Spells.Concrete_Types.Appliers
             public override void Initialize(Rigidbody spellRigidbody, ICaster caster)
             {
                 var spellImplementations = new List<ISpellImplementation> {_targetSelector, _spellTrigger};
-                spellImplementations.AddRange(_spellMechanicEffects);
 
                 spellImplementations.ForEach(spellImplementation =>
                     spellImplementation.Initialize(spellRigidbody, caster));
 
-                _effectSourceInformation = new EffectSourceInformation(EffectSourceType.External, caster.MainTransform);
+                _effectSourceInformation = new EffectSourceInformation(EffectSourceType.External,
+                    new ReadonlyTransform(spellRigidbody.transform));
             }
 
             public override SpellTriggerCheckStatusEnum CheckContact(Collider other)

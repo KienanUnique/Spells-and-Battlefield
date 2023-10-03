@@ -5,7 +5,7 @@ using Spells.Implementations_Interfaces;
 
 namespace Common.Mechanic_Effects
 {
-    public interface IMechanicEffect : ISpellImplementation
+    public interface IMechanicEffect
     {
         public void ApplyEffectToTargets(IEnumerable<IInteractable> targets,
             IEffectSourceInformation sourceInformation);

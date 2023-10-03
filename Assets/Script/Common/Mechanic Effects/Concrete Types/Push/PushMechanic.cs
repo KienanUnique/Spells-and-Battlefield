@@ -29,7 +29,8 @@ namespace Common.Mechanic_Effects.Concrete_Types.Push
             {
                 if (target.TryGetComponent(out IPhysicsInteractable physicsTarget))
                 {
-                    Vector3 force = (physicsTarget.CurrentPosition - _spellRigidbody.position).normalized;
+                    Vector3 force = (physicsTarget.CurrentPosition - sourceInformation.SourceTransform.Position)
+                        .normalized;
                     force *= _forceValue;
                     physicsTarget.AddForce(force, ForceMode.Impulse);
                 }

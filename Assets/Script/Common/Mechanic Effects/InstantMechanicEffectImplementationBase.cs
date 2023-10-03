@@ -5,7 +5,7 @@ using Spells.Abstract_Types.Implementation_Bases;
 
 namespace Common.Mechanic_Effects
 {
-    public abstract class InstantMechanicEffectImplementationBase : SpellImplementationBase, IMechanicEffect
+    public abstract class InstantMechanicEffectImplementationBase : IMechanicEffect
     {
         public abstract void ApplyEffectToTarget(IInteractable target, IEffectSourceInformation sourceInformation);
 
