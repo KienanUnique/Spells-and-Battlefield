@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common.Interfaces;
 using Common.Mechanic_Effects.Continuous_Effect;
+using Common.Mechanic_Effects.Source;
 using Spells.Abstract_Types.Implementation_Bases;
 
 namespace Common.Mechanic_Effects
@@ -14,7 +15,7 @@ namespace Common.Mechanic_Effects
             _effect = effect;
         }
 
-        public virtual void ApplyEffectToTarget(IInteractable target)
+        public virtual void ApplyEffectToTarget(IInteractable target, IEffectSourceInformation sourceInformation)
         {
             if (target is IContinuousEffectApplicable continuousEffectApplicableTarget)
             {
@@ -23,11 +24,12 @@ namespace Common.Mechanic_Effects
             }
         }
 
-        public virtual void ApplyEffectToTargets(IReadOnlyCollection<IInteractable> targets)
+        public virtual void ApplyEffectToTargets(IEnumerable<IInteractable> targets,
+            IEffectSourceInformation sourceInformation)
         {
             foreach (IInteractable target in targets)
             {
-                ApplyEffectToTarget(target);
+                ApplyEffectToTarget(target, sourceInformation);
             }
         }
     }

@@ -1,5 +1,6 @@
 using Common.Interfaces;
 using Common.Mechanic_Effects.Scriptable_Objects;
+using Common.Mechanic_Effects.Source;
 using UnityEngine;
 
 namespace Common.Mechanic_Effects.Concrete_Types.Damage
@@ -24,11 +25,11 @@ namespace Common.Mechanic_Effects.Concrete_Types.Damage
                 _damage = damage;
             }
 
-            public override void ApplyEffectToTarget(IInteractable target)
+            public override void ApplyEffectToTarget(IInteractable target, IEffectSourceInformation sourceInformation)
             {
                 if (target.TryGetComponent(out IDamageable damageableTarget))
                 {
-                    damageableTarget.HandleDamage(_damage);
+                    damageableTarget.HandleDamage(_damage, sourceInformation);
                 }
             }
         }

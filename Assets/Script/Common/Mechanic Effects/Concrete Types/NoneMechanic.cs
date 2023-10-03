@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Common.Interfaces;
 using Common.Mechanic_Effects.Scriptable_Objects;
+using Common.Mechanic_Effects.Source;
 using Spells;
 using UnityEngine;
 
@@ -21,11 +22,12 @@ namespace Common.Mechanic_Effects.Concrete_Types
             {
             }
 
-            public void ApplyEffectToTargets(IReadOnlyCollection<IInteractable> targets)
+            public void ApplyEffectToTargets(IEnumerable<IInteractable> targets,
+                IEffectSourceInformation sourceInformation)
             {
             }
 
-            public void ApplyEffectToTarget(IInteractable target)
+            public void ApplyEffectToTarget(IInteractable target, IEffectSourceInformation sourceInformation)
             {
             }
         }

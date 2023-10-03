@@ -3,18 +3,22 @@ using Common.Abstract_Bases.Character;
 using Common.Interfaces;
 using Common.Mechanic_Effects;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
+using Common.Mechanic_Effects.Source;
+using Common.Readonly_Transform;
 
 namespace Enemies.Character
 {
     public abstract class EnemyCharacterBase : CharacterBase, IDisableableEnemyCharacter
     {
         private readonly string _name;
+        private readonly IEffectSourceInformation _thisEffectSourceInformation;
 
         protected EnemyCharacterBase(ICoroutineStarter coroutineStarter,
-            EnemyCharacterSettingsSection characterSettings, ISummoner summoner = null) : base(coroutineStarter,
-            characterSettings, summoner)
+            EnemyCharacterSettingsSection characterSettings, IReadonlyTransform thisTransform,
+            ISummoner summoner = null) : base(coroutineStarter, characterSettings, summoner)
         {
             _name = characterSettings.Name;
+            _thisEffectSourceInformation = new EffectSourceInformation(EffectSourceType.External, thisTransform);
         }
 
         public ISummoner Summoner => _summoner;
@@ -24,7 +28,7 @@ namespace Enemies.Character
         {
             foreach (IMechanicEffect effect in mechanicEffects)
             {
-                effect.ApplyEffectToTargets(targets);
+                effect.ApplyEffectToTargets(targets, _thisEffectSourceInformation);
             }
         }
     }

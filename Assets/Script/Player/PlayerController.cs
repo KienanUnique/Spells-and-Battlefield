@@ -12,6 +12,7 @@ using Common.Id_Holder;
 using Common.Interfaces;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Mechanic_Effects.Continuous_Effect;
+using Common.Mechanic_Effects.Source;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Factions;
@@ -104,9 +105,9 @@ namespace Player
             _character.ApplyContinuousEffect(effect);
         }
 
-        public void HandleDamage(int countOfHealthPoints)
+        public void HandleDamage(int countOfHealthPoints, IEffectSourceInformation sourceInformation)
         {
-            _character.HandleDamage(countOfHealthPoints);
+            _character.HandleDamage(countOfHealthPoints, sourceInformation);
         }
 
         public bool Equals(IIdHolder other)

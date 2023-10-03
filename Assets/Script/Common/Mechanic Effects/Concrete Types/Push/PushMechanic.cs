@@ -1,5 +1,6 @@
 ﻿using Common.Interfaces;
 using Common.Mechanic_Effects.Scriptable_Objects;
+using Common.Mechanic_Effects.Source;
 using UnityEngine;
 
 namespace Common.Mechanic_Effects.Concrete_Types.Push
@@ -24,7 +25,7 @@ namespace Common.Mechanic_Effects.Concrete_Types.Push
                 _forceValue = forceValue;
             }
 
-            public override void ApplyEffectToTarget(IInteractable target)
+            public override void ApplyEffectToTarget(IInteractable target, IEffectSourceInformation sourceInformation)
             {
                 if (target.TryGetComponent(out IPhysicsInteractable physicsTarget))
                 {

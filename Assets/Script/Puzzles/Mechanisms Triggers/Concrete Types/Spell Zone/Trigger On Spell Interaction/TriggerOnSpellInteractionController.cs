@@ -1,6 +1,7 @@
 ﻿using System;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Id_Holder;
+using Common.Readonly_Transform;
 using Spells;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
@@ -15,15 +16,17 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone.Trigger_On_Spell
     {
         private IIdHolder _idHolder;
 
-        public void Initialize(IIdHolder idHolder)
+        public void Initialize(IIdHolder idHolder, IReadonlyTransform mainTransform)
         {
             _idHolder = idHolder;
+            MainTransform = mainTransform;
             SetInitializedStatus();
         }
 
         public event Action<ISpellType> SpellTypeInteractionDetected;
 
         public int Id => _idHolder.Id;
+        public IReadonlyTransform MainTransform { get; private set; }
 
         public bool Equals(IIdHolder other)
         {

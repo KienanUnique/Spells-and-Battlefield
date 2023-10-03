@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Common.Interfaces;
 using Common.Mechanic_Effects;
 using Common.Mechanic_Effects.Scriptable_Objects;
+using Common.Mechanic_Effects.Source;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces;
@@ -32,6 +33,7 @@ namespace Spells.Concrete_Types.Appliers
             private readonly List<IMechanicEffect> _spellMechanicEffects;
             private readonly ISpellTrigger _spellTrigger;
             private readonly ISpellTargetSelector _targetSelector;
+            private IEffectSourceInformation _effectSourceInformation;
 
             public DefaultSpellApplierImplementation(List<IMechanicEffect> spellMechanicEffects,
                 ISpellTargetSelector targetSelector, ISpellTrigger spellTrigger)
@@ -48,6 +50,8 @@ namespace Spells.Concrete_Types.Appliers
 
                 spellImplementations.ForEach(spellImplementation =>
                     spellImplementation.Initialize(spellRigidbody, caster));
+
+                _effectSourceInformation = new EffectSourceInformation(EffectSourceType.External, caster.MainTransform);
             }
 
             public override SpellTriggerCheckStatusEnum CheckContact(Collider other)
@@ -88,7 +92,8 @@ namespace Spells.Concrete_Types.Appliers
             {
                 List<ISpellInteractable> selectedTargets = _targetSelector.SelectTargets();
                 _spellMechanicEffects.ForEach(mechanicEffect =>
-                    mechanicEffect.ApplyEffectToTargets(new List<IInteractable>(selectedTargets)));
+                    mechanicEffect.ApplyEffectToTargets(new List<IInteractable>(selectedTargets),
+                        _effectSourceInformation));
             }
         }
     }

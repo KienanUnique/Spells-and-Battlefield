@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Common.Interfaces;
+using Common.Mechanic_Effects.Source;
 using UnityEngine;
 
 namespace Common.Mechanic_Effects.Continuous_Effect
@@ -15,6 +16,7 @@ namespace Common.Mechanic_Effects.Continuous_Effect
         private ICoroutineStarter _coroutineStarter;
         private Coroutine _effectCoroutine;
         private IInteractable _target;
+        private IEffectSourceInformation _effectSourceInformation;
 
         public ContinuousEffect(float cooldownInSeconds, List<IMechanicEffect> mechanics, float durationInSeconds,
             bool needIgnoreCooldown)
@@ -61,11 +63,12 @@ namespace Common.Mechanic_Effects.Continuous_Effect
         public void SetTarget(IInteractable target)
         {
             _target = target;
+            _effectSourceInformation = new EffectSourceInformation(EffectSourceType.Local, _target.MainTransform);
         }
 
         private void ApplyEffects()
         {
-            _mechanics.ForEach(effect => effect.ApplyEffectToTarget(_target));
+            _mechanics.ForEach(effect => effect.ApplyEffectToTarget(_target, _effectSourceInformation));
         }
 
         private IEnumerator ApplyEffectWithCooldown()

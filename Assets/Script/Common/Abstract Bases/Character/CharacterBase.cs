@@ -5,6 +5,7 @@ using Common.Abstract_Bases.Disableable;
 using Common.Interfaces;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Mechanic_Effects.Continuous_Effect;
+using Common.Mechanic_Effects.Source;
 using Common.Settings.Sections.Character;
 
 namespace Common.Abstract_Bases.Character
@@ -53,7 +54,7 @@ namespace Common.Abstract_Bases.Character
             effect.Start(_coroutineStarter);
         }
 
-        public virtual void HandleDamage(int countOfHitPoints)
+        public virtual void HandleDamage(int countOfHitPoints, IEffectSourceInformation sourceInformation)
         {
             if (_currentState.Value == CharacterState.Dead)
             {

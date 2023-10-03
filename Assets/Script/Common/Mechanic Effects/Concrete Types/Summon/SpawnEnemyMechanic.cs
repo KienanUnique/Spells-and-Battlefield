@@ -1,5 +1,6 @@
 ﻿using Common.Interfaces;
 using Common.Mechanic_Effects.Scriptable_Objects;
+using Common.Mechanic_Effects.Source;
 using Enemies.Spawn.Data_For_Spawn;
 using Enemies.Spawn.Spawn_Point_Selector;
 using Spells;
@@ -33,7 +34,7 @@ namespace Common.Mechanic_Effects.Concrete_Types.Summon
                 _spawnAreaRadius = spawnAreaRadius;
             }
 
-            public override void ApplyEffectToTarget(IInteractable target)
+            public override void ApplyEffectToTarget(IInteractable target, IEffectSourceInformation sourceInformation)
             {
                 if (!target.TryGetComponent(out ICaster targetAsCaster))
                 {
