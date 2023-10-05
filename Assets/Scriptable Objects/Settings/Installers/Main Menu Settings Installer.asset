@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77291117a2e34ab6990e358daa61a533, type: 3}
   m_Name: Main Menu Settings Installer
   m_EditorClassIdentifier: 
-  _defaultUIElementViewSettings: {fileID: 11400000, guid: 56bf131e31d75194e8f15a3f4bb5ed31, type: 2}
-  _loadingWindowSettings: {fileID: 11400000, guid: d9587f79fb7f7a846b21ece164dbb765, type: 2}
   _gameLevelItemViewSettings: {fileID: 11400000, guid: ff4712ee2ac282e4caeea21682c9518a, type: 2}
+  _cameraMovementInMenuSceneSettings: {fileID: 11400000, guid: 208b204721011cd43a4e164dbce6f0d1, type: 2}

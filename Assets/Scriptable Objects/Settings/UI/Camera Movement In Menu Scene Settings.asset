@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4895b41dede4edb8ba25b0cd96ffe70, type: 3}
+  m_Name: Camera Movement In Menu Scene Settings
+  m_EditorClassIdentifier: 
+  _moveAnimationDurationInSeconds: 1
+  _movePathType: 1
+  _moveEase: 13
+  _finalRotateCameraBeforeEndOfTheMovementDurationInSeconds: 0.3
+  _finalRotateCameraEase: 9
