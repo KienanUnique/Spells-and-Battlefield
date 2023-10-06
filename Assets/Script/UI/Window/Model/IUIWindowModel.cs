@@ -1,9 +1,10 @@
 ﻿using Common.Id_Holder;
+using UI.Element;
 
 namespace UI.Window.Model
 {
-    public interface IUIWindowModel : IIdHolder
+    public interface IUIWindowModel : IUIElement, IUICanBeClosedByPlayerStatus, IIdHolder
     {
-        public bool CanBeClosedByPlayer { get; }
+        public bool IsOpened { get; }
     }
 }

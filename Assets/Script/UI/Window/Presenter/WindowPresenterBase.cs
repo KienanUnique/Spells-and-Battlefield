@@ -14,9 +14,44 @@ namespace UI.Window.Presenter
         protected abstract IUIWindowView WindowView { get; }
         protected sealed override IUIElementView View => WindowView;
 
+        public override void Appear()
+        {
+            SubscribeOnWindowEvents();
+            WindowModel.Appear();
+            base.Appear();
+        }
+
+        public override void Disappear()
+        {
+            UnsubscribeFromWindowEvents();
+            WindowModel.Disappear();
+            base.Disappear();
+        }
+
         public bool Equals(IIdHolder other)
         {
             return WindowModel.Equals(other);
+        }
+
+        protected abstract void SubscribeOnWindowEvents();
+        protected abstract void UnsubscribeFromWindowEvents();
+
+        protected sealed override void SubscribeOnEvents()
+        {
+            base.SubscribeOnEvents();
+            if (WindowModel.IsOpened)
+            {
+                SubscribeOnWindowEvents();
+            }
+        }
+
+        protected sealed override void UnsubscribeFromEvents()
+        {
+            base.UnsubscribeFromEvents();
+            if (WindowModel.IsOpened)
+            {
+                UnsubscribeFromWindowEvents();
+            }
         }
     }
 }

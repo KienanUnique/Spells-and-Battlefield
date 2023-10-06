@@ -10,13 +10,29 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Level_Comple
         IInitializableLevelCompletedWindowPresenter,
         ILevelCompletedWindow
     {
+        private Button _loadNextLevel;
+        private ILevelCompletedWindowModel _model;
+
         public void Initialize(IUIWindowView view, ILevelCompletedWindowModel model,
             List<IDisableable> itemsNeedDisabling, Button restartLevelButton, Button goToMainWindowButton,
             Button loadNextLevel)
         {
-            loadNextLevel.onClick.AddListener(model.OnLoadNextLevelButtonPressed);
+            _loadNextLevel = loadNextLevel;
+            _model = model;
             InitializeBase(view, model, itemsNeedDisabling, restartLevelButton, goToMainWindowButton);
             SetInitializedStatus();
+        }
+
+        protected override void SubscribeOnWindowEvents()
+        {
+            base.SubscribeOnWindowEvents();
+            _loadNextLevel.onClick.AddListener(_model.OnLoadNextLevelButtonPressed);
+        }
+
+        protected override void UnsubscribeFromWindowEvents()
+        {
+            base.UnsubscribeFromWindowEvents();
+            _loadNextLevel.onClick.RemoveListener(_model.OnLoadNextLevelButtonPressed);
         }
     }
 }

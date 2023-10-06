@@ -20,5 +20,13 @@ namespace UI.Loading_Window.Presenter
 
         protected override IUIWindowView WindowView => _view;
         protected override IUIWindowModel WindowModel => _windowModel;
+
+        protected override void SubscribeOnWindowEvents()
+        {
+        }
+
+        protected override void UnsubscribeFromWindowEvents()
+        {
+        }
     }
 }

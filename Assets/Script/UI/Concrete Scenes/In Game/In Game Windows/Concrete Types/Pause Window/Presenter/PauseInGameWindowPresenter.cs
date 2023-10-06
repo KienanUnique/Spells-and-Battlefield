@@ -10,20 +10,28 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Pause_Window
         IInitializablePauseWindowPresenter,
         IPauseWindow
     {
+        private Button _continueGameButton;
+        private IPauseWindowModel _model;
+
         public void Initialize(IUIWindowView view, IPauseWindowModel model, List<IDisableable> itemsNeedDisabling,
             Button restartLevelButton, Button goToMainWindowButton, Button continueGameButton)
         {
-            continueGameButton.onClick.AddListener(model.OnContinueGameButtonPressed);
+            _model = model;
+            _continueGameButton = continueGameButton;
             InitializeBase(view, model, itemsNeedDisabling, restartLevelButton, goToMainWindowButton);
             SetInitializedStatus();
         }
 
-        protected override void SubscribeOnEvents()
+        protected override void SubscribeOnWindowEvents()
         {
+            base.SubscribeOnWindowEvents();
+            _continueGameButton.onClick.AddListener(_model.OnContinueGameButtonPressed);
         }
 
-        protected override void UnsubscribeFromEvents()
+        protected override void UnsubscribeFromWindowEvents()
         {
+            base.UnsubscribeFromWindowEvents();
+            _continueGameButton.onClick.RemoveListener(_model.OnContinueGameButtonPressed);
         }
     }
 }
