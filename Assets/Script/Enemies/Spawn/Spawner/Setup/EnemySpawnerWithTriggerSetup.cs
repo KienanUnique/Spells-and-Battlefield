@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
@@ -41,13 +40,13 @@ namespace Enemies.Spawn.Spawner.Setup
 
         public string TextForEditorLabel => _objectToSpawn == null ? string.Empty : _objectToSpawn.name;
 
+        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization => new[] {_dependenciesWaiter};
+
         public void SetTargetTriggers(List<IEnemyTargetTrigger> targetTriggers)
         {
             _targetTriggers = targetTriggers;
             _dependenciesWaiter.HandleExternalDependenciesInitialization();
         }
-
-        protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization => new[] {_dependenciesWaiter};
 
         protected override void Prepare()
         {

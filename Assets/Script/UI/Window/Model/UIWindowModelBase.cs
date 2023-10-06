@@ -19,6 +19,11 @@ namespace UI.Window.Model
 
         protected IUIWindowManager Manager { get; }
 
+        public bool Equals(IIdHolder other)
+        {
+            return _idHolder.Equals(other);
+        }
+
         public virtual void Appear()
         {
             IsOpened = true;
@@ -27,11 +32,6 @@ namespace UI.Window.Model
         public virtual void Disappear()
         {
             IsOpened = false;
-        }
-
-        public bool Equals(IIdHolder other)
-        {
-            return _idHolder.Equals(other);
         }
     }
 }

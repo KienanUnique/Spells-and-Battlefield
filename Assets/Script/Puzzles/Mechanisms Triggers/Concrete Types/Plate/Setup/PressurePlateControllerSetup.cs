@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Common.Abstract_Bases;
 using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
 using Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Settings;
 using Puzzles.Mechanisms_Triggers.Identifiers;

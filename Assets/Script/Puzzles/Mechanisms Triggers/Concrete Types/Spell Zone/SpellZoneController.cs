@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone.Trigger_On_Spell_Interaction;
 using Spells.Implementations_Interfaces.Implementations;
 
@@ -11,7 +10,8 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone
         private List<ISpellType> _typesToTriggerOn;
         private bool _needTriggerOneTime;
 
-        public void Initialize(List<ISpellType> typesToTriggerOn,bool needTriggerOneTime, ITriggerOnSpellInteraction triggerOnSpellInteraction)
+        public void Initialize(List<ISpellType> typesToTriggerOn, bool needTriggerOneTime,
+            ITriggerOnSpellInteraction triggerOnSpellInteraction)
         {
             _typesToTriggerOn = typesToTriggerOn;
             _triggerOnSpellInteraction = triggerOnSpellInteraction;

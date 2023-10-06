@@ -1,5 +1,4 @@
-﻿using UI.Concrete_Scenes.Main_Menu.Camera_Movement_Controller.Settings;
-using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.View.Settings;
+﻿using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.Settings;
 using UnityEngine;
 using Zenject;
 

@@ -11,7 +11,6 @@ using Player.Look;
 using Player.Movement;
 using Player.Spell_Manager;
 using Player.Visual;
-using Systems.Input_Manager;
 using Systems.Input_Manager.Concrete_Types.In_Game;
 
 namespace Player.Setup
@@ -23,7 +22,8 @@ namespace Player.Setup
             IPlayerSpellsManager playerSpellsManager, IPlayerInput playerInput, IPlayerMovement playerMovement,
             IPlayerLook playerLook, IIdHolder idHolder, List<IDisableable> itemsNeedDisabling,
             IReadonlyTransform cameraTransform, IReadonlyTransform setPointForAiming, IFaction setFaction,
-            IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon, IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating)
+            IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon,
+            IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating)
         {
             SetPlayerEventInvokerForAnimations = playerEventInvokerForAnimations;
             SetPlayerCameraEffects = playerCameraEffects;

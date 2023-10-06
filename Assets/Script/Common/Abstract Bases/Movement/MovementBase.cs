@@ -33,8 +33,7 @@ namespace Common.Abstract_Bases.Movement
         {
             if (_rigidbody.velocity.magnitude > MovementValuesCalculator.MaximumSpeedCalculated)
             {
-                _rigidbody.velocity = _rigidbody.velocity.normalized *
-                                      MovementValuesCalculator.MaximumSpeedCalculated;
+                _rigidbody.velocity = _rigidbody.velocity.normalized * MovementValuesCalculator.MaximumSpeedCalculated;
             }
             else if (_rigidbody.velocity.magnitude < StopVelocityMagnitude)
             {

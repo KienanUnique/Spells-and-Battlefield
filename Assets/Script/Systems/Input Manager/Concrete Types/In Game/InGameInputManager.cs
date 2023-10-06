@@ -44,11 +44,6 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
             Cursor.visible = false;
         }
 
-        private void Start()
-        {
-            StartCoroutine(UpdateLookData());
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -77,6 +72,11 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
             Controls.Character.SwitchToSpellTypeWithIndex2.performed -= OnPerformedSwitchToSpellTypeWithIndex2;
             Controls.Character.SwitchToSpellTypeWithIndex3.performed -= OnPerformedSwitchToSpellTypeWithIndex3;
             Controls.Character.SwitchSpellType.performed -= OnSwitchSpellType;
+        }
+
+        private void Start()
+        {
+            StartCoroutine(UpdateLookData());
         }
 
         private void OnJumpPerformed(InputAction.CallbackContext obj)

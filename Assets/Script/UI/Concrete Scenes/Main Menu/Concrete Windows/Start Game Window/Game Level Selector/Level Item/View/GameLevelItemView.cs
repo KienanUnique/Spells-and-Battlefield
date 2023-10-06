@@ -1,12 +1,12 @@
 ﻿using Systems.Scene_Switcher.Scene_Data.Game_Level_Data;
 using TMPro;
-using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.View.Settings;
+using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.Settings;
 using UI.Element.View;
 using UI.Element.View.Settings;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.View
+namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.View
 {
     public class GameLevelItemView : DefaultUIElementView, IGameLevelItemView
     {

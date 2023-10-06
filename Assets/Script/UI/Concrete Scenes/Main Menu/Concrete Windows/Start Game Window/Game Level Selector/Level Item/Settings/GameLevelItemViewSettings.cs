@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.View.Settings
+namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.Settings
 {
     [CreateAssetMenu(fileName = "Game Level Item View Settings",
         menuName = ScriptableObjectsMenuDirectories.ConcreteUISettingsDirectory + "Game Level Item View Settings",

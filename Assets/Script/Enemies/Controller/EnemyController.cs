@@ -81,23 +81,23 @@ namespace Enemies.Controller
         public event Action ActionAnimationKeyMomentTrigger;
         public event Action ActionAnimationStart;
         public event Action ActionAnimationEnd;
-
-        public IReadonlyTransform MainTransform => MainRigidbody;
         public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
         public float HitPointCountRatio => _character.HitPointCountRatio;
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
+        public ISummoner Summoner => _character.Summoner;
         public Vector3 CurrentLookDirection => _look.CurrentLookDirection;
         public IReadonlyTransform ThisPositionReferencePointForLook => _look.ThisPositionReferencePointForLook;
         public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
 
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; private set; }
-        public ISummoner Summoner => _character.Summoner;
         public IFaction Faction { get; private set; }
         public IReadonlyTransform PointForAiming { get; private set; }
         public IReadonlyRigidbody MainRigidbody => _movement.ReadonlyRigidbody;
         public int Id => _idHolder.Id;
+
+        public IReadonlyTransform MainTransform => MainRigidbody;
         public Vector3 CurrentPosition => _movement.CurrentPosition;
 
         public void DieInstantly()

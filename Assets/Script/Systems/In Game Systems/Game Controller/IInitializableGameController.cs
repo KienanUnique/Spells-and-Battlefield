@@ -1,7 +1,6 @@
 ﻿using Player;
 using Systems.In_Game_Systems.Level_Finish_Zone;
 using Systems.In_Game_Systems.Time_Controller;
-using Systems.Input_Manager;
 using Systems.Input_Manager.Concrete_Types.In_Game;
 using UI.Managers.Concrete_Types.In_Game;
 

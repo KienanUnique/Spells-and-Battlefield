@@ -12,14 +12,6 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
             Spawner, Summoner
         }
 
-        protected override void SubscribeOnEvents()
-        {
-        }
-
-        protected override void UnsubscribeFromEvents()
-        {
-        }
-
         public override bool IsConditionCompleted
         {
             get
@@ -31,6 +23,14 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
+        }
+
+        protected override void SubscribeOnEvents()
+        {
+        }
+
+        protected override void UnsubscribeFromEvents()
+        {
         }
 
         protected override void HandleStartCheckingConditions()

@@ -25,7 +25,8 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
 
         protected ObjectPoolingFactoryWithInstantiatorBase(IInstantiator instantiator, Transform defaultParentTransform,
             int needItemsCount, IPrefabProvider prefabProvider,
-            IPositionDataForInstantiation defaultPositionDataForInstantiation) : base(instantiator, defaultParentTransform)
+            IPositionDataForInstantiation defaultPositionDataForInstantiation) : base(instantiator,
+            defaultParentTransform)
         {
             _items = new List<TPoolItem>();
             _waitingInitializationItems = new List<TPoolItem>();

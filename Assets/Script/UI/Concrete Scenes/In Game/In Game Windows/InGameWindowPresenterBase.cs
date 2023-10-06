@@ -16,17 +16,6 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
         protected override IUIWindowView WindowView => _view;
         protected override IUIWindowModel WindowModel => _model;
 
-        protected void InitializeBase(IUIWindowView view, IInGameWindowModelBase modelBase,
-            List<IDisableable> itemsNeedDisabling, Button restartLevelButton, Button goToMainWindowButton)
-        {
-            _view = view;
-            _model = modelBase;
-            _restartLevelButton = restartLevelButton;
-            _goToMainWindowButton = goToMainWindowButton;
-            SetItemsNeedDisabling(itemsNeedDisabling);
-            SetInitializedStatus();
-        }
-
         protected override void SubscribeOnWindowEvents()
         {
             _goToMainWindowButton.onClick.AddListener(_model.OnQuitMainWindowButtonPressed);
@@ -37,6 +26,17 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
         {
             _goToMainWindowButton.onClick.RemoveListener(_model.OnQuitMainWindowButtonPressed);
             _restartLevelButton.onClick.RemoveListener(_model.OnRestartLevelWindowButtonPressed);
+        }
+
+        protected void InitializeBase(IUIWindowView view, IInGameWindowModelBase modelBase,
+            List<IDisableable> itemsNeedDisabling, Button restartLevelButton, Button goToMainWindowButton)
+        {
+            _view = view;
+            _model = modelBase;
+            _restartLevelButton = restartLevelButton;
+            _goToMainWindowButton = goToMainWindowButton;
+            SetItemsNeedDisabling(itemsNeedDisabling);
+            SetInitializedStatus();
         }
     }
 }

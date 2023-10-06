@@ -1,5 +1,4 @@
 ﻿using Systems.Input_Manager;
-using Systems.Input_Manager.Concrete_Types.In_Game;
 using Systems.Input_Manager.Concrete_Types.Menus.Prefab_Provider;
 using UnityEngine;
 using Zenject;

@@ -100,10 +100,10 @@ namespace Player.Movement
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
         public IReadonlyRigidbody MainRigidbody { get; }
 
+        protected override IMovementValuesCalculator MovementValuesCalculator => _movementValuesCalculator;
+
         private bool IsGrounded => _groundChecker.IsColliding;
         private bool IsInContactWithWall => _wallChecker.IsColliding;
-
-        protected override IMovementValuesCalculator MovementValuesCalculator => _movementValuesCalculator;
 
         public void AddForce(Vector3 force, ForceMode mode)
         {

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Systems.Scene_Switcher.Scene_Data.Game_Level_Data;
-using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.Prefab_Provider;
-using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.Setup;
+using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.Prefab_Provider;
+using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.Setup;
 using UnityEngine;
 using Zenject;
 
-namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.Factory
+namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.Factory
 {
     public class GameLevelItemFactory : IGameLevelItemFactory
     {

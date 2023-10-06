@@ -14,6 +14,11 @@ namespace UI.Window.Presenter
         protected abstract IUIWindowView WindowView { get; }
         protected sealed override IUIElementView View => WindowView;
 
+        public bool Equals(IIdHolder other)
+        {
+            return WindowModel.Equals(other);
+        }
+
         public override void Appear()
         {
             SubscribeOnWindowEvents();
@@ -26,11 +31,6 @@ namespace UI.Window.Presenter
             UnsubscribeFromWindowEvents();
             WindowModel.Disappear();
             base.Disappear();
-        }
-
-        public bool Equals(IIdHolder other)
-        {
-            return WindowModel.Equals(other);
         }
 
         protected abstract void SubscribeOnWindowEvents();

@@ -1,11 +1,11 @@
 ﻿using System;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Systems.Scene_Switcher.Scene_Data.Game_Level_Data;
-using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.Model;
-using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.View;
+using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.Model;
+using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.View;
 using UnityEngine.UI;
 
-namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.Presenter
+namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.Presenter
 {
     public class GameLevelItemPresenter : InitializableMonoBehaviourBase,
         IInitializableGameLevelItem,

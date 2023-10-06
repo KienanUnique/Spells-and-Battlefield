@@ -1,8 +1,8 @@
 ﻿using Common.Abstract_Bases;
-using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.Presenter;
+using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.Presenter;
 using UnityEngine;
 
-namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Game_Level_Item.Prefab_Provider
+namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Level_Item.Prefab_Provider
 {
     [CreateAssetMenu(fileName = "Game Level Item Prefab Provider",
         menuName = ScriptableObjectsMenuDirectories.UIPrefabProvidersDirectory + "Game Level Item Prefab Provider",

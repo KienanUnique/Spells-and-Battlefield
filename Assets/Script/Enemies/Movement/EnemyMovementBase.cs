@@ -56,9 +56,9 @@ namespace Enemies.Movement
         public IReadonlyRigidbody ReadonlyRigidbody { get; }
 
         protected virtual Vector3 VelocityForLimitations => _rigidbody.velocity;
-        private IEnemyTarget CurrentTarget => _targetSelector.CurrentTarget;
 
         protected override IMovementValuesCalculator MovementValuesCalculator { get; }
+        private IEnemyTarget CurrentTarget => _targetSelector.CurrentTarget;
 
         public void DisableMoving()
         {

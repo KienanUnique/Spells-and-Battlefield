@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
-using Common;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
@@ -76,8 +75,6 @@ namespace Player
         public event Action DashAimingCanceled;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
-
-        public IReadonlyTransform MainTransform => MainRigidbody;
         public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
@@ -87,6 +84,8 @@ namespace Player
         public IReadonlyRigidbody MainRigidbody => _movement.MainRigidbody;
         public IReadonlyTransform PointForAiming => UpperPointForSummonedEnemiesPositionCalculating;
         public int Id => _idHolder.Id;
+
+        public IReadonlyTransform MainTransform => MainRigidbody;
         public Vector3 CurrentPosition => _movement.CurrentPosition;
         public float CurrentDashCooldownRatio => _movement.CurrentDashCooldownRatio;
         public IReadonlyTransform CameraTransform { get; private set; }

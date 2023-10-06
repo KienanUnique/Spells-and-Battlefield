@@ -2,7 +2,6 @@
 {
     public enum EffectSourceType
     {
-        Local,
-        External
+        Local, External
     }
 }

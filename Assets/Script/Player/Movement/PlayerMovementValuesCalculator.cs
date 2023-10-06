@@ -19,8 +19,8 @@ namespace Player.Movement
         private float _currentPlayerInputForceMultiplier;
         private float _currentGravityForceMultiplier;
         private float _localAdditionalMaximumSpeed;
-        private Tweener _currentLocalAdditionalMaximumSpeedChangeTween = null;
-        private Tweener _currentLocalAdditionalMaximumSpeedResetTween = null;
+        private Tweener _currentLocalAdditionalMaximumSpeedChangeTween;
+        private Tweener _currentLocalAdditionalMaximumSpeedResetTween;
         private Vector2 _inputMoveDirection = Vector2.zero;
 
         public PlayerMovementValuesCalculator(IPlayerMovementSettings movementSettings,
@@ -31,12 +31,12 @@ namespace Player.Movement
             coroutineStarter.StartCoroutine(HandleInputMovement());
         }
 
+        public override float MaximumSpeedCalculated =>
+            (_settings.MaximumSpeed + _localAdditionalMaximumSpeed) * ExternalSetSpeedRatio;
+
         public float GravityForce => _playerMovementSettings.NormalGravityForce * _currentGravityForceMultiplier;
 
         public float BaseMaximumSpeed => _settings.MaximumSpeed;
-
-        public override float MaximumSpeedCalculated =>
-            (_settings.MaximumSpeed + _localAdditionalMaximumSpeed) * ExternalSetSpeedRatio;
 
         public float DashForce => _playerMovementSettings.DashForce;
 
@@ -70,6 +70,17 @@ namespace Player.Movement
         }
 
         private float BaseJumpForce => _playerMovementSettings.JumpForce;
+
+        private static Vector3 RotateTowardsUp(Vector3 start, float angle)
+        {
+            Vector3 axis = Vector3.Cross(start, Vector3.up);
+            if (axis == Vector3.zero)
+            {
+                axis = Vector3.right;
+            }
+
+            return Quaternion.AngleAxis(angle, axis) * start;
+        }
 
         public void ChangeFrictionCoefficient(float newFrictionCoefficient)
         {
@@ -118,17 +129,6 @@ namespace Player.Movement
         public void UpdateMoveInput(Vector2 direction2d)
         {
             _inputMoveDirection = direction2d;
-        }
-
-        private static Vector3 RotateTowardsUp(Vector3 start, float angle)
-        {
-            Vector3 axis = Vector3.Cross(start, Vector3.up);
-            if (axis == Vector3.zero)
-            {
-                axis = Vector3.right;
-            }
-
-            return Quaternion.AngleAxis(angle, axis) * start;
         }
 
         private void ChangeAdditionalMaximumSpeed(float changeSpeed, float endValue)

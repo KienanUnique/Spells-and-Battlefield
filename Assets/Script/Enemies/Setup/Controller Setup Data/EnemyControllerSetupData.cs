@@ -27,7 +27,8 @@ namespace Enemies.Setup.Controller_Setup_Data
             IEventInvokerForActionAnimations setEventInvokerForAnimations, IEnemyVisual setVisual,
             IEnemyCharacter setCharacter, IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint,
             ILootDropper setLootDropper, IFaction setFaction, IReadonlyTransform setPointForAiming,
-            IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon, IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating)
+            IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon,
+            IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating)
         {
             SetStateMachineAI = setStateMachineAI;
             SetMovement = setMovement;

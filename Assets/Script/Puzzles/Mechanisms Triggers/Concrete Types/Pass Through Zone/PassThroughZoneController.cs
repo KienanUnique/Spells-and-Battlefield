@@ -1,5 +1,4 @@
-﻿using System;
-using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
+﻿using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
 using Puzzles.Mechanisms_Triggers.Identifiers;
 using UnityEngine;
 

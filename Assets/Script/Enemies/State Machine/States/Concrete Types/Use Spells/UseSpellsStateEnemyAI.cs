@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Common.Interfaces;
 using Common.Readonly_Transform;
 using Enemies.Controller;
@@ -108,6 +107,12 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
             }
         }
 
+        protected override void ChangeLookPointCalculator(ILookPointCalculator newCalculator)
+        {
+            _currentLookPointCalculator = newCalculator;
+            base.ChangeLookPointCalculator(_currentLookPointCalculator);
+        }
+
         private IEnumerator TryCastSelectedSpellContinuously()
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
@@ -116,12 +121,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
                 TryCastSelectedSpell();
                 yield return waitForFixedUpdate;
             }
-        }
-
-        protected override void ChangeLookPointCalculator(ILookPointCalculator newCalculator)
-        {
-            _currentLookPointCalculator = newCalculator;
-            base.ChangeLookPointCalculator(_currentLookPointCalculator);
         }
 
         private void SubscribeOnLocalEvents()

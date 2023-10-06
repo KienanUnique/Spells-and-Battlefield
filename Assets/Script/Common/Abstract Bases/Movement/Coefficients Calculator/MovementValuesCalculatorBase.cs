@@ -10,7 +10,7 @@ namespace Common.Abstract_Bases.Movement.Coefficients_Calculator
         {
             _settings = settings;
         }
-        
+
         public virtual float MaximumSpeedCalculated => _settings.MaximumSpeed * ExternalSetSpeedRatio;
         protected float ExternalSetSpeedRatio { get; private set; } = 1f;
 

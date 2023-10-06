@@ -22,10 +22,11 @@ namespace Pickable_Items.Spawner
         }
 
         public event Action<InitializableMonoBehaviourStatus> InitializationStatusChanged;
-        public string TextForEditorLabel => _objectToSpawn == null ? string.Empty : _objectToSpawn.name;
 
         public InitializableMonoBehaviourStatus CurrentInitializableMonoBehaviourStatus =>
             InitializableMonoBehaviourStatus.Initialized;
+
+        public string TextForEditorLabel => _objectToSpawn == null ? string.Empty : _objectToSpawn.name;
 
         public void Spawn()
         {

@@ -11,7 +11,6 @@ using Player.Look;
 using Player.Movement;
 using Player.Spell_Manager;
 using Player.Visual;
-using Systems.Input_Manager;
 using Systems.Input_Manager.Concrete_Types.In_Game;
 
 namespace Player.Setup
