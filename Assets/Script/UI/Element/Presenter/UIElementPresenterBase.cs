@@ -24,5 +24,11 @@ namespace UI.Element.Presenter
         protected override void UnsubscribeFromEvents()
         {
         }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            View.DisappearWithoutAnimation();
+        }
     }
 }

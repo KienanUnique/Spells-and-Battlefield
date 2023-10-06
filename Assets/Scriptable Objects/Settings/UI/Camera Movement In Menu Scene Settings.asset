@@ -15,5 +15,5 @@ MonoBehaviour:
   _moveAnimationDurationInSeconds: 1
   _movePathType: 1
   _moveEase: 13
-  _finalRotateCameraBeforeEndOfTheMovementDurationInSeconds: 0.3
+  _partOfTimelineToStartRotateCameraToOldRotation: 0.2
   _finalRotateCameraEase: 9

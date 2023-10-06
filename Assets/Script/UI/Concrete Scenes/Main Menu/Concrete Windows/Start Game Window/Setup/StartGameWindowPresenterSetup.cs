@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Systems.Scene_Switcher.Concrete_Types;
+using UI.Concrete_Scenes.Main_Menu.Camera_Movement_Controller;
 using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector.Presenter;
 using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Model;
 using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Presenter;
 using UI.Concrete_Scenes.Main_Menu.View.With_Camera_Movement;
-using UI.Concrete_Scenes.Main_Menu.View.With_Camera_Movement.Settings;
 using UI.Window.Setup;
 using UI.Window.View;
 using UnityEngine;
@@ -19,19 +19,18 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Setup
         [SerializeField] private Button _backButton;
         [SerializeField] private Button _loadButton;
         [SerializeField] private GameLevelSelectorPresenter _gameLevelSelector;
-        [SerializeField] private Camera _camera;
         [SerializeField] private List<Transform> _waypointsTransforms;
         private IUIWindowView _view;
-        private ICameraMovementInMenuSceneSettings _cameraMovementSettings;
+        private ICameraMovementController _cameraMovementController;
         private IScenesController _scenesController;
         private IInitializableStartGameWindowPresenter _presenter;
 
         [Inject]
         private void GetDependencies(IScenesController scenesController,
-            ICameraMovementInMenuSceneSettings cameraMovementSettings)
+            ICameraMovementController cameraMovementController)
         {
             _scenesController = scenesController;
-            _cameraMovementSettings = cameraMovementSettings;
+            _cameraMovementController = cameraMovementController;
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
@@ -43,8 +42,8 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Setup
             _presenter = GetComponent<IInitializableStartGameWindowPresenter>();
             var waypoints = new List<Vector3>();
             _waypointsTransforms.ForEach(waypointTransform => waypoints.Add(waypointTransform.position));
-            _view = new UIWindowViewWithCameraMovement(transform, DefaultUIElementViewSettings, waypoints.ToArray(),
-                _camera.transform, _cameraMovementSettings);
+            _view = new UIWindowViewWithCameraMovement(transform, DefaultUIElementViewSettings, waypoints,
+                _cameraMovementController);
         }
 
         protected override void Initialize()

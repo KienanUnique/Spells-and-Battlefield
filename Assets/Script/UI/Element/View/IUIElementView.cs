@@ -4,5 +4,6 @@
     {
         public void Appear();
         public void Disappear();
+        public void DisappearWithoutAnimation();
     }
 }

@@ -3,7 +3,7 @@ using Systems.Scene_Switcher.Concrete_Types;
 using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Main_Menu_Window.Model;
 using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Main_Menu_Window.Presenter;
 using UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Presenter;
-using UI.Concrete_Scenes.Main_Menu.View.World_Space;
+using UI.Concrete_Scenes.Main_Menu.View.Empty;
 using UI.Window.Setup;
 using UI.Window.View;
 using UnityEngine;
@@ -36,7 +36,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Main_Menu_Window.Setup
         {
             base.Prepare();
             _presenter = GetComponent<IInitializableMainMenuWindowPresenter>();
-            _view = new WorldSpaceUIWindowView();
+            _view = new EmptyUIWindowView();
         }
 
         protected override void Initialize()

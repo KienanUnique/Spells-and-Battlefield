@@ -15,7 +15,6 @@ namespace UI.Element.View
             _cachedTransform = cachedTransform;
             _cachedGameObject = _cachedTransform.gameObject;
             _settings = settings;
-            Disappear();
         }
 
         public virtual void Appear()
@@ -34,6 +33,11 @@ namespace UI.Element.View
                             .ApplyCustomSetupForUI(_cachedGameObject)
                             .SetEase(_settings.ScaleAnimationEase)
                             .OnComplete(() => _cachedGameObject.SetActive(false));
+        }
+
+        public virtual void DisappearWithoutAnimation()
+        {
+            _cachedGameObject.SetActive(false);
         }
     }
 }

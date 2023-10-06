@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace UI.Concrete_Scenes.Main_Menu.View.With_Camera_Movement.Settings
+namespace UI.Concrete_Scenes.Main_Menu.Camera_Movement_Controller.Settings
 {
     [CreateAssetMenu(fileName = "Camera Movement In Menu Scene Settings",
         menuName = ScriptableObjectsMenuDirectories.ConcreteUISettingsDirectory +
@@ -13,8 +13,9 @@ namespace UI.Concrete_Scenes.Main_Menu.View.With_Camera_Movement.Settings
         [SerializeField] private Ease _moveEase = Ease.OutCubic;
 
         [Header("Final Rotation")]
+        [Range(0, 1f)]
         [SerializeField]
-        private float _finalRotateCameraBeforeEndOfTheMovementDurationInSeconds = 0.2f;
+        private float _partOfTimelineToStartRotateCameraToOldRotation = 0.6f;
 
         [SerializeField] private Ease _finalRotateCameraEase = Ease.OutCubic;
 
@@ -22,9 +23,8 @@ namespace UI.Concrete_Scenes.Main_Menu.View.With_Camera_Movement.Settings
         public PathType MovePathType => _movePathType;
         public Ease MoveEase => _moveEase;
 
-        public float FinalRotateCameraBeforeEndOfTheMovementDurationInSeconds =>
-            _finalRotateCameraBeforeEndOfTheMovementDurationInSeconds;
+        public float PartOfTimelineToStartRotateCameraToOldRotation => _partOfTimelineToStartRotateCameraToOldRotation;
 
-        public Ease FinalRotateCameraEase => _finalRotateCameraEase;
+        public Ease RotateCameraEase => _finalRotateCameraEase;
     }
 }

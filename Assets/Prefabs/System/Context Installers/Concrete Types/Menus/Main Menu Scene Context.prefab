@@ -13,12 +13,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3876074860566021200, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
       propertyPath: _monoInstallers.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3876074860566021200, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
       propertyPath: _monoInstallers.Array.data[2]
       value: 
       objectReference: {fileID: -8229263425026699800}
+    - target: {fileID: 3876074860566021200, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: _monoInstallers.Array.data[3]
+      value: 
+      objectReference: {fileID: 8202454999237820409}
     - target: {fileID: 3876074860566021200, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
       propertyPath: _scriptableObjectInstallers.Array.size
       value: 2
@@ -91,3 +95,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameLevelItemPrefabProvider: {fileID: 11400000, guid: f1213e51aa391d94fa8782168f87b7e0, type: 2}
+--- !u!114 &8202454999237820409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349096297887801157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bf96d6f7eec48a6908f86d5084c5e5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraMovementInMenuSceneSettings: {fileID: 11400000, guid: 208b204721011cd43a4e164dbce6f0d1, type: 2}
+  _cameraToMove: {fileID: 0}

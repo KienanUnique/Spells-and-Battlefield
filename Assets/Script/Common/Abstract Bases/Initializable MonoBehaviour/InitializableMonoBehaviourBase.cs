@@ -38,6 +38,10 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
         {
         }
 
+        protected virtual void OnInitialized()
+        {
+        }
+
         protected virtual void OnEnable()
         {
             if (_currentStatus.Value != InitializableMonoBehaviourStatus.NonInitialized)
@@ -70,6 +74,7 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
             }
 
             _actionsAfterInitialization.Clear();
+            OnInitialized();
         }
 
         protected void SetItemsNeedDisabling(List<IDisableable> itemsNeedDisabling)

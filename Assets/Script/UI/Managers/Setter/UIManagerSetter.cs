@@ -4,7 +4,7 @@ using Common.Abstract_Bases;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using UnityEngine;
 
-namespace UI.Managers.Installer
+namespace UI.Managers.Setter
 {
     public class UIManagerSetter : SetupMonoBehaviourBase
     {

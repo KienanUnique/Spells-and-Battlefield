@@ -4,7 +4,7 @@ using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Id_Holder;
 using UI.Element.Setup;
 using UI.Managers.Concrete_Types.In_Game;
-using UI.Managers.Installer;
+using UI.Managers.Setter;
 using UnityEngine;
 
 namespace UI.Window.Setup
