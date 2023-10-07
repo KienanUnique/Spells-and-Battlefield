@@ -143,6 +143,7 @@ namespace Systems.In_Game_Systems.Game_Controller
                     break;
                 case GameState.LevelCompleted:
                     SubscribeOnUIEvents();
+                    _timeController.StopTime();
                     _inGameSystemInput.SwitchToUIInput();
                     _inGameManagerUI.SwitchTo(InGameUIElementsGroup.LevelCompletedWindow);
                     break;
@@ -153,7 +154,7 @@ namespace Systems.In_Game_Systems.Game_Controller
 
         private void OnPlayerStateChanged(CharacterState newState)
         {
-            if (newState == CharacterState.Dead)
+            if (newState == CharacterState.Dead && _currentGameState.Value == GameState.Playing)
             {
                 _currentGameState.Value = GameState.GameOver;
             }
@@ -161,12 +162,18 @@ namespace Systems.In_Game_Systems.Game_Controller
 
         private void OnPlayerEnterFinishZone()
         {
-            _currentGameState.Value = GameState.LevelCompleted;
+            if (_currentGameState.Value == GameState.Playing)
+            {
+                _currentGameState.Value = GameState.LevelCompleted;
+            }
         }
 
         private void OnOpenMenuInputted()
         {
-            _currentGameState.Value = GameState.Pause;
+            if (_currentGameState.Value == GameState.Playing)
+            {
+                _currentGameState.Value = GameState.Pause;
+            }
         }
 
         private void OnCloseWindowInputted()

@@ -50,5 +50,11 @@ namespace Systems.In_Game_Systems.Time_Controller
         {
             Time.timeScale = _settings.DashAimingTimeScaleRatio;
         }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            RestoreTimeToNormal();
+        }
     }
 }

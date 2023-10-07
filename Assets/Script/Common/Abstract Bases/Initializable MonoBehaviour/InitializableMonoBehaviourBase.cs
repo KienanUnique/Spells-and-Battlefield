@@ -58,7 +58,7 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
             }
         }
 
-        protected void OnDestroy()
+        protected virtual void OnDestroy()
         {
             _currentStatus.Value = InitializableMonoBehaviourStatus.Destroying;
             InitializationStatusChanged?.Invoke(InitializableMonoBehaviourStatus.Destroying);
