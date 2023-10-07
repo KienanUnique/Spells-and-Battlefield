@@ -1929,6 +1929,7 @@ MonoBehaviour:
   _lootSpawnPoint: {fileID: 253764022056155728}
   _thisRigidbody: {fileID: 4773416566356749375}
   _pointForAiming: {fileID: 7623099570386565078}
+  _informationPanel: {fileID: 3401527434936704867}
   _renderersForDissolving:
   - {fileID: 797442560567979042}
   - {fileID: 2726639676208170488}
@@ -3623,3 +3624,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1349513035689406086, guid: 9e1ab1a780f674a4aa61b149990225ca, type: 3}
   m_PrefabInstance: {fileID: 6451832569498020578}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3401527434936704867 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8556035170813900161, guid: 9e1ab1a780f674a4aa61b149990225ca, type: 3}
+  m_PrefabInstance: {fileID: 6451832569498020578}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9bda4771f674c68905cbbd911a6ed27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

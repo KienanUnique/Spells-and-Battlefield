@@ -1,6 +1,7 @@
 using Common.Abstract_Bases.Visual;
 using Common.Animation_Data;
 using Enemies.Visual.Dissolve_Effect_Controller;
+using UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Presenter;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -15,14 +16,17 @@ namespace Enemies.Visual
         private readonly AnimatorOverrideController _baseAnimatorOverrideController;
         private readonly AnimationClip _emptyActionAnimationClip;
         private readonly IDissolveEffectController _dissolveEffectController;
+        private readonly IEnemyInformationPanelPresenter _informationPanel;
 
         public EnemyVisual(RigBuilder rigBuilder, Animator characterAnimator,
             AnimatorOverrideController baseAnimatorOverrideController, AnimationClip emptyActionAnimationClip,
-            IDissolveEffectController dissolveEffectController) : base(rigBuilder, characterAnimator)
+            IDissolveEffectController dissolveEffectController, IEnemyInformationPanelPresenter informationPanel) :
+            base(rigBuilder, characterAnimator)
         {
             _baseAnimatorOverrideController = baseAnimatorOverrideController;
             _emptyActionAnimationClip = emptyActionAnimationClip;
             _dissolveEffectController = dissolveEffectController;
+            _informationPanel = informationPanel;
             ApplyRuntimeAnimatorController(_baseAnimatorOverrideController);
         }
 
@@ -44,6 +48,7 @@ namespace Enemies.Visual
             _rigBuilder.enabled = false;
             _characterAnimator.SetTrigger(DieTriggerHash);
             _dissolveEffectController.Disappear();
+            _informationPanel.Disappear();
         }
 
         private void ApplyRuntimeAnimatorController(RuntimeAnimatorController animatorOverrideController)

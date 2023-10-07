@@ -31,6 +31,7 @@ using Enemies.Visual.Dissolve_Effect_Controller.Settings;
 using Factions;
 using Pickable_Items.Factory;
 using Systems.Scene_Switcher.Current_Game_Level_Information;
+using UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Presenter;
 using UI.Concrete_Scenes.In_Game.Popup_Text.Factory;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -56,6 +57,7 @@ namespace Enemies.Setup
         [SerializeField] private ReadonlyTransformGetter _lootSpawnPoint;
         [SerializeField] private Rigidbody _thisRigidbody;
         [SerializeField] private ReadonlyTransformGetter _pointForAiming;
+        [SerializeField] private EnemyInformationPanelPresenter _informationPanel;
         [SerializeField] private List<Renderer> _renderersForDissolving;
 
         private EnemyController _controller;
@@ -160,7 +162,7 @@ namespace Enemies.Setup
                 _needDistanceFromIKCenterPoint);
 
             var enemyVisual = new EnemyVisual(_rigBuilder, _characterAnimator, _settings.BaseAnimatorOverrideController,
-                _generalEnemySettings.EmptyActionAnimationClip, _dissolveEffectController);
+                _generalEnemySettings.EmptyActionAnimationClip, _dissolveEffectController, _informationPanel);
 
             var movementSetupData = new EnemyMovementSetupData(_thisRigidbody, targetFromTriggersSelector, this,
                 targetPathfinder, _summoner, _collider);
