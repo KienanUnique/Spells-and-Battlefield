@@ -1,5 +1,6 @@
 using Common.Settings.Ground_Layer_Mask;
 using Enemies.General_Settings;
+using Enemies.Visual.Dissolve_Effect_Controller.Settings;
 using Pickable_Items.Settings;
 using Player.Settings;
 using Puzzles.Mechanisms.Extendable_Object.Settings;
@@ -45,6 +46,8 @@ namespace Systems.Installers.Concrete_Types.In_Game
         [SerializeField] private PostProcessingControllerSettings _postProcessingControllerSettings;
         [SerializeField] private InputManagerSettings _inputManagerSettings;
 
+        [SerializeField] private DissolveEffectControllerSettings _dissolveEffectControllerSettings;
+
         public override void InstallBindings()
         {
             BindGeneralSettings();
@@ -53,6 +56,14 @@ namespace Systems.Installers.Concrete_Types.In_Game
             BindPlayerSettings();
             BindPuzzlesSettings();
             BindSystemSettings();
+            BindDissolveEffectControllerSettings();
+        }
+
+        private void BindDissolveEffectControllerSettings()
+        {
+            Container.Bind<IDissolveEffectControllerSettings>()
+                     .FromInstance(_dissolveEffectControllerSettings)
+                     .AsSingle();
         }
 
         private void BindSystemSettings()

@@ -59,9 +59,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight With Shield Without Helmet Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5880317241480453374, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+      propertyPath: _renderersForDissolving.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880317241480453374, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+      propertyPath: _renderersForDissolving.Array.data[1]
+      value: 
+      objectReference: {fileID: 7917290312098707967}
+    - target: {fileID: 5880317241480453374, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+      propertyPath: _renderersForDissolving.Array.data[2]
+      value: 
+      objectReference: {fileID: 7917290312098707967}
     - target: {fileID: 7839733804585523259, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+--- !u!137 &7917290312098707967 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3003457836099703070, guid: 1de4a3202df59384ca08f1b9493c9608, type: 3}
+  m_PrefabInstance: {fileID: 4931918137766373601}
+  m_PrefabAsset: {fileID: 0}

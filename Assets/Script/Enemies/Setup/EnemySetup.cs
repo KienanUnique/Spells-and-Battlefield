@@ -26,6 +26,8 @@ using Enemies.Target_Pathfinder.Setup_Data;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Trigger;
 using Enemies.Visual;
+using Enemies.Visual.Dissolve_Effect_Controller;
+using Enemies.Visual.Dissolve_Effect_Controller.Settings;
 using Factions;
 using Pickable_Items.Factory;
 using Systems.Scene_Switcher.Current_Game_Level_Information;
@@ -54,6 +56,7 @@ namespace Enemies.Setup
         [SerializeField] private ReadonlyTransformGetter _lootSpawnPoint;
         [SerializeField] private Rigidbody _thisRigidbody;
         [SerializeField] private ReadonlyTransformGetter _pointForAiming;
+        [SerializeField] private List<Renderer> _renderersForDissolving;
 
         private EnemyController _controller;
         private ExternalDependenciesInitializationWaiter _externalDependenciesInitializationWaiter;
@@ -71,18 +74,22 @@ namespace Enemies.Setup
         private IToolsForSummon _toolsForSummon;
         private IGameLevelLootUnlocker _gameLevelLootUnlocker;
         private Collider _collider;
+        private IDissolveEffectControllerSettings _dissolveEffectControllerSettings;
+        private IDissolveEffectController _dissolveEffectController;
 
         [Inject]
         private void GetDependencies(IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
             IPopupHitPointsChangeTextFactory popupHitPointsChangeTextFactory,
             IGroundLayerMaskSetting groundLayerMaskSetting, IEnemyFactory enemyFactory,
-            IGameLevelLootUnlocker gameLevelLootUnlocker)
+            IGameLevelLootUnlocker gameLevelLootUnlocker,
+            IDissolveEffectControllerSettings dissolveEffectControllerSettings)
         {
             _generalEnemySettings = generalEnemySettings;
             _itemsFactory = itemsFactory;
             _popupHitPointsChangeTextFactory = popupHitPointsChangeTextFactory;
             _toolsForSummon = new ToolsForSummon(enemyFactory, groundLayerMaskSetting);
             _gameLevelLootUnlocker = gameLevelLootUnlocker;
+            _dissolveEffectControllerSettings = dissolveEffectControllerSettings;
         }
 
         public IEnemy InitializedEnemy => _initializedEnemy ??= GetComponent<IEnemy>();
@@ -133,6 +140,9 @@ namespace Enemies.Setup
 
             _states = _enemyStateMachineAI.GetComponentsInChildren<IInitializableStateEnemyAI>();
             _transitions = _enemyStateMachineAI.GetComponentsInChildren<IInitializableTransitionEnemyAI>();
+
+            _dissolveEffectController = new DissolveEffectController(_renderersForDissolving,
+                _dissolveEffectControllerSettings, gameObject);
         }
 
         protected override void Initialize()
@@ -150,7 +160,7 @@ namespace Enemies.Setup
                 _needDistanceFromIKCenterPoint);
 
             var enemyVisual = new EnemyVisual(_rigBuilder, _characterAnimator, _settings.BaseAnimatorOverrideController,
-                _generalEnemySettings.EmptyActionAnimationClip);
+                _generalEnemySettings.EmptyActionAnimationClip, _dissolveEffectController);
 
             var movementSetupData = new EnemyMovementSetupData(_thisRigidbody, targetFromTriggersSelector, this,
                 targetPathfinder, _summoner, _collider);

@@ -1929,6 +1929,11 @@ MonoBehaviour:
   _lootSpawnPoint: {fileID: 253764022056155728}
   _thisRigidbody: {fileID: 4773416566356749375}
   _pointForAiming: {fileID: 7623099570386565078}
+  _renderersForDissolving:
+  - {fileID: 797442560567979042}
+  - {fileID: 2726639676208170488}
+  - {fileID: 8448539757093304795}
+  - {fileID: 3003457836099703070}
 --- !u!95 &6691309429120615332
 Animator:
   serializedVersion: 5
