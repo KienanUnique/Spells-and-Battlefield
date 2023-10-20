@@ -19,6 +19,7 @@ MonoBehaviour:
   _generalEnemySettings: {fileID: 11400000, guid: aecfa3bb47d13344a9cae947558288cb, type: 2}
   _spellPanelSettings: {fileID: 11400000, guid: bccfab12f13b3bd4b8dff61041dd164a, type: 2}
   _popupTextSettings: {fileID: 11400000, guid: b2fdcb0e8e52b2447864c66b0859fe82, type: 2}
+  _damageIndicatorElementSettings: {fileID: 11400000, guid: 1305588dd5a779248a55a6f4e435a9de, type: 2}
   _barViewWithAdditionalDisplayOfChangesSettings: {fileID: 11400000, guid: 1c3168200402ad547a69a5b866700bb9, type: 2}
   _fillingBarSettings: {fileID: 11400000, guid: 5cdbe0e14def12e4689fdf3ebefe5abc, type: 2}
   _plateSettings: {fileID: 11400000, guid: e675676fc85c3ba40a9918f4e6384503, type: 2}

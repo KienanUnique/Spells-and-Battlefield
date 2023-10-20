@@ -7,6 +7,7 @@ using Common.Abstract_Bases.Movement;
 using Common.Abstract_Bases.Movement.Coefficients_Calculator;
 using Common.Interfaces;
 using Common.Readonly_Rigidbody;
+using Common.Readonly_Transform;
 using Player.Movement.Settings;
 using UnityEngine;
 
@@ -93,7 +94,7 @@ namespace Player.Movement
         }
 
         public Vector3 CurrentPosition => _rigidbody.position;
-
+        public IReadonlyTransform MainTransform => MainRigidbody;
         public float CurrentDashCooldownRatio { get; private set; }
 
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }

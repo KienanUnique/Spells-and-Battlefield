@@ -151,9 +151,9 @@ namespace Enemies.Controller
             return _idHolder.Equals(other);
         }
 
-        public void HandleHeal(int countOfHitPoints)
+        public void HandleHeal(int countOfHitPoints, IEffectSourceInformation sourceInformation)
         {
-            _character.HandleHeal(countOfHitPoints);
+            _character.HandleHeal(countOfHitPoints, sourceInformation);
         }
 
         public void MultiplySpeedRatioBy(float speedRatio)

@@ -12,6 +12,7 @@ using Systems.In_Game_Systems.Time_Controller.Settings;
 using Systems.Input_Manager.Concrete_Types.In_Game.Settings;
 using UI.Concrete_Scenes.In_Game.Bar.View.Concrete_Types.Bar_View_With_Additional_Display_Of_Changes.Settings;
 using UI.Concrete_Scenes.In_Game.Bar.View.Concrete_Types.Filling_Bar.Settings;
+using UI.Concrete_Scenes.In_Game.Damage_Indicator.Settings;
 using UI.Concrete_Scenes.In_Game.Popup_Text.Settings;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Settings;
 using UnityEngine;
@@ -32,6 +33,7 @@ namespace Systems.Installers.Concrete_Types.In_Game
 
         [SerializeField] private SpellPanelSettings _spellPanelSettings;
         [SerializeField] private PopupTextSettings _popupTextSettings;
+        [SerializeField] private DamageIndicatorElementSettings _damageIndicatorElementSettings;
 
         [SerializeField]
         private BarViewWithAdditionalDisplayOfChangesSettings _barViewWithAdditionalDisplayOfChangesSettings;
@@ -104,6 +106,7 @@ namespace Systems.Installers.Concrete_Types.In_Game
                      .FromInstance(_barViewWithAdditionalDisplayOfChangesSettings)
                      .AsSingle();
             Container.Bind<IFillingBarSettings>().FromInstance(_fillingBarSettings).AsSingle();
+            Container.Bind<IDamageIndicatorElementSettings>().FromInstance(_damageIndicatorElementSettings).AsSingle();
         }
 
         private void BindGeneralSettings()

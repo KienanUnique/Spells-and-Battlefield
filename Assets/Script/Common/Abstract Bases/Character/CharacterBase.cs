@@ -61,17 +61,17 @@ namespace Common.Abstract_Bases.Character
                 return;
             }
 
-            _hitPointsCalculator.HandleDamage(countOfHitPoints);
+            _hitPointsCalculator.HandleDamage(countOfHitPoints, sourceInformation);
         }
 
-        public virtual void HandleHeal(int countOfHitPoints)
+        public virtual void HandleHeal(int countOfHitPoints, IEffectSourceInformation sourceInformation)
         {
             if (_currentState.Value == CharacterState.Dead)
             {
                 return;
             }
 
-            _hitPointsCalculator.HandleHeal(countOfHitPoints);
+            _hitPointsCalculator.HandleHeal(countOfHitPoints, sourceInformation);
         }
 
         protected sealed override void SubscribeOnEvents()
@@ -151,7 +151,7 @@ namespace Common.Abstract_Bases.Character
             public float HitPointCountRatio => 1.0f * CurrentCountOfHitPoints / _maximumCountOfHitPoints;
             public int CurrentCountOfHitPoints { get; private set; }
 
-            public void HandleDamage(int countOfHitPoints)
+            public void HandleDamage(int countOfHitPoints, IEffectSourceInformation sourceInformation)
             {
                 if (countOfHitPoints <= 0)
                 {
@@ -166,10 +166,11 @@ namespace Common.Abstract_Bases.Character
                 }
 
                 HitPointsCountChanged?.Invoke(new HitPointsCharacterChangeInformation(CurrentCountOfHitPoints,
-                    HitPointCountRatio, oldCountOfHitPoints - CurrentCountOfHitPoints, TypeOfHitPointsChange.Damage));
+                    HitPointCountRatio, oldCountOfHitPoints - CurrentCountOfHitPoints, TypeOfHitPointsChange.Damage,
+                    sourceInformation));
             }
 
-            public void HandleHeal(int countOfHitPoints)
+            public void HandleHeal(int countOfHitPoints, IEffectSourceInformation sourceInformation)
             {
                 if (countOfHitPoints >= _maximumCountOfHitPoints)
                 {
@@ -184,12 +185,18 @@ namespace Common.Abstract_Bases.Character
                 }
 
                 HitPointsCountChanged?.Invoke(new HitPointsCharacterChangeInformation(CurrentCountOfHitPoints,
-                    HitPointCountRatio, CurrentCountOfHitPoints - oldCountOfHitPoints, TypeOfHitPointsChange.Heal));
+                    HitPointCountRatio, CurrentCountOfHitPoints - oldCountOfHitPoints, TypeOfHitPointsChange.Heal,
+                    sourceInformation));
             }
 
             public void HandleInstantDeath()
             {
-                HandleDamage(_maximumCountOfHitPoints);
+                if (CurrentCountOfHitPoints <= 0)
+                {
+                    return;
+                }
+
+                CurrentCountOfHitPoints = 0;
             }
         }
     }

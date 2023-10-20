@@ -1,4 +1,6 @@
-﻿namespace Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information
+﻿using Common.Mechanic_Effects.Source;
+
+namespace Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information
 {
     public interface IHitPointsCharacterChangeInformation
     {
@@ -6,5 +8,6 @@
         public float CurrentHitPointCountRatio { get; }
         public int HitPointsChangeValue { get; }
         public TypeOfHitPointsChange TypeOfHitPointsChange { get; }
+        public IEffectSourceInformation SourceInformation { get; }
     }
 }

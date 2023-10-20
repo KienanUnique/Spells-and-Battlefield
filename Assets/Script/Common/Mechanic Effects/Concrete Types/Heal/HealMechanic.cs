@@ -29,7 +29,7 @@ namespace Common.Mechanic_Effects.Concrete_Types.Heal
             {
                 if (target.TryGetComponent(out IHealable healableTarget))
                 {
-                    healableTarget.HandleHeal(_healPoints);
+                    healableTarget.HandleHeal(_healPoints, sourceInformation);
                 }
             }
         }
