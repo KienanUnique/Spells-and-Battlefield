@@ -5,6 +5,7 @@ using Common.Mechanic_Effects;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Mechanic_Effects.Source;
 using Common.Readonly_Transform;
+using UnityEngine;
 
 namespace Enemies.Character
 {
@@ -15,7 +16,8 @@ namespace Enemies.Character
 
         protected EnemyCharacterBase(ICoroutineStarter coroutineStarter,
             EnemyCharacterSettingsSection characterSettings, IReadonlyTransform thisTransform,
-            ISummoner summoner = null) : base(coroutineStarter, characterSettings, summoner)
+            GameObject gameObjectToLink, ISummoner summoner = null) : base(coroutineStarter, characterSettings,
+            gameObjectToLink, summoner)
         {
             _name = characterSettings.Name;
             _thisEffectSourceInformation = new EffectSourceInformation(EffectSourceType.External, thisTransform);

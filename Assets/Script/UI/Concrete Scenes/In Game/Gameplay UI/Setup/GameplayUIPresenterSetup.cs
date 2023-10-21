@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using UI.Concrete_Scenes.In_Game.Aim_Icon.Presenter;
+using UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Presenter;
 using UI.Concrete_Scenes.In_Game.Damage_Indicator.Presenter;
 using UI.Concrete_Scenes.In_Game.Gameplay_UI.Model;
 using UI.Concrete_Scenes.In_Game.Gameplay_UI.Presenter;
@@ -18,13 +19,18 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Setup
         [SerializeField] private PlayerInformationPanelPresenter _playerInformation;
         [SerializeField] private UIAimIconPresenter _aim;
         [SerializeField] private DamageIndicatorPresenter _damageIndicator;
+        [SerializeField] private ContinuousEffectsPanelPresenter _continuousEffectsPanelPresenter;
         private IGameplayUIModel _model;
         private IInitializableGameplayUIPresenter _presenter;
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>
             new List<IInitializable>(base.ObjectsToWaitBeforeInitialization)
             {
-                _spellPanel, _playerInformation, _aim, _damageIndicator
+                _spellPanel,
+                _playerInformation,
+                _aim,
+                _damageIndicator,
+                _continuousEffectsPanelPresenter
             };
 
         protected override void Initialize()
@@ -36,7 +42,14 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Setup
         {
             base.Prepare();
             _model = new GameplayUIModel(IDHolder, Manager,
-                new List<IUIElement> {_spellPanel, _playerInformation, _aim, _damageIndicator});
+                new List<IUIElement>
+                {
+                    _spellPanel,
+                    _playerInformation,
+                    _aim,
+                    _damageIndicator,
+                    _continuousEffectsPanelPresenter
+                });
             _presenter = GetComponent<IInitializableGameplayUIPresenter>();
         }
     }

@@ -8,6 +8,6 @@ namespace Enemies.Character.Provider
     public abstract class EnemyCharacterProviderBase : ScriptableObject, IEnemyCharacterProvider
     {
         public abstract IDisableableEnemyCharacter GetImplementationObject(ICoroutineStarter coroutineStarter,
-            IReadonlyTransform thisTransform, ISummoner summoner = null);
+            IReadonlyTransform thisTransform, GameObject gameObjectToLink, ISummoner summoner = null);
     }
 }

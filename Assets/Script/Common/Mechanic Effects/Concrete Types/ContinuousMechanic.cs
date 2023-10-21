@@ -10,6 +10,7 @@ namespace Common.Mechanic_Effects.Concrete_Types
     public class ContinuousMechanic : ContinuousMechanicEffectScriptableObject
     {
         [SerializeField] private List<MechanicEffectScriptableObject> _mechanicEffects;
+        [SerializeField] private Sprite _icon;
         [SerializeField] private float _cooldownInSeconds;
         [SerializeField] private float _durationInSeconds;
         [SerializeField] private bool _needIgnoreCooldown;
@@ -20,7 +21,7 @@ namespace Common.Mechanic_Effects.Concrete_Types
             _mechanicEffects.ForEach(effectScriptableObject =>
                 spellMechanicEffects.Add(effectScriptableObject.GetImplementationObject()));
             return new ContinuousMechanicImplementation(new ContinuousEffect(_cooldownInSeconds, spellMechanicEffects,
-                _durationInSeconds, _needIgnoreCooldown));
+                _durationInSeconds, _needIgnoreCooldown, _icon));
         }
 
         private class ContinuousMechanicImplementation : ContinuousMechanicEffectImplementationBase

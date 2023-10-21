@@ -1,12 +1,11 @@
-﻿using System;
-using Common.Interfaces;
+﻿using Common.Interfaces;
+using UnityEngine;
 
 namespace Common.Mechanic_Effects.Continuous_Effect
 {
-    public interface IAppliedContinuousEffect
+    public interface IAppliedContinuousEffect : IAppliedContinuousEffectInformation
     {
-        event Action<IContinuousEffect> EffectEnded;
-        void Start(ICoroutineStarter coroutineStarter);
-        void End();
+        public void Start(ICoroutineStarter coroutineStarter, GameObject gameObjectToLink);
+        public void End();
     }
 }

@@ -307,6 +307,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6939430436986699702}
     m_Modifications:
+    - target: {fileID: 1756042985075394437, guid: 036d9368e2ba6c242a364ed1718e5356, type: 3}
+      propertyPath: _continuousEffectIndicatorFactorySettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 50cab360aaee5394a94b9425f5797dad, type: 2}
     - target: {fileID: 3312978105060942082, guid: 036d9368e2ba6c242a364ed1718e5356, type: 3}
       propertyPath: _playerSpawnMarkerHolder
       value: 

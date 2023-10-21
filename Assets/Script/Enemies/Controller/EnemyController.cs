@@ -76,8 +76,8 @@ namespace Enemies.Controller
         }
 
         public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
+        public event Action<IAppliedContinuousEffectInformation> ContinuousEffectAdded;
         public event Action<CharacterState> CharacterStateChanged;
-
         public event Action ActionAnimationKeyMomentTrigger;
         public event Action ActionAnimationStart;
         public event Action ActionAnimationEnd;
@@ -85,6 +85,10 @@ namespace Enemies.Controller
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
         public float HitPointCountRatio => _character.HitPointCountRatio;
+
+        public IReadOnlyList<IAppliedContinuousEffectInformation> CurrentContinuousEffects =>
+            _character.CurrentContinuousEffects;
+
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public ISummoner Summoner => _character.Summoner;
         public Vector3 CurrentLookDirection => _look.CurrentLookDirection;
@@ -190,6 +194,7 @@ namespace Enemies.Controller
             InitializationStatusChanged += OnInitializationStatusChanged;
             _character.CharacterStateChanged += OnCharacterStateChanged;
             _character.HitPointsCountChanged += OnHitPointsCountChanged;
+            _character.ContinuousEffectAdded += OnContinuousEffectAdded;
             _movement.MovingStateChanged += _visual.UpdateMovingData;
             _eventInvokerForAnimations.ActionAnimationEnd += OnActionAnimationEnd;
             _eventInvokerForAnimations.ActionAnimationStart += OnActionAnimationStart;
@@ -202,6 +207,7 @@ namespace Enemies.Controller
             InitializationStatusChanged -= OnInitializationStatusChanged;
             _character.CharacterStateChanged -= OnCharacterStateChanged;
             _character.HitPointsCountChanged -= OnHitPointsCountChanged;
+            _character.ContinuousEffectAdded -= OnContinuousEffectAdded;
             _movement.MovingStateChanged -= _visual.UpdateMovingData;
             _eventInvokerForAnimations.ActionAnimationEnd -= OnActionAnimationEnd;
             _eventInvokerForAnimations.ActionAnimationStart -= OnActionAnimationStart;
@@ -243,6 +249,11 @@ namespace Enemies.Controller
             }
 
             CharacterStateChanged?.Invoke(newState);
+        }
+
+        private void OnContinuousEffectAdded(IAppliedContinuousEffectInformation newEffect)
+        {
+            ContinuousEffectAdded?.Invoke(newEffect);
         }
 
         private void OnActionAnimationEnd()

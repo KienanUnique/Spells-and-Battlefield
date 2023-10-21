@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mechanicEffects:
   - {fileID: 11400000, guid: 4e4b1058da6431143ba91513d85e4ac2, type: 2}
+  _icon: {fileID: 21300000, guid: caf7b2475733a6e4480688688406916d, type: 3}
   _cooldownInSeconds: 0
   _durationInSeconds: 10
   _needIgnoreCooldown: 1

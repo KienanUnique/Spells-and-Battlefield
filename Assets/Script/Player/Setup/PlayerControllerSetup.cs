@@ -102,7 +102,7 @@ namespace Player.Setup
             _idHolder = GetComponent<IdHolder>();
             _thisRigidbody = GetComponent<Rigidbody>();
 
-            var playerCharacter = new PlayerCharacter(this, _settings.Character);
+            var playerCharacter = new PlayerCharacter(this, _settings.Character, gameObject);
 
             _itemsNeedDisabling = new List<IDisableable> {playerCharacter};
 

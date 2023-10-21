@@ -6,6 +6,8 @@ using Pickable_Items.Factory;
 using Spells.Factory;
 using Systems.In_Game_Systems.Factory;
 using Systems.In_Game_Systems.Prefab_Provider;
+using UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Indicator.Factory;
+using UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Indicator.Settings;
 using UI.Concrete_Scenes.In_Game.Popup_Text.Factory;
 using UI.Concrete_Scenes.In_Game.Popup_Text.Factory.Settings;
 using UnityEngine;
@@ -21,9 +23,11 @@ namespace Systems.Installers.Concrete_Types.In_Game
         private const string PickableItemsSectionName = "Pickable Items";
         private const string PopupTextSectionName = "Popup Text";
         private const string SystemsSectionName = "Systems";
+        private const string OtherSectionName = "Other";
 
         [SerializeField] private PopupHitPointsChangeTextFactorySettings _popupHitPointsChangeTextFactorySettings;
         [SerializeField] private InGameSystemsPrefabProvider _inGameSystemsPrefabProvider;
+        [SerializeField] private ContinuousEffectIndicatorFactorySettings _continuousEffectIndicatorFactorySettings;
         private List<IObjectPoolingFactory> _objectPoolingFactories;
         private IReadOnlyList<IObjectPoolingFactory> ObjectPoolingFactories => _objectPoolingFactories;
 
@@ -37,6 +41,15 @@ namespace Systems.Installers.Concrete_Types.In_Game
             InstallPopupTextFactories();
             InstallAllObjectPoolingFactories();
             InstallGameControllerSystems();
+            InstallIContinuousEffectIndicatorFactory();
+        }
+
+        private void InstallIContinuousEffectIndicatorFactory()
+        {
+            var factory = new ContinuousEffectIndicatorFactory(Container, CreateEmptyParentWithName(OtherSectionName),
+                _continuousEffectIndicatorFactorySettings);
+            _objectPoolingFactories.Add(factory);
+            Container.Bind<IContinuousEffectIndicatorFactory>().FromInstance(factory).AsSingle();
         }
 
         private void InstallGameControllerSystems()

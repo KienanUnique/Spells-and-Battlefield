@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
@@ -69,6 +70,7 @@ namespace Player
 
         public event Action<CharacterState> CharacterStateChanged;
         public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
+        public event Action<IAppliedContinuousEffectInformation> ContinuousEffectAdded;
         public event Action<float> DashCooldownRatioChanged;
         public event Action Dashed;
         public event Action DashAiming;
@@ -79,6 +81,9 @@ namespace Player
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
         public float HitPointCountRatio => _character.HitPointCountRatio;
+
+        public IReadOnlyList<IAppliedContinuousEffectInformation> CurrentContinuousEffects =>
+            _character.CurrentContinuousEffects;
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public IFaction Faction { get; private set; }
         public IReadonlyRigidbody MainRigidbody => _movement.MainRigidbody;
@@ -184,6 +189,7 @@ namespace Player
 
             _character.CharacterStateChanged += OnCharacterStateChanged;
             _character.HitPointsCountChanged += OnHitPointsCountChanged;
+            _character.ContinuousEffectAdded += OnContinuousEffectAdded;
 
             _spellsManager.NeedPlaySpellAnimation += OnNeedPlaySpellAnimation;
             _spellsManager.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellCanNotBeUsed;
@@ -221,10 +227,16 @@ namespace Player
 
             _character.CharacterStateChanged -= OnCharacterStateChanged;
             _character.HitPointsCountChanged -= OnHitPointsCountChanged;
+            _character.ContinuousEffectAdded -= OnContinuousEffectAdded;
 
             _spellsManager.NeedPlaySpellAnimation -= OnNeedPlaySpellAnimation;
             _spellsManager.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellCanNotBeUsed;
             _spellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
+        }
+
+        private void OnContinuousEffectAdded(IAppliedContinuousEffectInformation newEffect)
+        {
+            ContinuousEffectAdded?.Invoke(newEffect);
         }
 
         private void OnDashCooldownRatioChanged(float newCooldownRatio)

@@ -13,8 +13,7 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
     public abstract class
         ObjectPoolingFactoryWithInstantiatorBase<TPoolItem, TDataForActivation> : FactoryWithInstantiatorBase,
             IDisableable,
-            IObjectPoolingFactory
-        where TPoolItem : IObjectPoolItem<TDataForActivation> where TDataForActivation : IPositionDataForInstantiation
+            IObjectPoolingFactory where TPoolItem : IObjectPoolItem<TDataForActivation>
     {
         private readonly IPositionDataForInstantiation _defaultPositionDataForInstantiation;
         private readonly List<TPoolItem> _items;
@@ -80,7 +79,7 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
             }
         }
 
-        protected void Create(TDataForActivation dataForActivation)
+        protected void CreateItem(TDataForActivation dataForActivation)
         {
             if (_items.All(item => item.IsUsed))
             {

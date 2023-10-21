@@ -19,7 +19,7 @@ namespace UI.Concrete_Scenes.In_Game.Popup_Text.Factory
 
         public void Create(string textToShow, Vector3 startPosition)
         {
-            Create(new PopupTextControllerDataForActivation(textToShow, startPosition, Quaternion.identity));
+            CreateItem(new PopupTextControllerDataForActivation(textToShow, startPosition, Quaternion.identity));
         }
     }
 }

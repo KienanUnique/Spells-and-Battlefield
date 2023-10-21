@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d78856738e1ac9848b248fabbfcfc0d3, type: 3}
+  m_Name: Self Continuous Heal
+  m_EditorClassIdentifier: 
+  _spellMechanicEffects:
+  - {fileID: 11400000, guid: 53248a65650b735418fd5a642e8bda23, type: 2}
+  _targetSelector: {fileID: 11400000, guid: 670c334dd18e17249a4d3206c62fe401, type: 2}
+  _spellTrigger: {fileID: 11400000, guid: a25e908f0a9f12a47bed9bf06c88bd27, type: 2}

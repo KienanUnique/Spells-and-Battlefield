@@ -7,6 +7,7 @@ using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Mechanic_Effects.Continuous_Effect;
 using Common.Mechanic_Effects.Source;
 using Common.Settings.Sections.Character;
+using UnityEngine;
 
 namespace Common.Abstract_Bases.Character
 {
@@ -14,27 +15,33 @@ namespace Common.Abstract_Bases.Character
     {
         protected readonly ICharacterSettings _characterSettings;
         protected readonly ICoroutineStarter _coroutineStarter;
+        protected readonly GameObject _gameObjectToLink;
         protected readonly List<IAppliedContinuousEffect> _currentEffects;
         protected readonly ValueWithReactionOnChange<CharacterState> _currentState;
         protected readonly HitPointsCalculator _hitPointsCalculator;
         protected readonly ISummoner _summoner;
 
         protected CharacterBase(ICoroutineStarter coroutineStarter, ICharacterSettings characterSettings,
-            ISummoner summoner = null)
+            GameObject gameObjectToLink, ISummoner summoner = null)
         {
             _coroutineStarter = coroutineStarter;
             _characterSettings = characterSettings;
             _currentState = new ValueWithReactionOnChange<CharacterState>(CharacterState.Alive);
             _hitPointsCalculator = new HitPointsCalculator(_characterSettings.MaximumCountOfHitPoints);
             _currentEffects = new List<IAppliedContinuousEffect>();
+            _gameObjectToLink = gameObjectToLink;
             _summoner = summoner;
         }
 
         public event Action<CharacterState> CharacterStateChanged;
         public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
+        public event Action<IAppliedContinuousEffectInformation> ContinuousEffectAdded;
 
         public CharacterState CurrentCharacterState => _currentState.Value;
         public float HitPointCountRatio => _hitPointsCalculator.HitPointCountRatio;
+
+        public IReadOnlyList<IAppliedContinuousEffectInformation> CurrentContinuousEffects =>
+            new List<IAppliedContinuousEffectInformation>(_currentEffects);
 
         public void DieInstantly()
         {
@@ -51,7 +58,8 @@ namespace Common.Abstract_Bases.Character
 
             _currentEffects.Add(effect);
             effect.EffectEnded += OnEffectEnded;
-            effect.Start(_coroutineStarter);
+            effect.Start(_coroutineStarter, _gameObjectToLink);
+            ContinuousEffectAdded?.Invoke(effect);
         }
 
         public virtual void HandleDamage(int countOfHitPoints, IEffectSourceInformation sourceInformation)

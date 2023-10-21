@@ -170,7 +170,7 @@ namespace Enemies.Setup
                 _settings.MovementProvider.GetImplementationObject(movementSetupData);
 
             IDisableableEnemyCharacter enemyCharacter =
-                _settings.CharacterProvider.GetImplementationObject(this, thisReadonlyRigidbody, _summoner);
+                _settings.CharacterProvider.GetImplementationObject(this, thisReadonlyRigidbody, gameObject, _summoner);
 
             var targetTriggers = new List<IEnemyTargetTrigger>(_externalTargetTriggers);
             targetTriggers.AddRange(_localTargetTriggers);
