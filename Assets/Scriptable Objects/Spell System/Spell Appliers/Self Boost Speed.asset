@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Self Boost Speed
   m_EditorClassIdentifier: 
   _spellMechanicEffects:
-  - {fileID: 11400000, guid: 84eccfc1460fd62478f21445ae92734b, type: 2}
+  - {fileID: 11400000, guid: ec16e4c69b34f304899d5234174f233b, type: 2}
   _targetSelector: {fileID: 11400000, guid: 670c334dd18e17249a4d3206c62fe401, type: 2}
   _spellTrigger: {fileID: 11400000, guid: a25e908f0a9f12a47bed9bf06c88bd27, type: 2}
