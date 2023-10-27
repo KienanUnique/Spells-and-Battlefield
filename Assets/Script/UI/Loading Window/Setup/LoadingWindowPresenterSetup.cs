@@ -39,7 +39,7 @@ namespace UI.Loading_Window.Setup
         {
             base.Prepare();
             _presenter = GetComponent<IInitializableLoadingWindowPresenter>();
-            _model = new LoadingWindowModel(IDHolder, Manager);
+            _model = new LoadingWindowModel(IDHolder);
             _view = new LoadingWindowView(_mainTransform, DefaultUIElementViewSettings, _loadingIcon.transform,
                 _loadingWindowSettings);
         }

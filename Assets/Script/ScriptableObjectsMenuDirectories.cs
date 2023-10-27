@@ -25,6 +25,10 @@
     public const string ScenesDirectory = RootDirectory + "Scenes Data/";
 
     #endregion
+    
+    #region Comics
+    public const string ComicsDirectory = RootDirectory + "Comics/";
+    #endregion
 
     #region Spells
 
@@ -56,6 +60,7 @@
     public const string GeneralSettingsDirectory = SettingsDirectory + "General/";
     public const string ConcreteUISettingsDirectory = SettingsDirectory + "Concrete UI/";
     public const string SystemsSettingsDirectory = SettingsDirectory + "Systems/";
+    public const string ComicsSettingsDirectory = SettingsDirectory + "Comics/";
 
     public const string PuzzleDirectory = SettingsDirectory + "Puzzles/";
     public const string PuzzleTriggersDirectory = PuzzleDirectory + "Triggers/";

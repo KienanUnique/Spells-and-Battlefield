@@ -1,4 +1,5 @@
-﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
+﻿using System;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Id_Holder;
 using UI.Concrete_Scenes.In_Game.Gameplay_UI.Model;
 
@@ -30,6 +31,12 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Presenter
         public void Disappear()
         {
             _model.Disappear();
+        }
+
+        public void Disappear(Action callbackOnAnimationEnd)
+        {
+            Disappear();
+            callbackOnAnimationEnd?.Invoke();
         }
 
         protected override void SubscribeOnEvents()

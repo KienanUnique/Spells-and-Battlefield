@@ -6,7 +6,7 @@ namespace UI.Loading_Window.Model
 {
     public class LoadingWindowModel : UIWindowModelBase, ILoadingWindowModel
     {
-        public LoadingWindowModel(IIdHolder idHolder, IUIWindowManager manager) : base(idHolder, manager)
+        public LoadingWindowModel(IIdHolder idHolder) : base(idHolder)
         {
         }
 

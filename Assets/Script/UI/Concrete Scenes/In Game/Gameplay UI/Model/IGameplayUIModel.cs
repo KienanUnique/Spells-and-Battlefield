@@ -1,8 +1,8 @@
-﻿using UI.Window;
+﻿using UI.Window.Model;
 
 namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Model
 {
-    public interface IGameplayUIModel : IUIWindow
+    public interface IGameplayUIModel : IUIWindowModel
     {
     }
 }

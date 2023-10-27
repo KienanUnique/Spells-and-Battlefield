@@ -1,8 +1,9 @@
-﻿namespace UI.Element
+﻿using System;
+
+namespace UI.Element
 {
-    public interface IUIElement
+    public interface IUIElement : IUIElementModel
     {
-        public void Appear();
-        public void Disappear();
+        public void Disappear(Action callbackOnAnimationEnd);
     }
 }

@@ -9,8 +9,7 @@ namespace UI.Concrete_Scenes.Credits.Credits_Window.Model
     {
         private readonly IScenesController _scenesController;
 
-        public CreditsWindowModel(IIdHolder idHolder, IUIWindowManager manager, IScenesController scenesController) :
-            base(idHolder, manager)
+        public CreditsWindowModel(IIdHolder idHolder, IScenesController scenesController) : base(idHolder)
         {
             _scenesController = scenesController;
         }

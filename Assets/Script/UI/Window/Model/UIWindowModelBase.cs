@@ -1,5 +1,4 @@
 ﻿using Common.Id_Holder;
-using UI.Managers.Concrete_Types.In_Game;
 
 namespace UI.Window.Model
 {
@@ -7,17 +6,14 @@ namespace UI.Window.Model
     {
         private readonly IIdHolder _idHolder;
 
-        protected UIWindowModelBase(IIdHolder idHolder, IUIWindowManager manager)
+        protected UIWindowModelBase(IIdHolder idHolder)
         {
             _idHolder = idHolder;
-            Manager = manager;
         }
 
         public abstract bool CanBeClosedByPlayer { get; }
         public int Id => _idHolder.Id;
         public bool IsOpened { get; private set; }
-
-        protected IUIWindowManager Manager { get; }
 
         public bool Equals(IIdHolder other)
         {

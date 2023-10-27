@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 596066b5a68a473f86d24a8eb189bc2a, type: 3}
+  m_Name: Comics Settings Installer
+  m_EditorClassIdentifier: 
+  _panelSettings: {fileID: 11400000, guid: adf7e224392231e4eb834d3e10eb41f5, type: 2}

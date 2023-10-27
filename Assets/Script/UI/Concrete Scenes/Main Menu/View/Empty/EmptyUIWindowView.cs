@@ -1,4 +1,5 @@
-﻿using UI.Window.View;
+﻿using System;
+using UI.Window.View;
 
 namespace UI.Concrete_Scenes.Main_Menu.View.Empty
 {
@@ -10,6 +11,11 @@ namespace UI.Concrete_Scenes.Main_Menu.View.Empty
 
         public void Disappear()
         {
+        }
+
+        public void Disappear(Action callbackOnAnimationEnd)
+        {
+            callbackOnAnimationEnd?.Invoke();
         }
 
         public void DisappearWithoutAnimation()

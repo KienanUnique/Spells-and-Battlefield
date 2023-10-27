@@ -25,7 +25,7 @@ namespace UI.Concrete_Scenes.Credits.Credits_Window.Setup
         {
             base.Prepare();
             _presenter = GetComponent<IInitializableCreditsWindowPresenter>();
-            _model = new CreditsWindowModel(IDHolder, Manager, _scenesController);
+            _model = new CreditsWindowModel(IDHolder, _scenesController);
         }
 
         protected override void Initialize()

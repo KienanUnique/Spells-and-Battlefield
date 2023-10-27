@@ -298,7 +298,7 @@
             "id": "351c0220-d939-40f0-b092-2e6a19aee6eb",
             "actions": [
                 {
-                    "name": "Continue Game",
+                    "name": "Close Window",
                     "type": "Button",
                     "id": "37c75fa3-71a2-4ae8-b15e-3bd0ce7944e1",
                     "expectedControlType": "Button",
@@ -315,7 +315,55 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse and Keyboard",
-                    "action": "Continue Game",
+                    "action": "Close Window",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Comics",
+            "id": "0ce37481-080d-44b9-a87c-78f03af590ac",
+            "actions": [
+                {
+                    "name": "Close Window",
+                    "type": "Button",
+                    "id": "712b091d-3b0a-45e5-aa45-22a1ae1a6ff8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skip Panel Animation",
+                    "type": "Button",
+                    "id": "9c481698-f488-44fd-8e56-cabc63370a4c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ab2d142f-bf9f-46d2-8f1e-f7b4f0167f19",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse and Keyboard",
+                    "action": "Close Window",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7e2c45b8-ea97-4119-9d85-2b5a946832fd",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse and Keyboard",
+                    "action": "Skip Panel Animation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

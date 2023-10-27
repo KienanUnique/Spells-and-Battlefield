@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Main_Menu_Window.Model
 {
-    public class MainMenuWindowModel : UIWindowModelBase, IMainMenuWindowModel
+    public class MainMenuWindowModel : UIWindowModelWithManagerBase, IMainMenuWindowModel
     {
         private readonly IStartGameWindow _startGameWindow;
         private readonly IScenesController _scenesController;

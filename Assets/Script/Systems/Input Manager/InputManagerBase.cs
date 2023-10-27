@@ -12,13 +12,13 @@ namespace Systems.Input_Manager
         protected virtual void OnEnable()
         {
             Controls.Enable();
-            Controls.UI.ContinueGame.performed += OnCloseCurrentWindowPerformed;
+            Controls.UI.CloseWindow.performed += OnCloseCurrentWindowPerformed;
         }
 
         protected virtual void OnDisable()
         {
             Controls.Disable();
-            Controls.UI.ContinueGame.performed -= OnCloseCurrentWindowPerformed;
+            Controls.UI.CloseWindow.performed -= OnCloseCurrentWindowPerformed;
         }
 
         protected void SwitchToUIInput()

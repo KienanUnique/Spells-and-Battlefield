@@ -1,4 +1,5 @@
-﻿using Common.Id_Holder;
+﻿using System;
+using Common.Id_Holder;
 using UI.Element.Presenter;
 using UI.Element.View;
 using UI.Window.Model;
@@ -31,6 +32,13 @@ namespace UI.Window.Presenter
             UnsubscribeFromWindowEvents();
             WindowModel.Disappear();
             base.Disappear();
+        }
+
+        public override void Disappear(Action callbackOnAnimationEnd)
+        {
+            UnsubscribeFromWindowEvents();
+            WindowModel.Disappear();
+            base.Disappear(callbackOnAnimationEnd);
         }
 
         protected abstract void SubscribeOnWindowEvents();

@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using UI.Element.View.Settings;
 using UnityEngine;
 
@@ -28,11 +29,20 @@ namespace UI.Element.View
 
         public virtual void Disappear()
         {
+            Disappear(null);
+        }
+
+        public void Disappear(Action callbackOnAnimationEnd)
+        {
             _cachedTransform.DOKill();
             _cachedTransform.DOScale(Vector3.zero, _settings.ScaleAnimationDuration)
                             .ApplyCustomSetupForUI(_cachedGameObject)
                             .SetEase(_settings.ScaleAnimationEase)
-                            .OnComplete(() => _cachedGameObject.SetActive(false));
+                            .OnComplete(() =>
+                            {
+                                _cachedGameObject.SetActive(false);
+                                callbackOnAnimationEnd?.Invoke();
+                            });
         }
 
         public virtual void DisappearWithoutAnimation()

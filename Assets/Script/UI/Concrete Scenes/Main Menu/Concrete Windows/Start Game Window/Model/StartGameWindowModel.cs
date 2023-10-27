@@ -6,7 +6,7 @@ using UI.Window.Model;
 
 namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Model
 {
-    public class StartGameWindowModel : UIWindowModelBase, IStartGameWindowModel
+    public class StartGameWindowModel : UIWindowModelWithManagerBase, IStartGameWindowModel
     {
         private readonly IGameLevelSelector _gameLevelSelector;
         private readonly IScenesController _scenesController;

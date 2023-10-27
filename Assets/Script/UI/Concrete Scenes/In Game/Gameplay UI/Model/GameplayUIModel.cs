@@ -10,8 +10,7 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Model
     {
         private readonly IReadOnlyCollection<IUIElement> _gameplayUIElements;
 
-        public GameplayUIModel(IIdHolder idHolder, IUIWindowManager manager,
-            IReadOnlyCollection<IUIElement> gameplayUIElements) : base(idHolder, manager)
+        public GameplayUIModel(IIdHolder idHolder, IReadOnlyCollection<IUIElement> gameplayUIElements) : base(idHolder)
         {
             _gameplayUIElements = gameplayUIElements;
         }

@@ -5,7 +5,7 @@ using UI.Window.Model;
 
 namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
 {
-    public abstract class InGameWindowModelBase : UIWindowModelBase
+    public abstract class InGameWindowModelBase : UIWindowModelWithManagerBase
     {
         protected readonly IInGameSceneController InGameSceneController;
 

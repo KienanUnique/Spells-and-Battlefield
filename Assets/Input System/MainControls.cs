@@ -320,7 +320,7 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
             ""id"": ""351c0220-d939-40f0-b092-2e6a19aee6eb"",
             ""actions"": [
                 {
-                    ""name"": ""Continue Game"",
+                    ""name"": ""Close Window"",
                     ""type"": ""Button"",
                     ""id"": ""37c75fa3-71a2-4ae8-b15e-3bd0ce7944e1"",
                     ""expectedControlType"": ""Button"",
@@ -337,7 +337,55 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Mouse and Keyboard"",
-                    ""action"": ""Continue Game"",
+                    ""action"": ""Close Window"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Comics"",
+            ""id"": ""0ce37481-080d-44b9-a87c-78f03af590ac"",
+            ""actions"": [
+                {
+                    ""name"": ""Close Window"",
+                    ""type"": ""Button"",
+                    ""id"": ""712b091d-3b0a-45e5-aa45-22a1ae1a6ff8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skip Panel Animation"",
+                    ""type"": ""Button"",
+                    ""id"": ""9c481698-f488-44fd-8e56-cabc63370a4c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ab2d142f-bf9f-46d2-8f1e-f7b4f0167f19"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Close Window"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e2c45b8-ea97-4119-9d85-2b5a946832fd"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Skip Panel Animation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -379,7 +427,11 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         m_Character_SwitchSpellType = m_Character.FindAction("Switch Spell Type", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_ContinueGame = m_UI.FindAction("Continue Game", throwIfNotFound: true);
+        m_UI_CloseWindow = m_UI.FindAction("Close Window", throwIfNotFound: true);
+        // Comics
+        m_Comics = asset.FindActionMap("Comics", throwIfNotFound: true);
+        m_Comics_CloseWindow = m_Comics.FindAction("Close Window", throwIfNotFound: true);
+        m_Comics_SkipPanelAnimation = m_Comics.FindAction("Skip Panel Animation", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -560,12 +612,12 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
-    private readonly InputAction m_UI_ContinueGame;
+    private readonly InputAction m_UI_CloseWindow;
     public struct UIActions
     {
         private @MainControls m_Wrapper;
         public UIActions(@MainControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ContinueGame => m_Wrapper.m_UI_ContinueGame;
+        public InputAction @CloseWindow => m_Wrapper.m_UI_CloseWindow;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -575,20 +627,61 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_UIActionsCallbackInterface != null)
             {
-                @ContinueGame.started -= m_Wrapper.m_UIActionsCallbackInterface.OnContinueGame;
-                @ContinueGame.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnContinueGame;
-                @ContinueGame.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnContinueGame;
+                @CloseWindow.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseWindow;
+                @CloseWindow.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseWindow;
+                @CloseWindow.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseWindow;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ContinueGame.started += instance.OnContinueGame;
-                @ContinueGame.performed += instance.OnContinueGame;
-                @ContinueGame.canceled += instance.OnContinueGame;
+                @CloseWindow.started += instance.OnCloseWindow;
+                @CloseWindow.performed += instance.OnCloseWindow;
+                @CloseWindow.canceled += instance.OnCloseWindow;
             }
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Comics
+    private readonly InputActionMap m_Comics;
+    private IComicsActions m_ComicsActionsCallbackInterface;
+    private readonly InputAction m_Comics_CloseWindow;
+    private readonly InputAction m_Comics_SkipPanelAnimation;
+    public struct ComicsActions
+    {
+        private @MainControls m_Wrapper;
+        public ComicsActions(@MainControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @CloseWindow => m_Wrapper.m_Comics_CloseWindow;
+        public InputAction @SkipPanelAnimation => m_Wrapper.m_Comics_SkipPanelAnimation;
+        public InputActionMap Get() { return m_Wrapper.m_Comics; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ComicsActions set) { return set.Get(); }
+        public void SetCallbacks(IComicsActions instance)
+        {
+            if (m_Wrapper.m_ComicsActionsCallbackInterface != null)
+            {
+                @CloseWindow.started -= m_Wrapper.m_ComicsActionsCallbackInterface.OnCloseWindow;
+                @CloseWindow.performed -= m_Wrapper.m_ComicsActionsCallbackInterface.OnCloseWindow;
+                @CloseWindow.canceled -= m_Wrapper.m_ComicsActionsCallbackInterface.OnCloseWindow;
+                @SkipPanelAnimation.started -= m_Wrapper.m_ComicsActionsCallbackInterface.OnSkipPanelAnimation;
+                @SkipPanelAnimation.performed -= m_Wrapper.m_ComicsActionsCallbackInterface.OnSkipPanelAnimation;
+                @SkipPanelAnimation.canceled -= m_Wrapper.m_ComicsActionsCallbackInterface.OnSkipPanelAnimation;
+            }
+            m_Wrapper.m_ComicsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @CloseWindow.started += instance.OnCloseWindow;
+                @CloseWindow.performed += instance.OnCloseWindow;
+                @CloseWindow.canceled += instance.OnCloseWindow;
+                @SkipPanelAnimation.started += instance.OnSkipPanelAnimation;
+                @SkipPanelAnimation.performed += instance.OnSkipPanelAnimation;
+                @SkipPanelAnimation.canceled += instance.OnSkipPanelAnimation;
+            }
+        }
+    }
+    public ComicsActions @Comics => new ComicsActions(this);
     private int m_MouseandKeyboardSchemeIndex = -1;
     public InputControlScheme MouseandKeyboardScheme
     {
@@ -615,6 +708,11 @@ public partial class @MainControls : IInputActionCollection2, IDisposable
     }
     public interface IUIActions
     {
-        void OnContinueGame(InputAction.CallbackContext context);
+        void OnCloseWindow(InputAction.CallbackContext context);
+    }
+    public interface IComicsActions
+    {
+        void OnCloseWindow(InputAction.CallbackContext context);
+        void OnSkipPanelAnimation(InputAction.CallbackContext context);
     }
 }

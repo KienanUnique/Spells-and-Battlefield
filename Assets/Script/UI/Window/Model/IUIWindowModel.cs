@@ -3,7 +3,7 @@ using UI.Element;
 
 namespace UI.Window.Model
 {
-    public interface IUIWindowModel : IUIElement, IUICanBeClosedByPlayerStatus, IIdHolder
+    public interface IUIWindowModel : IUIElementModel, IUICanBeClosedByPlayerStatus, IIdHolder
     {
         public bool IsOpened { get; }
     }

@@ -41,7 +41,7 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Setup
         protected override void Prepare()
         {
             base.Prepare();
-            _model = new GameplayUIModel(IDHolder, Manager,
+            _model = new GameplayUIModel(IDHolder,
                 new List<IUIElement>
                 {
                     _spellPanel,

@@ -1,10 +1,11 @@
 ﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Setup;
+using UI.Element.Presenter;
 using UI.Element.View;
 
 namespace UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Presenter
 {
-    public class EnemyInformationPanelPresenter : InitializableMonoBehaviourBase,
+    public class EnemyInformationPanelPresenter : UIElementPresenterBase,
         InitializableEnemyInformationPanelPresenter,
         IEnemyInformationPanelPresenter
     {
@@ -16,15 +17,7 @@ namespace UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Presenter
             SetInitializedStatus();
         }
 
-        public void Appear()
-        {
-            _view.Appear();
-        }
-
-        public void Disappear()
-        {
-            _view.Disappear();
-        }
+        protected override IUIElementView View => _view;
 
         protected override void SubscribeOnEvents()
         {
@@ -32,6 +25,12 @@ namespace UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Presenter
 
         protected override void UnsubscribeFromEvents()
         {
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            _view.Appear();
         }
     }
 }
