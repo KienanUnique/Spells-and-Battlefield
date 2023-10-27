@@ -47,7 +47,7 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Panel.View
 
         public bool IsShown { get; private set; }
 
-        public void Appear(PanelDelayType delayType, Action callbackOnComplete)
+        public void Appear(Action callbackOnComplete)
         {
             _currentSequence?.Kill(true);
             _currentSequence = DOTween.Sequence();
@@ -56,21 +56,17 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Panel.View
                                             .SetEase(_settings.AppearMoveAnimationEase));
             _currentSequence.SetLink(_transform.gameObject);
 
-            if (delayType == PanelDelayType.BeforeAnimation || delayType == PanelDelayType.BeforeAndAfterAnimation)
-            {
-                _currentSequence.SetDelay(_settings.DelayBeforeAppear);
-            }
-
-            if (delayType == PanelDelayType.BeforeAndAfterAnimation)
-            {
-                _currentSequence.AppendInterval(_settings.DelayBeforeAppear);
-            }
-
             _currentSequence.OnComplete(() =>
             {
-                IsShown = true;
-                callbackOnComplete?.Invoke();
-                _currentSequence = null;
+                _currentSequence = DOTween.Sequence();
+                _currentSequence.AppendInterval(_settings.PanelDisplayTimeInSeconds);
+                _currentSequence.SetLink(_transform.gameObject);
+                _currentSequence.OnComplete(() =>
+                {
+                    IsShown = true;
+                    callbackOnComplete?.Invoke();
+                    _currentSequence = null;
+                });
             });
         }
 

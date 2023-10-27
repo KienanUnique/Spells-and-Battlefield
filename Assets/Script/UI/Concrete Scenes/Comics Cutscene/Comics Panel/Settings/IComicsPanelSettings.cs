@@ -8,6 +8,6 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Panel.Settings
         public float DisappearAnimationDurationInSeconds { get; }
         public float AppearOffsetFromFinalPosition { get; }
         public Ease AppearMoveAnimationEase { get; }
-        public float DelayBeforeAppear { get; }
+        public float PanelDisplayTimeInSeconds { get; }
     }
 }

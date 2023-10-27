@@ -18,7 +18,6 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen.Model
         public event Action AllPanelsShown;
         private IComicsPanel CurrentPanel => _panelsInOrder[_currentPanelIndex];
         private bool IsAllPanelsShown => _currentPanelIndex >= _panelsInOrder.Count;
-        private bool IsCurrentPanelLast => _currentPanelIndex == _panelsInOrder.Count - 1;
 
         public void SkipPanelAnimation()
         {
@@ -49,7 +48,7 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen.Model
         public void Appear()
         {
             _currentPanelIndex = 0;
-            CurrentPanel.Appear(PanelDelayType.NoDelay, ShowNextPanel);
+            CurrentPanel.Appear(ShowNextPanel);
         }
 
         public void Disappear()
@@ -71,9 +70,7 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen.Model
                 return;
             }
 
-            CurrentPanel.Appear(
-                IsCurrentPanelLast ? PanelDelayType.BeforeAndAfterAnimation : PanelDelayType.BeforeAnimation,
-                ShowNextPanel);
+            CurrentPanel.Appear(ShowNextPanel);
         }
     }
 }

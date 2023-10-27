@@ -17,9 +17,9 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Panel.Presenter
 
         public bool IsShown => _view.IsShown;
 
-        public void Appear(PanelDelayType delayType, Action callbackOnComplete)
+        public void Appear(Action callbackOnComplete)
         {
-            _view.Appear(delayType, callbackOnComplete);
+            _view.Appear(callbackOnComplete);
         }
 
         public void Disappear()
