@@ -1,7 +1,7 @@
 ﻿using Common.Readonly_Transform;
 using Enemies.Loot_Dropper.Generator;
 using Pickable_Items.Factory;
-using Systems.Scene_Switcher.Current_Game_Level_Information;
+using Systems.Scenes_Controller.Game_Level_Loot_Unlocker;
 using UnityEngine;
 
 namespace Enemies.Loot_Dropper.Provider

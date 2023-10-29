@@ -1,4 +1,4 @@
-﻿using Systems.Scene_Switcher.Concrete_Types;
+﻿using Systems.Scenes_Controller.Concrete_Types;
 using UI.Concrete_Scenes.Credits.Credits_Window.Model;
 using UI.Concrete_Scenes.Credits.Credits_Window.Presenter;
 using UI.Window.Setup;

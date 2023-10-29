@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Systems.Scene_Switcher.Scene_Data;
-using Systems.Scene_Switcher.Scene_Data.Game_Level_Data;
+using Systems.Scenes_Controller.Scene_Data;
+using Systems.Scenes_Controller.Scene_Data.Game_Level_Data;
 using UnityEngine;
 
-namespace Systems.Scene_Switcher
+namespace Systems.Scenes_Controller
 {
     [CreateAssetMenu(fileName = "Scenes Settings",
         menuName = ScriptableObjectsMenuDirectories.GeneralSettingsDirectory + "Scenes Settings", order = 0)]

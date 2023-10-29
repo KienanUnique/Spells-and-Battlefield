@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Pickable_Items.Data_For_Creating;
-using Systems.Scene_Switcher.Current_Game_Level_Information;
+using Systems.Scenes_Controller.Game_Level_Loot_Unlocker;
 
 namespace Enemies.Loot_Dropper.Generator
 {

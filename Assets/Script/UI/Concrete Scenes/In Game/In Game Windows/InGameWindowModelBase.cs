@@ -1,5 +1,5 @@
 ﻿using Common.Id_Holder;
-using Systems.Scene_Switcher;
+using Systems.Scenes_Controller;
 using UI.Managers.Concrete_Types.In_Game;
 using UI.Window.Model;
 
@@ -22,7 +22,7 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows
 
         public void OnRestartLevelWindowButtonPressed()
         {
-            InGameSceneController.RestartLevel();
+            InGameSceneController.RestartCurrentGameLevel();
         }
     }
 }

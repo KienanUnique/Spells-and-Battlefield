@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Systems.Scene_Switcher.Scene_Data.Game_Level_Data;
+using Systems.Scenes_Controller.Scene_Data.Game_Level_Data;
 
-namespace Systems.Scene_Switcher.Concrete_Types
+namespace Systems.Scenes_Controller.Concrete_Types
 {
     public interface IScenesController
     {

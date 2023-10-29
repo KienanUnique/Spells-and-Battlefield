@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Enemies.Loot_Dropper.Generator.Unlockable_Items_List.Unlockable_Item;
-using Systems.Scene_Switcher.Current_Game_Level_Information;
+using Systems.Scenes_Controller.Game_Level_Loot_Unlocker;
 using UnityEngine;
 
 namespace Enemies.Loot_Dropper.Generator.Unlockable_Items_List

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Systems.Scene_Switcher.Scene_Data
+namespace Systems.Scenes_Controller.Scene_Data
 {
     [CreateAssetMenu(menuName = ScriptableObjectsMenuDirectories.ScenesDirectory + "Scene Data",
         fileName = "Scene Data", order = 0)]

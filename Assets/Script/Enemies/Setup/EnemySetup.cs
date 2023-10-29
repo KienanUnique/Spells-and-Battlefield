@@ -30,7 +30,7 @@ using Enemies.Visual.Dissolve_Effect_Controller;
 using Enemies.Visual.Dissolve_Effect_Controller.Settings;
 using Factions;
 using Pickable_Items.Factory;
-using Systems.Scene_Switcher.Current_Game_Level_Information;
+using Systems.Scenes_Controller.Game_Level_Loot_Unlocker;
 using UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Presenter;
 using UI.Concrete_Scenes.In_Game.Popup_Text.Factory;
 using UnityEngine;

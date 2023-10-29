@@ -1,5 +1,5 @@
 ﻿using Common.Id_Holder;
-using Systems.Scene_Switcher;
+using Systems.Scenes_Controller;
 using UI.Managers.Concrete_Types.In_Game;
 
 namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Level_Completed_Window.Model
@@ -15,7 +15,7 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Level_Comple
 
         public void OnLoadNextLevelButtonPressed()
         {
-            InGameSceneController.LoadNextLevel();
+            InGameSceneController.LoadNextGameLevel();
         }
     }
 }

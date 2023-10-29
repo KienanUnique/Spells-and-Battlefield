@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Systems.Scene_Switcher.Scene_Data
+namespace Systems.Scenes_Controller.Scene_Data
 {
     public interface ISceneData : IEquatable<ISceneData>
     {

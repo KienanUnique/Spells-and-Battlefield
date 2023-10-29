@@ -9,8 +9,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3876074860566021199, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
       propertyPath: m_Name
-      value: Menus Scene Context Base
+      value: Credits Scene Context
       objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021200, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: _monoInstallers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3876074860566021200, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+      propertyPath: _monoInstallers.Array.data[0]
+      value: 
+      objectReference: {fileID: 3090992402208858421}
     - target: {fileID: 3876074860566021201, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -57,3 +65,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+--- !u!114 &3090992402208858421 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -6888773593245221095, guid: 4cb92434873e67c43b90fccbb4c7b78c, type: 3}
+  m_PrefabInstance: {fileID: 757521578791657004}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc5638d8a8df482889441ea71845d4a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

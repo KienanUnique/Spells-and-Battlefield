@@ -5,7 +5,7 @@ using Enemies.Loot_Dropper.Generator.Unlockable_Items_List;
 using ModestTree;
 using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Data_For_Creating.Scriptable_Object;
-using Systems.Scene_Switcher.Current_Game_Level_Information;
+using Systems.Scenes_Controller.Game_Level_Loot_Unlocker;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

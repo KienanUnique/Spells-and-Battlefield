@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using UI.Concrete_Scenes.Comics_Cutscene.Comics_Data;
+using UnityEngine;
 
-namespace Systems.Scene_Switcher.Scene_Data.Game_Level_Data
+namespace Systems.Scenes_Controller.Scene_Data.Game_Level_Data
 {
     [CreateAssetMenu(menuName = ScriptableObjectsMenuDirectories.ScenesDirectory + "Game Level Data",
         fileName = "Game Level Data", order = 0)]
@@ -8,8 +9,10 @@ namespace Systems.Scene_Switcher.Scene_Data.Game_Level_Data
     {
         [SerializeField] private Sprite _icon;
         [SerializeField] private string _nameToShow;
+        [SerializeField] private ComicsData _comicsData;
 
         public string NameToShow => _nameToShow;
         public Sprite Icon => _icon;
+        public IComicsData ComicsData => _comicsData;
     }
 }

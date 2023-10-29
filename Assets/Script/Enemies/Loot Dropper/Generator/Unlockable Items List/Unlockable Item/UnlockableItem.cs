@@ -1,6 +1,6 @@
 ﻿using System;
-using Systems.Scene_Switcher.Current_Game_Level_Information;
-using Systems.Scene_Switcher.Scene_Data.Game_Level_Data;
+using Systems.Scenes_Controller.Game_Level_Loot_Unlocker;
+using Systems.Scenes_Controller.Scene_Data.Game_Level_Data;
 using UnityEngine;
 
 namespace Enemies.Loot_Dropper.Generator.Unlockable_Items_List.Unlockable_Item
