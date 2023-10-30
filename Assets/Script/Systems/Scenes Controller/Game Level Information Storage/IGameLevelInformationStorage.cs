@@ -8,13 +8,13 @@ namespace Systems.Scenes_Controller.Game_Level_Information_Storage
     public interface IGameLevelInformationStorage
     {
         public IComicsData StoredLevelComicsData { get; }
-        public IGameLevelScore StoredLevelScore { get; }
+        public IGameLevelStatistic StoredLevelStatistic { get; }
         public IGameLevelData NextLevel { get; }
         public IGameLevelData StoredLevelData { get; }
         public IGameLevelLootUnlocker CurrentGameLevelLootUnlocker { get; }
         public bool IsCurrentLevelLast { get; }
         public void RememberLevel(IGameLevelData levelData);
-        public void RememberLevelScore(IGameLevelScore levelScore);
+        public void RememberLevelStatistic(IGameLevelStatistic levelStatistic);
         public void ForgetAllInformation();
     }
 }

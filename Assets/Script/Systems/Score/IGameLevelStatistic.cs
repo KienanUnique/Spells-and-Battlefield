@@ -1,6 +1,6 @@
 ﻿namespace Systems.Score
 {
-    public interface IGameLevelScore
+    public interface IGameLevelStatistic
     {
     }
 }

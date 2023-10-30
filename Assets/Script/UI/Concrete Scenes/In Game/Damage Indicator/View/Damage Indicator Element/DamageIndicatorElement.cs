@@ -1,8 +1,7 @@
-﻿using System.Drawing;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UI.Concrete_Scenes.In_Game.Damage_Indicator.Settings;
+using UnityEngine;
 using UnityEngine.UI;
-using Color = UnityEngine.Color;
 
 namespace UI.Concrete_Scenes.In_Game.Damage_Indicator.View.Damage_Indicator_Element
 {

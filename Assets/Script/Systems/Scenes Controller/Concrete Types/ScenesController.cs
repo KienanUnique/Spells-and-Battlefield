@@ -53,6 +53,11 @@ namespace Systems.Scenes_Controller.Concrete_Types
 
         public void LoadComicsCutscene()
         {
+            if (_isAlreadyLoading)
+            {
+                return;
+            }
+
             LoadScene(_settings.ComicsCutsceneScene);
         }
 
@@ -63,18 +68,33 @@ namespace Systems.Scenes_Controller.Concrete_Types
 
         public void LoadMainMenu()
         {
+            if (_isAlreadyLoading)
+            {
+                return;
+            }
+
             _gameLevelInformationStorage.ForgetAllInformation();
             LoadScene(_settings.MainMenuScene);
         }
 
         public void LoadGameLevel(IGameLevelData levelToLoad)
         {
+            if (_isAlreadyLoading)
+            {
+                return;
+            }
+
             _gameLevelInformationStorage.RememberLevel(levelToLoad);
             LoadScene(levelToLoad);
         }
 
         public void LoadCredits()
         {
+            if (_isAlreadyLoading)
+            {
+                return;
+            }
+
             _gameLevelInformationStorage.ForgetAllInformation();
             LoadScene(_settings.CreditsScene);
         }
@@ -83,7 +103,7 @@ namespace Systems.Scenes_Controller.Concrete_Types
         {
             if (_isAlreadyLoading)
             {
-                return;
+                throw new InvalidOperationException("Scene is already loading");
             }
 
             _isAlreadyLoading = true;

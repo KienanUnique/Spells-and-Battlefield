@@ -23,6 +23,12 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Presenter
             return _model.Equals(other);
         }
 
+        public void Disappear(Action callbackOnAnimationEnd)
+        {
+            Disappear();
+            callbackOnAnimationEnd?.Invoke();
+        }
+
         public void Appear()
         {
             _model.Appear();
@@ -31,12 +37,6 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Presenter
         public void Disappear()
         {
             _model.Disappear();
-        }
-
-        public void Disappear(Action callbackOnAnimationEnd)
-        {
-            Disappear();
-            callbackOnAnimationEnd?.Invoke();
         }
 
         protected override void SubscribeOnEvents()

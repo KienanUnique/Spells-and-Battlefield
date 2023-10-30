@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common.Id_Holder;
 using UI.Element;
-using UI.Managers.Concrete_Types.In_Game;
 using UI.Window.Model;
 
 namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Model

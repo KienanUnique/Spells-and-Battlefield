@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Indicator.Settings;
 using UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Indicator.View;
 using UI.Element.Setup;
-using UI.Element.View;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;

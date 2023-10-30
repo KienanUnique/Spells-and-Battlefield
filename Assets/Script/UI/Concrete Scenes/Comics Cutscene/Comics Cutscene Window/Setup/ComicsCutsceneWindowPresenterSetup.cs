@@ -6,6 +6,7 @@ using UI.Concrete_Scenes.Comics_Cutscene.Comics_Data;
 using UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen;
 using UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen.Factory;
 using UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen.Provider;
+using UI.Concrete_Scenes.Comics_Cutscene.Level_Statistics_Window.Presenter;
 using UI.Concrete_Scenes.Main_Menu.View.Empty;
 using UI.Window.Setup;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Cutscene_Window.Setup
     public class ComicsCutsceneWindowPresenterSetup : DefaultWindowPresenterSetupBase
     {
         [SerializeField] private Transform _rootForContent;
+        [SerializeField] private LevelStatisticsWindowPresenter _levelStatisticsWindow;
         private IInitializableComicsCutsceneWindowPresenter _presenter;
         private IComicsCutsceneWindowModel _model;
         private IComicsCutsceneInputManager _inputManager;
@@ -58,7 +60,8 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Cutscene_Window.Setup
 
         protected override void Initialize()
         {
-            _model = new ComicsCutsceneWindowModel(IDHolder, new List<IComicsScreen>(_screens));
+            _model = new ComicsCutsceneWindowModel(IDHolder, new List<IComicsScreen>(_screens), _levelStatisticsWindow,
+                Manager);
             _presenter.Initialize(_model, new EmptyUIWindowView(), _inputManager);
         }
     }

@@ -1,5 +1,4 @@
-﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Setup;
+﻿using UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Setup;
 using UI.Element.Presenter;
 using UI.Element.View;
 

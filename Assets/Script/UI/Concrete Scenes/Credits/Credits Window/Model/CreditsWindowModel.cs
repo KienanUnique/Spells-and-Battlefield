@@ -1,6 +1,5 @@
 ﻿using Common.Id_Holder;
 using Systems.Scenes_Controller.Concrete_Types;
-using UI.Managers.Concrete_Types.In_Game;
 using UI.Window.Model;
 
 namespace UI.Concrete_Scenes.Credits.Credits_Window.Model
