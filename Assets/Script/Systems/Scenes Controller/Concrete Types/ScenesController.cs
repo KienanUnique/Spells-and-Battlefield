@@ -5,11 +5,12 @@ using Systems.Scenes_Controller.Game_Level_Information_Storage;
 using Systems.Scenes_Controller.Game_Level_Loot_Unlocker;
 using Systems.Scenes_Controller.Scene_Data;
 using Systems.Scenes_Controller.Scene_Data.Game_Level_Data;
+using UI.Concrete_Scenes.Comics_Cutscene.Comics_Data;
 using UnityEngine.SceneManagement;
 
 namespace Systems.Scenes_Controller.Concrete_Types
 {
-    public class ScenesController : IInGameSceneController
+    public class ScenesController : IInGameSceneController, IComicsToShowProvider
     {
         private readonly IScenesSettings _settings;
         private readonly IGameLevelInformationStorage _gameLevelInformationStorage;
@@ -36,6 +37,7 @@ namespace Systems.Scenes_Controller.Concrete_Types
             _gameLevelInformationStorage.CurrentGameLevelLootUnlocker;
 
         public IReadOnlyCollection<IGameLevelData> GameLevels => _settings.GameLevels;
+        public IComicsData ComicsToShow => _gameLevelInformationStorage.StoredLevelComicsData;
 
         public void LoadNextGameLevel()
         {
@@ -47,6 +49,11 @@ namespace Systems.Scenes_Controller.Concrete_Types
             {
                 LoadGameLevel(_gameLevelInformationStorage.NextLevel);
             }
+        }
+
+        public void LoadComicsCutscene()
+        {
+            LoadScene(_settings.ComicsCutsceneScene);
         }
 
         public void RestartCurrentGameLevel()

@@ -15,3 +15,4 @@ MonoBehaviour:
   _sceneName: Level Test Sandbox
   _icon: {fileID: 21300000, guid: 47d3e5e2bb4a93f449699d4f157b7f11, type: 3}
   _nameToShow: Level Test Sandbox
+  _comicsAfterScene: {fileID: 11400000, guid: 58d6e739fe0c40a4a877112dfcb558a4, type: 2}

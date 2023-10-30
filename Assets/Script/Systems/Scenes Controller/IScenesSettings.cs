@@ -9,5 +9,6 @@ namespace Systems.Scenes_Controller
         public ReadOnlyCollection<IGameLevelData> GameLevels { get; }
         public ISceneData MainMenuScene { get; }
         public ISceneData CreditsScene { get; }
+        public ISceneData ComicsCutsceneScene { get; }
     }
 }

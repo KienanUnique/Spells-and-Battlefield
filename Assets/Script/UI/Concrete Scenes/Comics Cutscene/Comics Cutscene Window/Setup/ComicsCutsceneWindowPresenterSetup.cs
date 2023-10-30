@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Systems.Input_Manager.Concrete_Types.Comics_Cutscene;
+using Systems.Scenes_Controller.Concrete_Types;
 using UI.Concrete_Scenes.Comics_Cutscene.Comics_Cutscene_Window.Model;
 using UI.Concrete_Scenes.Comics_Cutscene.Comics_Data;
 using UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen;
@@ -16,18 +17,20 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Cutscene_Window.Setup
     public class ComicsCutsceneWindowPresenterSetup : DefaultWindowPresenterSetupBase
     {
         [SerializeField] private Transform _rootForContent;
-        [SerializeField] private ComicsData _comicsData;
         private IInitializableComicsCutsceneWindowPresenter _presenter;
         private IComicsCutsceneWindowModel _model;
         private IComicsCutsceneInputManager _inputManager;
         private IComicsScreenFactory _factory;
+        private IComicsToShowProvider _comicsToShowProvider;
         private List<IInitializableComicsScreen> _screens;
 
         [Inject]
-        private void GetDependencies(IComicsCutsceneInputManager inputManager, IComicsScreenFactory factory)
+        private void GetDependencies(IComicsCutsceneInputManager inputManager, IComicsScreenFactory factory,
+            IComicsToShowProvider comicsToShowProvider)
         {
             _inputManager = inputManager;
             _factory = factory;
+            _comicsToShowProvider = comicsToShowProvider;
         }
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization
@@ -46,7 +49,8 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Cutscene_Window.Setup
             base.Prepare();
             _presenter = GetComponent<IInitializableComicsCutsceneWindowPresenter>();
             _screens = new List<IInitializableComicsScreen>();
-            foreach (IComicsScreenProvider comicsScreenProvider in _comicsData.ScreensInOrder)
+            IComicsData comicsData = _comicsToShowProvider.ComicsToShow;
+            foreach (IComicsScreenProvider comicsScreenProvider in comicsData.ScreensInOrder)
             {
                 _screens.Add(_factory.Create(comicsScreenProvider, _rootForContent));
             }

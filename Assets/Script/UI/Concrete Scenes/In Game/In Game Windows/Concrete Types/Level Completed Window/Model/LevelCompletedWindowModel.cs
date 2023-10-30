@@ -15,7 +15,7 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Level_Comple
 
         public void OnLoadNextLevelButtonPressed()
         {
-            InGameSceneController.LoadNextGameLevel();
+            InGameSceneController.LoadComicsCutscene();
         }
     }
 }

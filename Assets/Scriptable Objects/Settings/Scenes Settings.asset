@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainMenuScene: {fileID: 11400000, guid: 3854e4e2382dec442bf10a5bcf42f43d, type: 2}
   _creditsScene: {fileID: 11400000, guid: c8da6b5b66dd9bb4497a5c7da825bb8a, type: 2}
+  _comicsCutsceneScene: {fileID: 11400000, guid: 2efe5bd6e68eb6a418bf411f3fd0f204, type: 2}
   _gameLevels:
   - {fileID: 11400000, guid: 605cd23546bb6d24d84d86e66ff4d13c, type: 2}
   - {fileID: 11400000, guid: 4515160a3406ba440b3d1235f6772c59, type: 2}

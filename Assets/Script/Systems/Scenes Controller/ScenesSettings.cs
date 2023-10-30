@@ -12,6 +12,7 @@ namespace Systems.Scenes_Controller
     {
         [SerializeField] private SceneData _mainMenuScene;
         [SerializeField] private SceneData _creditsScene;
+        [SerializeField] private SceneData _comicsCutsceneScene;
         [SerializeField] private List<GameLevelData> _gameLevels;
         private ReadOnlyCollection<IGameLevelData> _cachedGameLevels;
 
@@ -22,5 +23,6 @@ namespace Systems.Scenes_Controller
 
         public ISceneData MainMenuScene => _mainMenuScene;
         public ISceneData CreditsScene => _creditsScene;
+        public ISceneData ComicsCutsceneScene => _comicsCutsceneScene;
     }
 }

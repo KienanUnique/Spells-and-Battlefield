@@ -26,9 +26,12 @@ namespace Systems.Installers.Concrete_Types
                      .AsTransient();
         }
 
-        private void InstallSceneController(IScenesController scenesController)
+        private void InstallSceneController(ScenesController scenesController)
         {
-            Container.Bind(new List<Type> {typeof(IInGameSceneController), typeof(IScenesController)})
+            Container.Bind(new List<Type>
+                     {
+                         typeof(IInGameSceneController), typeof(IScenesController), typeof(IComicsToShowProvider)
+                     })
                      .FromInstance(scenesController)
                      .AsSingle();
         }

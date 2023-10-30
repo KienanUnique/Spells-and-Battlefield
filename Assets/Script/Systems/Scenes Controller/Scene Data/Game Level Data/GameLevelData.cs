@@ -9,10 +9,10 @@ namespace Systems.Scenes_Controller.Scene_Data.Game_Level_Data
     {
         [SerializeField] private Sprite _icon;
         [SerializeField] private string _nameToShow;
-        [SerializeField] private ComicsData _comicsData;
+        [SerializeField] private ComicsData _comicsAfterScene;
 
         public string NameToShow => _nameToShow;
         public Sprite Icon => _icon;
-        public IComicsData ComicsData => _comicsData;
+        public IComicsData ComicsData => _comicsAfterScene;
     }
 }

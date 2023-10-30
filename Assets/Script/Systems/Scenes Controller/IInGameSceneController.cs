@@ -6,7 +6,7 @@ namespace Systems.Scenes_Controller
     public interface IInGameSceneController : IScenesController
     {
         public IGameLevelLootUnlocker CurrentGameLevelLootUnlocker { get; }
-        public void LoadNextGameLevel();
+        public void LoadComicsCutscene();
         public void RestartCurrentGameLevel();
     }
 }
