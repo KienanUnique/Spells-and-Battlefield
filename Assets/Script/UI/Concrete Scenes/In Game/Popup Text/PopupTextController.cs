@@ -60,7 +60,7 @@ namespace UI.Concrete_Scenes.In_Game.Popup_Text
             }
 
             Sequence needSequence = DOTween.Sequence();
-            needSequence.SetLink(_mainTransform.gameObject);
+            needSequence.ApplyCustomSetupForUI(_mainTransform.gameObject);
             needSequence.Append(_mainTransform.DOScale(Vector3.one, HalfAnimationDurationInSeconds)
                                               .SetEase(_settings.ScaleEase));
             needSequence.Append(_mainTransform.DOScale(Vector3.zero, HalfAnimationDurationInSeconds)
@@ -70,7 +70,7 @@ namespace UI.Concrete_Scenes.In_Game.Popup_Text
             _mainTransform
                 .DOMove(CalculatePositionToMove(_cameraTransform.Position), _settings.AnimationDurationInSeconds)
                 .SetEase(_settings.MovementEase)
-                .SetLink(_mainTransform.gameObject);
+                .ApplyCustomSetupForUI(_mainTransform.gameObject);
         }
 
         protected override void SubscribeOnEvents()

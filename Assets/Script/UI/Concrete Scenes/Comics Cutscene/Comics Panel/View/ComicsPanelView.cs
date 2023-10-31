@@ -54,13 +54,13 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Panel.View
             _currentSequence.Append(_image.DOFade(1f, _settings.AppearAnimationDurationInSeconds));
             _currentSequence.Join(_transform.DOAnchorPos(_endAppearPosition, _settings.AppearAnimationDurationInSeconds)
                                             .SetEase(_settings.AppearMoveAnimationEase));
-            _currentSequence.SetLink(_transform.gameObject);
+            _currentSequence.ApplyCustomSetupForUI(_transform.gameObject);
 
             _currentSequence.OnComplete(() =>
             {
                 _currentSequence = DOTween.Sequence();
                 _currentSequence.AppendInterval(_settings.PanelDisplayTimeInSeconds);
-                _currentSequence.SetLink(_transform.gameObject);
+                _currentSequence.ApplyCustomSetupForUI(_transform.gameObject);
                 _currentSequence.OnComplete(() =>
                 {
                     IsShown = true;
@@ -80,7 +80,7 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Panel.View
             _currentSequence?.Kill(true);
             _currentSequence = DOTween.Sequence();
             _currentSequence.Append(_image.DOFade(0f, _settings.DisappearAnimationDurationInSeconds));
-            _currentSequence.SetLink(_transform.gameObject);
+            _currentSequence.ApplyCustomSetupForUI(_transform.gameObject);
             _currentSequence.OnComplete(() =>
             {
                 DisappearWithoutAnimation();

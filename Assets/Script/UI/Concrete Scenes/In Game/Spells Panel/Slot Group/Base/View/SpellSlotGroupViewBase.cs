@@ -34,7 +34,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.View
             _rectTransform.DOComplete();
             _rectTransform.DOPunchScale(_settings.EmptyAnimationPunchStrength, _settings.EmptyAnimationDuration,
                               _settings.EmptyAnimationPunchVibratoCount, _settings.EmptyAnimationPunchElasticity)
-                          .SetLink(_gameObject);
+                          .ApplyCustomSetupForUI(_gameObject);
         }
 
         private void ChangeScaleWithAnimation(float newScaleCoefficient)
@@ -43,7 +43,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.View
             Vector3 newLocalScaleValue = _defaultLocalScale * newScaleCoefficient;
             _rectTransform.DOScale(newLocalScaleValue, _settings.SelectionAnimationDuration)
                           .SetEase(_settings.SelectionAnimationEase)
-                          .SetLink(_gameObject);
+                          .ApplyCustomSetupForUI(_gameObject);
         }
     }
 }

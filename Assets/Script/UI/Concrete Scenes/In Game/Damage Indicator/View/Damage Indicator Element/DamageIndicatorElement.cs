@@ -26,7 +26,7 @@ namespace UI.Concrete_Scenes.In_Game.Damage_Indicator.View.Damage_Indicator_Elem
             sequence.Append(_indicatorImage.DOFade(1f, _settings.AppearFadeDuration).SetEase(_settings.AppearFadeEase));
             sequence.Append(_indicatorImage.DOFade(0f, _settings.DisappearFadeDuration)
                                            .SetEase(_settings.DisappearFadeEase));
-            sequence.SetLink(_indicatorImage.gameObject);
+            sequence.ApplyCustomSetupForUI(_indicatorImage.gameObject);
         }
     }
 }
