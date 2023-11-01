@@ -66,7 +66,7 @@ namespace Common.Mechanic_Effects.Continuous_Effect
         {
             _tween.Kill();
             _tween = null;
-            if (_effectCooldownCoroutine != null && _coroutineStarter != null)
+            if (_effectCooldownCoroutine != null)
             {
                 _coroutineStarter.StopCoroutine(_effectCooldownCoroutine);
                 _effectCooldownCoroutine = null;
