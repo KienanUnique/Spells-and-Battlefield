@@ -2,7 +2,7 @@
 
 namespace UI.Element
 {
-    public interface IUIElement : IUIElementModel
+    public interface IUIElement : IUISimpleElement
     {
         public void Disappear(Action callbackOnAnimationEnd);
     }

@@ -3,7 +3,7 @@ using UI.Element;
 
 namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_Level_Selector
 {
-    public interface IGameLevelSelector : IUIElementModel
+    public interface IGameLevelSelector : IUISimpleElement
     {
         public IGameLevelData SelectedLevel { get; }
     }

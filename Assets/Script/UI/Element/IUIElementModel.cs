@@ -1,8 +1,6 @@
 ﻿namespace UI.Element
 {
-    public interface IUIElementModel
+    public interface IUIElementModel : IUISimpleElement
     {
-        public void Appear();
-        public void Disappear();
     }
 }
