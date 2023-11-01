@@ -20,7 +20,6 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
             _view = view;
             selectionButton.onClick.AddListener(model.OnClicked);
             SetInitializedStatus();
-            Appear();
         }
 
         public event Action<IGameLevelItem> Selected;

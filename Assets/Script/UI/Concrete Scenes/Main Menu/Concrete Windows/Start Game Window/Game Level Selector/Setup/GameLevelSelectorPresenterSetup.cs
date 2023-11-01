@@ -33,14 +33,14 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
 
         protected override void Prepare()
         {
-            _model = new GameLevelSelectorModel();
             _presenter = GetComponent<IInitializableGameLevelSelectorPresenter>();
             _levelItems = _gameLevelItemFactory.CreateItems(_gameLevels, _scrollView);
         }
 
         protected override void Initialize()
         {
-            _presenter.Initialize(_model, new List<IGameLevelItem>(_levelItems));
+            _model = new GameLevelSelectorModel(new List<IGameLevelItem>(_levelItems));
+            _presenter.Initialize(_model);
         }
     }
 }

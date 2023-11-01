@@ -29,5 +29,17 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Model
         {
             _scenesController.LoadGameLevel(_gameLevelSelector.SelectedLevel);
         }
+
+        public override void Appear()
+        {
+            base.Appear();
+            _gameLevelSelector.Appear();
+        }
+
+        public override void Disappear()
+        {
+            base.Disappear();
+            _gameLevelSelector.Disappear();
+        }
     }
 }

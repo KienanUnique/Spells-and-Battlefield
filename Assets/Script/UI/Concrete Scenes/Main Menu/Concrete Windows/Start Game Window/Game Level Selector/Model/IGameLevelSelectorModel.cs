@@ -5,7 +5,8 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
 {
     public interface IGameLevelSelectorModel : IGameLevelSelector
     {
-        public void SetDefaultSelection(ICollection<IGameLevelItem> levelItems);
+        public ICollection<IGameLevelItem> LevelItems { get; }
+        public void SetDefaultSelection();
         public void OnLevelItemSelected(IGameLevelItem selectedItem);
     }
 }

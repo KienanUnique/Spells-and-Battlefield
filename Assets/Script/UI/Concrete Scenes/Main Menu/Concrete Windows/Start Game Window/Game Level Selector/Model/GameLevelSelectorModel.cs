@@ -8,17 +8,48 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
     public class GameLevelSelectorModel : IGameLevelSelectorModel
     {
         private IGameLevelItem _lastSelectedLevelItem;
+
+        public GameLevelSelectorModel(ICollection<IGameLevelItem> levelItems)
+        {
+            LevelItems = levelItems;
+        }
+
         public IGameLevelData SelectedLevel => _lastSelectedLevelItem.LevelData;
 
-        public void SetDefaultSelection(ICollection<IGameLevelItem> levelItems)
+        public ICollection<IGameLevelItem> LevelItems { get; }
+
+        public void SetDefaultSelection()
         {
-            levelItems.First().Select();
+            IGameLevelItem selectedItem = LevelItems.First();
+            _lastSelectedLevelItem = selectedItem;
+            selectedItem.Select();
         }
 
         public void OnLevelItemSelected(IGameLevelItem selectedItem)
         {
+            if (selectedItem == _lastSelectedLevelItem)
+            {
+                return;
+            }
+
             _lastSelectedLevelItem?.Unselect();
             _lastSelectedLevelItem = selectedItem;
+        }
+
+        public void Appear()
+        {
+            foreach (IGameLevelItem levelItem in LevelItems)
+            {
+                levelItem.Appear();
+            }
+        }
+
+        public void Disappear()
+        {
+            foreach (IGameLevelItem levelItem in LevelItems)
+            {
+                levelItem.Disappear();
+            }
         }
     }
 }
