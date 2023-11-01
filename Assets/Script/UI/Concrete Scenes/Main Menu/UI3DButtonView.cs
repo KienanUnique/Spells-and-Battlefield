@@ -7,15 +7,32 @@ namespace UI.Concrete_Scenes.Main_Menu
     {
         private const string EmissionKeyword = "_EMISSION";
         [SerializeField] private Renderer _renderer;
+        private Material _material;
+
+        private void Awake()
+        {
+            _material = _renderer.material;
+            DisableEmission();
+        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _renderer.material.EnableKeyword(EmissionKeyword);
+            EnableEmission();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _renderer.material.DisableKeyword(EmissionKeyword);
+            DisableEmission();
+        }
+
+        private void EnableEmission()
+        {
+            _material.EnableKeyword(EmissionKeyword);
+        }
+
+        private void DisableEmission()
+        {
+            _material.DisableKeyword(EmissionKeyword);
         }
     }
 }
