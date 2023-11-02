@@ -42,8 +42,10 @@ namespace Enemies.Target_Selector_From_Triggers
                 OnTargetDetected(enemyTarget);
             }
 
-            trigger.TargetDetected += OnTargetDetected;
-            trigger.TargetLost += OnTargetInTriggerLost;
+            if (IsEnabled)
+            {
+                SubscribeOnTriggerEvents(trigger);
+            }
         }
 
         public void AddTriggers(IEnumerable<IEnemyTargetTrigger> triggers)
@@ -74,8 +76,7 @@ namespace Enemies.Target_Selector_From_Triggers
         {
             foreach (IEnemyTargetTrigger trigger in _triggers)
             {
-                trigger.TargetDetected += OnTargetDetected;
-                trigger.TargetLost += OnTargetInTriggerLost;
+                SubscribeOnTriggerEvents(trigger);
             }
 
             foreach (IEnemyTarget target in _targets)
@@ -88,14 +89,25 @@ namespace Enemies.Target_Selector_From_Triggers
         {
             foreach (IEnemyTargetTrigger trigger in _triggers)
             {
-                trigger.TargetDetected -= OnTargetDetected;
-                trigger.TargetLost -= OnTargetInTriggerLost;
+                UnsubscribeFromTriggerEvents(trigger);
             }
 
             foreach (IEnemyTarget target in _targets)
             {
                 UnsubscribeFromInitializedTarget(target);
             }
+        }
+
+        private void SubscribeOnTriggerEvents(IEnemyTargetTrigger trigger)
+        {
+            trigger.TargetDetected += OnTargetDetected;
+            trigger.TargetLost += OnTargetInTriggerLost;
+        }
+
+        private void UnsubscribeFromTriggerEvents(IEnemyTargetTrigger trigger)
+        {
+            trigger.TargetDetected -= OnTargetDetected;
+            trigger.TargetLost -= OnTargetInTriggerLost;
         }
 
         private void OnTargetDetected(IEnemyTarget newTarget)
