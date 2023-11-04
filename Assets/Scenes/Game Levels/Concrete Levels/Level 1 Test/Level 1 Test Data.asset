@@ -15,4 +15,4 @@ MonoBehaviour:
   _sceneName: Level 1 Test
   _icon: {fileID: 21300000, guid: 305a245ce707ec54b91c2ea672005e74, type: 3}
   _nameToShow: Level 1 Test
-  _comicsAfterScene: {fileID: 11400000, guid: 58d6e739fe0c40a4a877112dfcb558a4, type: 2}
+  _comicsAfterScene: {fileID: 11400000, guid: b2470ea3a8606fa42b6adafa0d184f95, type: 2}

@@ -95,10 +95,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Comics Panel
       objectReference: {fileID: 0}
-    - target: {fileID: 5609488297937717360, guid: b48f0856116d52242b2c59a833f34fe7, type: 3}
-      propertyPath: _appearMoveDirection
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 7764220834141850867, guid: b48f0856116d52242b2c59a833f34fe7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8cfb7309ecb4fa14fa40431963ae59ea, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b48f0856116d52242b2c59a833f34fe7, type: 3}
 --- !u!114 &7532216537749459436 stripped
@@ -121,7 +121,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3655495157427554102, guid: 948fe67771b919848ad8076a075c3f7d, type: 3}
       propertyPath: m_Name
-      value: Comics Screen Variant 2
+      value: Comics Screen 3
       objectReference: {fileID: 0}
     - target: {fileID: 3655495157427554103, guid: 948fe67771b919848ad8076a075c3f7d, type: 3}
       propertyPath: m_Pivot.x
@@ -325,10 +325,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Comics Panel (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 5609488297937717360, guid: b48f0856116d52242b2c59a833f34fe7, type: 3}
-      propertyPath: _appearMoveDirection
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 7764220834141850867, guid: b48f0856116d52242b2c59a833f34fe7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5d1d51ce1560d254db60f4cb6c26cdaf, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b48f0856116d52242b2c59a833f34fe7, type: 3}
 --- !u!114 &3461932487560524299 stripped

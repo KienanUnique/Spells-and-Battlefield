@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca069664adab49e3ab5c2ca204639ad6, type: 3}
+  m_Name: Test Comics Data 3
+  m_EditorClassIdentifier: 
+  _screensInOrder:
+  - _prefab: {fileID: 1987859107146527571, guid: ebdf16c1d5b7ebe47ae935807b5b5877, type: 3}
+  - _prefab: {fileID: 8851882570582106224, guid: 0cfeb3a9bc272724da6e79986aa9444c, type: 3}
+  - _prefab: {fileID: 7026717689241465402, guid: d98aedde9c44ffd459c6874560b2487e, type: 3}

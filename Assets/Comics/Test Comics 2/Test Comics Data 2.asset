@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca069664adab49e3ab5c2ca204639ad6, type: 3}
-  m_Name: Test Comics Data
+  m_Name: Test Comics Data 2
   m_EditorClassIdentifier: 
   _screensInOrder:
-  - _prefab: {fileID: 1987859107146527571, guid: ed7665482e8a930499c4438b7338408c, type: 3}
-  - _prefab: {fileID: 7026717689241465402, guid: f387dfd5461b8be4992b92cc5c374dd2, type: 3}
-  - _prefab: {fileID: 7026717689241465402, guid: f6c60714a018038418e1ab073a8a5f51, type: 3}
+  - _prefab: {fileID: 3552387821940770938, guid: 0a1a6f04d4cf7c745aa860de50af9d33, type: 3}
+  - _prefab: {fileID: 3652805582690918794, guid: 23fe55a81b1f25548a9dbcb12d9d03cc, type: 3}
+  - _prefab: {fileID: 7941920727696586193, guid: 7d713e39cc9ecea40990bef5645ca72f, type: 3}
