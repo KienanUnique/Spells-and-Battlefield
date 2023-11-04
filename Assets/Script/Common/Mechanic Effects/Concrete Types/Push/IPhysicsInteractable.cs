@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Common.Mechanic_Effects.Concrete_Types.Push
 {
-    public interface IPhysicsInteractable : IPhysicsInformation
+    public interface IPhysicsInteractable : IPositionInformation
     {
         public void AddForce(Vector3 force, ForceMode mode = ForceMode.Force);
     }

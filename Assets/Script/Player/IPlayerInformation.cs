@@ -6,7 +6,7 @@ using Player.Spell_Manager;
 namespace Player
 {
     public interface IPlayerInformationProvider : ICharacterInformationProvider,
-        IPhysicsInformation,
+        IPositionInformation,
         IPlayerSpellsManagerInformation,
         IPlayerDashInformation
     {
