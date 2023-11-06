@@ -9,16 +9,25 @@ namespace Player.Camera_Effects.Settings
     {
         [SerializeField] private float _rotationAngle = 30f;
         [SerializeField] private float _rotateDuration = 0.5f;
-        [SerializeField] private float _cameraIncreasedFOV = 130f;
-        [SerializeField] private float _cameraNormalFOV = 100f;
-        [SerializeField] private float _changeCameraFOVAnimationDuration = 0.1f;
         [SerializeField] private Ease _changeCameraFOVAnimationEase = Ease.OutCubic;
+        [SerializeField] private Ease _rotationAnimationEase;
+        [SerializeField] private float _baseFOV = 100f;
+        [SerializeField] private float _dashFOV = 140f;
+        [SerializeField] private float _maximumOverSpeedFieldOfViewAdditionalValue = 40f;
+        [SerializeField] private float _onDashFOVChangeAnimationDuration = 0.1f;
+        [SerializeField] private float _overSpeedFOVChangeSpeed = 100;
+        [SerializeField] private float _maximumEffectsOverSpeedValue = 5f;
+        public float BaseFOV => _baseFOV;
+        public float DashFOV => _dashFOV;
+        public float MaximumOverSpeedFieldOfViewAdditionalValue => _maximumOverSpeedFieldOfViewAdditionalValue;
+        public float OnDashFOVChangeAnimationDuration => _onDashFOVChangeAnimationDuration;
+        public float OverSpeedFOVChangeSpeed => _overSpeedFOVChangeSpeed;
+        public Ease ChangeCameraFOVAnimationEase => _changeCameraFOVAnimationEase;
+
+        public float MaximumEffectsOverSpeedValue => _maximumEffectsOverSpeedValue;
 
         public float RotationAngle => _rotationAngle;
         public float RotateDuration => _rotateDuration;
-        public float CameraIncreasedFOV => _cameraIncreasedFOV;
-        public float CameraNormalFOV => _cameraNormalFOV;
-        public float ChangeCameraFOVAnimationDuration => _changeCameraFOVAnimationDuration;
-        public Ease ChangeCameraFOVAnimationEase => _changeCameraFOVAnimationEase;
+        public Ease RotationAnimationEase => _rotationAnimationEase;
     }
 }

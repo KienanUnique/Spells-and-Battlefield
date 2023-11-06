@@ -1,14 +1,9 @@
-﻿using DG.Tweening;
+﻿using Player.Camera_Effects.Camera_Field_Of_View_Calculator;
+using Player.Camera_Effects.Camera_Rotator;
 
 namespace Player.Camera_Effects.Settings
 {
-    public interface IPlayerCameraEffectsSettings
+    public interface IPlayerCameraEffectsSettings : IPlayerCameraRotationControllerSettings, IPlayerCameraFOVSettings
     {
-        float RotationAngle { get; }
-        float RotateDuration { get; }
-        float CameraIncreasedFOV { get; }
-        float CameraNormalFOV { get; }
-        float ChangeCameraFOVAnimationDuration { get; }
-        Ease ChangeCameraFOVAnimationEase { get; }
     }
 }

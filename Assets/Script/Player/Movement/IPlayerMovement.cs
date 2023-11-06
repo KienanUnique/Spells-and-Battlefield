@@ -6,7 +6,10 @@ using UnityEngine;
 
 namespace Player.Movement
 {
-    public interface IPlayerMovement : IMovementBase, IPlayerDashInformation, IPhysicsInteractable
+    public interface IPlayerMovement : IMovementBase,
+        IPlayerDashInformation,
+        IPhysicsInteractable,
+        IPlayerOverSpeedInformation
     {
         public event Action Land;
         public event Action GroundJump;

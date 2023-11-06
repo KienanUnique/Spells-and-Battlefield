@@ -1,61 +1,39 @@
-﻿using System;
-using DG.Tweening;
-using Player.Camera_Effects.Settings;
+﻿using Player.Camera_Effects.Camera_Field_Of_View_Calculator;
+using Player.Camera_Effects.Camera_Rotator;
 using Player.Movement;
-using UnityEngine;
 
 namespace Player.Camera_Effects
 {
     public class PlayerCameraEffects : IPlayerCameraEffects
     {
-        private readonly Transform _cachedTransform;
-        private readonly Camera _camera;
-        private readonly IPlayerCameraEffectsSettings _cameraEffectsSettings;
-        private readonly Vector3 _defaultRotation;
-        private readonly GameObject _effectsGameObject;
+        private readonly IPlayerCameraRotationController _rotationController;
+        private readonly IPlayerCameraFieldOfViewController _fieldOfViewController;
 
-        public PlayerCameraEffects(IPlayerCameraEffectsSettings cameraEffectsSettings, Camera camera,
-            GameObject effectsGameObject)
+        public PlayerCameraEffects(IPlayerCameraRotationController rotationController,
+            IPlayerCameraFieldOfViewController fieldOfViewController)
         {
-            _camera = camera;
-            _cameraEffectsSettings = cameraEffectsSettings;
-            _effectsGameObject = effectsGameObject;
-
-            _cachedTransform = _effectsGameObject.transform;
-            _defaultRotation = _cachedTransform.localRotation.eulerAngles;
-            _camera.fieldOfView = _cameraEffectsSettings.CameraNormalFOV;
+            _rotationController = rotationController;
+            _fieldOfViewController = fieldOfViewController;
         }
 
-        public void Rotate(WallDirection direction)
+        public void UpdateOverSpeedValue(float newOverSpeedValue)
         {
-            _cachedTransform.DOKill();
-            var needRotation = new Vector3(0, 0, direction switch
-            {
-                WallDirection.Left => _cameraEffectsSettings.RotationAngle * -1,
-                WallDirection.Right => _cameraEffectsSettings.RotationAngle,
-                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
-            });
-            _cachedTransform.DOLocalRotate(needRotation, _cameraEffectsSettings.RotateDuration)
-                            .SetLink(_effectsGameObject);
-        }
-
-        public void ResetRotation()
-        {
-            _cachedTransform.DOKill();
-            _cachedTransform.DOLocalRotate(_defaultRotation, _cameraEffectsSettings.RotateDuration)
-                            .SetLink(_effectsGameObject);
+            _fieldOfViewController.UpdateOverSpeedValue(newOverSpeedValue);
         }
 
         public void PlayIncreaseFieldOfViewAnimation()
         {
-            _camera.DOKill();
-            _camera.DOFieldOfView(_cameraEffectsSettings.CameraIncreasedFOV,
-                       _cameraEffectsSettings.ChangeCameraFOVAnimationDuration)
-                   .SetEase(_cameraEffectsSettings.ChangeCameraFOVAnimationEase)
-                   .OnComplete(() =>
-                       _camera.DOFieldOfView(_cameraEffectsSettings.CameraNormalFOV,
-                                  _cameraEffectsSettings.ChangeCameraFOVAnimationDuration)
-                              .SetEase(_cameraEffectsSettings.ChangeCameraFOVAnimationEase));
+            _fieldOfViewController.PlayIncreaseFieldOfViewAnimation();
+        }
+
+        public void Rotate(WallDirection direction)
+        {
+            _rotationController.Rotate(direction);
+        }
+
+        public void ResetRotation()
+        {
+            _rotationController.ResetRotation();
         }
     }
 }

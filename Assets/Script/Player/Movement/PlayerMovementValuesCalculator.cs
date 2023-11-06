@@ -22,6 +22,7 @@ namespace Player.Movement
         private Tweener _currentLocalAdditionalMaximumSpeedChangeTween;
         private Tweener _currentLocalAdditionalMaximumSpeedResetTween;
         private Vector2 _inputMoveDirection = Vector2.zero;
+        private float _currentOverSpeedRatio;
 
         public PlayerMovementValuesCalculator(IPlayerMovementSettings movementSettings,
             IReadonlyRigidbody readonlyRigidbody, ICoroutineStarter coroutineStarter) : base(movementSettings)
@@ -66,6 +67,20 @@ namespace Player.Movement
                 finalFrictionForce *= _settings.MoveForce * _currentFrictionCoefficient;
 
                 return finalFrictionForce;
+            }
+        }
+
+        public float CurrentOverSpeedingValue
+        {
+            get
+            {
+                float overSpeedValue = _readonlyRigidbody.Velocity.magnitude - BaseMaximumSpeed;
+                if (overSpeedValue < 0)
+                {
+                    overSpeedValue = 0;
+                }
+
+                return overSpeedValue;
             }
         }
 

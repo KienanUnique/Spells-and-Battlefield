@@ -84,6 +84,7 @@ namespace Player
 
         public IReadOnlyList<IAppliedContinuousEffectInformation> CurrentContinuousEffects =>
             _character.CurrentContinuousEffects;
+
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public IFaction Faction { get; private set; }
         public IReadonlyRigidbody MainRigidbody => _movement.MainRigidbody;
@@ -186,6 +187,7 @@ namespace Player
             _movement.DashAimingCanceled += OnDashAimingCanceled;
             _movement.Dashed += OnDashed;
             _movement.DashCooldownRatioChanged += OnDashCooldownRatioChanged;
+            _movement.OverSpeedValueChanged += _cameraEffects.UpdateOverSpeedValue;
 
             _character.CharacterStateChanged += OnCharacterStateChanged;
             _character.HitPointsCountChanged += OnHitPointsCountChanged;
@@ -224,6 +226,7 @@ namespace Player
             _movement.DashAimingCanceled -= OnDashAimingCanceled;
             _movement.Dashed -= OnDashed;
             _movement.DashCooldownRatioChanged -= OnDashCooldownRatioChanged;
+            _movement.OverSpeedValueChanged -= _cameraEffects.UpdateOverSpeedValue;
 
             _character.CharacterStateChanged -= OnCharacterStateChanged;
             _character.HitPointsCountChanged -= OnHitPointsCountChanged;

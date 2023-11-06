@@ -10,6 +10,7 @@ namespace Player.Movement
         public float DashForce { get; }
         public Vector3 MoveForce { get; }
         public Vector3 FrictionForce { get; }
+        public float CurrentOverSpeedingValue { get; }
         public void ChangeFrictionCoefficient(float newFrictionCoefficient);
         public void ChangePlayerInputForceMultiplier(float newPlayerInputForceMultiplier);
         public void ChangeGravityForceMultiplier(float newGravityForceMultiplier);

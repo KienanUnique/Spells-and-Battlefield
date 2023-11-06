@@ -14,6 +14,8 @@ using Common.Settings.Ground_Layer_Mask;
 using Enemies.Spawn.Factory;
 using Enemies.Trigger;
 using Player.Camera_Effects;
+using Player.Camera_Effects.Camera_Field_Of_View_Calculator;
+using Player.Camera_Effects.Camera_Rotator;
 using Player.Character;
 using Player.Look;
 using Player.Movement;
@@ -109,7 +111,11 @@ namespace Player.Setup
             _playerCharacter = playerCharacter;
 
             _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator, _settings.Visual);
-            _playerCameraEffects = new PlayerCameraEffects(_settings.CameraEffects, _camera, _cameraEffectsGameObject);
+            var cameraFieldOfViewController =
+                new PlayerCameraFieldOfViewController(_settings.CameraEffects, _camera, this);
+            var cameraRotationController =
+                new PlayerCameraRotationController(_cameraEffectsGameObject.transform, _settings.CameraEffects);
+            _playerCameraEffects = new PlayerCameraEffects(cameraRotationController, cameraFieldOfViewController);
 
             _cameraTransform = new ReadonlyTransform(_camera.transform);
         }

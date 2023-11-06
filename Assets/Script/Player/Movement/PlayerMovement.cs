@@ -28,6 +28,7 @@ namespace Player.Movement
         private readonly ICoroutineStarter _coroutineStarter;
         private readonly ValueWithReactionOnChange<MovingState> _currentMovingState;
         private readonly ValueWithReactionOnChange<WallDirection> _currentWallDirection;
+        private readonly ValueWithReactionOnChange<float> _currentOverSpeedValue;
         private readonly IGroundChecker _groundChecker;
         private readonly IPlayerMovementSettings _movementSettings;
         private readonly IWallChecker _wallChecker;
@@ -58,10 +59,11 @@ namespace Player.Movement
 
             _currentMovingState = new ValueWithReactionOnChange<MovingState>(MovingState.NotInitialized);
             _currentWallDirection = new ValueWithReactionOnChange<WallDirection>(WallDirection.Right);
+            _currentOverSpeedValue = new ValueWithReactionOnChange<float>(0);
 
             _airCoyoteTimeWaiter = new CoyoteTimeWaiter(_coroutineStarter);
 
-            _coroutineStarter.StartCoroutine(HandleInputMovement());
+            _coroutineStarter.StartCoroutine(HandleMovementContinuously());
             _coroutineStarter.StartCoroutine(UpdateRatioOfCurrentVelocityToMaximumVelocity());
 
             CurrentDashCooldownRatio = 1f;
@@ -82,6 +84,7 @@ namespace Player.Movement
         public event Action<WallDirection> StartWallRunning;
         public event Action<WallDirection> WallRunningDirectionChanged;
         public event Action EndWallRunning;
+        public event Action<float> OverSpeedValueChanged;
 
         private enum MovingState
         {
@@ -93,13 +96,14 @@ namespace Player.Movement
             DashAiming
         }
 
-        public Vector3 CurrentPosition => _rigidbody.position;
-        public IReadonlyTransform MainTransform => MainRigidbody;
         public float CurrentDashCooldownRatio { get; private set; }
-
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
         public IReadonlyRigidbody MainRigidbody { get; }
+        public float CurrentOverSpeedRatio => _currentOverSpeedValue.Value;
+
+        public Vector3 CurrentPosition => _rigidbody.position;
+        public IReadonlyTransform MainTransform => MainRigidbody;
 
         protected override IMovementValuesCalculator MovementValuesCalculator => _movementValuesCalculator;
 
@@ -197,6 +201,7 @@ namespace Player.Movement
             _currentMovingState.BeforeValueChanged += OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged += OnAfterMovingStateChanged;
             _currentWallDirection.AfterValueChanged += OnWallDirectionChanged;
+            _currentOverSpeedValue.AfterValueChanged += OnOverSpeedValueChanged;
         }
 
         protected override void UnsubscribeFromEvents()
@@ -207,9 +212,10 @@ namespace Player.Movement
             _currentMovingState.BeforeValueChanged -= OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged -= OnAfterMovingStateChanged;
             _currentWallDirection.AfterValueChanged -= OnWallDirectionChanged;
+            _currentOverSpeedValue.AfterValueChanged -= OnOverSpeedValueChanged;
         }
 
-        private IEnumerator HandleInputMovement()
+        private IEnumerator HandleMovementContinuously()
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
@@ -221,6 +227,7 @@ namespace Player.Movement
                 if (_speedLimitationEnabled)
                 {
                     TryLimitCurrentSpeed();
+                    _currentOverSpeedValue.Value = _movementValuesCalculator.CurrentOverSpeedingValue;
                 }
 
                 yield return waitForFixedUpdate;
@@ -335,6 +342,11 @@ namespace Player.Movement
             Vector3 closestPoint = _wallChecker.Colliders[0].ClosestPoint(CurrentPosition);
             float dot = Vector3.Dot(_cashedTransform.right, closestPoint - CurrentPosition);
             return dot < 0 ? WallDirection.Left : WallDirection.Right;
+        }
+
+        private void OnOverSpeedValueChanged(float newRatio)
+        {
+            OverSpeedValueChanged?.Invoke(newRatio);
         }
 
         private void OnBeforeMovingStateChanged(MovingState movingState)
