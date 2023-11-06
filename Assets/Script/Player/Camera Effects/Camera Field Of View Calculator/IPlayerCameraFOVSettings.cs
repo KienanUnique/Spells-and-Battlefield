@@ -10,6 +10,6 @@ namespace Player.Camera_Effects.Camera_Field_Of_View_Calculator
         public float OnDashFOVChangeAnimationDuration { get; }
         public float OverSpeedFOVChangeSpeed { get; }
         public Ease ChangeCameraFOVAnimationEase { get; }
-        public float MaximumEffectsOverSpeedValue { get; }
+        public float MaximumOverSpeedValueForFieldOfView { get; }
     }
 }

@@ -15,6 +15,7 @@ using Enemies.Spawn.Factory;
 using Enemies.Trigger;
 using Player.Camera_Effects;
 using Player.Camera_Effects.Camera_Field_Of_View_Calculator;
+using Player.Camera_Effects.Camera_Particle_System_Controller;
 using Player.Camera_Effects.Camera_Rotator;
 using Player.Character;
 using Player.Look;
@@ -44,6 +45,7 @@ namespace Player.Setup
         [SerializeField] private Transform _objectToRotateHorizontally;
         [SerializeField] private GameObject _cameraEffectsGameObject;
         [SerializeField] private Camera _camera;
+        [SerializeField] private ParticleSystem _windTrailsParticleSystem;
 
         [Header("Animations")]
         [SerializeField]
@@ -115,7 +117,10 @@ namespace Player.Setup
                 new PlayerCameraFieldOfViewController(_settings.CameraEffects, _camera, this);
             var cameraRotationController =
                 new PlayerCameraRotationController(_cameraEffectsGameObject.transform, _settings.CameraEffects);
-            _playerCameraEffects = new PlayerCameraEffects(cameraRotationController, cameraFieldOfViewController);
+            var particleSystemController =
+                new PlayerCameraParticleSystemController(_settings.CameraEffects, _windTrailsParticleSystem);
+            _playerCameraEffects = new PlayerCameraEffects(cameraRotationController, cameraFieldOfViewController,
+                particleSystemController);
 
             _cameraTransform = new ReadonlyTransform(_camera.transform);
         }

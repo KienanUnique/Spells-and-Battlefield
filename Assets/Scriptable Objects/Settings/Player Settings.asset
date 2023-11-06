@@ -15,10 +15,16 @@ MonoBehaviour:
   _cameraEffects:
     _rotationAngle: 30
     _rotateDuration: 0.5
-    _cameraIncreasedFOV: 130
-    _cameraNormalFOV: 100
-    _changeCameraFOVAnimationDuration: 0.1
+    _rotationAnimationEase: 9
     _changeCameraFOVAnimationEase: 9
+    _baseFOV: 100
+    _dashFOV: 140
+    _maximumOverSpeedFieldOfViewAdditionalValue: 15
+    _onDashFOVChangeAnimationDuration: 0.15
+    _overSpeedFOVChangeSpeed: 3
+    _maximumOverSpeedValueForFieldOfView: 5
+    _overSpeedMaximumEmissionRateOverTime: 200
+    _maximumOverSpeedValueForWindTrailEffect: 10
   _look:
     _upperLimit: -40
     _bottomLimit: 70
@@ -38,6 +44,11 @@ MonoBehaviour:
     _dashSpeedLimitationsDisablingForSeconds: 0.3
     _coyoteTimeInSeconds: 0.1
     _flyingFrictionCoefficient: 0.2
+    _groundDecreaseAdditionalMaximumSpeedAcceleration: 5
+    _airDecreaseAdditionalMaximumSpeedAcceleration: 1
+    _wallRunningIncreaseAdditionalMaximumSpeedAcceleration: 4
+    _wallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration: 20
+    _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration: 99
   _character:
     _maximumCountOfHitPoints: 30
   _spellManager:

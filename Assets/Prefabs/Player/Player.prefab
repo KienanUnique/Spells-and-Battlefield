@@ -288,6 +288,7 @@ MonoBehaviour:
   _objectToRotateHorizontally: {fileID: 974464277607573819}
   _cameraEffectsGameObject: {fileID: 4385135920744681487}
   _camera: {fileID: 3951135657180910355}
+  _windTrailsParticleSystem: {fileID: 8412427257372274950}
   _rigBuilder: {fileID: 3163376710727498730}
   _characterAnimator: {fileID: 1856917474014603066}
   _eventInvokerForAnimations: {fileID: 7250497769501624016}
@@ -959,6 +960,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
+--- !u!4 &8708750814936419678 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2603915469980412318, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
+  m_PrefabInstance: {fileID: 6699462797601694912}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2177620501649150899 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4810182657626978163, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
@@ -1322,11 +1328,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4104990407734179105, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
   m_PrefabInstance: {fileID: 6699462797601694912}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8708750814936419678 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2603915469980412318, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-  m_PrefabInstance: {fileID: 6699462797601694912}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1999111209708566187 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5136074892140106347, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
@@ -1339,6 +1340,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3951135657180910357}
     m_Modifications:
+    - target: {fileID: 547244824025132520, guid: bc57414bf104d294182ef379dc5a9c02, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3267896517847758117, guid: bc57414bf104d294182ef379dc5a9c02, type: 3}
       propertyPath: m_Name
       value: Overspeed Camera Effect
@@ -1389,6 +1394,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc57414bf104d294182ef379dc5a9c02, type: 3}
+--- !u!198 &8412427257372274950 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 547244824025132520, guid: bc57414bf104d294182ef379dc5a9c02, type: 3}
+  m_PrefabInstance: {fileID: 8297537348557380846}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2928446897585215430 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6594721972333431592, guid: bc57414bf104d294182ef379dc5a9c02, type: 3}

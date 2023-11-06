@@ -33,13 +33,13 @@ namespace Player.Camera_Effects.Camera_Field_Of_View_Calculator
             {
                 overSpeedRatio = 0f;
             }
-            else if (newOverSpeedValue >= _settings.MaximumEffectsOverSpeedValue)
+            else if (newOverSpeedValue >= _settings.MaximumOverSpeedValueForFieldOfView)
             {
                 overSpeedRatio = 1f;
             }
             else
             {
-                overSpeedRatio = newOverSpeedValue / _settings.MaximumEffectsOverSpeedValue;
+                overSpeedRatio = newOverSpeedValue / _settings.MaximumOverSpeedValueForFieldOfView;
             }
 
             _currentTargetFOV =
