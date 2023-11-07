@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Common.Interfaces;
+using Common.Mechanic_Effects.Continuous_Effect.Information_For_Creation;
 using Common.Mechanic_Effects.Source;
 using DG.Tweening;
 using UnityEngine;
@@ -13,21 +14,23 @@ namespace Common.Mechanic_Effects.Continuous_Effect
         private readonly float _cooldownInSeconds;
         private readonly List<IMechanicEffect> _mechanics;
         private readonly bool _needIgnoreCooldown;
+        private readonly IInteractable _target;
+        private readonly IEffectSourceInformation _effectSourceInformation;
         private ICoroutineStarter _coroutineStarter;
-        private IInteractable _target;
-        private IEffectSourceInformation _effectSourceInformation;
         private float _passedSeconds;
         private Coroutine _effectCooldownCoroutine;
         private Tween _tween;
 
-        public ContinuousEffect(float cooldownInSeconds, List<IMechanicEffect> mechanics, float durationInSeconds,
-            bool needIgnoreCooldown, Sprite icon)
+        public ContinuousEffect(IContinuousEffectInformationForCreation continuousEffectInformationForCreation,
+            IInteractable target)
         {
-            _cooldownInSeconds = cooldownInSeconds;
-            DurationInSeconds = durationInSeconds;
-            _needIgnoreCooldown = needIgnoreCooldown;
-            _mechanics = mechanics;
-            Icon = icon;
+            _cooldownInSeconds = continuousEffectInformationForCreation.CooldownInSeconds;
+            DurationInSeconds = continuousEffectInformationForCreation.DurationInSeconds;
+            _needIgnoreCooldown = continuousEffectInformationForCreation.NeedIgnoreCooldown;
+            _mechanics = continuousEffectInformationForCreation.Mechanics;
+            Icon = continuousEffectInformationForCreation.Icon;
+            _target = target;
+            _effectSourceInformation = new EffectSourceInformation(EffectSourceType.Local, _target.MainTransform);
         }
 
         public event Action<IContinuousEffect> EffectEnded;
@@ -40,6 +43,11 @@ namespace Common.Mechanic_Effects.Continuous_Effect
 
         public void Start(ICoroutineStarter coroutineStarter, GameObject gameObjectToLink)
         {
+            if (_coroutineStarter != null || _effectCooldownCoroutine != null || _tween != null)
+            {
+                throw new InvalidOperationException("ContinuousEffect Start method was called more than once");
+            }
+
             _coroutineStarter = coroutineStarter;
             _passedSeconds = 0f;
             _tween = DOTween
@@ -83,12 +91,6 @@ namespace Common.Mechanic_Effects.Continuous_Effect
             }
 
             EffectEnded?.Invoke(this);
-        }
-
-        public void SetTarget(IInteractable target)
-        {
-            _target = target;
-            _effectSourceInformation = new EffectSourceInformation(EffectSourceType.Local, _target.MainTransform);
         }
 
         private void ApplyEffects()

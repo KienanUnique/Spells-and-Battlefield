@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common.Mechanic_Effects.Continuous_Effect;
+using Common.Mechanic_Effects.Continuous_Effect.Factory;
+using Common.Mechanic_Effects.Continuous_Effect.Information_For_Creation;
 using Common.Mechanic_Effects.Scriptable_Objects;
 using UnityEngine;
 
@@ -20,13 +22,14 @@ namespace Common.Mechanic_Effects.Concrete_Types
             var spellMechanicEffects = new List<IMechanicEffect>();
             _mechanicEffects.ForEach(effectScriptableObject =>
                 spellMechanicEffects.Add(effectScriptableObject.GetImplementationObject()));
-            return new ContinuousMechanicImplementation(new ContinuousEffect(_cooldownInSeconds, spellMechanicEffects,
-                _durationInSeconds, _needIgnoreCooldown, _icon));
+            var informationForCreation = new ContinuousEffectInformationForCreation(_cooldownInSeconds,
+                spellMechanicEffects, _durationInSeconds, _needIgnoreCooldown, _icon);
+            return new ContinuousMechanicImplementation(new ContinuousEffectFactory(informationForCreation));
         }
 
         private class ContinuousMechanicImplementation : ContinuousMechanicEffectImplementationBase
         {
-            public ContinuousMechanicImplementation(IContinuousEffect effect) : base(effect)
+            public ContinuousMechanicImplementation(IContinuousEffectFactory effectFactory) : base(effectFactory)
             {
             }
         }
