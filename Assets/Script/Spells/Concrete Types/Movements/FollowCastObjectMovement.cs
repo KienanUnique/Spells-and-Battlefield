@@ -1,3 +1,4 @@
+using System.Collections;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
@@ -18,19 +19,30 @@ namespace Spells.Concrete_Types.Movements
 
         private class FollowCastObjectMovementImplementation : SpellMovementImplementationBase
         {
-            public override void UpdatePosition()
-            {
-                if (Caster == null)
-                {
-                    return;
-                }
-
-                _spellRigidbody.position = Caster.MainTransform.Position;
-            }
+            private Coroutine _moveCoroutine;
 
             public override ILookPointCalculator GetLookPointCalculator()
             {
                 return new FollowVelocityDirectionLookPointCalculator();
+            }
+
+            public override void StartMoving()
+            {
+                _moveCoroutine = _coroutineStarter.StartCoroutine(FollowCastObject());
+            }
+
+            public override void StopMoving()
+            {
+                _coroutineStarter.StopCoroutine(_moveCoroutine);
+            }
+
+            private IEnumerator FollowCastObject()
+            {
+                while (true)
+                {
+                    _spellRigidbody.position = Caster.MainTransform.Position;
+                    yield return null;
+                }
             }
         }
     }

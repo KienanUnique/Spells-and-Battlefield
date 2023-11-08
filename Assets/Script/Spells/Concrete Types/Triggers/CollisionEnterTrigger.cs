@@ -10,23 +10,33 @@ namespace Spells.Concrete_Types.Triggers
     public class CollisionEnterTrigger : SpellTriggerScriptableObject
     {
         [SerializeField] private float _timeBeforeFinishTrigger;
+        [SerializeField] private bool _ignoreCaster;
 
         public override ISpellTrigger GetImplementationObject()
         {
-            return new CollisionEnterTriggerImplementation(_timeBeforeFinishTrigger);
+            return new CollisionEnterTriggerImplementation(_timeBeforeFinishTrigger, _ignoreCaster);
         }
 
         private class CollisionEnterTriggerImplementation : SpellTriggerImplementationBase
         {
             private readonly float _timeBeforeFinishTrigger;
+            private readonly bool _ignoreCaster;
 
-            public CollisionEnterTriggerImplementation(float timeBeforeFinishTrigger)
+            public CollisionEnterTriggerImplementation(float timeBeforeFinishTrigger, bool ignoreCaster)
             {
                 _timeBeforeFinishTrigger = timeBeforeFinishTrigger;
+                _ignoreCaster = ignoreCaster;
             }
 
             public override SpellTriggerCheckStatusEnum CheckContact(Collider other)
             {
+                if (_ignoreCaster &&
+                    other.TryGetComponent(out ISpellInteractable spellInteractable) &&
+                    Caster == spellInteractable)
+                {
+                    return SpellTriggerCheckStatusEnum.Ignore;
+                }
+
                 return SpellTriggerCheckStatusEnum.Finish;
             }
 

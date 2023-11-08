@@ -1,3 +1,5 @@
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Common.Interfaces;
 using Spells.Factory;
 using Spells.Spell.Interfaces;
 using UnityEngine;
@@ -5,10 +7,11 @@ using UnityEngine;
 namespace Spells.Controllers
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class SingleSpellObjectController : MonoBehaviour, ISpellObjectController
+    public class SingleSpellObjectController : InitializableMonoBehaviourBase,
+        IInitializableSpellObjectController,
+        ICoroutineStarter
     {
         private ICaster _caster;
-        private SpellControllerStatus _controllerStatus = SpellControllerStatus.NonInitialized;
         private float _initializeTime;
         private Rigidbody _rigidbody;
         private ISpellDataForSpellController _spellData;
@@ -20,30 +23,27 @@ namespace Spells.Controllers
             _spellObjectsFactory = spellObjectsFactory;
             _caster = caster;
             _spellData = spellData;
-            _spellData.Initialize(_rigidbody, caster);
-
+            _rigidbody = GetComponent<Rigidbody>();
+            _spellData.Initialize(_rigidbody, caster, this);
             _initializeTime = Time.time;
-            _controllerStatus = SpellControllerStatus.Active;
-        }
-
-        private enum SpellControllerStatus
-        {
-            NonInitialized, Active, Finished
+            SetInitializedStatus();
+            _spellData.SpellObjectMovement.StartMoving();
         }
 
         private float TimePassedFromInitialize => Time.time - _initializeTime;
 
-        private void Awake()
+        protected override void SubscribeOnEvents()
         {
-            _rigidbody = GetComponent<Rigidbody>();
+        }
+
+        protected override void UnsubscribeFromEvents()
+        {
         }
 
         private void FixedUpdate()
         {
-            if (_controllerStatus == SpellControllerStatus.Active)
+            if (CurrentInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Initialized)
             {
-                _spellData.SpellObjectMovement.UpdatePosition();
-
                 float commonTimePassedFromInitialize = TimePassedFromInitialize;
                 _spellData.SpellAppliers.ForEach(spellApplier =>
                     spellApplier.CheckTime(commonTimePassedFromInitialize));
@@ -58,7 +58,8 @@ namespace Spells.Controllers
                 otherAsSpellInteractable.InteractAsSpellType(_spellData.SpellType);
             }
 
-            if (!other.isTrigger && _controllerStatus == SpellControllerStatus.Active)
+            if (!other.isTrigger &&
+                CurrentInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Initialized)
             {
                 _spellData.SpellAppliers.ForEach(spellApplier => spellApplier.CheckContact(other));
                 HandleSpellTriggerResponse(_spellData.SpellMainTrigger.CheckContact(other));
@@ -75,7 +76,6 @@ namespace Spells.Controllers
 
         private void HandleFinishSpell()
         {
-            _controllerStatus = SpellControllerStatus.Finished;
             _spellData.SpellAppliers.ForEach(applier => applier.HandleRollbackableEffects());
             _spellData.NextSpellsOnFinish.ForEach(spell =>
             {
@@ -83,6 +83,7 @@ namespace Spells.Controllers
                 _spellObjectsFactory.Create(spell.SpellDataForSpellController, spell.SpellPrefabProvider, _caster,
                     spellTransform.position, spellTransform.rotation);
             });
+            _spellData.SpellObjectMovement.StopMoving();
             Destroy(gameObject);
         }
     }

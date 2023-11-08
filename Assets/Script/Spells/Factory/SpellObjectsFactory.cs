@@ -18,7 +18,7 @@ namespace Spells.Factory
             ICaster caster, Vector3 spawnPosition, Quaternion spawnRotation)
         {
             var spellController =
-                InstantiatePrefabForComponent<ISpellObjectController>(spellPrefabProvider, spawnPosition,
+                InstantiatePrefabForComponent<IInitializableSpellObjectController>(spellPrefabProvider, spawnPosition,
                     spawnRotation);
             spellController.Initialize(spellData, caster, this);
         }

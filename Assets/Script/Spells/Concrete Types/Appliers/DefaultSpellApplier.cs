@@ -44,12 +44,13 @@ namespace Spells.Concrete_Types.Appliers
                 _spellTrigger = spellTrigger;
             }
 
-            public override void Initialize(Rigidbody spellRigidbody, ICaster caster)
+            public override void Initialize(Rigidbody spellRigidbody, ICaster caster,
+                ICoroutineStarter coroutineStarter)
             {
                 var spellImplementations = new List<ISpellImplementation> {_targetSelector, _spellTrigger};
 
                 spellImplementations.ForEach(spellImplementation =>
-                    spellImplementation.Initialize(spellRigidbody, caster));
+                    spellImplementation.Initialize(spellRigidbody, caster, coroutineStarter));
 
                 _effectSourceInformation = new EffectSourceInformation(EffectSourceType.External,
                     new ReadonlyTransform(spellRigidbody.transform));

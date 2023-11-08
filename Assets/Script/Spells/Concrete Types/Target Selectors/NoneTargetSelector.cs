@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Common.Interfaces;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Spells.Concrete_Types.Target_Selectors
 
         private class NoneSelectorImplementation : ISpellTargetSelector
         {
-            public void Initialize(Rigidbody spellRigidbody, ICaster caster)
+            public void Initialize(Rigidbody spellRigidbody, ICaster caster, ICoroutineStarter coroutineStarter)
             {
             }
 

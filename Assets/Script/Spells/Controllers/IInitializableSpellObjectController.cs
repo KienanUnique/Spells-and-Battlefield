@@ -3,7 +3,7 @@ using Spells.Spell.Interfaces;
 
 namespace Spells.Controllers
 {
-    public interface ISpellObjectController
+    public interface IInitializableSpellObjectController
     {
         public void Initialize(ISpellDataForSpellController spellData, ICaster caster,
             ISpellObjectsFactory spellObjectsFactory);

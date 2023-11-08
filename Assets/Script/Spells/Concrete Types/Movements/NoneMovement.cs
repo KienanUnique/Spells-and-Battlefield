@@ -1,3 +1,4 @@
+using Common.Interfaces;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
@@ -17,17 +18,21 @@ namespace Spells.Concrete_Types.Movements
 
         private class NoneMovementImplementation : ISpellMovementWithLookPointCalculator
         {
-            public void Initialize(Rigidbody spellRigidbody, ICaster caster)
-            {
-            }
-
-            public void UpdatePosition()
+            public void Initialize(Rigidbody spellRigidbody, ICaster caster, ICoroutineStarter coroutineStarter)
             {
             }
 
             public ILookPointCalculator GetLookPointCalculator()
             {
                 return new KeepLookDirectionLookPointCalculator();
+            }
+
+            public void StartMoving()
+            {
+            }
+
+            public void StopMoving()
+            {
             }
         }
     }

@@ -27,15 +27,19 @@ namespace Spells.Concrete_Types.Movements
                 _speed = speed;
             }
 
-            public override void UpdatePosition()
-            {
-                _spellRigidbody.MovePosition(_spellRigidbodyTransform.position +
-                                             _speed * Time.deltaTime * _spellRigidbodyTransform.forward);
-            }
-
             public override ILookPointCalculator GetLookPointCalculator()
             {
                 return new ProjectileLookPointCalculator(_speed);
+            }
+
+            public override void StartMoving()
+            {
+                _spellRigidbody.AddForce(_speed * _spellTransform.forward, ForceMode.VelocityChange);
+            }
+
+            public override void StopMoving()
+            {
+                _spellRigidbody.velocity = Vector3.zero;
             }
         }
     }

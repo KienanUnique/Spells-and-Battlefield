@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Common.Interfaces;
 using Spells.Implementations_Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell.Interfaces;
@@ -18,12 +19,12 @@ namespace Spells.Spell.Implementations
             SpellType = spellType;
         }
 
-        public void Initialize(Rigidbody spellRigidbody, ICaster caster)
+        public void Initialize(Rigidbody spellRigidbody, ICaster caster, ICoroutineStarter coroutineStarter)
         {
             var spellImplementations = new List<ISpellImplementation> {SpellObjectMovement, SpellMainTrigger};
             spellImplementations.AddRange(SpellAppliers);
 
-            spellImplementations.ForEach(spellImplementation => spellImplementation.Initialize(spellRigidbody, caster));
+            spellImplementations.ForEach(spellImplementation => spellImplementation.Initialize(spellRigidbody, caster, coroutineStarter));
         }
 
         public List<ISpell> NextSpellsOnFinish { get; }

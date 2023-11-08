@@ -10,7 +10,7 @@ namespace Spells.Concrete_Types.Target_Selectors
         menuName = ScriptableObjectsMenuDirectories.SpellTargetSelectorDirectory + "Sphere Enemy Selector", order = 0)]
     public class SphereSelector : SpellTargetSelectorScriptableObject
     {
-        [SerializeField] private float _sphereRadius;
+        [SerializeField] private float _sphereRadius = 0.7f;
         [SerializeField] private bool _ignoreCaster;
 
         public override ISpellTargetSelector GetImplementationObject()

@@ -1,3 +1,4 @@
+using System.Collections;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
@@ -12,8 +13,8 @@ namespace Spells.Concrete_Types.Movements
         order = 0)]
     public class RotatingAroundCasterMovement : SpellMovementScriptableObject
     {
-        [SerializeField] private float _speed;
-        [SerializeField] private float _radius;
+        [SerializeField] private float _speed = 700;
+        [SerializeField] private float _radius = 3;
 
         public override ISpellMovementWithLookPointCalculator GetImplementationObject()
         {
@@ -24,6 +25,8 @@ namespace Spells.Concrete_Types.Movements
         {
             private readonly float _radius;
             private readonly float _speed;
+            private float _currentAngle;
+            private Coroutine _moveCoroutine;
 
             public RotatingAroundCasterMovementImplementation(float speed, float radius)
             {
@@ -31,30 +34,41 @@ namespace Spells.Concrete_Types.Movements
                 _radius = radius;
             }
 
-            public override void UpdatePosition()
+            public override ILookPointCalculator GetLookPointCalculator()
+            {
+                return new KeepLookDirectionLookPointCalculator();
+            }
+
+            public override void StartMoving()
             {
                 if (Caster == null)
                 {
                     return;
                 }
 
-                Vector3 fromCastObjectPosition = Caster.MainTransform.Position;
-                if (!Mathf.Approximately(_radius,
-                        Vector3.Distance(fromCastObjectPosition, _spellRigidbodyTransform.position)))
-                {
-                    Vector3 direction = (_spellRigidbodyTransform.position - fromCastObjectPosition).normalized;
-                    Vector3 needPosition = fromCastObjectPosition + direction * _radius;
-                    needPosition.y = fromCastObjectPosition.y;
-                    _spellRigidbodyTransform.position = needPosition;
-                }
-
-                _spellRigidbodyTransform.RotateAround(fromCastObjectPosition, _spellRigidbodyTransform.up,
-                    _speed * Time.fixedDeltaTime);
+                _moveCoroutine = _coroutineStarter.StartCoroutine(RotateAroundCastObject());
             }
 
-            public override ILookPointCalculator GetLookPointCalculator()
+            public override void StopMoving()
             {
-                return new KeepLookDirectionLookPointCalculator();
+                _coroutineStarter.StopCoroutine(_moveCoroutine);
+            }
+
+            private IEnumerator RotateAroundCastObject()
+            {
+                while (true)
+                {
+                    _currentAngle += _speed * Time.deltaTime;
+                    if (_currentAngle > 360)
+                    {
+                        _currentAngle -= 360;
+                    }
+
+                    Vector3 orbit = Vector3.forward * _radius;
+                    orbit = Quaternion.Euler(0, _currentAngle, 0) * orbit;
+                    _spellRigidbody.MovePosition(Caster.MainTransform.Position + orbit);
+                    yield return null;
+                }
             }
         }
     }
