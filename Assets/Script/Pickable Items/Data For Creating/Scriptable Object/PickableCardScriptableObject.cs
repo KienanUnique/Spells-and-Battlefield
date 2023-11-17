@@ -8,10 +8,10 @@ namespace Pickable_Items.Data_For_Creating.Scriptable_Object
     public abstract class PickableCardScriptableObjectBase : PickableItemScriptableObjectBase,
         IPickableCardDataForCreating
     {
-        [SerializeField] private PickableCardPrefabProvider _prefabProvider;
+        [SerializeField] private PickableCardPrefabProvider _pickableCardPrefabProvider;
         [SerializeField] private CardInformation _cardInformation;
         public ICardInformation CardInformation => _cardInformation;
 
-        public override IPickableItemPrefabProvider PickableItemPrefabProvider => _prefabProvider;
+        public override IPickableItemPrefabProvider PickableItemPrefabProvider => _pickableCardPrefabProvider;
     }
 }

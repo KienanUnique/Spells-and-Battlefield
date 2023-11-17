@@ -1,159 +1,221 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using Common;
 using Common.Abstract_Bases.Disableable;
 using Common.Animation_Data;
 using Common.Collection_With_Reaction_On_Change;
-using Common.Readonly_Transform;
-using ModestTree;
+using Player.Spell_Manager.Spell_Handlers;
+using Player.Spell_Manager.Spell_Handlers.Continuous;
+using Player.Spell_Manager.Spell_Handlers.Instant;
+using Player.Spell_Manager.Spells_Selector;
 using Spells;
-using Spells.Factory;
+using Spells.Controllers.Concrete_Types.Continuous;
+using Spells.Controllers.Concrete_Types.Instant;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
-using Spells.Spell_Types_Settings;
-using UnityEngine;
 
 namespace Player.Spell_Manager
 {
-    public class PlayerSpellsManager : BaseWithDisabling, IPlayerSpellsManager
+    public class PlayerSpellsManager : BaseWithDisabling, IPlayerSpellsManager, ISpellHandler
     {
-        private readonly ISpellType _lastChanceSpellType;
-        private readonly ICaster _player;
-        private readonly ValueWithReactionOnChange<int> _selectedSpellTypeIndex;
-        private readonly ISpellObjectsFactory _spellObjectsFactory;
-        private readonly IReadonlyTransform _spellSpawnObject;
-        private readonly Dictionary<ISpellType, ListWithReactionOnChange<ISpell>> _spellsStorage;
-        private readonly ISpellType[] _spellTypesInOrder;
-        private bool _isWaitingForAnimationEnd;
-        private IList<ISpell> _spellGroupFromWhichToCreateSpell;
-        private ISpell _spellToCreate;
-        private ISpellType _typeOfSpellToCreate;
+        private readonly IPlayerContinuousSpellHandler _continuousSpellHandler;
+        private readonly IPlayerInstantSpellHandler _instantSpellHandler;
+        private readonly IPlayerSpellsSelectorForSpellManager _spellsSelector;
+        private bool _needCast;
+        private bool _isAnimatorReady = true;
+        private IPlayerSpellsHandler _currentSpellsHandler;
 
-        public PlayerSpellsManager(List<ISpell> startTestSpells, IReadonlyTransform spellSpawnObject, ICaster player,
-            ISpellObjectsFactory spellObjectsFactory, ISpellTypesSetting spellTypesSetting)
+        public PlayerSpellsManager(IPlayerContinuousSpellHandler continuousSpellHandler,
+            IPlayerInstantSpellHandler instantSpellHandler, IPlayerSpellsSelectorForSpellManager spellsSelector)
         {
-            _spellSpawnObject = spellSpawnObject;
-            _player = player;
-            _spellObjectsFactory = spellObjectsFactory;
-            _spellTypesInOrder = spellTypesSetting.TypesListInOrder.ToArray();
-            _spellsStorage = new Dictionary<ISpellType, ListWithReactionOnChange<ISpell>>();
-            foreach (ISpellType type in spellTypesSetting.TypesListInOrder)
-            {
-                _spellsStorage.Add(type, new ListWithReactionOnChange<ISpell>());
-            }
-
-            Spells = new ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>>(
-                _spellsStorage.ToDictionary(keyValuePair => keyValuePair.Key,
-                    keyValuePair => (IReadonlyListWithReactionOnChange<ISpell>) keyValuePair.Value));
-
-            startTestSpells.ForEach(AddSpell);
-            _selectedSpellTypeIndex = new ValueWithReactionOnChange<int>(0);
-            _lastChanceSpellType = spellTypesSetting.LastChanceSpellType;
+            _continuousSpellHandler = continuousSpellHandler;
+            _instantSpellHandler = instantSpellHandler;
+            _spellsSelector = spellsSelector;
         }
 
-        public event Action<IAnimationData> NeedPlaySpellAnimation;
+        public event Action<IAnimationData> NeedPlaySingleActionAnimation;
+        public event Action<IContinuousActionAnimationData> NeedPlayContinuousActionAnimation;
+        public event Action NeedCancelActionAnimations;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
 
-        public ISpellType SelectedSpellType => _spellTypesInOrder[_selectedSpellTypeIndex.Value];
-        public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells { get; }
+        public ISpellType SelectedSpellType => _spellsSelector.SelectedSpellType;
 
-        private ListWithReactionOnChange<ISpell> SelectedSpellGroup => _spellsStorage[SelectedSpellType];
-        private ISpell SelectedSpell => SelectedSpellGroup[0];
+        public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
+            _spellsSelector.Spells;
+
+        private bool IsBusy => _currentSpellsHandler is {IsBusy: true};
+
+        public void StartCasting()
+        {
+            _needCast = true;
+            if (IsBusy)
+            {
+                return;
+            }
+
+            CastSelectedSpell();
+        }
+
+        public void OnSpellCastPartOfAnimationFinished()
+        {
+            _currentSpellsHandler?.OnSpellCastPartOfAnimationFinished();
+        }
+
+        public void OnAnimatorReadyForNextAnimation()
+        {
+            _isAnimatorReady = true;
+            if (_needCast && !IsBusy)
+            {
+                CastSelectedSpell();
+            }
+        }
+
+        public void StopCasting()
+        {
+            _needCast = false;
+            _currentSpellsHandler?.TryInterrupt();
+        }
 
         public void AddSpell(ISpellType spellType, ISpell newSpell)
         {
-            if (_spellsStorage.ContainsKey(spellType))
-            {
-                _spellsStorage[spellType].Add(newSpell);
-            }
-            else
-            {
-                throw new UnrecognizedSpellTypeException();
-            }
-        }
-
-        public void TryCastSelectedSpell()
-        {
-            if (SelectedSpellGroup.IsEmpty())
-            {
-                TryingToUseEmptySpellTypeGroup?.Invoke(SelectedSpellType);
-            }
-            else if (!_isWaitingForAnimationEnd)
-            {
-                _isWaitingForAnimationEnd = true;
-                _typeOfSpellToCreate = SelectedSpellType;
-                _spellGroupFromWhichToCreateSpell = SelectedSpellGroup;
-                _spellToCreate = SelectedSpell;
-                NeedPlaySpellAnimation?.Invoke(_spellToCreate.SpellAnimationData);
-            }
-        }
-
-        public void CreateSelectedSpell(Vector3 aimPoint)
-        {
-            _spellObjectsFactory.Create(_spellToCreate.SpellDataForSpellController, _spellToCreate.SpellPrefabProvider,
-                _player, _spellSpawnObject.Position, Quaternion.LookRotation(aimPoint - _spellSpawnObject.Position));
-            if (!Equals(_typeOfSpellToCreate, _lastChanceSpellType))
-            {
-                _spellGroupFromWhichToCreateSpell.RemoveAt(0);
-            }
+            _spellsSelector.AddSpell(spellType, newSpell);
         }
 
         public void AddSpell(ISpell newSpell)
         {
-            AddSpell(newSpell.SpellType, newSpell);
-        }
-
-        public void HandleAnimationEnd()
-        {
-            _isWaitingForAnimationEnd = false;
+            _spellsSelector.AddSpell(newSpell);
         }
 
         public void SelectNextSpellType()
         {
-            int nextIndex = _selectedSpellTypeIndex.Value + 1;
-            if (nextIndex < _spellTypesInOrder.Length)
-            {
-                SelectSpellTypeWithIndex(nextIndex);
-            }
+            _spellsSelector.SelectNextSpellType();
         }
 
         public void SelectPreviousSpellType()
         {
-            int nextIndex = _selectedSpellTypeIndex.Value - 1;
-            if (nextIndex >= 0)
-            {
-                SelectSpellTypeWithIndex(nextIndex);
-            }
+            _spellsSelector.SelectPreviousSpellType();
         }
 
         public void SelectSpellTypeWithIndex(int indexToSelect)
         {
-            _selectedSpellTypeIndex.Value = indexToSelect;
+            _spellsSelector.SelectSpellTypeWithIndex(indexToSelect);
+        }
+
+        public void HandleSpell(IInformationAboutInstantSpell informationAboutInstantSpell)
+        {
+            if (IsEnabled)
+            {
+                SubscribeOnSpellsHandler(_instantSpellHandler);
+            }
+
+            _currentSpellsHandler = _instantSpellHandler;
+            _instantSpellHandler.HandleSpell(informationAboutInstantSpell);
+        }
+
+        public void HandleSpell(IInformationAboutContinuousSpell informationAboutContinuousSpell)
+        {
+            if (IsEnabled)
+            {
+                SubscribeOnSpellsHandler(_continuousSpellHandler);
+            }
+
+            _currentSpellsHandler = _continuousSpellHandler;
+            _continuousSpellHandler.HandleSpell(informationAboutContinuousSpell);
         }
 
         protected sealed override void SubscribeOnEvents()
         {
-            _selectedSpellTypeIndex.AfterValueChanged += OnSelectedSpellTypeIndexChanged;
+            _spellsSelector.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
+            _spellsSelector.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellTypeGroup;
+
+            if (_currentSpellsHandler == null)
+            {
+                return;
+            }
+
+            SubscribeOnSpellsHandler(_currentSpellsHandler);
         }
 
         protected override void UnsubscribeFromEvents()
         {
-            _selectedSpellTypeIndex.AfterValueChanged -= OnSelectedSpellTypeIndexChanged;
+            _spellsSelector.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
+            _spellsSelector.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellTypeGroup;
+
+            if (_currentSpellsHandler == null)
+            {
+                return;
+            }
+
+            UnsubscribeFromSpellsHandler(_currentSpellsHandler);
         }
 
-        private void OnSelectedSpellTypeIndexChanged(int obj)
+        private void OnTryingToUseEmptySpellTypeGroup(ISpellType obj)
         {
-            SelectedSpellTypeChanged?.Invoke(SelectedSpellType);
+            TryingToUseEmptySpellTypeGroup?.Invoke(obj);
         }
-    }
 
-    public class UnrecognizedSpellTypeException : Exception
-    {
-        public UnrecognizedSpellTypeException() : base("Unrecognized Spell Type Exception")
+        private void OnSelectedSpellTypeChanged(ISpellType obj)
         {
+            SelectedSpellTypeChanged?.Invoke(obj);
+        }
+
+        private void SubscribeOnSpellsHandler(IPlayerSpellsHandler spellsHandler)
+        {
+            spellsHandler.SpellCanceled += OnSpellCanceled;
+            spellsHandler.SpellHandled += OnSpellHandled;
+            spellsHandler.NeedPlayContinuousActionAnimation += OnNeedPlayContinuousActionAnimation;
+            spellsHandler.NeedPlaySingleActionAnimation += OnNeedPlaySingleActionAnimation;
+            spellsHandler.SpellCasted += OnSpellCasted;
+        }
+
+        private void UnsubscribeFromSpellsHandler(IPlayerSpellsHandler spellsHandler)
+        {
+            spellsHandler.SpellCanceled -= OnSpellCanceled;
+            spellsHandler.SpellHandled -= OnSpellHandled;
+            spellsHandler.NeedPlayContinuousActionAnimation -= OnNeedPlayContinuousActionAnimation;
+            spellsHandler.NeedPlaySingleActionAnimation -= OnNeedPlaySingleActionAnimation;
+            spellsHandler.SpellCasted -= OnSpellCasted;
+        }
+
+        private void OnNeedPlayContinuousActionAnimation(IContinuousActionAnimationData obj)
+        {
+            NeedPlayContinuousActionAnimation?.Invoke(obj);
+        }
+
+        private void OnNeedPlaySingleActionAnimation(IAnimationData obj)
+        {
+            NeedPlaySingleActionAnimation?.Invoke(obj);
+        }
+
+        private void OnSpellCanceled()
+        {
+            NeedCancelActionAnimations?.Invoke();
+        }
+
+        private void CastSelectedSpell()
+        {
+            if (!_spellsSelector.TryToRememberSelectedSpellInformation())
+            {
+                return;
+            }
+
+            _spellsSelector.RememberedSpell.HandleSpell(this);
+            _isAnimatorReady = false;
+        }
+
+        private void OnSpellHandled()
+        {
+            UnsubscribeFromSpellsHandler(_currentSpellsHandler);
+            _currentSpellsHandler = null;
+            if (_needCast && _isAnimatorReady)
+            {
+                CastSelectedSpell();
+            }
+        }
+
+        private void OnSpellCasted()
+        {
+            _spellsSelector.RemoveRememberedSpell();
         }
     }
 }

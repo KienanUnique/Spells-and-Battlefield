@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e06d410321be49d0b16006b380f1c29e, type: 3}
+  m_Script: {fileID: 11500000, guid: bd055d8d0385404d9e0e2dd735862f88, type: 3}
   m_Name: Yellow Orb
   m_EditorClassIdentifier: 
   _prefab: {fileID: 7329610058335965431, guid: 41dc6935631a69c409ccc34eabe265cc, type: 3}

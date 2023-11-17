@@ -15,7 +15,7 @@ namespace Spells.Spell.Scriptable_Objects
         [SerializeField] private SpellMovementScriptableObject _movement;
         [SerializeField] private List<SpellApplierScriptableObject> _appliers;
         [SerializeField] private SpellTriggerScriptableObject _mainTrigger;
-        [SerializeField] private List<SpellScriptableObject> _nextSpellsOnFinish;
+        [SerializeField] private List<SpellScriptableObjectBase> _nextSpellsOnFinish;
 
         public ILookPointCalculator LookPointCalculator => SpellObjectMovement.GetLookPointCalculator();
 

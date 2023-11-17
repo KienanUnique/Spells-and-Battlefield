@@ -32,7 +32,8 @@ namespace Enemies.Visual
 
         public void PlayActionAnimation(IAnimationData animationData)
         {
-            ApplyAnimationOverride(_baseAnimatorOverrideController, _emptyActionAnimationClip, animationData.Clip);
+            ApplyAnimationOverride(_baseAnimatorOverrideController,
+                new AnimationOverride(_emptyActionAnimationClip, animationData.Clip));
 
             _characterAnimator.SetFloat(ActionFloatAnimationSpeedHash, animationData.AnimationSpeed);
             _characterAnimator.SetTrigger(ActionTriggerHash);

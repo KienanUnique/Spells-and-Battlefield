@@ -175,6 +175,8 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 
         private void TryCastSelectedSpell()
         {
+            return; // TODO: Implement this
+            /*
             if (CurrentStatus != StateEnemyAIStatus.Active ||
                 _isWaitingForAnimationFinish ||
                 !_spellsSelector.CanUseSpell)
@@ -186,12 +188,16 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
             _cachedSpell = _spellsSelector.Pop();
             ChangeLookPointCalculator(_cachedSpell.LookPointCalculator);
             StateMachineControllable.PlayActionAnimation(_cachedSpell.SpellAnimationData);
+            */
         }
 
         private void CreateSelectedSpell()
         {
+            /*
+            return; // TODO: Implement this
             _spellObjectsFactory.Create(_cachedSpell.SpellDataForSpellController, _cachedSpell.SpellPrefabProvider,
                 _enemyController, _spellSpawnPoint.Position, SpellSpawnDirection);
+                */
         }
     }
 }

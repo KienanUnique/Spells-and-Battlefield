@@ -297,11 +297,10 @@ MonoBehaviour:
   _startTestSpells:
   - {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
   - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
-  - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
-  - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+  - {fileID: 11400000, guid: 1a1d6fa6755b5db428ee3a0c791b4b6b, type: 2}
   - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
   - {fileID: 11400000, guid: f4f3c897dbb9b2542a288a091eee1bc9, type: 2}
-  - {fileID: 11400000, guid: 1a1d6fa6755b5db428ee3a0c791b4b6b, type: 2}
+  - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
   _spellSpawnObject: {fileID: 9028757726379468074}
   _pointForAiming: {fileID: 8522833826739729542}
   _upperPointForSummonedEnemiesPositionCalculating: {fileID: 4353762260610635655}
@@ -944,7 +943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2404622819226430130, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1682
+      value: 0.3868
       objectReference: {fileID: 0}
     - target: {fileID: 2404622819226430130, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
       propertyPath: m_LocalPosition.z

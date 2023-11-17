@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Common.Animation_Data;
 using Common.Collection_With_Reaction_On_Change;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Id_Holder;
@@ -166,7 +165,8 @@ namespace Player
             _input.JumpInputted += _movement.TryJumpInputted;
             _input.StartDashAimingInputted += _movement.TryStartDashAiming;
             _input.DashInputted += OnDashInputted;
-            _input.UseSpellInputted += OnUseSpellInputted;
+            _input.StartUsingSpellInputted += _spellsManager.StartCasting;
+            _input.StopUsingSpellInputted += _spellsManager.StopCasting;
             _input.MoveInputted += _movement.MoveInputted;
             _input.LookInputted += _look.LookInputtedWith;
 
@@ -174,8 +174,9 @@ namespace Player
             _input.SelectNextSpellType += _spellsManager.SelectNextSpellType;
             _input.SelectPreviousSpellType += _spellsManager.SelectPreviousSpellType;
 
-            _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger += OnCastSpellEventInvokerForAnimationMoment;
-            _eventInvokerForAnimations.ActionAnimationEnd += _spellsManager.HandleAnimationEnd;
+            _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger +=
+                _spellsManager.OnSpellCastPartOfAnimationFinished;
+            _eventInvokerForAnimations.ActionAnimationEnd += _spellsManager.OnAnimatorReadyForNextAnimation;
 
             _movement.GroundJump += _visual.PlayGroundJumpAnimation;
             _movement.Fall += _visual.PlayFallAnimation;
@@ -193,7 +194,9 @@ namespace Player
             _character.HitPointsCountChanged += OnHitPointsCountChanged;
             _character.ContinuousEffectAdded += OnContinuousEffectAdded;
 
-            _spellsManager.NeedPlaySpellAnimation += OnNeedPlaySpellAnimation;
+            _spellsManager.NeedPlaySingleActionAnimation += _visual.PlayActionAnimation;
+            _spellsManager.NeedPlayContinuousActionAnimation += _visual.PlayActionAnimation;
+            _spellsManager.NeedCancelActionAnimations += _visual.CancelActionAnimation;
             _spellsManager.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellCanNotBeUsed;
             _spellsManager.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
         }
@@ -205,7 +208,8 @@ namespace Player
             _input.JumpInputted -= _movement.TryJumpInputted;
             _input.StartDashAimingInputted -= _movement.TryStartDashAiming;
             _input.DashInputted -= OnDashInputted;
-            _input.UseSpellInputted -= OnUseSpellInputted;
+            _input.StartUsingSpellInputted -= _spellsManager.StartCasting;
+            _input.StopUsingSpellInputted -= _spellsManager.StopCasting;
             _input.MoveInputted -= _movement.MoveInputted;
             _input.LookInputted -= _look.LookInputtedWith;
 
@@ -213,8 +217,9 @@ namespace Player
             _input.SelectNextSpellType -= _spellsManager.SelectNextSpellType;
             _input.SelectPreviousSpellType -= _spellsManager.SelectPreviousSpellType;
 
-            _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger -= OnCastSpellEventInvokerForAnimationMoment;
-            _eventInvokerForAnimations.ActionAnimationEnd -= _spellsManager.HandleAnimationEnd;
+            _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger -=
+                _spellsManager.OnSpellCastPartOfAnimationFinished;
+            _eventInvokerForAnimations.ActionAnimationEnd -= _spellsManager.OnAnimatorReadyForNextAnimation;
 
             _movement.GroundJump -= _visual.PlayGroundJumpAnimation;
             _movement.Fall -= _visual.PlayFallAnimation;
@@ -232,7 +237,9 @@ namespace Player
             _character.HitPointsCountChanged -= OnHitPointsCountChanged;
             _character.ContinuousEffectAdded -= OnContinuousEffectAdded;
 
-            _spellsManager.NeedPlaySpellAnimation -= OnNeedPlaySpellAnimation;
+            _spellsManager.NeedPlaySingleActionAnimation -= _visual.PlayActionAnimation;
+            _spellsManager.NeedPlayContinuousActionAnimation -= _visual.PlayActionAnimation;
+            _spellsManager.NeedCancelActionAnimations -= _visual.CancelActionAnimation;
             _spellsManager.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellCanNotBeUsed;
             _spellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
         }
@@ -322,21 +329,6 @@ namespace Player
             }
 
             CharacterStateChanged?.Invoke(newState);
-        }
-
-        private void OnUseSpellInputted()
-        {
-            _spellsManager.TryCastSelectedSpell();
-        }
-
-        private void OnNeedPlaySpellAnimation(IAnimationData spellAnimationData)
-        {
-            _visual.PlayUseSpellAnimation(spellAnimationData);
-        }
-
-        private void OnCastSpellEventInvokerForAnimationMoment()
-        {
-            _spellsManager.CreateSelectedSpell(_look.CameraLookPointPosition);
         }
 
         private void OnSelectedSpellTypeChanged(ISpellType spellType)

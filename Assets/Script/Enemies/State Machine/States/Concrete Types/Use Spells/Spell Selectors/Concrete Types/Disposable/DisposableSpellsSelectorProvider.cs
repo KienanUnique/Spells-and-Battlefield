@@ -11,7 +11,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
                    "Disposable Spells Selector Provider", order = 0)]
     public class DisposableSpellsSelectorProvider : SpellsSelectorProvider
     {
-        [SerializeField] private List<SpellScriptableObject> _spellsToUseInPriorityOrder;
+        [SerializeField] private List<SpellScriptableObjectBase> _spellsToUseInPriorityOrder;
 
         public override ISpellSelector GetImplementationObject(ICoroutineStarter coroutineStarter)
         {

@@ -4,6 +4,8 @@ namespace Player.Visual.Settings
 {
     public interface IPlayerVisualSettings
     {
-        AnimationClip EmptyUseSpellAnimation { get; }
+        public AnimationClip EmptyActionAnimation { get; }
+        public AnimationClip EmptyPrepareContinuousActionAnimation { get; }
+        public AnimationClip EmptyContinuousActionAnimation { get; }
     }
 }

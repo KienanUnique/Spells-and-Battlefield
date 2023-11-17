@@ -644,6 +644,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Friendly To Player Knight Spawner
       objectReference: {fileID: 0}
+    - target: {fileID: 1531855389029876839, guid: dff2c068397c7af44be3c493d14f5f2c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2316118586506344916, guid: dff2c068397c7af44be3c493d14f5f2c, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -869,6 +873,10 @@ PrefabInstance:
     - target: {fileID: 2202297606357141292, guid: 34d4109c742c0954eb0c4009076d193d, type: 3}
       propertyPath: m_Name
       value: Warlock Spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202297606357141292, guid: 34d4109c742c0954eb0c4009076d193d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3167892871371782815, guid: 34d4109c742c0954eb0c4009076d193d, type: 3}
       propertyPath: m_RootOrder
@@ -1632,6 +1640,10 @@ PrefabInstance:
     - target: {fileID: 1531855389029876839, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
       propertyPath: m_Name
       value: Knight Spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 1531855389029876839, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2316118586506344916, guid: 3db5cea4c2ff9664dbd411415ad2dd95, type: 3}
       propertyPath: m_RootOrder

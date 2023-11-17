@@ -22,6 +22,9 @@ using Player.Look;
 using Player.Movement;
 using Player.Settings;
 using Player.Spell_Manager;
+using Player.Spell_Manager.Spell_Handlers.Continuous;
+using Player.Spell_Manager.Spell_Handlers.Instant;
+using Player.Spell_Manager.Spells_Selector;
 using Player.Visual;
 using Spells;
 using Spells.Factory;
@@ -57,7 +60,7 @@ namespace Player.Setup
         [Header("Checkers")] [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private WallChecker _wallChecker;
 
-        [Header("Spells")] [SerializeField] private List<SpellScriptableObject> _startTestSpells;
+        [Header("Spells")] [SerializeField] private List<SpellScriptableObjectBase> _startTestSpells;
         [SerializeField] private ReadonlyTransformGetter _spellSpawnObject;
         private IReadonlyTransform _cameraTransform;
         private IIdHolder _idHolder;
@@ -132,16 +135,25 @@ namespace Player.Setup
             var playerMovement = new PlayerMovement(_thisRigidbody, _settings.Movement, _groundChecker, _wallChecker,
                 playerMovementValuesCalculator, this);
 
-            var playerSpellsManager = new PlayerSpellsManager(new List<ISpell>(_startTestSpells),
-                _spellSpawnObject.ReadonlyTransform, _playerCaster, _spellObjectsFactory, _spellTypesSetting);
-            playerSpellsManager.AddSpell(_spellTypesSetting.LastChanceSpellType,
-                _settings.SpellManager.LastChanceSpell);
-
             var playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
                 _settings.Look);
 
+            var continuousSpellHandler = new PlayerContinuousSpellHandler(_playerCaster, _spellObjectsFactory,
+                _spellSpawnObject.ReadonlyTransform, playerLook);
+            var instantSpellHandler = new PlayerInstantSpellHandler(_playerCaster, _spellObjectsFactory,
+                _spellSpawnObject.ReadonlyTransform, playerLook);
+            var spellsSelector =
+                new PlayerSpellsSelectorForSpellManager(new List<ISpell>(_startTestSpells), _spellTypesSetting);
+            var playerSpellsManager =
+                new PlayerSpellsManager(continuousSpellHandler, instantSpellHandler, spellsSelector);
+            playerSpellsManager.AddSpell(_spellTypesSetting.LastChanceSpellType,
+                _settings.SpellManager.LastChanceSpell);
+
             _itemsNeedDisabling.Add(playerMovement);
             _itemsNeedDisabling.Add(playerSpellsManager);
+            _itemsNeedDisabling.Add(continuousSpellHandler);
+            _itemsNeedDisabling.Add(instantSpellHandler);
+            _itemsNeedDisabling.Add(spellsSelector);
 
             var controllerToSetup = GetComponent<IInitializablePlayerController>();
             var informationOfSummoner = new InformationForSummon(GetComponent<ISummoner>(), _settings.Faction,

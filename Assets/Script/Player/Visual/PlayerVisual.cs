@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Common.Abstract_Bases.Visual;
 using Common.Animation_Data;
 using Player.Visual.Settings;
@@ -8,8 +9,17 @@ namespace Player.Visual
 {
     public class PlayerVisual : VisualBase, IPlayerVisual
     {
-        private static readonly int AttackTriggerHash = Animator.StringToHash("Attack");
-        private static readonly int UseSpellFloatSpeedHash = Animator.StringToHash("Use Spell Speed");
+        private static readonly int CancelActionAnimationTriggerHash = Animator.StringToHash("Cancel Action");
+        private static readonly int PlayContinuousActionTriggerHash = Animator.StringToHash("Play Continuous Action");
+
+        private static readonly int PrepareContinuousActionFloatSpeedHash =
+            Animator.StringToHash("Prepare Continuous Action Speed");
+
+        private static readonly int ContinuousActionFloatSpeedHash = Animator.StringToHash("Continuous Action Speed");
+
+        private static readonly int PlayActionTriggerHash = Animator.StringToHash("Play Action");
+        private static readonly int ActionFloatSpeedHash = Animator.StringToHash("Action Speed");
+
         private static readonly int MovingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
         private static readonly int MovingDirectionYFloatHash = Animator.StringToHash("Moving Direction Y");
 
@@ -28,12 +38,30 @@ namespace Player.Visual
             _settings = settings;
         }
 
-        public void PlayUseSpellAnimation(IAnimationData spellAnimationData)
+        public void PlayActionAnimation(IAnimationData animationData)
         {
             ApplyAnimationOverride(new AnimatorOverrideController(_characterAnimator.runtimeAnimatorController),
-                _settings.EmptyUseSpellAnimation, spellAnimationData.Clip);
-            _characterAnimator.SetFloat(UseSpellFloatSpeedHash, spellAnimationData.AnimationSpeed);
-            _characterAnimator.SetTrigger(AttackTriggerHash);
+                new AnimationOverride(_settings.EmptyActionAnimation, animationData.Clip));
+            _characterAnimator.SetFloat(ActionFloatSpeedHash, animationData.AnimationSpeed);
+            _characterAnimator.SetTrigger(PlayActionTriggerHash);
+        }
+
+        public void PlayActionAnimation(IContinuousActionAnimationData animationData)
+        {
+            var animationOverrides = new List<AnimationOverride>
+            {
+                new AnimationOverride(_settings.EmptyPrepareContinuousActionAnimation,
+                    animationData.PrepareContinuousActionAnimation.Clip),
+                new AnimationOverride(_settings.EmptyContinuousActionAnimation,
+                    animationData.ContinuousActionAnimation.Clip)
+            };
+            ApplyAnimationOverride(new AnimatorOverrideController(_characterAnimator.runtimeAnimatorController),
+                animationOverrides);
+            _characterAnimator.SetFloat(PrepareContinuousActionFloatSpeedHash,
+                animationData.PrepareContinuousActionAnimation.AnimationSpeed);
+            _characterAnimator.SetFloat(ContinuousActionFloatSpeedHash,
+                animationData.ContinuousActionAnimation.AnimationSpeed);
+            _characterAnimator.SetTrigger(PlayContinuousActionTriggerHash);
         }
 
         public void PlayGroundJumpAnimation()
@@ -64,6 +92,11 @@ namespace Player.Visual
             _characterAnimator.ResetTrigger(FallTriggerHash);
             _characterAnimator.ResetTrigger(LandTriggerHash);
             _characterAnimator.SetTrigger(DieTriggerHash);
+        }
+
+        public void CancelActionAnimation()
+        {
+            _characterAnimator.SetTrigger(CancelActionAnimationTriggerHash);
         }
 
         public void UpdateMovingData(Vector2 movingDirectionNormalized, float ratioOfCurrentVelocityToMaximumVelocity)
