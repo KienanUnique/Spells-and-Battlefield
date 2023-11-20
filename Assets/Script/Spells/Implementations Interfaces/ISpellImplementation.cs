@@ -1,10 +1,9 @@
-using Common.Interfaces;
-using UnityEngine;
+using Spells.Data_For_Spell_Implementation;
 
 namespace Spells.Implementations_Interfaces
 {
     public interface ISpellImplementation
     {
-        public void Initialize(Rigidbody spellRigidbody, ICaster caster, ICoroutineStarter coroutineStarter);
+        public void Initialize(IDataForSpellImplementation data);
     }
 }

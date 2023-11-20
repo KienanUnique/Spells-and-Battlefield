@@ -17,7 +17,7 @@ namespace Spells.Concrete_Types.Target_Selectors
 
         private class CasterSelectorImplementation : SpellTargetSelectorImplementationBase
         {
-            public override List<ISpellInteractable> SelectTargets()
+            public override IReadOnlyList<ISpellInteractable> SelectTargets()
             {
                 var resultList = new List<ISpellInteractable>();
                 if (Caster is ISpellInteractable casterSpellInteractable)

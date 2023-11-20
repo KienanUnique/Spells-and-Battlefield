@@ -1,6 +1,7 @@
 ﻿using System;
 using Common.Abstract_Bases.Disableable;
 using Common.Animation_Data;
+using Common.Animation_Data.Continuous_Action;
 using Common.Readonly_Transform;
 using Player.Look;
 using Spells;

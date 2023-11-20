@@ -1,6 +1,4 @@
-﻿using System;
-using Common.Animation_Data;
-using Common.Readonly_Transform;
+﻿using Common.Readonly_Transform;
 using Player.Look;
 using Spells;
 using Spells.Controllers.Concrete_Types.Instant;
@@ -35,7 +33,7 @@ namespace Player.Spell_Manager.Spell_Handlers.Instant
         {
             _spellObjectsFactory.Create(_spellToCreate.DataForController, _spellToCreate.PrefabProvider, _caster,
                 _spellSpawnObject.Position,
-                Quaternion.LookRotation(_look.CameraLookPointPosition - _spellSpawnObject.Position));
+                Quaternion.LookRotation(_look.CameraLookPointPosition - _spellSpawnObject.Position), _spellSpawnObject);
             HandleEndOfCast();
             HandleEndOfSpell();
         }

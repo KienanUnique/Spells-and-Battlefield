@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using Common.Abstract_Bases.Disableable;
 using Common.Animation_Data;
+using Common.Animation_Data.Continuous_Action;
 using Common.Collection_With_Reaction_On_Change;
 using Player.Spell_Manager.Spell_Handlers;
 using Player.Spell_Manager.Spell_Handlers.Continuous;
@@ -22,6 +23,7 @@ namespace Player.Spell_Manager
         private readonly IPlayerSpellsSelectorForSpellManager _spellsSelector;
         private bool _needCast;
         private bool _isAnimatorReady = true;
+        private bool _isCurrentSpellContinuous;
         private IPlayerSpellsHandler _currentSpellsHandler;
 
         public PlayerSpellsManager(IPlayerContinuousSpellHandler continuousSpellHandler,
@@ -37,6 +39,9 @@ namespace Player.Spell_Manager
         public event Action NeedCancelActionAnimations;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
+        public event Action ContinuousSpellStarted;
+        public event Action ContinuousSpellFinished;
+        public float ContinuousSpellRatioOfCompletion => _continuousSpellHandler.RatioOfCompletion;
 
         public ISpellType SelectedSpellType => _spellsSelector.SelectedSpellType;
 
@@ -59,6 +64,10 @@ namespace Player.Spell_Manager
         public void OnSpellCastPartOfAnimationFinished()
         {
             _currentSpellsHandler?.OnSpellCastPartOfAnimationFinished();
+            if (_isCurrentSpellContinuous && _currentSpellsHandler != null)
+            {
+                ContinuousSpellStarted?.Invoke();
+            }
         }
 
         public void OnAnimatorReadyForNextAnimation()
@@ -114,6 +123,7 @@ namespace Player.Spell_Manager
 
         public void HandleSpell(IInformationAboutContinuousSpell informationAboutContinuousSpell)
         {
+            _isCurrentSpellContinuous = true;
             if (IsEnabled)
             {
                 SubscribeOnSpellsHandler(_continuousSpellHandler);
@@ -190,6 +200,12 @@ namespace Player.Spell_Manager
         private void OnSpellCanceled()
         {
             NeedCancelActionAnimations?.Invoke();
+            if (_isCurrentSpellContinuous)
+            {
+                ContinuousSpellFinished?.Invoke();
+            }
+
+            _isCurrentSpellContinuous = false;
         }
 
         private void CastSelectedSpell()
@@ -205,6 +221,13 @@ namespace Player.Spell_Manager
 
         private void OnSpellHandled()
         {
+            if (_isCurrentSpellContinuous)
+            {
+                NeedCancelActionAnimations?.Invoke();
+                ContinuousSpellFinished?.Invoke();
+            }
+
+            _isCurrentSpellContinuous = false;
             UnsubscribeFromSpellsHandler(_currentSpellsHandler);
             _currentSpellsHandler = null;
             if (_needCast && _isAnimatorReady)

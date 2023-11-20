@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Common.Abstract_Bases.Visual;
 using Common.Animation_Data;
+using Common.Animation_Data.Continuous_Action;
 using Player.Visual.Settings;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;

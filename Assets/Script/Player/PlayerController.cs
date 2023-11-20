@@ -76,6 +76,9 @@ namespace Player
         public event Action DashAimingCanceled;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
+        public event Action ContinuousSpellStarted;
+        public event Action ContinuousSpellFinished;
+        public float ContinuousSpellRatioOfCompletion => _spellsManager.ContinuousSpellRatioOfCompletion;
         public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
@@ -199,6 +202,8 @@ namespace Player
             _spellsManager.NeedCancelActionAnimations += _visual.CancelActionAnimation;
             _spellsManager.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellCanNotBeUsed;
             _spellsManager.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
+            _spellsManager.ContinuousSpellFinished += OnContinuousSpellFinished;
+            _spellsManager.ContinuousSpellStarted += OnContinuousSpellStarted;
         }
 
         protected override void UnsubscribeFromEvents()
@@ -242,6 +247,18 @@ namespace Player
             _spellsManager.NeedCancelActionAnimations -= _visual.CancelActionAnimation;
             _spellsManager.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellCanNotBeUsed;
             _spellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
+            _spellsManager.ContinuousSpellFinished -= OnContinuousSpellFinished;
+            _spellsManager.ContinuousSpellStarted -= OnContinuousSpellStarted;
+        }
+
+        private void OnContinuousSpellStarted()
+        {
+            ContinuousSpellStarted?.Invoke();
+        }
+
+        private void OnContinuousSpellFinished()
+        {
+            ContinuousSpellFinished?.Invoke();
         }
 
         private void OnContinuousEffectAdded(IAppliedContinuousEffectInformation newEffect)

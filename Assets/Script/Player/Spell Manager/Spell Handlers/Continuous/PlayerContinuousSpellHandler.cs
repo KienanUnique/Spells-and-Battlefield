@@ -30,15 +30,16 @@ namespace Player.Spell_Manager.Spell_Handlers.Continuous
             HandleStart();
             _spellToCreate = informationAboutContinuousSpell;
             _currentPhase = ContinuousSpellPhases.Cast;
+            PlayContinuousActionAnimation(_spellToCreate.AnimationData);
         }
 
         public override bool TryInterrupt()
         {
-            if (_currentPhase == ContinuousSpellPhases.Cast || _currentPhase == ContinuousSpellPhases.InAction)
-            {
-                Cancel();
-                return true;
-            }
+            // if (_currentPhase == ContinuousSpellPhases.Cast || _currentPhase == ContinuousSpellPhases.InAction)
+            // {
+            //     Cancel();
+            //     return true;
+            // }
 
             return false;
         }
@@ -49,6 +50,12 @@ namespace Player.Spell_Manager.Spell_Handlers.Continuous
             _castedSpell = _spellObjectsFactory.Create(_spellToCreate.DataForController, _spellToCreate.PrefabProvider,
                 _caster, _spellSpawnObject);
             _spellToCreate = null;
+            if (IsEnabled)
+            {
+                SubscribeOnSpellEvents(_castedSpell);
+            }
+
+            HandleEndOfCast();
         }
 
         protected override void Cancel()

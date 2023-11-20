@@ -1,5 +1,4 @@
 ﻿using Common.Animation_Data;
-using Enemies.Look_Point_Calculator;
 using Spells.Controllers.Concrete_Types.Instant.Data_For_Controller;
 using Spells.Controllers.Concrete_Types.Instant.Prefab_Provider;
 using Spells.Spell.Scriptable_Objects;
@@ -8,7 +7,7 @@ using UnityEngine;
 namespace Spells.Controllers.Concrete_Types.Instant
 {
     [CreateAssetMenu(fileName = "Instant Spell",
-        menuName = ScriptableObjectsMenuDirectories.SpellSystemDirectory + "Instant Spell", order = 0)]
+        menuName = ScriptableObjectsMenuDirectories.InstantSpellDirectory + "Instant Spell", order = 0)]
     public class InstantSpellScriptableObject : SpellScriptableObjectBase, IInformationAboutInstantSpell
     {
         [SerializeField] private DataForInstantSpellControllerProvider _dataForController;

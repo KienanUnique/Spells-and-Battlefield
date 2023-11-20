@@ -6,6 +6,7 @@ using Common.Mechanic_Effects.Source;
 using Common.Readonly_Transform;
 using Spells.Abstract_Types.Implementation_Bases.Implementations;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
+using Spells.Data_For_Spell_Implementation;
 using Spells.Implementations_Interfaces;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
@@ -44,16 +45,14 @@ namespace Spells.Concrete_Types.Appliers
                 _spellTrigger = spellTrigger;
             }
 
-            public override void Initialize(Rigidbody spellRigidbody, ICaster caster,
-                ICoroutineStarter coroutineStarter)
+            public override void Initialize(IDataForSpellImplementation data)
             {
                 var spellImplementations = new List<ISpellImplementation> {_targetSelector, _spellTrigger};
 
-                spellImplementations.ForEach(spellImplementation =>
-                    spellImplementation.Initialize(spellRigidbody, caster, coroutineStarter));
+                spellImplementations.ForEach(spellImplementation => spellImplementation.Initialize(data));
 
                 _effectSourceInformation = new EffectSourceInformation(EffectSourceType.External,
-                    new ReadonlyTransform(spellRigidbody.transform));
+                    new ReadonlyTransform(data.SpellRigidbody.transform));
             }
 
             public override SpellTriggerCheckStatusEnum CheckContact(Collider other)
@@ -92,7 +91,7 @@ namespace Spells.Concrete_Types.Appliers
 
             private void HandleSpellEffect()
             {
-                List<ISpellInteractable> selectedTargets = _targetSelector.SelectTargets();
+                IReadOnlyList<ISpellInteractable> selectedTargets = _targetSelector.SelectTargets();
                 _spellMechanicEffects.ForEach(mechanicEffect =>
                     mechanicEffect.ApplyEffectToTargets(new List<IInteractable>(selectedTargets),
                         _effectSourceInformation));

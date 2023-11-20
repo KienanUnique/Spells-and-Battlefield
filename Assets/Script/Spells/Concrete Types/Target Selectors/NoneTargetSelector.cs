@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Common.Interfaces;
+using Common.Readonly_Transform;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
+using Spells.Data_For_Spell_Implementation;
 using Spells.Implementations_Interfaces.Implementations;
 using UnityEngine;
 
@@ -17,11 +19,20 @@ namespace Spells.Concrete_Types.Target_Selectors
 
         private class NoneSelectorImplementation : ISpellTargetSelector
         {
-            public void Initialize(Rigidbody spellRigidbody, ICaster caster, ICoroutineStarter coroutineStarter)
+            public void Initialize(IDataForSpellImplementation data)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void HandleSpellInteractableTriggerEnter(ISpellInteractable spellInteractable)
             {
             }
 
-            public List<ISpellInteractable> SelectTargets()
+            public void HandleSpellInteractableTriggerExit(ISpellInteractable spellInteractable)
+            {
+            }
+
+            public IReadOnlyList<ISpellInteractable> SelectTargets()
             {
                 return new List<ISpellInteractable>();
             }

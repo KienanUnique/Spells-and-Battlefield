@@ -2,6 +2,8 @@
 using Common.Readonly_Transform;
 using Spells.Controllers;
 using Spells.Controllers.Concrete_Types.Continuous;
+using Spells.Controllers.Concrete_Types.Continuous.Data_For_Controller;
+using Spells.Controllers.Concrete_Types.Continuous.Prefab_Provider;
 using Spells.Controllers.Concrete_Types.Instant;
 using Spells.Controllers.Concrete_Types.Instant.Data_For_Controller;
 using Spells.Controllers.Concrete_Types.Instant.Prefab_Provider;
@@ -39,12 +41,13 @@ namespace Spells.Factory
         }
 
         public IInstantSpellController Create(IDataForInstantSpellController spellControllerData,
-            IInstantSpellPrefabProvider prefabProvider, ICaster caster, Vector3 spawnPosition, Quaternion spawnRotation)
+            IInstantSpellPrefabProvider prefabProvider, ICaster caster, Vector3 spawnPosition, Quaternion spawnRotation,
+            IReadonlyTransform castPoint)
         {
             var spellController =
                 InstantiatePrefabForComponent<IInitializableInstantSpellController>(prefabProvider, spawnPosition,
                     spawnRotation);
-            spellController.Initialize(spellControllerData, caster, this);
+            spellController.Initialize(spellControllerData, caster, this, castPoint);
             return spellController;
         }
     }

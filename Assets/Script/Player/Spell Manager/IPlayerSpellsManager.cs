@@ -1,5 +1,6 @@
 ﻿using System;
 using Common.Animation_Data;
+using Common.Animation_Data.Continuous_Action;
 using Player.Spell_Manager.Spells_Selector;
 
 namespace Player.Spell_Manager
