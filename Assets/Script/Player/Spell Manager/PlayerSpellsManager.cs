@@ -200,12 +200,7 @@ namespace Player.Spell_Manager
         private void OnSpellCanceled()
         {
             NeedCancelActionAnimations?.Invoke();
-            if (_isCurrentSpellContinuous)
-            {
-                ContinuousSpellFinished?.Invoke();
-            }
-
-            _isCurrentSpellContinuous = false;
+            _isAnimatorReady = false;
         }
 
         private void CastSelectedSpell()

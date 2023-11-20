@@ -43,10 +43,10 @@ namespace Player.Spell_Manager.Spells_Selector
         public event Action<ISpellType> SelectedSpellTypeChanged;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
 
+        public ISpell RememberedSpell => _spellToCreate;
         public ISpellType SelectedSpellType => _spellTypesInOrder[_selectedSpellTypeIndex.Value];
         private ListWithReactionOnChange<ISpell> SelectedSpellGroup => _spellsStorage[SelectedSpellType];
-        public ISpell SelectedSpell => SelectedSpellGroup[0];
-        public ISpell RememberedSpell => _spellToCreate;
+        private ISpell SelectedSpell => SelectedSpellGroup[0];
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells { get; }
 
@@ -108,7 +108,7 @@ namespace Player.Spell_Manager.Spells_Selector
         {
             if (!Equals(_typeOfSpellToCreate, _lastChanceSpellType))
             {
-                _spellGroupFromWhichToCreateSpell.RemoveAt(0);
+                _spellGroupFromWhichToCreateSpell?.RemoveAt(0);
             }
 
             _typeOfSpellToCreate = null;

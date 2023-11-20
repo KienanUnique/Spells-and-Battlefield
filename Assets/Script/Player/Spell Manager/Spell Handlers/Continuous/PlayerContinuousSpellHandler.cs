@@ -35,13 +35,13 @@ namespace Player.Spell_Manager.Spell_Handlers.Continuous
 
         public override bool TryInterrupt()
         {
-            // if (_currentPhase == ContinuousSpellPhases.Cast || _currentPhase == ContinuousSpellPhases.InAction)
-            // {
-            //     Cancel();
-            //     return true;
-            // }
+            if (_currentPhase != ContinuousSpellPhases.Cast && _currentPhase != ContinuousSpellPhases.InAction)
+            {
+                return false;
+            }
 
-            return false;
+            Cancel();
+            return true;
         }
 
         public override void OnSpellCastPartOfAnimationFinished()
