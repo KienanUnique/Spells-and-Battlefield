@@ -1,18 +1,9 @@
-﻿using System;
-using Common.Animation_Data;
-using Common.Animation_Data.Continuous_Action;
+﻿using Common.Abstract_Bases.Spells_Manager;
 using Player.Spell_Manager.Spells_Selector;
 
 namespace Player.Spell_Manager
 {
-    public interface IPlayerSpellsManager : IPlayerSpellsManagerInformation, IPlayerSpellsSelector
+    public interface IPlayerSpellsManager : ISpellManager, IPlayerSpellsManagerInformation, IPlayerSpellsSelector
     {
-        public event Action<IAnimationData> NeedPlaySingleActionAnimation;
-        public event Action<IContinuousActionAnimationData> NeedPlayContinuousActionAnimation;
-        public event Action NeedCancelActionAnimations;
-        public void StartCasting();
-        public void OnSpellCastPartOfAnimationFinished();
-        public void OnAnimatorReadyForNextAnimation();
-        public void StopCasting();
     }
 }

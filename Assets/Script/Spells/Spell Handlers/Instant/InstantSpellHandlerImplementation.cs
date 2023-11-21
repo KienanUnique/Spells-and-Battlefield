@@ -1,17 +1,16 @@
 ﻿using Common.Readonly_Transform;
 using Player.Look;
-using Spells;
 using Spells.Controllers.Concrete_Types.Instant;
 using Spells.Factory;
 using UnityEngine;
 
-namespace Player.Spell_Manager.Spell_Handlers.Instant
+namespace Spells.Spell_Handlers.Instant
 {
-    public class PlayerInstantSpellHandler : PlayerSpellsHandlerBase, IPlayerInstantSpellHandler
+    public class InstantSpellHandlerImplementation : SpellsHandlerImplementationBase, IInstantSpellHandlerImplementation
     {
         private IInformationAboutInstantSpell _spellToCreate;
 
-        public PlayerInstantSpellHandler(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
+        public InstantSpellHandlerImplementation(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
             IReadonlyTransform spellSpawnObject, IReadonlyPlayerLook look) : base(caster, spellObjectsFactory,
             spellSpawnObject, look)
         {

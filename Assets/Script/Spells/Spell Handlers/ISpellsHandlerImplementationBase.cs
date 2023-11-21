@@ -2,9 +2,9 @@
 using Common.Animation_Data;
 using Common.Animation_Data.Continuous_Action;
 
-namespace Player.Spell_Manager.Spell_Handlers
+namespace Spells.Spell_Handlers
 {
-    public interface IPlayerSpellsHandler
+    public interface ISpellsHandlerImplementationBase
     {
         public event Action<IContinuousActionAnimationData> NeedPlayContinuousActionAnimation;
         public event Action<IAnimationData> NeedPlaySingleActionAnimation;

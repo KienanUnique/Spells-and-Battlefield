@@ -1,162 +1,85 @@
 using System;
 using System.Collections.ObjectModel;
-using Common.Abstract_Bases.Disableable;
-using Common.Animation_Data;
-using Common.Animation_Data.Continuous_Action;
+using Common.Abstract_Bases.Spells_Manager;
 using Common.Collection_With_Reaction_On_Change;
-using Player.Spell_Manager.Spell_Handlers;
-using Player.Spell_Manager.Spell_Handlers.Continuous;
-using Player.Spell_Manager.Spell_Handlers.Instant;
 using Player.Spell_Manager.Spells_Selector;
-using Spells;
-using Spells.Controllers.Concrete_Types.Continuous;
-using Spells.Controllers.Concrete_Types.Instant;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
+using Spells.Spell_Handlers.Continuous;
+using Spells.Spell_Handlers.Instant;
 
 namespace Player.Spell_Manager
 {
-    public class PlayerSpellsManager : BaseWithDisabling, IPlayerSpellsManager, ISpellHandler
+    public class PlayerSpellsManager : SpellsManagerBase, IPlayerSpellsManager
     {
-        private readonly IPlayerContinuousSpellHandler _continuousSpellHandler;
-        private readonly IPlayerInstantSpellHandler _instantSpellHandler;
-        private readonly IPlayerSpellsSelectorForSpellManager _spellsSelector;
-        private bool _needCast;
-        private bool _isAnimatorReady = true;
-        private bool _isCurrentSpellContinuous;
-        private IPlayerSpellsHandler _currentSpellsHandler;
+        private readonly IPlayerSpellsSelectorForSpellManager _playerSpellsSelector;
 
-        public PlayerSpellsManager(IPlayerContinuousSpellHandler continuousSpellHandler,
-            IPlayerInstantSpellHandler instantSpellHandler, IPlayerSpellsSelectorForSpellManager spellsSelector)
+        public PlayerSpellsManager(IContinuousSpellHandlerImplementation continuousSpellHandler,
+            IInstantSpellHandlerImplementation instantSpellHandler, IPlayerSpellsSelectorForSpellManager spellsSelector)
+            : base(continuousSpellHandler, instantSpellHandler, spellsSelector)
         {
-            _continuousSpellHandler = continuousSpellHandler;
-            _instantSpellHandler = instantSpellHandler;
-            _spellsSelector = spellsSelector;
+            _playerSpellsSelector = spellsSelector;
         }
 
-        public event Action<IAnimationData> NeedPlaySingleActionAnimation;
-        public event Action<IContinuousActionAnimationData> NeedPlayContinuousActionAnimation;
-        public event Action NeedCancelActionAnimations;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
         public event Action ContinuousSpellStarted;
         public event Action ContinuousSpellFinished;
-        public float ContinuousSpellRatioOfCompletion => _continuousSpellHandler.RatioOfCompletion;
+        public float ContinuousSpellRatioOfCompletion => ContinuousSpellHandler.RatioOfCompletion;
 
-        public ISpellType SelectedSpellType => _spellsSelector.SelectedSpellType;
+        public ISpellType SelectedSpellType => _playerSpellsSelector.SelectedSpellType;
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
-            _spellsSelector.Spells;
+            _playerSpellsSelector.Spells;
 
-        private bool IsBusy => _currentSpellsHandler is {IsBusy: true};
-
-        public void StartCasting()
+        public override void OnSpellCastPartOfAnimationFinished()
         {
-            _needCast = true;
-            if (IsBusy)
-            {
-                return;
-            }
-
-            CastSelectedSpell();
-        }
-
-        public void OnSpellCastPartOfAnimationFinished()
-        {
-            _currentSpellsHandler?.OnSpellCastPartOfAnimationFinished();
-            if (_isCurrentSpellContinuous && _currentSpellsHandler != null)
+            base.OnSpellCastPartOfAnimationFinished();
+            if (IsCurrentSpellContinuous && CurrentSpellsHandler != null)
             {
                 ContinuousSpellStarted?.Invoke();
             }
         }
 
-        public void OnAnimatorReadyForNextAnimation()
-        {
-            _isAnimatorReady = true;
-            if (_needCast && !IsBusy)
-            {
-                CastSelectedSpell();
-            }
-        }
-
-        public void StopCasting()
-        {
-            _needCast = false;
-            _currentSpellsHandler?.TryInterrupt();
-        }
-
         public void AddSpell(ISpellType spellType, ISpell newSpell)
         {
-            _spellsSelector.AddSpell(spellType, newSpell);
+            _playerSpellsSelector.AddSpell(spellType, newSpell);
         }
 
         public void AddSpell(ISpell newSpell)
         {
-            _spellsSelector.AddSpell(newSpell);
+            _playerSpellsSelector.AddSpell(newSpell);
         }
 
         public void SelectNextSpellType()
         {
-            _spellsSelector.SelectNextSpellType();
+            _playerSpellsSelector.SelectNextSpellType();
         }
 
         public void SelectPreviousSpellType()
         {
-            _spellsSelector.SelectPreviousSpellType();
+            _playerSpellsSelector.SelectPreviousSpellType();
         }
 
         public void SelectSpellTypeWithIndex(int indexToSelect)
         {
-            _spellsSelector.SelectSpellTypeWithIndex(indexToSelect);
-        }
-
-        public void HandleSpell(IInformationAboutInstantSpell informationAboutInstantSpell)
-        {
-            if (IsEnabled)
-            {
-                SubscribeOnSpellsHandler(_instantSpellHandler);
-            }
-
-            _currentSpellsHandler = _instantSpellHandler;
-            _instantSpellHandler.HandleSpell(informationAboutInstantSpell);
-        }
-
-        public void HandleSpell(IInformationAboutContinuousSpell informationAboutContinuousSpell)
-        {
-            _isCurrentSpellContinuous = true;
-            if (IsEnabled)
-            {
-                SubscribeOnSpellsHandler(_continuousSpellHandler);
-            }
-
-            _currentSpellsHandler = _continuousSpellHandler;
-            _continuousSpellHandler.HandleSpell(informationAboutContinuousSpell);
+            _playerSpellsSelector.SelectSpellTypeWithIndex(indexToSelect);
         }
 
         protected sealed override void SubscribeOnEvents()
         {
-            _spellsSelector.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
-            _spellsSelector.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellTypeGroup;
+            _playerSpellsSelector.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
+            _playerSpellsSelector.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellTypeGroup;
 
-            if (_currentSpellsHandler == null)
-            {
-                return;
-            }
-
-            SubscribeOnSpellsHandler(_currentSpellsHandler);
+            base.SubscribeOnEvents();
         }
 
         protected override void UnsubscribeFromEvents()
         {
-            _spellsSelector.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
-            _spellsSelector.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellTypeGroup;
+            _playerSpellsSelector.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
+            _playerSpellsSelector.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellTypeGroup;
 
-            if (_currentSpellsHandler == null)
-            {
-                return;
-            }
-
-            UnsubscribeFromSpellsHandler(_currentSpellsHandler);
+            base.UnsubscribeFromEvents();
         }
 
         private void OnTryingToUseEmptySpellTypeGroup(ISpellType obj)
@@ -169,71 +92,14 @@ namespace Player.Spell_Manager
             SelectedSpellTypeChanged?.Invoke(obj);
         }
 
-        private void SubscribeOnSpellsHandler(IPlayerSpellsHandler spellsHandler)
+        protected override void OnSpellHandled()
         {
-            spellsHandler.SpellCanceled += OnSpellCanceled;
-            spellsHandler.SpellHandled += OnSpellHandled;
-            spellsHandler.NeedPlayContinuousActionAnimation += OnNeedPlayContinuousActionAnimation;
-            spellsHandler.NeedPlaySingleActionAnimation += OnNeedPlaySingleActionAnimation;
-            spellsHandler.SpellCasted += OnSpellCasted;
-        }
-
-        private void UnsubscribeFromSpellsHandler(IPlayerSpellsHandler spellsHandler)
-        {
-            spellsHandler.SpellCanceled -= OnSpellCanceled;
-            spellsHandler.SpellHandled -= OnSpellHandled;
-            spellsHandler.NeedPlayContinuousActionAnimation -= OnNeedPlayContinuousActionAnimation;
-            spellsHandler.NeedPlaySingleActionAnimation -= OnNeedPlaySingleActionAnimation;
-            spellsHandler.SpellCasted -= OnSpellCasted;
-        }
-
-        private void OnNeedPlayContinuousActionAnimation(IContinuousActionAnimationData obj)
-        {
-            NeedPlayContinuousActionAnimation?.Invoke(obj);
-        }
-
-        private void OnNeedPlaySingleActionAnimation(IAnimationData obj)
-        {
-            NeedPlaySingleActionAnimation?.Invoke(obj);
-        }
-
-        private void OnSpellCanceled()
-        {
-            NeedCancelActionAnimations?.Invoke();
-            _isAnimatorReady = false;
-        }
-
-        private void CastSelectedSpell()
-        {
-            if (!_spellsSelector.TryToRememberSelectedSpellInformation())
+            if (IsCurrentSpellContinuous)
             {
-                return;
-            }
-
-            _spellsSelector.RememberedSpell.HandleSpell(this);
-            _isAnimatorReady = false;
-        }
-
-        private void OnSpellHandled()
-        {
-            if (_isCurrentSpellContinuous)
-            {
-                NeedCancelActionAnimations?.Invoke();
                 ContinuousSpellFinished?.Invoke();
             }
 
-            _isCurrentSpellContinuous = false;
-            UnsubscribeFromSpellsHandler(_currentSpellsHandler);
-            _currentSpellsHandler = null;
-            if (_needCast && _isAnimatorReady)
-            {
-                CastSelectedSpell();
-            }
-        }
-
-        private void OnSpellCasted()
-        {
-            _spellsSelector.RemoveRememberedSpell();
+            base.OnSpellHandled();
         }
     }
 }

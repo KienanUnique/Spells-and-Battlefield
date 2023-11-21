@@ -22,14 +22,14 @@ using Player.Look;
 using Player.Movement;
 using Player.Settings;
 using Player.Spell_Manager;
-using Player.Spell_Manager.Spell_Handlers.Continuous;
-using Player.Spell_Manager.Spell_Handlers.Instant;
 using Player.Spell_Manager.Spells_Selector;
 using Player.Visual;
 using Spells;
 using Spells.Factory;
 using Spells.Spell;
 using Spells.Spell.Scriptable_Objects;
+using Spells.Spell_Handlers.Continuous;
+using Spells.Spell_Handlers.Instant;
 using Spells.Spell_Types_Settings;
 using Systems.Input_Manager.Concrete_Types.In_Game;
 using UnityEngine;
@@ -138,9 +138,9 @@ namespace Player.Setup
             var playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
                 _settings.Look);
 
-            var continuousSpellHandler = new PlayerContinuousSpellHandler(_playerCaster, _spellObjectsFactory,
+            var continuousSpellHandler = new ContinuousSpellHandlerImplementation(_playerCaster, _spellObjectsFactory,
                 _spellSpawnObject.ReadonlyTransform, playerLook);
-            var instantSpellHandler = new PlayerInstantSpellHandler(_playerCaster, _spellObjectsFactory,
+            var instantSpellHandler = new InstantSpellHandlerImplementation(_playerCaster, _spellObjectsFactory,
                 _spellSpawnObject.ReadonlyTransform, playerLook);
             var spellsSelector =
                 new PlayerSpellsSelectorForSpellManager(new List<ISpell>(_startTestSpells), _spellTypesSetting);

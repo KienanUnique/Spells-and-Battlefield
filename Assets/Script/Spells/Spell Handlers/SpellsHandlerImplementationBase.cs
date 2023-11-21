@@ -4,19 +4,18 @@ using Common.Animation_Data;
 using Common.Animation_Data.Continuous_Action;
 using Common.Readonly_Transform;
 using Player.Look;
-using Spells;
 using Spells.Factory;
 
-namespace Player.Spell_Manager.Spell_Handlers
+namespace Spells.Spell_Handlers
 {
-    public abstract class PlayerSpellsHandlerBase : BaseWithDisabling, IPlayerSpellsHandler
+    public abstract class SpellsHandlerImplementationBase : BaseWithDisabling, ISpellsHandlerImplementationBase
     {
         protected readonly ICaster _caster;
         protected readonly ISpellObjectsFactory _spellObjectsFactory;
         protected readonly IReadonlyTransform _spellSpawnObject;
         protected readonly IReadonlyPlayerLook _look;
 
-        protected PlayerSpellsHandlerBase(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
+        protected SpellsHandlerImplementationBase(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
             IReadonlyTransform spellSpawnObject, IReadonlyPlayerLook look)
         {
             _caster = caster;

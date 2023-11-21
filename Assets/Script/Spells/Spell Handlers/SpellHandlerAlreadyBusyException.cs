@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Player.Spell_Manager.Spell_Handlers
+namespace Spells.Spell_Handlers
 {
     public class SpellHandlerAlreadyBusyException : InvalidOperationException
     {
