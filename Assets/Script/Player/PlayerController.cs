@@ -334,7 +334,7 @@ namespace Player
 
         private void OnDashInputted()
         {
-            _movement.TryDash(_look.CameraForward);
+            _movement.TryDash(_look.LookDirection);
         }
 
         private void OnCharacterStateChanged(CharacterState newState)

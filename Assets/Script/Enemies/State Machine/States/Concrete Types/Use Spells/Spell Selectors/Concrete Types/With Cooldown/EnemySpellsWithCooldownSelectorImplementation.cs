@@ -4,24 +4,37 @@ using Spells.Spell;
 
 namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors.Concrete_Types.With_Cooldown
 {
-    public class SpellsWithCooldownSelectorImplementation : SpellSelectorBase
+    public class EnemySpellsWithCooldownSelectorImplementation : EnemySpellSelectorBase
     {
         private readonly List<ISpellWithCooldown> _spellsToUseInPriorityOrder;
-        private ISpellWithCooldown _selectedSpell;
+        private ISpellWithCooldown _mostPrioritizedReadyToUseSpellSpell;
+        private ISpellWithCooldown _rememberedSpell;
 
-        public SpellsWithCooldownSelectorImplementation(List<ISpellWithCooldown> spellsToUseInPriorityOrder)
+        public EnemySpellsWithCooldownSelectorImplementation(List<ISpellWithCooldown> spellsToUseInPriorityOrder)
         {
             _spellsToUseInPriorityOrder = spellsToUseInPriorityOrder;
             SelectMostPrioritizedReadyToUseSpell();
         }
 
-        public override bool CanUseSpell => _selectedSpell != default;
+        public override bool CanUseSpell => _mostPrioritizedReadyToUseSpellSpell != default;
+        public override ISpell RememberedSpell => _rememberedSpell?.Spell;
 
-        public override ISpell Pop()
+        public override bool TryToRememberSelectedSpellInformation()
         {
-            ISpell oldSelectedSpell = _selectedSpell.GetSpellAndStartCooldownTimer();
+            if (!CanUseSpell)
+            {
+                return false;
+            }
+
+            _rememberedSpell = _mostPrioritizedReadyToUseSpellSpell;
+            return true;
+        }
+
+        public override void RemoveRememberedSpell()
+        {
+            _rememberedSpell?.StartCooldownTimer();
+            _rememberedSpell = null;
             SelectMostPrioritizedReadyToUseSpell();
-            return oldSelectedSpell;
         }
 
         public override void Enable()
@@ -49,7 +62,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
         private void SelectMostPrioritizedReadyToUseSpell()
         {
             bool canUseSpellsBefore = CanUseSpell;
-            _selectedSpell = _spellsToUseInPriorityOrder.FirstOrDefault(spell => spell.CanUse);
+            _mostPrioritizedReadyToUseSpellSpell = _spellsToUseInPriorityOrder.FirstOrDefault(spell => spell.CanUse);
             if (!canUseSpellsBefore && CanUseSpell)
             {
                 InvokeCanUseSpellsAgain();

@@ -1,5 +1,5 @@
 using Common.Abstract_Bases.Visual;
-using Common.Animation_Data;
+using Common.Abstract_Bases.Visual.Settings;
 using Enemies.Visual.Dissolve_Effect_Controller;
 using UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Presenter;
 using UnityEngine;
@@ -9,35 +9,25 @@ namespace Enemies.Visual
 {
     public class EnemyVisual : VisualBase, IEnemyVisual
     {
-        private static readonly int ActionTriggerHash = Animator.StringToHash("Do Action");
-        private static readonly int ActionFloatAnimationSpeedHash = Animator.StringToHash("Use Action Speed");
         private static readonly int IsRunningBoolHash = Animator.StringToHash("Is Running");
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
-        private readonly AnimatorOverrideController _baseAnimatorOverrideController;
-        private readonly AnimationClip _emptyActionAnimationClip;
         private readonly IDissolveEffectController _dissolveEffectController;
         private readonly IEnemyInformationPanelPresenter _informationPanel;
 
         public EnemyVisual(RigBuilder rigBuilder, Animator characterAnimator,
-            AnimatorOverrideController baseAnimatorOverrideController, AnimationClip emptyActionAnimationClip,
+            AnimatorOverrideController baseAnimatorOverrideController, IVisualSettings settings,
             IDissolveEffectController dissolveEffectController, IEnemyInformationPanelPresenter informationPanel) :
             base(rigBuilder, characterAnimator)
         {
-            _baseAnimatorOverrideController = baseAnimatorOverrideController;
-            _emptyActionAnimationClip = emptyActionAnimationClip;
+            _characterAnimator.runtimeAnimatorController = baseAnimatorOverrideController;
+            OverrideController = baseAnimatorOverrideController;
             _dissolveEffectController = dissolveEffectController;
             _informationPanel = informationPanel;
-            ApplyRuntimeAnimatorController(_baseAnimatorOverrideController);
+            Settings = settings;
         }
 
-        public void PlayActionAnimation(IAnimationData animationData)
-        {
-            ApplyAnimationOverride(_baseAnimatorOverrideController,
-                new AnimationOverride(_emptyActionAnimationClip, animationData.Clip));
-
-            _characterAnimator.SetFloat(ActionFloatAnimationSpeedHash, animationData.AnimationSpeed);
-            _characterAnimator.SetTrigger(ActionTriggerHash);
-        }
+        protected override IVisualSettings Settings { get; }
+        protected override AnimatorOverrideController OverrideController { get; }
 
         public void UpdateMovingData(bool isRunning)
         {
@@ -50,11 +40,6 @@ namespace Enemies.Visual
             _characterAnimator.SetTrigger(DieTriggerHash);
             _dissolveEffectController.Disappear();
             _informationPanel.Disappear();
-        }
-
-        private void ApplyRuntimeAnimatorController(RuntimeAnimatorController animatorOverrideController)
-        {
-            _characterAnimator.runtimeAnimatorController = animatorOverrideController;
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Player.Visual.Settings
+namespace Common.Abstract_Bases.Visual.Settings
 {
     [Serializable]
-    public class PlayerVisualSettingsSection : IPlayerVisualSettings
+    public class VisualSettingsSection : IVisualSettings
     {
         [SerializeField] private AnimationClip _emptyUseSpellAnimation;
         [SerializeField] private AnimationClip _emptyPrepareContinuousActionAnimation;

@@ -14,7 +14,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 
         public IEnemyDataForMoving DataForMoving => _dataForMoving;
 
-        public ISpellSelector GetSpellSelector(ICoroutineStarter coroutineStarter)
+        public IEnemySpellSelector GetSpellSelector(ICoroutineStarter coroutineStarter)
         {
             return _spellsSelectorProvider.GetImplementationObject(coroutineStarter);
         }

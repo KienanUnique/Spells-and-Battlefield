@@ -7,6 +7,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
     {
         public event Action CanUseAgain;
         public bool CanUse { get; }
-        public ISpell GetSpellAndStartCooldownTimer();
+        public ISpell Spell { get; }
+        public void StartCooldownTimer();
     }
 }

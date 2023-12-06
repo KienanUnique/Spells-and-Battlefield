@@ -1,8 +1,8 @@
 ﻿using Spells.Spell;
 
-namespace Common.Abstract_Bases.Spells_Manager
+namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 {
-    public interface ISpellSelectorFoSpellManager
+    public interface IEnemySpellSelectorFoSpellManager
     {
         public ISpell RememberedSpell { get; }
         public bool TryToRememberSelectedSpellInformation();

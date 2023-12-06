@@ -1,4 +1,5 @@
-﻿using Common.Readonly_Transform;
+﻿using Common;
+using Common.Readonly_Transform;
 using Player.Look;
 using Spells.Controllers.Concrete_Types.Instant;
 using Spells.Factory;
@@ -6,15 +7,20 @@ using UnityEngine;
 
 namespace Spells.Spell_Handlers.Instant
 {
-    public class InstantSpellHandlerImplementation : SpellsHandlerImplementationBase, IInstantSpellHandlerImplementation
+    public abstract class InstantSpellHandlerImplementationBase : SpellsHandlerImplementationBase,
+        IInstantSpellHandlerImplementation
     {
+        protected readonly IReadonlyLook _look;
         private IInformationAboutInstantSpell _spellToCreate;
 
-        public InstantSpellHandlerImplementation(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
-            IReadonlyTransform spellSpawnObject, IReadonlyPlayerLook look) : base(caster, spellObjectsFactory,
-            spellSpawnObject, look)
+        protected InstantSpellHandlerImplementationBase(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
+            IReadonlyTransform spellSpawnObject, IReadonlyLook look) : base(caster, spellObjectsFactory,
+            spellSpawnObject)
         {
+            _look = look;
         }
+
+        protected abstract Quaternion LookRotation { get; }
 
         public void HandleSpell(IInformationAboutInstantSpell informationAboutInstantSpell)
         {
@@ -31,8 +37,7 @@ namespace Spells.Spell_Handlers.Instant
         public override void OnSpellCastPartOfAnimationFinished()
         {
             _spellObjectsFactory.Create(_spellToCreate.DataForController, _spellToCreate.PrefabProvider, _caster,
-                _spellSpawnObject.Position,
-                Quaternion.LookRotation(_look.CameraLookPointPosition - _spellSpawnObject.Position), _spellSpawnObject);
+                _spellSpawnObject.Position, LookRotation, _spellSpawnObject);
             HandleEndOfCast();
             HandleEndOfSpell();
         }

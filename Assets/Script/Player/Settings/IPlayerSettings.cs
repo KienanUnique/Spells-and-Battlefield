@@ -1,10 +1,10 @@
-﻿using Factions;
+﻿using Common.Abstract_Bases.Visual.Settings;
+using Factions;
 using Player.Camera_Effects.Settings;
 using Player.Character.Settings;
 using Player.Look.Settings;
 using Player.Movement.Settings;
 using Player.Spell_Manager.Settings;
-using Player.Visual.Settings;
 
 namespace Player.Settings
 {
@@ -15,7 +15,7 @@ namespace Player.Settings
         public IPlayerMovementSettings Movement { get; }
         public IPlayerCharacterSettings Character { get; }
         public IPlayerSpellManagerSettings SpellManager { get; }
-        public IPlayerVisualSettings Visual { get; }
+        public IVisualSettings Visual { get; }
         public IFaction Faction { get; }
     }
 }

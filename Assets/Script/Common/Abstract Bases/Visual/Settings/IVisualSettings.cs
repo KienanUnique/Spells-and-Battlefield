@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Player.Visual.Settings
+namespace Common.Abstract_Bases.Visual.Settings
 {
-    public interface IPlayerVisualSettings
+    public interface IVisualSettings
     {
         public AnimationClip EmptyActionAnimation { get; }
         public AnimationClip EmptyPrepareContinuousActionAnimation { get; }

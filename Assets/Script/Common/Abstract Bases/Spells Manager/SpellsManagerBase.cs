@@ -2,6 +2,7 @@
 using Common.Abstract_Bases.Disableable;
 using Common.Animation_Data;
 using Common.Animation_Data.Continuous_Action;
+using Enemies.State_Machine.States.Concrete_Types.Use_Spells;
 using Spells;
 using Spells.Controllers.Concrete_Types.Continuous;
 using Spells.Controllers.Concrete_Types.Instant;
@@ -15,14 +16,14 @@ namespace Common.Abstract_Bases.Spells_Manager
     {
         private readonly IContinuousSpellHandlerImplementation _continuousSpellHandler;
         private readonly IInstantSpellHandlerImplementation _instantSpellHandler;
-        private readonly ISpellSelectorFoSpellManager _spellsSelector;
+        private readonly IEnemySpellSelectorFoSpellManager _spellsSelector;
         private bool _needCast;
         private bool _isAnimatorReady = true;
         private bool _isCurrentSpellContinuous;
         private ISpellsHandlerImplementationBase _currentSpellsHandler;
 
         protected SpellsManagerBase(IContinuousSpellHandlerImplementation continuousSpellHandler,
-            IInstantSpellHandlerImplementation instantSpellHandler, ISpellSelectorFoSpellManager spellsSelector)
+            IInstantSpellHandlerImplementation instantSpellHandler, IEnemySpellSelectorFoSpellManager spellsSelector)
         {
             _continuousSpellHandler = continuousSpellHandler;
             _instantSpellHandler = instantSpellHandler;
@@ -35,7 +36,7 @@ namespace Common.Abstract_Bases.Spells_Manager
 
         protected IContinuousSpellHandlerImplementation ContinuousSpellHandler => _continuousSpellHandler;
         protected IInstantSpellHandlerImplementation InstantSpellHandler => _instantSpellHandler;
-        protected ISpellSelectorFoSpellManager SpellsSelector => _spellsSelector;
+        protected IEnemySpellSelectorFoSpellManager SpellsSelector => _spellsSelector;
         protected bool NeedCast => _needCast;
         protected bool IsAnimatorReady => _isAnimatorReady;
         protected bool IsCurrentSpellContinuous => _isCurrentSpellContinuous;
@@ -98,6 +99,8 @@ namespace Common.Abstract_Bases.Spells_Manager
 
         protected override void SubscribeOnEvents()
         {
+            _continuousSpellHandler.Enable();
+            _instantSpellHandler.Enable();
             if (_currentSpellsHandler == null)
             {
                 return;
@@ -108,6 +111,8 @@ namespace Common.Abstract_Bases.Spells_Manager
 
         protected override void UnsubscribeFromEvents()
         {
+            _continuousSpellHandler.Disable();
+            _instantSpellHandler.Disable();
             if (_currentSpellsHandler == null)
             {
                 return;

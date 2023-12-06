@@ -21,8 +21,9 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
         public event Action CanUseAgain;
 
         public bool CanUse { get; private set; }
+        public ISpell Spell => _data.Spell;
 
-        public ISpell GetSpellAndStartCooldownTimer()
+        public void StartCooldownTimer()
         {
             if (!CanUse)
             {
@@ -30,7 +31,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
             }
 
             _coroutineStarter.StartCoroutine(DisableSpellForCooldown());
-            return _data.Spell;
         }
 
         private IEnumerator DisableSpellForCooldown()

@@ -139,9 +139,9 @@ namespace Player.Setup
                 _settings.Look);
 
             var continuousSpellHandler = new ContinuousSpellHandlerImplementation(_playerCaster, _spellObjectsFactory,
-                _spellSpawnObject.ReadonlyTransform, playerLook);
-            var instantSpellHandler = new InstantSpellHandlerImplementation(_playerCaster, _spellObjectsFactory,
-                _spellSpawnObject.ReadonlyTransform, playerLook);
+                _spellSpawnObject.ReadonlyTransform);
+            var instantSpellHandler = new PlayerInstantSpellHandlerImplementationBase(_playerCaster,
+                _spellObjectsFactory, _spellSpawnObject.ReadonlyTransform, playerLook);
             var spellsSelector =
                 new PlayerSpellsSelectorForSpellManager(new List<ISpell>(_startTestSpells), _spellTypesSetting);
             var playerSpellsManager =

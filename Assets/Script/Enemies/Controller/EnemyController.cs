@@ -5,6 +5,7 @@ using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animation_Data;
+using Common.Animation_Data.Continuous_Action;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Id_Holder;
 using Common.Interfaces;
@@ -91,7 +92,8 @@ namespace Enemies.Controller
 
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public ISummoner Summoner => _character.Summoner;
-        public Vector3 CurrentLookDirection => _look.CurrentLookDirection;
+        public Vector3 LookPointPosition => _look.LookPointPosition;
+        public Vector3 LookDirection => _look.LookDirection;
         public IReadonlyTransform ThisPositionReferencePointForLook => _look.ThisPositionReferencePointForLook;
         public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
 
@@ -122,6 +124,16 @@ namespace Enemies.Controller
         public void PlayActionAnimation(IAnimationData animationData)
         {
             _visual.PlayActionAnimation(animationData);
+        }
+
+        public void PlayActionAnimation(IContinuousActionAnimationData animationData)
+        {
+            _visual.PlayActionAnimation(animationData);
+        }
+
+        public void CancelActionAnimation()
+        {
+            _visual.CancelActionAnimation();
         }
 
         public void ChangeThisPositionReferencePointTransform(IReadonlyTransform newReferenceTransform)

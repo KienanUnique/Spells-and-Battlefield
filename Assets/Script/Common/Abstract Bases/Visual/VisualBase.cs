@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using Common.Abstract_Bases.Visual.Settings;
+using Common.Animation_Data;
+using Common.Animation_Data.Continuous_Action;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -6,6 +9,16 @@ namespace Common.Abstract_Bases.Visual
 {
     public abstract class VisualBase
     {
+        private static readonly int CancelActionAnimationTriggerHash = Animator.StringToHash("Cancel Action");
+        private static readonly int PlayContinuousActionTriggerHash = Animator.StringToHash("Play Continuous Action");
+
+        private static readonly int PrepareContinuousActionFloatSpeedHash =
+            Animator.StringToHash("Prepare Continuous Action Speed");
+
+        private static readonly int ContinuousActionFloatSpeedHash = Animator.StringToHash("Continuous Action Speed");
+        private static readonly int PlayActionTriggerHash = Animator.StringToHash("Play Action");
+        private static readonly int ActionFloatSpeedHash = Animator.StringToHash("Action Speed");
+
         protected readonly Animator _characterAnimator;
         protected readonly RigBuilder _rigBuilder;
 
@@ -13,6 +26,41 @@ namespace Common.Abstract_Bases.Visual
         {
             _rigBuilder = rigBuilder;
             _characterAnimator = characterAnimator;
+        }
+
+        protected abstract IVisualSettings Settings { get; }
+        protected abstract AnimatorOverrideController OverrideController { get; }
+
+        public void PlayActionAnimation(IAnimationData animationData)
+        {
+            _characterAnimator.ResetTrigger(CancelActionAnimationTriggerHash);
+            ApplyAnimationOverride(OverrideController,
+                new AnimationOverride(Settings.EmptyActionAnimation, animationData.Clip));
+            _characterAnimator.SetFloat(ActionFloatSpeedHash, animationData.AnimationSpeed);
+            _characterAnimator.SetTrigger(PlayActionTriggerHash);
+        }
+
+        public void PlayActionAnimation(IContinuousActionAnimationData animationData)
+        {
+            _characterAnimator.ResetTrigger(CancelActionAnimationTriggerHash);
+            var animationOverrides = new List<AnimationOverride>
+            {
+                new AnimationOverride(Settings.EmptyPrepareContinuousActionAnimation,
+                    animationData.PrepareContinuousActionAnimation.Clip),
+                new AnimationOverride(Settings.EmptyContinuousActionAnimation,
+                    animationData.ContinuousActionAnimation.Clip)
+            };
+            ApplyAnimationOverride(new AnimatorOverrideController(OverrideController), animationOverrides);
+            _characterAnimator.SetFloat(PrepareContinuousActionFloatSpeedHash,
+                animationData.PrepareContinuousActionAnimation.AnimationSpeed);
+            _characterAnimator.SetFloat(ContinuousActionFloatSpeedHash,
+                animationData.ContinuousActionAnimation.AnimationSpeed);
+            _characterAnimator.SetTrigger(PlayContinuousActionTriggerHash);
+        }
+
+        public void CancelActionAnimation()
+        {
+            _characterAnimator.SetTrigger(CancelActionAnimationTriggerHash);
         }
 
         protected void ApplyAnimationOverride(AnimatorOverrideController baseController,
@@ -39,18 +87,6 @@ namespace Common.Abstract_Bases.Visual
             baseController.ApplyOverrides(originalOverrides);
 
             _characterAnimator.runtimeAnimatorController = baseController;
-        }
-
-        protected struct AnimationOverride
-        {
-            public AnimationOverride(AnimationClip originalClip, AnimationClip overrideClip)
-            {
-                OriginalClip = originalClip;
-                OverrideClip = overrideClip;
-            }
-
-            public AnimationClip OriginalClip { get; }
-            public AnimationClip OverrideClip { get; }
         }
     }
 }

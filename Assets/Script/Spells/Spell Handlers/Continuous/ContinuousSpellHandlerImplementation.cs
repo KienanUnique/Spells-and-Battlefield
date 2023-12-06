@@ -1,11 +1,11 @@
 ﻿using Common.Readonly_Transform;
-using Player.Look;
 using Spells.Controllers.Concrete_Types.Continuous;
 using Spells.Factory;
 
 namespace Spells.Spell_Handlers.Continuous
 {
-    public class ContinuousSpellHandlerImplementation : SpellsHandlerImplementationBase, IContinuousSpellHandlerImplementation
+    public class ContinuousSpellHandlerImplementation : SpellsHandlerImplementationBase,
+        IContinuousSpellHandlerImplementation
     {
         private IInformationAboutContinuousSpell _spellToCreate;
         private IContinuousSpellController _castedSpell;
@@ -17,8 +17,7 @@ namespace Spells.Spell_Handlers.Continuous
         }
 
         public ContinuousSpellHandlerImplementation(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
-            IReadonlyTransform spellSpawnObject, IReadonlyPlayerLook look) : base(caster, spellObjectsFactory,
-            spellSpawnObject, look)
+            IReadonlyTransform spellSpawnObject) : base(caster, spellObjectsFactory, spellSpawnObject)
         {
         }
 

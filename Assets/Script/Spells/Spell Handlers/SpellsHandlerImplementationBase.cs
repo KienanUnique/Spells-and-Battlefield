@@ -1,4 +1,5 @@
 ﻿using System;
+using Common;
 using Common.Abstract_Bases.Disableable;
 using Common.Animation_Data;
 using Common.Animation_Data.Continuous_Action;
@@ -13,15 +14,13 @@ namespace Spells.Spell_Handlers
         protected readonly ICaster _caster;
         protected readonly ISpellObjectsFactory _spellObjectsFactory;
         protected readonly IReadonlyTransform _spellSpawnObject;
-        protected readonly IReadonlyPlayerLook _look;
 
         protected SpellsHandlerImplementationBase(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
-            IReadonlyTransform spellSpawnObject, IReadonlyPlayerLook look)
+            IReadonlyTransform spellSpawnObject)
         {
             _caster = caster;
             _spellObjectsFactory = spellObjectsFactory;
             _spellSpawnObject = spellSpawnObject;
-            _look = look;
         }
 
         public event Action SpellCasted;

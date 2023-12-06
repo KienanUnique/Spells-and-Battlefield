@@ -159,10 +159,10 @@ namespace Enemies.Setup
 
             var enemyLook = new EnemyLook(_thisRigidbody.transform, thisReadonlyRigidbody, thisReadonlyRigidbody,
                 targetFromTriggersSelector, this, _transformToRotateForIK, _thisIKCenterPoint.ReadonlyTransform,
-                _needDistanceFromIKCenterPoint);
+                _needDistanceFromIKCenterPoint, _settings.LookSettingsProvider.GetImplementationObject());
 
             var enemyVisual = new EnemyVisual(_rigBuilder, _characterAnimator, _settings.BaseAnimatorOverrideController,
-                _generalEnemySettings.EmptyActionAnimationClip, _dissolveEffectController, _informationPanel);
+                _generalEnemySettings.VisualSettings, _dissolveEffectController, _informationPanel);
 
             var movementSetupData = new EnemyMovementSetupData(_thisRigidbody, targetFromTriggersSelector, this,
                 targetPathfinder, _summoner, _collider);
