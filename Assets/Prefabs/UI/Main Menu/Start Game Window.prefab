@@ -513,9 +513,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 482486819829074364, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_text
+      value: Choose Level
+      objectReference: {fileID: 0}
+    - target: {fileID: 482486819829074365, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6126236217557481175, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
       propertyPath: m_Name
       value: Choose Level
+      objectReference: {fileID: 0}
+    - target: {fileID: 7877660403378058655, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7877660403378058655, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_FillMethod
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7877660403378058655, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_UseSpriteMesh
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7877660403378058656, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
       propertyPath: m_Pivot.x
@@ -648,6 +668,7 @@ MonoBehaviour:
   _backButton: {fileID: 7556803459547529307}
   _loadButton: {fileID: 24851078882234604}
   _gameLevelSelector: {fileID: 5692179162095497677}
+  _waypointsTransforms: []
 --- !u!114 &7185664716590820368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,6 +688,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8860182751953174169}
     m_Modifications:
+    - target: {fileID: 1333717681491091522, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
+      propertyPath: m_text
+      value: Back
+      objectReference: {fileID: 0}
     - target: {fileID: 8377512188999010915, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
       propertyPath: m_Name
       value: Back
@@ -779,6 +804,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8860182751953174169}
     m_Modifications:
+    - target: {fileID: 1333717681491091522, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
+      propertyPath: m_text
+      value: Load
+      objectReference: {fileID: 0}
     - target: {fileID: 8377512188999010915, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
       propertyPath: m_Name
       value: Load

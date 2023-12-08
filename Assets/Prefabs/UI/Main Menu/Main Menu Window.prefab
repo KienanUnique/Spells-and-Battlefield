@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8860182751953174169}
     m_Modifications:
+    - target: {fileID: 1333717681491091522, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
+      propertyPath: m_text
+      value: Credits
+      objectReference: {fileID: 0}
     - target: {fileID: 8377512188999010915, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
       propertyPath: m_Name
       value: Credits
@@ -119,6 +123,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 482486819829074364, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_text
+      value: Main Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 482486819829074364, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_fontSize
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 482486819829074364, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 482486819829074364, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 482486819829074365, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6126236217557481175, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
       propertyPath: m_Name
       value: Main Menu
@@ -227,30 +251,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7877660403378058656, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
   m_PrefabInstance: {fileID: 1704228880592948025}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7840886841725324903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8860182751953174168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5baec8285e5444b18d8c4f14e88bfecb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4492137555123520060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8860182751953174168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d99fc8b5461545448a9b5101830e941, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1898055788402641989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +267,30 @@ MonoBehaviour:
   _creditsButton: {fileID: 7471707697638429995}
   _quitButton: {fileID: 3859361161611622574}
   _startGameWindow: {fileID: 0}
+--- !u!114 &4492137555123520060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8860182751953174168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d99fc8b5461545448a9b5101830e941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7840886841725324903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8860182751953174168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5baec8285e5444b18d8c4f14e88bfecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4741677380345934542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -274,6 +298,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8860182751953174169}
     m_Modifications:
+    - target: {fileID: 1333717681491091522, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
+      propertyPath: m_text
+      value: Quit
+      objectReference: {fileID: 0}
     - target: {fileID: 8377512188999010915, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
       propertyPath: m_Name
       value: Quit
@@ -386,6 +414,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8860182751953174169}
     m_Modifications:
+    - target: {fileID: 1333717681491091522, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
+      propertyPath: m_text
+      value: Start Game
+      objectReference: {fileID: 0}
     - target: {fileID: 8377512188999010915, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
       propertyPath: m_Name
       value: Start Game

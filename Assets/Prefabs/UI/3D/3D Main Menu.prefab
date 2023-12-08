@@ -214,6 +214,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.485
       objectReference: {fileID: 0}
+    - target: {fileID: 3306482409475504014, guid: 63b2db59e78fce14bbda34cbf281dddc, type: 3}
+      propertyPath: m_text
+      value: Credits
+      objectReference: {fileID: 0}
     - target: {fileID: 5137634517949367350, guid: 63b2db59e78fce14bbda34cbf281dddc, type: 3}
       propertyPath: m_text
       value: Credits
@@ -314,6 +318,10 @@ PrefabInstance:
     - target: {fileID: 3137777117678093271, guid: 63b2db59e78fce14bbda34cbf281dddc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.485
+      objectReference: {fileID: 0}
+    - target: {fileID: 3306482409475504014, guid: 63b2db59e78fce14bbda34cbf281dddc, type: 3}
+      propertyPath: m_text
+      value: Quit
       objectReference: {fileID: 0}
     - target: {fileID: 5137634517949367350, guid: 63b2db59e78fce14bbda34cbf281dddc, type: 3}
       propertyPath: m_text
@@ -440,6 +448,10 @@ PrefabInstance:
     - target: {fileID: 920418146798826985, guid: 346754a4c3ebf5546950aa9efd4fa3b2, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 2559905979415490809, guid: 346754a4c3ebf5546950aa9efd4fa3b2, type: 3}
+      propertyPath: m_text
+      value: Main Menu
       objectReference: {fileID: 0}
     - target: {fileID: 2810190243172067760, guid: 346754a4c3ebf5546950aa9efd4fa3b2, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -636,6 +648,10 @@ PrefabInstance:
     - target: {fileID: 3137777117678093271, guid: 63b2db59e78fce14bbda34cbf281dddc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.484
+      objectReference: {fileID: 0}
+    - target: {fileID: 3306482409475504014, guid: 63b2db59e78fce14bbda34cbf281dddc, type: 3}
+      propertyPath: m_text
+      value: Start Game
       objectReference: {fileID: 0}
     - target: {fileID: 5137634517949367350, guid: 63b2db59e78fce14bbda34cbf281dddc, type: 3}
       propertyPath: m_text

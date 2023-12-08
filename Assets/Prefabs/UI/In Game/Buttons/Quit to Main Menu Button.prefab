@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1333717681491091522, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
+      propertyPath: m_text
+      value: Quit to Main Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333717681491091522, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
+      propertyPath: m_fontSize
+      value: 16.8
+      objectReference: {fileID: 0}
     - target: {fileID: 8377512188999010915, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
       propertyPath: m_Name
       value: Quit to Main Menu Button
@@ -101,7 +109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8377512189899016577, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
       propertyPath: m_fontSize
-      value: 18.3
+      value: 16.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}

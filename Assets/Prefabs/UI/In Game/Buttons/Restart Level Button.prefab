@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1333717681491091522, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
+      propertyPath: m_text
+      value: Restart
+      objectReference: {fileID: 0}
     - target: {fileID: 8377512188999010915, guid: 40fbe4ce4083de440b97b640d8116bb6, type: 3}
       propertyPath: m_Name
       value: Restart Level Button
