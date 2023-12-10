@@ -18,4 +18,4 @@ MonoBehaviour:
   - _spell: {fileID: 11400000, guid: 64f2c7c17c0f77446a5eacd00b9c1249, type: 2}
     _cooldownSeconds: 7
   - _spell: {fileID: 11400000, guid: b70b95decaaac2e46af860a758b1ecfd, type: 2}
-    _cooldownSeconds: 2
+    _cooldownSeconds: 4

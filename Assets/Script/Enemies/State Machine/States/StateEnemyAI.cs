@@ -47,6 +47,11 @@ namespace Enemies.State_Machine.States
             _currentStateStatus.Value = StateEnemyAIStatus.NonActive;
         }
 
+        public void ExitSafely(IStateEnemyAI nextState)
+        {
+            PrepareToExit(nextState);
+        }
+
         protected abstract void SpecialReactionOnStateStatusChange(StateEnemyAIStatus newStatus);
 
         protected virtual void SpecialInitializeAction()
@@ -116,6 +121,16 @@ namespace Enemies.State_Machine.States
 
         private void OnNeedTransit(IStateEnemyAI nextState)
         {
+            PrepareToExit(nextState);
+        }
+
+        private void PrepareToExit(IStateEnemyAI nextState)
+        {
+            if (_currentStateStatus.Value != StateEnemyAIStatus.Active)
+            {
+                return;
+            }
+
             _cachedNextState = nextState;
             _currentStateStatus.Value = StateEnemyAIStatus.Exiting;
         }

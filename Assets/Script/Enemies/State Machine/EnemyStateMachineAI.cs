@@ -89,7 +89,14 @@ namespace Enemies.State_Machine
 
         private void OnCurrentTargetFromTriggersChanged(IEnemyTarget oldTarget, IEnemyTarget newTarget)
         {
-            TransitToState(_currentStateEnemyAI ?? _firstStateEnemyAI);
+            if (_currentStateEnemyAI != null)
+            {
+                _currentStateEnemyAI.ExitSafely(_currentStateEnemyAI);
+            }
+            else
+            {
+                TransitToState(_firstStateEnemyAI);
+            }
         }
 
         private void SubscribeOnTargetSelectorEvents()

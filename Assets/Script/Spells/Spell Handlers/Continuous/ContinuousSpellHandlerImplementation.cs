@@ -1,6 +1,7 @@
 ﻿using Common.Readonly_Transform;
 using Spells.Controllers.Concrete_Types.Continuous;
 using Spells.Factory;
+using UnityEngine;
 
 namespace Spells.Spell_Handlers.Continuous
 {
@@ -25,6 +26,7 @@ namespace Spells.Spell_Handlers.Continuous
 
         public void HandleSpell(IInformationAboutContinuousSpell informationAboutContinuousSpell)
         {
+            Debug.Log($"from cont: HandleSpell, is null {informationAboutContinuousSpell == null}");
             HandleStart();
             _spellToCreate = informationAboutContinuousSpell;
             _currentPhase = ContinuousSpellPhases.Cast;
@@ -44,6 +46,8 @@ namespace Spells.Spell_Handlers.Continuous
 
         public override void OnSpellCastPartOfAnimationFinished()
         {
+            Debug.Log(
+                $"from cont: OnSpellCastPartOfAnimationFinished, _castedSpell: {_castedSpell == null}; _spellObjectsFactory: {_spellObjectsFactory == null}");
             _currentPhase = ContinuousSpellPhases.InAction;
             _castedSpell = _spellObjectsFactory.Create(_spellToCreate.DataForController, _spellToCreate.PrefabProvider,
                 _caster, _spellSpawnObject);
@@ -58,6 +62,7 @@ namespace Spells.Spell_Handlers.Continuous
 
         protected override void Cancel()
         {
+            Debug.Log($"from cont: Cancel");
             if (_castedSpell != null)
             {
                 UnsubscribeFromSpellEvents(_castedSpell);
@@ -104,6 +109,7 @@ namespace Spells.Spell_Handlers.Continuous
 
         private void OnSpellFinished()
         {
+            Debug.Log($"from cont: OnSpellFinished");
             UnsubscribeFromSpellEvents(_castedSpell);
             _castedSpell = null;
             _currentPhase = ContinuousSpellPhases.Idle;

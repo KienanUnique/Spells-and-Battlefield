@@ -4,6 +4,7 @@ using Enemies.Look_Point_Calculator;
 using Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors;
 using Spells.Spell_Handlers.Continuous;
 using Spells.Spell_Handlers.Instant;
+using UnityEngine;
 
 namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spells_Manager
 {
@@ -22,18 +23,25 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spells_Manager
         }
 
         public event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
+        public event Action StoppedCasting;
         public event Action FinishedCasting;
         public new bool IsBusy => base.IsBusy;
         public event Action CanUseSpellsAgain;
         public bool CanUseSpell => _spellsSelector.CanUseSpell;
 
+        public override void StartCasting()
+        {
+            // Debug.Log(
+            //     $"StartCasting -> NeedCast: {NeedCast};  IsAnimatorReady: {IsAnimatorReady}; CurrentSpellsHandler != null {CurrentSpellsHandler != null}; IsBusy: {IsBusy}");
+            base.StartCasting();
+        }
+
         public override void StopCasting()
         {
             base.StopCasting();
-            if (!IsBusy)
-            {
-                FinishedCasting?.Invoke();
-            }
+            // Debug.Log(
+            //     $"StopCasting -> NeedCast: {NeedCast};  IsAnimatorReady: {IsAnimatorReady}; CurrentSpellsHandler != null {CurrentSpellsHandler != null}; IsBusy: {IsBusy}");
+            InformIfStoppedCasting();
         }
 
         protected override void SubscribeOnEvents()
@@ -51,10 +59,8 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spells_Manager
         protected override void OnSpellCanceled()
         {
             base.OnSpellCanceled();
-            if (!NeedCast && !IsBusy)
-            {
-                FinishedCasting?.Invoke();
-            }
+            FinishedCasting?.Invoke();
+            InformIfStoppedCasting();
         }
 
         protected override void CastSelectedSpell()
@@ -68,16 +74,22 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spells_Manager
         protected override void OnSpellHandled()
         {
             base.OnSpellHandled();
+            FinishedCasting?.Invoke();
+            InformIfStoppedCasting();
+        }
+
+        private void InformIfStoppedCasting()
+        {
             if (!NeedCast && !IsBusy)
             {
-                FinishedCasting?.Invoke();
+                StoppedCasting?.Invoke();
             }
         }
 
         private void OnCanUseSpellsAgain()
         {
             CanUseSpellsAgain?.Invoke();
-            if (NeedCast && !IsBusy && IsAnimatorReady)
+            if (CanCastNextSpell)
             {
                 CastSelectedSpell();
             }

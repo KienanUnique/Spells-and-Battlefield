@@ -82,6 +82,16 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
             _itemsNeedDisabling = itemsNeedDisabling;
         }
 
+        protected void AddItemsNeedDisabling(IEnumerable<IDisableable> itemsNeedDisabling)
+        {
+            _itemsNeedDisabling.AddRange(itemsNeedDisabling);
+        }
+
+        protected void AddItemNeedDisabling(IDisableable itemNeedDisabling)
+        {
+            _itemsNeedDisabling.Add(itemNeedDisabling);
+        }
+
         private void SubscribeOnBaseEvents()
         {
             _currentStatus.AfterValueChanged += OnInitializationStatusChanged;

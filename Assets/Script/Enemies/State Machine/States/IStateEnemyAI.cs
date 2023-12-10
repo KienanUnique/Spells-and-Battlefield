@@ -11,5 +11,6 @@ namespace Enemies.State_Machine.States
         public ILookPointCalculator LookPointCalculator { get; }
         public void Enter();
         public void Exit();
+        public void ExitSafely(IStateEnemyAI nextState);
     }
 }

@@ -8,6 +8,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spells_Manager
     public interface IEnemySpellsManager : ISpellManager, IReadonlySpellSelector
     {
         public event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
+        public event Action StoppedCasting;
         public event Action FinishedCasting;
         public bool IsBusy { get; }
     }

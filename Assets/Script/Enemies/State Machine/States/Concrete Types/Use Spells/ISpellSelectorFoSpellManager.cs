@@ -2,7 +2,7 @@
 
 namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 {
-    public interface IEnemySpellSelectorFoSpellManager
+    public interface ISpellSelectorFoSpellManager
     {
         public ISpell RememberedSpell { get; }
         public bool TryToRememberSelectedSpellInformation();

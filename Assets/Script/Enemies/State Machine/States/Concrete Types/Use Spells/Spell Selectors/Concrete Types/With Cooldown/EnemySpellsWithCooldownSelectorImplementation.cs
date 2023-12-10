@@ -16,7 +16,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
             SelectMostPrioritizedReadyToUseSpell();
         }
 
-        public override bool CanUseSpell => _mostPrioritizedReadyToUseSpellSpell != default;
+        public override bool CanUseSpell => _mostPrioritizedReadyToUseSpellSpell != null;
         public override ISpell RememberedSpell => _rememberedSpell?.Spell;
 
         public override bool TryToRememberSelectedSpellInformation()
