@@ -10,8 +10,8 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
     {
         [SerializeField] private AttackTargetSelectorFromZone _damageTargetSelector;
         [SerializeField] private MeleeAttackStateData _data;
-        private bool _isWaitingForAnimationFinish;
         public override ILookPointCalculator LookPointCalculator => new FollowTargetLookPointCalculator();
+        private bool IsReadyToPlayActionsAnimations => AnimatorStatusChecker.IsReadyToPlayActionsAnimations;
 
         protected override void SubscribeOnEvents()
         {
@@ -37,13 +37,12 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
                     StateMachineControllable.StopMoving();
                     break;
                 case StateEnemyAIStatus.Active:
-                    _isWaitingForAnimationFinish = false;
                     SubscribeOnLocalEvents();
                     StateMachineControllable.StartKeepingCurrentTargetOnDistance(_data.DataForMoving);
                     Attack();
                     break;
                 case StateEnemyAIStatus.Exiting:
-                    if (!_isWaitingForAnimationFinish)
+                    if (IsReadyToPlayActionsAnimations)
                     {
                         HandleExitFromState();
                     }
@@ -56,19 +55,18 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
 
         private void SubscribeOnLocalEvents()
         {
-            StateMachineControllable.ActionAnimationEnd += OnActionAnimationEnd;
-            StateMachineControllable.ActionAnimationKeyMomentTrigger += OnActionAnimationKeyMomentTrigger;
+            AnimatorStatusChecker.AnimatorReadyToPlayActionsAnimations += OnAnimatorReadyToPlayActionsAnimations;
+            AnimatorStatusChecker.ActionAnimationKeyMomentTrigger += OnActionAnimationKeyMomentTrigger;
         }
 
         private void UnsubscribeFromLocalEvents()
         {
-            StateMachineControllable.ActionAnimationEnd -= OnActionAnimationEnd;
-            StateMachineControllable.ActionAnimationKeyMomentTrigger -= OnActionAnimationKeyMomentTrigger;
+            AnimatorStatusChecker.AnimatorReadyToPlayActionsAnimations -= OnAnimatorReadyToPlayActionsAnimations;
+            AnimatorStatusChecker.ActionAnimationKeyMomentTrigger -= OnActionAnimationKeyMomentTrigger;
         }
 
-        private void OnActionAnimationEnd()
+        private void OnAnimatorReadyToPlayActionsAnimations()
         {
-            _isWaitingForAnimationFinish = false;
             switch (CurrentStatus)
             {
                 case StateEnemyAIStatus.Exiting:
@@ -94,7 +92,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
         {
             if (CurrentStatus == StateEnemyAIStatus.Active)
             {
-                _isWaitingForAnimationFinish = true;
                 StateMachineControllable.PlayActionAnimation(_data.AnimationData);
             }
         }

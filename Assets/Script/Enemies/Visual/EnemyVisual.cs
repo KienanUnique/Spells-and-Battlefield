@@ -1,5 +1,6 @@
 using Common.Abstract_Bases.Visual;
 using Common.Abstract_Bases.Visual.Settings;
+using Common.Animator_Status_Controller;
 using Enemies.Visual.Dissolve_Effect_Controller;
 using UI.Concrete_Scenes.In_Game.Enemy_Information_Panel.Presenter;
 using UnityEngine;

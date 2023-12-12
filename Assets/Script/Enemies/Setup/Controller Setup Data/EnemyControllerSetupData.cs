@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
-using Common.Event_Invoker_For_Action_Animations;
+using Common.Animator_Status_Controller;
 using Common.Id_Holder;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Readonly_Transform;
@@ -24,11 +24,10 @@ namespace Enemies.Setup.Controller_Setup_Data
             IGeneralEnemySettings setGeneralEnemySettings,
             IPopupHitPointsChangeTextFactory setPopupHitPointsChangeTextFactory,
             IEnemyTargetFromTriggersSelector setTargetFromTriggersSelector, IEnemyLook setLook,
-            IEventInvokerForActionAnimations setEventInvokerForAnimations, IEnemyVisual setVisual,
-            IEnemyCharacter setCharacter, IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint,
-            ILootDropper setLootDropper, IFaction setFaction, IReadonlyTransform setPointForAiming,
-            IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon,
-            IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating)
+            IAnimatorStatusChecker setAnimatorStatusChecker, IEnemyVisual setVisual, IEnemyCharacter setCharacter,
+            IReadonlyTransform setPopupTextHitPointsChangeAppearCenterPoint, ILootDropper setLootDropper,
+            IFaction setFaction, IReadonlyTransform setPointForAiming, IInformationForSummon setInformationForSummon,
+            IToolsForSummon setToolsForSummon, IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating)
         {
             SetStateMachineAI = setStateMachineAI;
             SetMovement = setMovement;
@@ -38,7 +37,7 @@ namespace Enemies.Setup.Controller_Setup_Data
             SetPopupHitPointsChangeTextFactory = setPopupHitPointsChangeTextFactory;
             SetTargetFromTriggersSelector = setTargetFromTriggersSelector;
             SetLook = setLook;
-            SetEventInvokerForAnimations = setEventInvokerForAnimations;
+            SetAnimatorStatusChecker = setAnimatorStatusChecker;
             SetVisual = setVisual;
             SetCharacter = setCharacter;
             SetPopupTextHitPointsChangeAppearCenterPoint = setPopupTextHitPointsChangeAppearCenterPoint;
@@ -58,7 +57,6 @@ namespace Enemies.Setup.Controller_Setup_Data
         public IPopupHitPointsChangeTextFactory SetPopupHitPointsChangeTextFactory { get; }
         public IEnemyTargetFromTriggersSelector SetTargetFromTriggersSelector { get; }
         public IEnemyLook SetLook { get; }
-        public IEventInvokerForActionAnimations SetEventInvokerForAnimations { get; }
         public IEnemyVisual SetVisual { get; }
         public IEnemyCharacter SetCharacter { get; }
         public IReadonlyTransform SetPopupTextHitPointsChangeAppearCenterPoint { get; }
@@ -68,5 +66,6 @@ namespace Enemies.Setup.Controller_Setup_Data
         public IInformationForSummon SetInformationForSummon { get; }
         public IToolsForSummon SetToolsForSummon { get; }
         public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
+        public IAnimatorStatusChecker SetAnimatorStatusChecker { get; }
     }
 }

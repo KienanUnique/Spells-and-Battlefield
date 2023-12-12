@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Common;
 using Common.Abstract_Bases.Disableable;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Common.Animator_Status_Controller;
 using Enemies.Look_Point_Calculator;
 using Enemies.State_Machine.Transition_Manager;
 using UnityEngine;
@@ -14,10 +15,13 @@ namespace Enemies.State_Machine.States
         [SerializeField] private MainTransitionManagerEnemyAI _transitionManager;
         private IStateEnemyAI _cachedNextState;
         private ValueWithReactionOnChange<StateEnemyAIStatus> _currentStateStatus;
+        private IReadonlyAnimatorStatusChecker _animatorStatusChecker;
 
-        public void Initialize(IEnemyStateMachineControllable stateMachineControllable)
+        public void Initialize(IEnemyStateMachineControllable stateMachineControllable,
+            IReadonlyAnimatorStatusChecker animatorStatusChecker)
         {
             StateMachineControllable = stateMachineControllable;
+            _animatorStatusChecker = animatorStatusChecker;
             _currentStateStatus = new ValueWithReactionOnChange<StateEnemyAIStatus>(StateEnemyAIStatus.NonActive);
             SetItemsNeedDisabling(new List<IDisableable> {_transitionManager});
             SpecialInitializeAction();
@@ -35,6 +39,9 @@ namespace Enemies.State_Machine.States
         public abstract ILookPointCalculator LookPointCalculator { get; }
         public int StateID => GetInstanceID();
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
+
+        protected IReadonlyAnimatorStatusChecker AnimatorStatusChecker => _animatorStatusChecker;
+
         protected StateEnemyAIStatus CurrentStatus => _currentStateStatus.Value;
 
         public void Enter()

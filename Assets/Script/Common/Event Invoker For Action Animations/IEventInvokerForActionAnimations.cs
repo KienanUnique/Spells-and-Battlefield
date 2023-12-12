@@ -6,6 +6,5 @@ namespace Common.Event_Invoker_For_Action_Animations
     {
         public event Action ActionAnimationKeyMomentTrigger;
         public event Action ActionAnimationStart;
-        public event Action ActionAnimationEnd;
     }
 }

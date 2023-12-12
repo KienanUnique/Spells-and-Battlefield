@@ -2,6 +2,7 @@
 using Common;
 using Common.Abstract_Bases;
 using Common.Abstract_Bases.Disableable;
+using Common.Animator_Status_Controller;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Interfaces;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
@@ -78,6 +79,7 @@ namespace Enemies.Setup
         private Collider _collider;
         private IDissolveEffectControllerSettings _dissolveEffectControllerSettings;
         private IDissolveEffectController _dissolveEffectController;
+        private AnimatorStatusChecker _animatorStatusChecker;
 
         [Inject]
         private void GetDependencies(IGeneralEnemySettings generalEnemySettings, IPickableItemsFactory itemsFactory,
@@ -145,6 +147,8 @@ namespace Enemies.Setup
 
             _dissolveEffectController = new DissolveEffectController(_renderersForDissolving,
                 _dissolveEffectControllerSettings, gameObject);
+
+            _animatorStatusChecker = new AnimatorStatusChecker(_eventInvokerForAnimations, _characterAnimator, this);
         }
 
         protected override void Initialize()
@@ -181,14 +185,18 @@ namespace Enemies.Setup
 
             var itemsNeedDisabling = new List<IDisableable>
             {
-                enemyMovement, enemyCharacter, targetFromTriggersSelector, enemyLook
+                enemyMovement,
+                enemyCharacter,
+                targetFromTriggersSelector,
+                enemyLook,
+                _animatorStatusChecker
             };
 
             var informationOfSummoner = new InformationForSummon(GetComponent<ISummoner>(), _faction, targetTriggers);
 
             var baseSetupData = new EnemyControllerSetupData(_enemyStateMachineAI, enemyMovement, itemsNeedDisabling,
                 _idHolder, _generalEnemySettings, _popupHitPointsChangeTextFactory, targetFromTriggersSelector,
-                enemyLook, _eventInvokerForAnimations, enemyVisual, enemyCharacter,
+                enemyLook, _animatorStatusChecker, enemyVisual, enemyCharacter,
                 _popupTextHitPointsChangeAppearCenterPoint.ReadonlyTransform, lootDropper, _faction,
                 _pointForAiming.ReadonlyTransform, informationOfSummoner, _toolsForSummon,
                 _lootSpawnPoint.ReadonlyTransform);
@@ -197,7 +205,7 @@ namespace Enemies.Setup
 
             foreach (IInitializableStateEnemyAI initializableStateEnemyAI in _states)
             {
-                initializableStateEnemyAI.Initialize(_controller);
+                initializableStateEnemyAI.Initialize(_controller, _animatorStatusChecker);
             }
 
             foreach (IInitializableTransitionEnemyAI initializableTransitionEnemyAI in _transitions)

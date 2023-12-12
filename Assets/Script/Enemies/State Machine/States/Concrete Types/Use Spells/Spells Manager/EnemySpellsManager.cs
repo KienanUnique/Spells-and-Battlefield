@@ -1,5 +1,6 @@
 ﻿using System;
 using Common.Abstract_Bases.Spells_Manager;
+using Common.Animator_Status_Controller;
 using Enemies.Look_Point_Calculator;
 using Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors;
 using Spells.Spell_Handlers.Continuous;
@@ -15,8 +16,8 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spells_Manager
 
         public EnemySpellsManager(IContinuousSpellHandlerImplementation continuousSpellHandler,
             IInstantSpellHandlerImplementation instantSpellHandler, IEnemySpellSelector spellsSelector,
-            ILookPointCalculator defaultLookPointCalculator) : base(continuousSpellHandler, instantSpellHandler,
-            spellsSelector)
+            IReadonlyAnimatorStatusChecker animatorStatusChecker, ILookPointCalculator defaultLookPointCalculator) :
+            base(continuousSpellHandler, instantSpellHandler, spellsSelector, animatorStatusChecker)
         {
             _spellsSelector = spellsSelector;
             _defaultLookPointCalculator = defaultLookPointCalculator;
@@ -29,18 +30,9 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spells_Manager
         public event Action CanUseSpellsAgain;
         public bool CanUseSpell => _spellsSelector.CanUseSpell;
 
-        public override void StartCasting()
-        {
-            // Debug.Log(
-            //     $"StartCasting -> NeedCast: {NeedCast};  IsAnimatorReady: {IsAnimatorReady}; CurrentSpellsHandler != null {CurrentSpellsHandler != null}; IsBusy: {IsBusy}");
-            base.StartCasting();
-        }
-
         public override void StopCasting()
         {
             base.StopCasting();
-            // Debug.Log(
-            //     $"StopCasting -> NeedCast: {NeedCast};  IsAnimatorReady: {IsAnimatorReady}; CurrentSpellsHandler != null {CurrentSpellsHandler != null}; IsBusy: {IsBusy}");
             InformIfStoppedCasting();
         }
 

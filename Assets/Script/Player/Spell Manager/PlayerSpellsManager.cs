@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using Common.Abstract_Bases.Spells_Manager;
+using Common.Animator_Status_Controller;
 using Common.Collection_With_Reaction_On_Change;
 using Player.Spell_Manager.Spells_Selector;
 using Spells.Implementations_Interfaces.Implementations;
@@ -15,8 +16,9 @@ namespace Player.Spell_Manager
         private readonly IPlayerSpellsSelectorForSpellManager _playerSpellsSelector;
 
         public PlayerSpellsManager(IContinuousSpellHandlerImplementation continuousSpellHandler,
-            IInstantSpellHandlerImplementation instantSpellHandler, IPlayerSpellsSelectorForSpellManager spellsSelector)
-            : base(continuousSpellHandler, instantSpellHandler, spellsSelector)
+            IInstantSpellHandlerImplementation instantSpellHandler, IPlayerSpellsSelectorForSpellManager spellsSelector,
+            IReadonlyAnimatorStatusChecker animatorStatusChecker) : base(continuousSpellHandler, instantSpellHandler,
+            spellsSelector, animatorStatusChecker)
         {
             _playerSpellsSelector = spellsSelector;
         }
@@ -32,7 +34,7 @@ namespace Player.Spell_Manager
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
             _playerSpellsSelector.Spells;
 
-        public override void OnSpellCastPartOfAnimationFinished()
+        protected override void OnSpellCastPartOfAnimationFinished()
         {
             base.OnSpellCastPartOfAnimationFinished();
             if (IsCurrentSpellContinuous && CurrentSpellsHandler != null)

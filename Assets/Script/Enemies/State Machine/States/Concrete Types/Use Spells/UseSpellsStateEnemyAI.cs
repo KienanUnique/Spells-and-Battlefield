@@ -39,9 +39,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 
         public bool CanUseSpell => _spellsManager.CanUseSpell;
 
-        //private bool NeedLog => gameObject.name == "Use Attack Spells";
-        private bool NeedLog => gameObject.name == "Use Heal Spells";
-
         protected override void SpecialInitializeAction()
         {
             base.SpecialInitializeAction();
@@ -54,12 +51,8 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
             var instantSpellHandlerImplementation = new EnemyInstantSpellHandlerImplementation(_enemyController,
                 _spellObjectsFactory, _spellSpawnPoint, StateMachineControllable);
             _spellsManager = new EnemySpellsManager(continuousSpellHandlerImplementation,
-                instantSpellHandlerImplementation, spellsSelector, _currentLookPointCalculator);
+                instantSpellHandlerImplementation, spellsSelector, AnimatorStatusChecker, _currentLookPointCalculator);
             AddItemNeedDisabling(_spellsManager);
-            if (NeedLog)
-            {
-                StartCoroutine(LogAboutStateStatusContinuously());
-            }
         }
 
         protected override void SubscribeOnEvents()
@@ -82,11 +75,6 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 
         protected override void SpecialReactionOnStateStatusChange(StateEnemyAIStatus newStatus)
         {
-            if (NeedLog)
-            {
-                Debug.Log($"SpecialReactionOnStateStatusChange: {newStatus}");
-            }
-
             switch (newStatus)
             {
                 case StateEnemyAIStatus.NonActive:
@@ -128,38 +116,22 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 
         private void SubscribeOnLocalEvents()
         {
-            if (NeedLog)
-            {
-                Debug.Log("SubscribeOnLocalEvents");
-            }
-
             _spellsManager.NeedChangeLookPointCalculator += ChangeLookPointCalculator;
             _spellsManager.StoppedCasting += OnStoppedCasting;
             _spellsManager.FinishedCasting += HandleCompletedAction;
             _spellsManager.NeedCancelActionAnimations += OnNeedCancelActionAnimations;
             _spellsManager.NeedPlaySingleActionAnimation += OnNeedPlaySingleActionAnimation;
             _spellsManager.NeedPlayContinuousActionAnimation += OnNeedPlayContinuousActionAnimation;
-            StateMachineControllable.ActionAnimationEnd += _spellsManager.OnAnimatorReadyForNextAnimation;
-            StateMachineControllable.ActionAnimationKeyMomentTrigger +=
-                _spellsManager.OnSpellCastPartOfAnimationFinished;
         }
 
         private void UnsubscribeFromLocalEvents()
         {
-            if (NeedLog)
-            {
-                Debug.Log("UnsubscribeFromLocalEvents");
-            }
-
             _spellsManager.NeedChangeLookPointCalculator -= ChangeLookPointCalculator;
             _spellsManager.StoppedCasting -= OnStoppedCasting;
             _spellsManager.FinishedCasting -= HandleCompletedAction;
             _spellsManager.NeedCancelActionAnimations -= OnNeedCancelActionAnimations;
             _spellsManager.NeedPlaySingleActionAnimation -= OnNeedPlaySingleActionAnimation;
             _spellsManager.NeedPlayContinuousActionAnimation -= OnNeedPlayContinuousActionAnimation;
-            StateMachineControllable.ActionAnimationEnd -= _spellsManager.OnAnimatorReadyForNextAnimation;
-            StateMachineControllable.ActionAnimationKeyMomentTrigger -=
-                _spellsManager.OnSpellCastPartOfAnimationFinished;
         }
 
         private void OnNeedPlayContinuousActionAnimation(IContinuousActionAnimationData obj)
@@ -179,27 +151,12 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
 
         private void OnStoppedCasting()
         {
-            if (NeedLog)
-            {
-                Debug.Log("OnFinishedCasting");
-            }
-
             HandleExitFromState();
         }
 
         private void OnCanUseSpellsAgain()
         {
             CanUseSpellsAgain?.Invoke();
-        }
-
-        private IEnumerator LogAboutStateStatusContinuously()
-        {
-            var waitForFixedUpdate = new WaitForSeconds(5);
-            while (true)
-            {
-                Debug.Log($"CurrentStateStatus: {CurrentStatus}");
-                yield return waitForFixedUpdate;
-            }
         }
     }
 }

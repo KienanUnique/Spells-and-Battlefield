@@ -11,8 +11,6 @@ namespace Common.Abstract_Bases.Spells_Manager
         public event Action<IContinuousActionAnimationData> NeedPlayContinuousActionAnimation;
         public event Action NeedCancelActionAnimations;
         public void StartCasting();
-        public void OnSpellCastPartOfAnimationFinished();
-        public void OnAnimatorReadyForNextAnimation();
         public void StopCasting();
     }
 }

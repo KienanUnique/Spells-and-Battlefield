@@ -6,7 +6,7 @@ using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animation_Data;
 using Common.Animation_Data.Continuous_Action;
-using Common.Event_Invoker_For_Action_Animations;
+using Common.Animator_Status_Controller;
 using Common.Id_Holder;
 using Common.Interfaces;
 using Common.Mechanic_Effects;
@@ -41,7 +41,7 @@ namespace Enemies.Controller
     {
         private IEnemyCharacter _character;
         private IEnemyStateMachineAI _enemyStateMachineAI;
-        private IEventInvokerForActionAnimations _eventInvokerForAnimations;
+        private IAnimatorStatusChecker _animatorStatusChecker;
         private IGeneralEnemySettings _generalEnemySettings;
         private IIdHolder _idHolder;
         private ILootDropper _lootDropper;
@@ -61,7 +61,7 @@ namespace Enemies.Controller
             _popupHitPointsChangeTextFactory = setupData.SetPopupHitPointsChangeTextFactory;
             TargetFromTriggersSelector = setupData.SetTargetFromTriggersSelector;
             _look = setupData.SetLook;
-            _eventInvokerForAnimations = setupData.SetEventInvokerForAnimations;
+            _animatorStatusChecker = setupData.SetAnimatorStatusChecker;
             _visual = setupData.SetVisual;
             _character = setupData.SetCharacter;
             _popupTextHitPointsChangeAppearCenterPoint = setupData.SetPopupTextHitPointsChangeAppearCenterPoint;
@@ -79,9 +79,6 @@ namespace Enemies.Controller
         public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
         public event Action<IAppliedContinuousEffectInformation> ContinuousEffectAdded;
         public event Action<CharacterState> CharacterStateChanged;
-        public event Action ActionAnimationKeyMomentTrigger;
-        public event Action ActionAnimationStart;
-        public event Action ActionAnimationEnd;
         public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
@@ -208,9 +205,6 @@ namespace Enemies.Controller
             _character.HitPointsCountChanged += OnHitPointsCountChanged;
             _character.ContinuousEffectAdded += OnContinuousEffectAdded;
             _movement.MovingStateChanged += _visual.UpdateMovingData;
-            _eventInvokerForAnimations.ActionAnimationEnd += OnActionAnimationEnd;
-            _eventInvokerForAnimations.ActionAnimationStart += OnActionAnimationStart;
-            _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger += OnActionAnimationKeyMomentTrigger;
             _enemyStateMachineAI.NeedChangeLookPointCalculator += OnNeedChangeLookPointCalculator;
         }
 
@@ -221,9 +215,6 @@ namespace Enemies.Controller
             _character.HitPointsCountChanged -= OnHitPointsCountChanged;
             _character.ContinuousEffectAdded -= OnContinuousEffectAdded;
             _movement.MovingStateChanged -= _visual.UpdateMovingData;
-            _eventInvokerForAnimations.ActionAnimationEnd -= OnActionAnimationEnd;
-            _eventInvokerForAnimations.ActionAnimationStart -= OnActionAnimationStart;
-            _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger -= OnActionAnimationKeyMomentTrigger;
             _enemyStateMachineAI.NeedChangeLookPointCalculator -= OnNeedChangeLookPointCalculator;
         }
 
@@ -235,6 +226,7 @@ namespace Enemies.Controller
                     TargetFromTriggersSelector.StartSelecting();
                     _look.StartLooking();
                     _enemyStateMachineAI.StartStateMachine();
+                    _animatorStatusChecker.StartChecking();
                     break;
                 case InitializableMonoBehaviourStatus.NonInitialized:
                 default:
@@ -256,6 +248,7 @@ namespace Enemies.Controller
                 _enemyStateMachineAI.StopStateMachine();
                 _movement.DisableMoving();
                 _visual.PlayDieAnimation();
+                _animatorStatusChecker.StopChecking();
                 DropSpell();
                 StartCoroutine(DestroyAfterDelay());
             }
@@ -266,21 +259,6 @@ namespace Enemies.Controller
         private void OnContinuousEffectAdded(IAppliedContinuousEffectInformation newEffect)
         {
             ContinuousEffectAdded?.Invoke(newEffect);
-        }
-
-        private void OnActionAnimationEnd()
-        {
-            ActionAnimationEnd?.Invoke();
-        }
-
-        private void OnActionAnimationStart()
-        {
-            ActionAnimationStart?.Invoke();
-        }
-
-        private void OnActionAnimationKeyMomentTrigger()
-        {
-            ActionAnimationKeyMomentTrigger?.Invoke();
         }
 
         private void OnHitPointsCountChanged(IHitPointsCharacterChangeInformation changeInformation)

@@ -5,8 +5,8 @@ using System.Collections.ObjectModel;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Common.Animator_Status_Controller;
 using Common.Collection_With_Reaction_On_Change;
-using Common.Event_Invoker_For_Action_Animations;
 using Common.Id_Holder;
 using Common.Interfaces;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
@@ -35,7 +35,6 @@ namespace Player
         ICoroutineStarter,
         IInitializablePlayerController
     {
-        private IEventInvokerForActionAnimations _eventInvokerForAnimations;
         private IIdHolder _idHolder;
         private IPlayerCameraEffects _cameraEffects;
         private IPlayerCharacter _character;
@@ -44,6 +43,7 @@ namespace Player
         private IPlayerMovement _movement;
         private IPlayerSpellsManager _spellsManager;
         private IPlayerVisual _visual;
+        private IAnimatorStatusChecker _animatorStatusChecker;
 
         public void Initialize(IPlayerControllerSetupData setupData)
         {
@@ -55,13 +55,13 @@ namespace Player
             _character = setupData.SetPlayerCharacter;
             _visual = setupData.SetPlayerVisual;
             _cameraEffects = setupData.SetPlayerCameraEffects;
-            _eventInvokerForAnimations = setupData.SetPlayerEventInvokerForAnimations;
             CameraTransform = setupData.SetCameraTransform;
             UpperPointForSummonedEnemiesPositionCalculating =
                 setupData.SetUpperPointForSummonedEnemiesPositionCalculating;
             Faction = setupData.SetFaction;
             InformationForSummon = setupData.SetInformationForSummon;
             ToolsForSummon = setupData.SetToolsForSummon;
+            _animatorStatusChecker = setupData.SetAnimatorStatusChecker;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -177,10 +177,6 @@ namespace Player
             _input.SelectNextSpellType += _spellsManager.SelectNextSpellType;
             _input.SelectPreviousSpellType += _spellsManager.SelectPreviousSpellType;
 
-            _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger +=
-                _spellsManager.OnSpellCastPartOfAnimationFinished;
-            _eventInvokerForAnimations.ActionAnimationEnd += _spellsManager.OnAnimatorReadyForNextAnimation;
-
             _movement.GroundJump += _visual.PlayGroundJumpAnimation;
             _movement.Fall += _visual.PlayFallAnimation;
             _movement.Land += _visual.PlayLandAnimation;
@@ -221,10 +217,6 @@ namespace Player
             _input.SelectSpellTypeWithIndex -= _spellsManager.SelectSpellTypeWithIndex;
             _input.SelectNextSpellType -= _spellsManager.SelectNextSpellType;
             _input.SelectPreviousSpellType -= _spellsManager.SelectPreviousSpellType;
-
-            _eventInvokerForAnimations.ActionAnimationKeyMomentTrigger -=
-                _spellsManager.OnSpellCastPartOfAnimationFinished;
-            _eventInvokerForAnimations.ActionAnimationEnd -= _spellsManager.OnAnimatorReadyForNextAnimation;
 
             _movement.GroundJump -= _visual.PlayGroundJumpAnimation;
             _movement.Fall -= _visual.PlayFallAnimation;
@@ -276,6 +268,7 @@ namespace Player
             switch (newStatus)
             {
                 case InitializableMonoBehaviourStatus.Initialized:
+                    _animatorStatusChecker.StartChecking();
                     StartCoroutine(UpdateMovingDataCoroutine());
                     break;
                 case InitializableMonoBehaviourStatus.NonInitialized:
@@ -341,6 +334,7 @@ namespace Player
         {
             if (newState == CharacterState.Dead)
             {
+                _animatorStatusChecker.StopChecking();
                 _movement.DisableMoving();
                 _visual.PlayDieAnimation();
             }
