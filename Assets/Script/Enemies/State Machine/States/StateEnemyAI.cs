@@ -102,6 +102,13 @@ namespace Enemies.State_Machine.States
                 case StateEnemyAIStatus.Active:
                     SubscribeOnTransitionEvents();
                     _transitionManager.StartCheckingConditions();
+                    if (_transitionManager.TryTransit(out IStateEnemyAI nextState))
+                    {
+                        _cachedNextState = nextState;
+                        HandleExitFromState();
+                        return;
+                    }
+
                     break;
                 case StateEnemyAIStatus.Exiting:
                     UnsubscribeFromTransitionEvents();
