@@ -50,7 +50,7 @@ namespace Common.Abstract_Bases.Visual
                 new AnimationOverride(Settings.EmptyContinuousActionAnimation,
                     animationData.ContinuousActionAnimation.Clip)
             };
-            ApplyAnimationOverride(new AnimatorOverrideController(OverrideController), animationOverrides);
+            ApplyAnimationOverride(OverrideController, animationOverrides);
             _characterAnimator.SetFloat(PrepareContinuousActionFloatSpeedHash,
                 animationData.PrepareContinuousActionAnimation.AnimationSpeed);
             _characterAnimator.SetFloat(ContinuousActionFloatSpeedHash,
