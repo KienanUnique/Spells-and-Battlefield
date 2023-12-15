@@ -6,7 +6,6 @@ namespace Player.Look
 {
     public class PlayerLook : IPlayerLook
     {
-        private const float MaxAimRaycastDistance = 400f;
         private readonly IReadonlyTransform _cameraRootTransform;
         private readonly Transform _cameraTransform;
         private readonly IPlayerLookSettings _lookSettings;
@@ -24,22 +23,23 @@ namespace Player.Look
             _cameraTransform = camera.transform;
         }
 
-        public Vector3 CameraLookPointPosition
+        public Vector3 LookPointPosition
         {
             get
             {
                 if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out _cameraForwardRaycastHit,
-                        MaxAimRaycastDistance, _lookSettings.AimLayerMask, QueryTriggerInteraction.Ignore))
+                        _lookSettings.MaxAimRaycastDistance, _lookSettings.AimLayerMask,
+                        QueryTriggerInteraction.Ignore))
                 {
                     return _cameraForwardRaycastHit.point;
                 }
 
-                return _cameraTransform.position + _cameraTransform.forward * MaxAimRaycastDistance;
+                return _cameraTransform.position + _cameraTransform.forward * _lookSettings.MaxAimRaycastDistance;
             }
         }
 
         public Quaternion CameraRotation => _cameraTransform.rotation;
-        public Vector3 CameraForward => _cameraTransform.forward;
+        public Vector3 LookDirection => _cameraTransform.forward;
 
         public void LookInputtedWith(Vector2 mouseLookDelta)
         {

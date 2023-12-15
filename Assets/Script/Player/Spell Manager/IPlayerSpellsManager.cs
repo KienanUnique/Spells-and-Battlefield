@@ -1,19 +1,9 @@
-﻿using System;
-using Common.Animation_Data;
-using Spells.Spell;
-using UnityEngine;
+﻿using Common.Abstract_Bases.Spells_Manager;
+using Player.Spell_Manager.Spells_Selector;
 
 namespace Player.Spell_Manager
 {
-    public interface IPlayerSpellsManager : IPlayerSpellsManagerInformation
+    public interface IPlayerSpellsManager : ISpellManager, IPlayerSpellsManagerInformation, IPlayerSpellsSelector
     {
-        public event Action<IAnimationData> NeedPlaySpellAnimation;
-        public void TryCastSelectedSpell();
-        public void CreateSelectedSpell(Vector3 aimPoint);
-        public void SelectSpellTypeWithIndex(int indexToSelect);
-        public void AddSpell(ISpell newSpell);
-        public void HandleAnimationEnd();
-        public void SelectNextSpellType();
-        public void SelectPreviousSpellType();
     }
 }

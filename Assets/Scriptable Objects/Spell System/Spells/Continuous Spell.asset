@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06443b526ab5444caf9f031ab1a02dae, type: 3}
+  m_Name: Continuous Spell
+  m_EditorClassIdentifier: 
+  _pickableCardPrefabProvider: {fileID: 11400000, guid: 3eac42da268645142bdf96a71c371773, type: 2}
+  _cardInformation:
+    _icon: {fileID: 21300000, guid: 495b165e4f96ef14fb23cd71fa625a47, type: 3}
+    _title: Continuous Spell
+  _movement: {fileID: 11400000, guid: dd0aeb9d5e5de3f4c86abb9527431285, type: 2}
+  _type: {fileID: 11400000, guid: a2ffdd26264001f4a9abd78510022f38, type: 2}
+  _dataForController:
+    _appliers:
+    - {fileID: 11400000, guid: 8b8c34d23f0ada046a0a2f52a2ef3f8b, type: 2}
+    _durationInSeconds: 7
+  _animationData: {fileID: 11400000, guid: 27beba7f6c680564aa740327ae6a4a7c, type: 2}
+  _prefabProvider: {fileID: 11400000, guid: 7ce3f9e738bbc0347b8b12143c4b2820, type: 2}

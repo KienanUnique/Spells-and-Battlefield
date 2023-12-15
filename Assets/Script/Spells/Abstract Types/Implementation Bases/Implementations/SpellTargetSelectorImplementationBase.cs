@@ -5,6 +5,6 @@ namespace Spells.Abstract_Types.Implementation_Bases.Implementations
 {
     public abstract class SpellTargetSelectorImplementationBase : SpellImplementationBase, ISpellTargetSelector
     {
-        public abstract List<ISpellInteractable> SelectTargets();
+        public abstract IReadOnlyList<ISpellInteractable> SelectTargets();
     }
 }

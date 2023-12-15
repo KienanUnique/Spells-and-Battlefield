@@ -8,7 +8,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
     [Serializable]
     public class SpellWithCooldownData : ISpellWithCooldownData
     {
-        [SerializeField] private SpellScriptableObject _spell;
+        [SerializeField] private SpellScriptableObjectBase _spell;
         [SerializeField] private float _cooldownSeconds;
 
         public float CooldownSeconds => _cooldownSeconds;

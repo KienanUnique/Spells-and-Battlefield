@@ -9,20 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be24e3d51e3c3724fa102db9aab6b01c, type: 3}
+  m_Script: {fileID: 11500000, guid: 42c5bd49f4714f8698362e65254d0bcc, type: 3}
   m_Name: Summon Enemy
   m_EditorClassIdentifier: 
-  _prefabProvider: {fileID: 11400000, guid: 3eac42da268645142bdf96a71c371773, type: 2}
+  _pickableCardPrefabProvider: {fileID: 11400000, guid: 3eac42da268645142bdf96a71c371773, type: 2}
   _cardInformation:
     _icon: {fileID: 21300000, guid: 6341005da49c17b4ebc0bd19107f0945, type: 3}
-    _title: Summon
-  _animationData: {fileID: 11400000, guid: a0970a440165e9d4f86996e9adddd37d, type: 2}
-  _dataForSpellController:
-    _movement: {fileID: 11400000, guid: da903162503c1b1418a8327a7a18e499, type: 2}
+    _title: Summon Enemy
+  _movement: {fileID: 11400000, guid: da903162503c1b1418a8327a7a18e499, type: 2}
+  _type: {fileID: 11400000, guid: f61d84c7b1c3efa47934854d546b581c, type: 2}
+  _dataForController:
     _appliers:
     - {fileID: 11400000, guid: 5a99c7e60ff690e4f94e4e4694d295ab, type: 2}
-    _mainTrigger: {fileID: 11400000, guid: 9489e5928a003224a8cdf9b0a76e6051, type: 2}
     _nextSpellsOnFinish: []
-  _spellPrefabProvider: {fileID: 11400000, guid: 1cf7be5c695233041b187c9bd8bf6a52, type: 2}
-  _cardPrefabProvider: {fileID: 11400000, guid: 3eac42da268645142bdf96a71c371773, type: 2}
-  _type: {fileID: 11400000, guid: f61d84c7b1c3efa47934854d546b581c, type: 2}
+    _spellMainTrigger: {fileID: 11400000, guid: 9489e5928a003224a8cdf9b0a76e6051, type: 2}
+  _animationData: {fileID: 11400000, guid: a0970a440165e9d4f86996e9adddd37d, type: 2}
+  _prefabProvider: {fileID: 11400000, guid: 1cf7be5c695233041b187c9bd8bf6a52, type: 2}

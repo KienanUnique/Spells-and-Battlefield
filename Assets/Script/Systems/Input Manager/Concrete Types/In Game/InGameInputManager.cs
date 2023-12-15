@@ -24,7 +24,8 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
         public event Action JumpInputted;
         public event Action StartDashAimingInputted;
         public event Action DashInputted;
-        public event Action UseSpellInputted;
+        public event Action StartUsingSpellInputted;
+        public event Action StopUsingSpellInputted;
         public event Action<Vector2> MoveInputted;
         public event Action<Vector2> LookInputted;
         public event Action<int> SelectSpellTypeWithIndex;
@@ -50,7 +51,8 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
             Controls.Character.Jump.performed += OnJumpPerformed;
             Controls.Character.Dash.started += OnDashStarted;
             Controls.Character.Dash.canceled += OnDashCanceled;
-            Controls.Character.UseSpell.performed += OnUseSpellPerformed;
+            Controls.Character.UseSpell.started += OnUseSpellStarted;
+            Controls.Character.UseSpell.canceled += OnUseSpellCanceled;
             Controls.Character.PauseGame.performed += OnPauseGamePerformed;
             Controls.Character.SwitchToSpellTypeWithIndex0.performed += OnPerformedSwitchToSpellTypeWithIndex0;
             Controls.Character.SwitchToSpellTypeWithIndex1.performed += OnPerformedSwitchToSpellTypeWithIndex1;
@@ -65,13 +67,24 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
             Controls.Character.Jump.performed -= OnJumpPerformed;
             Controls.Character.Dash.started -= OnDashStarted;
             Controls.Character.Dash.canceled -= OnDashCanceled;
-            Controls.Character.UseSpell.performed -= OnUseSpellPerformed;
+            Controls.Character.UseSpell.started -= OnUseSpellStarted;
+            Controls.Character.UseSpell.canceled -= OnUseSpellCanceled;
             Controls.Character.PauseGame.performed -= OnPauseGamePerformed;
             Controls.Character.SwitchToSpellTypeWithIndex0.performed -= OnPerformedSwitchToSpellTypeWithIndex0;
             Controls.Character.SwitchToSpellTypeWithIndex1.performed -= OnPerformedSwitchToSpellTypeWithIndex1;
             Controls.Character.SwitchToSpellTypeWithIndex2.performed -= OnPerformedSwitchToSpellTypeWithIndex2;
             Controls.Character.SwitchToSpellTypeWithIndex3.performed -= OnPerformedSwitchToSpellTypeWithIndex3;
             Controls.Character.SwitchSpellType.performed -= OnSwitchSpellType;
+        }
+
+        private void OnUseSpellStarted(InputAction.CallbackContext obj)
+        {
+            StartUsingSpellInputted?.Invoke();
+        }
+
+        private void OnUseSpellCanceled(InputAction.CallbackContext obj)
+        {
+            StopUsingSpellInputted?.Invoke();
         }
 
         private void Start()
@@ -92,11 +105,6 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
         private void OnDashCanceled(InputAction.CallbackContext obj)
         {
             DashInputted?.Invoke();
-        }
-
-        private void OnUseSpellPerformed(InputAction.CallbackContext obj)
-        {
-            UseSpellInputted?.Invoke();
         }
 
         private void OnPauseGamePerformed(InputAction.CallbackContext obj)

@@ -25,9 +25,11 @@
     public const string ScenesDirectory = RootDirectory + "Scenes Data/";
 
     #endregion
-    
+
     #region Comics
+
     public const string ComicsDirectory = RootDirectory + "Comics/";
+
     #endregion
 
     #region Spells
@@ -35,10 +37,13 @@
     public const string SpellSystemDirectory = RootDirectory + "Spell System/";
 
     public const string SpellAppliersDirectory = SpellSystemDirectory + "Spell Appliers/";
-    public const string SpellObjectsProvidersDirectory = SpellSystemDirectory + "Spell Objects Providers/";
     public const string SpellMovementDirectory = SpellSystemDirectory + "Movement/";
     public const string SpellTargetSelectorDirectory = SpellSystemDirectory + "Target Selector/";
     public const string SpellTriggerDirectory = SpellSystemDirectory + "Trigger/";
+
+    private const string SpellConcreteTypesDirectory = SpellSystemDirectory + "Concrete Types/";
+    public const string InstantSpellDirectory = SpellConcreteTypesDirectory + "Instant/";
+    public const string ContinuousSpellDirectory = SpellConcreteTypesDirectory + "Continuous/";
 
     #endregion
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Common.Abstract_Bases.Visual.Settings;
+using UnityEngine;
 
 namespace Enemies.General_Settings
 {
@@ -8,9 +9,9 @@ namespace Enemies.General_Settings
     {
         [Min(1f)] [SerializeField] private float _delayInSecondsBeforeDestroy = 5f;
         [Min(1f)] [SerializeField] private float _targetSelectorUpdateCooldownInSeconds = 2f;
-        [SerializeField] private AnimationClip _emptyActionAnimationClip;
+        [SerializeField] private VisualSettingsSection _visualSettings;
 
-        public AnimationClip EmptyActionAnimationClip => _emptyActionAnimationClip;
+        public IVisualSettings VisualSettings => _visualSettings;
         public float DelayInSecondsBeforeDestroy => _delayInSecondsBeforeDestroy;
         public float TargetSelectorUpdateCooldownInSeconds => _targetSelectorUpdateCooldownInSeconds;
     }
