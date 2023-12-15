@@ -11,7 +11,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Melee_Attack
         [SerializeField] private AttackTargetSelectorFromZone _damageTargetSelector;
         [SerializeField] private MeleeAttackStateData _data;
         public override ILookPointCalculator LookPointCalculator => new FollowTargetLookPointCalculator();
-        private bool IsReadyToPlayActionsAnimations => AnimatorStatusChecker.IsReadyToPlayActionsAnimations;
+        private bool IsReadyToPlayActionsAnimations => AnimatorStatusChecker.IsReadyToPlayActionAnimations;
 
         protected override void SubscribeOnEvents()
         {

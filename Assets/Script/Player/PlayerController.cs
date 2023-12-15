@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Common.Animation_Data;
+using Common.Animation_Data.Continuous_Action;
 using Common.Animator_Status_Controller;
 using Common.Collection_With_Reaction_On_Change;
 using Common.Id_Holder;
@@ -193,9 +195,9 @@ namespace Player
             _character.HitPointsCountChanged += OnHitPointsCountChanged;
             _character.ContinuousEffectAdded += OnContinuousEffectAdded;
 
-            _spellsManager.NeedPlaySingleActionAnimation += _visual.PlayActionAnimation;
-            _spellsManager.NeedPlayContinuousActionAnimation += _visual.PlayActionAnimation;
-            _spellsManager.NeedCancelActionAnimations += _visual.CancelActionAnimation;
+            _spellsManager.NeedPlaySingleActionAnimation += OnNeedPlayActionAnimation;
+            _spellsManager.NeedPlayContinuousActionAnimation += OnNeedPlayActionAnimation;
+            _spellsManager.NeedCancelActionAnimations += OnNeedPlayContinuousActionAnimation;
             _spellsManager.TryingToUseEmptySpellTypeGroup += OnTryingToUseEmptySpellCanNotBeUsed;
             _spellsManager.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
             _spellsManager.ContinuousSpellFinished += OnContinuousSpellFinished;
@@ -234,13 +236,31 @@ namespace Player
             _character.HitPointsCountChanged -= OnHitPointsCountChanged;
             _character.ContinuousEffectAdded -= OnContinuousEffectAdded;
 
-            _spellsManager.NeedPlaySingleActionAnimation -= _visual.PlayActionAnimation;
-            _spellsManager.NeedPlayContinuousActionAnimation -= _visual.PlayActionAnimation;
-            _spellsManager.NeedCancelActionAnimations -= _visual.CancelActionAnimation;
+            _spellsManager.NeedPlaySingleActionAnimation -= OnNeedPlayActionAnimation;
+            _spellsManager.NeedPlayContinuousActionAnimation -= OnNeedPlayActionAnimation;
+            _spellsManager.NeedCancelActionAnimations -= OnNeedPlayContinuousActionAnimation;
             _spellsManager.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellCanNotBeUsed;
             _spellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
             _spellsManager.ContinuousSpellFinished -= OnContinuousSpellFinished;
             _spellsManager.ContinuousSpellStarted -= OnContinuousSpellStarted;
+        }
+
+        private void OnNeedPlayContinuousActionAnimation()
+        {
+            _animatorStatusChecker.HandleActionAnimationCancel();
+            _visual.CancelActionAnimation();
+        }
+
+        private void OnNeedPlayActionAnimation(IAnimationData animationData)
+        {
+            _animatorStatusChecker.HandleActionAnimationPlay();
+            _visual.PlayActionAnimation(animationData);
+        }
+
+        private void OnNeedPlayActionAnimation(IContinuousActionAnimationData animationData)
+        {
+            _animatorStatusChecker.HandleActionAnimationPlay();
+            _visual.PlayActionAnimation(animationData);
         }
 
         private void OnContinuousSpellStarted()

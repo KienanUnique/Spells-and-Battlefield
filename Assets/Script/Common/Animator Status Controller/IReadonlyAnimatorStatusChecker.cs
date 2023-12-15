@@ -7,6 +7,6 @@ namespace Common.Animator_Status_Controller
         public event Action AnimatorReadyToPlayActionsAnimations;
         public event Action ActionAnimationKeyMomentTrigger;
 
-        public bool IsReadyToPlayActionsAnimations { get; }
+        public bool IsReadyToPlayActionAnimations { get; }
     }
 }

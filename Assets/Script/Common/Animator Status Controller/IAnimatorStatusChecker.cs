@@ -4,5 +4,7 @@
     {
         public void StartChecking();
         public void StopChecking();
+        public void HandleActionAnimationPlay();
+        public void HandleActionAnimationCancel();
     }
 }

@@ -34,7 +34,7 @@ namespace Common.Abstract_Bases.Spells_Manager
         protected ISpellSelectorFoSpellManager SpellsSelector { get; }
         public IReadonlyAnimatorStatusChecker AnimatorStatusChecker { get; }
         protected bool NeedCast { get; private set; }
-        protected bool IsAnimatorReady => AnimatorStatusChecker.IsReadyToPlayActionsAnimations;
+        protected bool IsAnimatorReady => AnimatorStatusChecker.IsReadyToPlayActionAnimations;
         protected bool IsCurrentSpellContinuous { get; private set; }
         protected ISpellsHandlerImplementationBase CurrentSpellsHandler { get; private set; }
 

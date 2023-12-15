@@ -120,16 +120,19 @@ namespace Enemies.Controller
 
         public void PlayActionAnimation(IAnimationData animationData)
         {
+            _animatorStatusChecker.HandleActionAnimationPlay();
             _visual.PlayActionAnimation(animationData);
         }
 
         public void PlayActionAnimation(IContinuousActionAnimationData animationData)
         {
+            _animatorStatusChecker.HandleActionAnimationPlay();
             _visual.PlayActionAnimation(animationData);
         }
 
         public void CancelActionAnimation()
         {
+            _animatorStatusChecker.HandleActionAnimationCancel();
             _visual.CancelActionAnimation();
         }
 
