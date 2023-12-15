@@ -76,11 +76,10 @@ namespace Player
         public event Action Dashed;
         public event Action DashAiming;
         public event Action DashAimingCanceled;
-        public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
-        public event Action<ISpellType> SelectedSpellTypeChanged;
         public event Action ContinuousSpellStarted;
         public event Action ContinuousSpellFinished;
-        public float ContinuousSpellRatioOfCompletion => _spellsManager.ContinuousSpellRatioOfCompletion;
+        public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
+        public event Action<ISpellType> SelectedSpellTypeChanged;
         public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
@@ -91,18 +90,19 @@ namespace Player
 
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public IFaction Faction { get; private set; }
-        public IReadonlyRigidbody MainRigidbody => _movement.MainRigidbody;
         public IReadonlyTransform PointForAiming => UpperPointForSummonedEnemiesPositionCalculating;
         public int Id => _idHolder.Id;
-
-        public IReadonlyTransform MainTransform => MainRigidbody;
-        public Vector3 CurrentPosition => _movement.CurrentPosition;
+        public IReadonlyRigidbody MainRigidbody => _movement.MainRigidbody;
         public float CurrentDashCooldownRatio => _movement.CurrentDashCooldownRatio;
         public IReadonlyTransform CameraTransform { get; private set; }
+        public float ContinuousSpellRatioOfCompletion => _spellsManager.ContinuousSpellRatioOfCompletion;
         public ISpellType SelectedSpellType => _spellsManager.SelectedSpellType;
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
             _spellsManager.Spells;
+
+        public IReadonlyTransform MainTransform => MainRigidbody;
+        public Vector3 CurrentPosition => _movement.CurrentPosition;
 
         public void DieInstantly()
         {

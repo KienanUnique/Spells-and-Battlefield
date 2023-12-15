@@ -17,20 +17,6 @@ namespace Spells.Controllers
         private IDataForSpellController _spellControllerData;
         private float _initializeTime;
 
-        protected void InitializeBase(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
-            IDataForSpellController spellControllerData, IReadonlyTransform castPoint)
-        {
-            SpellRigidbody = GetComponent<Rigidbody>();
-            var targetsDetector = GetComponent<SpellTargetsDetector>();
-            _spellControllerData = spellControllerData;
-            CastPoint = castPoint;
-            _spellControllerData.Initialize(new DataForSpellImplementation(SpellRigidbody, caster, this, castPoint,
-                targetsDetector));
-            SpellObjectsFactory = spellObjectsFactory;
-            Caster = caster;
-            _initializeTime = Time.time;
-        }
-
         protected float TimePassedFromInitialize => Time.time - _initializeTime;
         protected ICaster Caster { get; private set; }
         protected Rigidbody SpellRigidbody { get; private set; }
@@ -49,6 +35,49 @@ namespace Spells.Controllers
             {
                 spellApplier.CheckTime(commonTimePassedFromInitialize);
             }
+        }
+
+        protected virtual void HandleTriggerEnter(Collider other)
+        {
+        }
+
+        protected virtual void HandleFinishSpell()
+        {
+            foreach (ISpellApplier spellApplier in _spellControllerData.SpellAppliers)
+            {
+                spellApplier.HandleRollbackableEffects();
+            }
+
+            _spellControllerData.SpellObjectMovement.StopMoving();
+            Destroy(gameObject);
+        }
+
+        protected override void SubscribeOnEvents()
+        {
+        }
+
+        protected override void UnsubscribeFromEvents()
+        {
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            _spellControllerData.SpellObjectMovement.StartMoving();
+        }
+
+        protected void InitializeBase(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
+            IDataForSpellController spellControllerData, IReadonlyTransform castPoint)
+        {
+            SpellRigidbody = GetComponent<Rigidbody>();
+            var targetsDetector = GetComponent<SpellTargetsDetector>();
+            _spellControllerData = spellControllerData;
+            CastPoint = castPoint;
+            _spellControllerData.Initialize(new DataForSpellImplementation(SpellRigidbody, caster, this, castPoint,
+                targetsDetector));
+            SpellObjectsFactory = spellObjectsFactory;
+            Caster = caster;
+            _initializeTime = Time.time;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -70,35 +99,6 @@ namespace Spells.Controllers
             }
 
             HandleTriggerEnter(other);
-        }
-
-        protected virtual void HandleTriggerEnter(Collider other)
-        {
-        }
-
-        protected override void SubscribeOnEvents()
-        {
-        }
-
-        protected override void UnsubscribeFromEvents()
-        {
-        }
-
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-            _spellControllerData.SpellObjectMovement.StartMoving();
-        }
-
-        protected virtual void HandleFinishSpell()
-        {
-            foreach (ISpellApplier spellApplier in _spellControllerData.SpellAppliers)
-            {
-                spellApplier.HandleRollbackableEffects();
-            }
-
-            _spellControllerData.SpellObjectMovement.StopMoving();
-            Destroy(gameObject);
         }
     }
 }

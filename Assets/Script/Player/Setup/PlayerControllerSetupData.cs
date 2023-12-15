@@ -22,7 +22,8 @@ namespace Player.Setup
             IPlayerMovement playerMovement, IPlayerLook playerLook, IIdHolder idHolder,
             List<IDisableable> itemsNeedDisabling, IReadonlyTransform cameraTransform, IFaction setFaction,
             IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon,
-            IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating, IAnimatorStatusChecker setAnimatorStatusChecker)
+            IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating,
+            IAnimatorStatusChecker setAnimatorStatusChecker)
         {
             SetPlayerCameraEffects = playerCameraEffects;
             SetPlayerVisual = playerVisual;

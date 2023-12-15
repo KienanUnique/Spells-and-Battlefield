@@ -9,9 +9,9 @@ namespace Enemies.State_Machine.Transition_Manager.Sub_Managers
     {
         [SerializeField] private StateEnemyAI _nextState;
 
-        public StateEnemyAI NextState => _nextState;
-
         public override event Action<IStateEnemyAI> NeedTransit;
+
+        public StateEnemyAI NextState => _nextState;
 
         protected void InvokeNeedTransitEvent()
         {

@@ -35,11 +35,11 @@ namespace Common.Mechanic_Effects.Continuous_Effect
 
         public event Action<IContinuousEffect> EffectEnded;
         public event Action<float> RatioOfCompletedPartToEntireDurationChanged;
+        public float DurationInSeconds { get; }
 
         public Sprite Icon { get; }
 
         public float CurrentRatioOfCompletedPartToEntireDuration => _passedSeconds / DurationInSeconds;
-        public float DurationInSeconds { get; }
 
         public void Start(ICoroutineStarter coroutineStarter, GameObject gameObjectToLink)
         {

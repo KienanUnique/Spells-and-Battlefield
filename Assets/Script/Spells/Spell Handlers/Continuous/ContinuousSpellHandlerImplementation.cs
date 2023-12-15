@@ -1,7 +1,6 @@
 ﻿using Common.Readonly_Transform;
 using Spells.Controllers.Concrete_Types.Continuous;
 using Spells.Factory;
-using UnityEngine;
 
 namespace Spells.Spell_Handlers.Continuous
 {
@@ -12,14 +11,14 @@ namespace Spells.Spell_Handlers.Continuous
         private IContinuousSpellController _castedSpell;
         private ContinuousSpellPhases _currentPhase = ContinuousSpellPhases.Cast;
 
-        private enum ContinuousSpellPhases
-        {
-            Idle, Cast, InAction
-        }
-
         public ContinuousSpellHandlerImplementation(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
             IReadonlyTransform spellSpawnObject) : base(caster, spellObjectsFactory, spellSpawnObject)
         {
+        }
+
+        private enum ContinuousSpellPhases
+        {
+            Idle, Cast, InAction
         }
 
         public float RatioOfCompletion => _castedSpell.RatioOfCompletion;

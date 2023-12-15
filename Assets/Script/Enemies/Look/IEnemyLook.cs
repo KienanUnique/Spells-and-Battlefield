@@ -1,7 +1,6 @@
 ﻿using Common;
 using Common.Readonly_Transform;
 using Enemies.Look_Point_Calculator;
-using UnityEngine;
 
 namespace Enemies.Look
 {

@@ -5,7 +5,6 @@ using Enemies.Look_Point_Calculator;
 using Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors;
 using Spells.Spell_Handlers.Continuous;
 using Spells.Spell_Handlers.Instant;
-using UnityEngine;
 
 namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spells_Manager
 {
@@ -26,8 +25,8 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spells_Manager
         public event Action<ILookPointCalculator> NeedChangeLookPointCalculator;
         public event Action StoppedCasting;
         public event Action FinishedCasting;
-        public new bool IsBusy => base.IsBusy;
         public event Action CanUseSpellsAgain;
+        public new bool IsBusy => base.IsBusy;
         public bool CanUseSpell => _spellsSelector.CanUseSpell;
 
         public override void StopCasting()

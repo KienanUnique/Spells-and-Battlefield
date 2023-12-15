@@ -4,7 +4,6 @@ using Systems.Scenes_Controller.Game_Level_Loot_Unlocker;
 using Systems.Scenes_Controller.Scene_Data.Game_Level_Data;
 using Systems.Score;
 using UI.Concrete_Scenes.Comics_Cutscene.Comics_Data;
-using UnityEngine;
 
 namespace Systems.Scenes_Controller.Game_Level_Information_Storage
 {

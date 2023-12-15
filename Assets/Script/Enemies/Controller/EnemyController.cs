@@ -89,19 +89,19 @@ namespace Enemies.Controller
 
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
         public ISummoner Summoner => _character.Summoner;
-        public Vector3 LookPointPosition => _look.LookPointPosition;
-        public Vector3 LookDirection => _look.LookDirection;
         public IReadonlyTransform ThisPositionReferencePointForLook => _look.ThisPositionReferencePointForLook;
         public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
 
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; private set; }
         public IFaction Faction { get; private set; }
         public IReadonlyTransform PointForAiming { get; private set; }
-        public IReadonlyRigidbody MainRigidbody => _movement.ReadonlyRigidbody;
         public int Id => _idHolder.Id;
 
         public IReadonlyTransform MainTransform => MainRigidbody;
+        public IReadonlyRigidbody MainRigidbody => _movement.ReadonlyRigidbody;
         public Vector3 CurrentPosition => _movement.CurrentPosition;
+        public Vector3 LookPointPosition => _look.LookPointPosition;
+        public Vector3 LookDirection => _look.LookDirection;
 
         public void DieInstantly()
         {

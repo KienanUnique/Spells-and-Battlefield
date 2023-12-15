@@ -1,5 +1,4 @@
-﻿using Common;
-using Common.Look;
+﻿using Common.Look;
 
 namespace Player.Look.Settings
 {

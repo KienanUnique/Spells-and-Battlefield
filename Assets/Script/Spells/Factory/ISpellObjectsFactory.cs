@@ -15,7 +15,7 @@ namespace Spells.Factory
             IContinuousSpellPrefabProvider prefabProvider, ICaster caster, IReadonlyTransform castPoint);
 
         public IInstantSpellController Create(IDataForInstantSpellController spellControllerData,
-            IInstantSpellPrefabProvider prefabProvider, ICaster caster, Vector3 spawnPosition,
-            Quaternion spawnRotation, IReadonlyTransform castPoint);
+            IInstantSpellPrefabProvider prefabProvider, ICaster caster, Vector3 spawnPosition, Quaternion spawnRotation,
+            IReadonlyTransform castPoint);
     }
 }

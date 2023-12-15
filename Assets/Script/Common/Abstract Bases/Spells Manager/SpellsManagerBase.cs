@@ -28,11 +28,11 @@ namespace Common.Abstract_Bases.Spells_Manager
         public event Action<IAnimationData> NeedPlaySingleActionAnimation;
         public event Action<IContinuousActionAnimationData> NeedPlayContinuousActionAnimation;
         public event Action NeedCancelActionAnimations;
+        public IReadonlyAnimatorStatusChecker AnimatorStatusChecker { get; }
 
         protected IContinuousSpellHandlerImplementation ContinuousSpellHandler { get; }
         protected IInstantSpellHandlerImplementation InstantSpellHandler { get; }
         protected ISpellSelectorFoSpellManager SpellsSelector { get; }
-        public IReadonlyAnimatorStatusChecker AnimatorStatusChecker { get; }
         protected bool NeedCast { get; private set; }
         protected bool IsAnimatorReady => AnimatorStatusChecker.IsReadyToPlayActionAnimations;
         protected bool IsCurrentSpellContinuous { get; private set; }
@@ -41,6 +41,30 @@ namespace Common.Abstract_Bases.Spells_Manager
         protected bool IsBusy => CurrentSpellsHandler != null && CurrentSpellsHandler.IsBusy;
 
         protected bool CanCastNextSpell => NeedCast && !IsBusy && IsAnimatorReady;
+
+        public virtual void HandleSpell(IInformationAboutContinuousSpell informationAboutContinuousSpell)
+        {
+            IsCurrentSpellContinuous = true;
+            if (IsEnabled)
+            {
+                SubscribeOnSpellsHandler(ContinuousSpellHandler);
+            }
+
+            CurrentSpellsHandler = ContinuousSpellHandler;
+            ContinuousSpellHandler.HandleSpell(informationAboutContinuousSpell);
+        }
+
+        public virtual void HandleSpell(IInformationAboutInstantSpell informationAboutInstantSpell)
+        {
+            IsCurrentSpellContinuous = false;
+            if (IsEnabled)
+            {
+                SubscribeOnSpellsHandler(InstantSpellHandler);
+            }
+
+            CurrentSpellsHandler = InstantSpellHandler;
+            InstantSpellHandler.HandleSpell(informationAboutInstantSpell);
+        }
 
         public virtual void StartCasting()
         {
@@ -59,56 +83,6 @@ namespace Common.Abstract_Bases.Spells_Manager
             CurrentSpellsHandler?.TryInterrupt();
         }
 
-        public virtual void HandleSpell(IInformationAboutInstantSpell informationAboutInstantSpell)
-        {
-            IsCurrentSpellContinuous = false;
-            if (IsEnabled)
-            {
-                SubscribeOnSpellsHandler(InstantSpellHandler);
-            }
-
-            CurrentSpellsHandler = InstantSpellHandler;
-            InstantSpellHandler.HandleSpell(informationAboutInstantSpell);
-        }
-
-        public virtual void HandleSpell(IInformationAboutContinuousSpell informationAboutContinuousSpell)
-        {
-            IsCurrentSpellContinuous = true;
-            if (IsEnabled)
-            {
-                SubscribeOnSpellsHandler(ContinuousSpellHandler);
-            }
-
-            CurrentSpellsHandler = ContinuousSpellHandler;
-            ContinuousSpellHandler.HandleSpell(informationAboutContinuousSpell);
-        }
-
-        protected override void SubscribeOnEvents()
-        {
-            ContinuousSpellHandler.Enable();
-            InstantSpellHandler.Enable();
-            AnimatorStatusChecker.ActionAnimationKeyMomentTrigger += OnSpellCastPartOfAnimationFinished;
-            AnimatorStatusChecker.AnimatorReadyToPlayActionsAnimations += OnAnimatorReadyForNextAnimation;
-            if (CurrentSpellsHandler == null)
-            {
-                return;
-            }
-
-            SubscribeOnSpellsHandler(CurrentSpellsHandler);
-        }
-
-        protected override void UnsubscribeFromEvents()
-        {
-            ContinuousSpellHandler.Disable();
-            InstantSpellHandler.Disable();
-            if (CurrentSpellsHandler == null)
-            {
-                return;
-            }
-
-            UnsubscribeFromSpellsHandler(CurrentSpellsHandler);
-        }
-
         protected virtual void OnSpellCastPartOfAnimationFinished()
         {
             if (IsBusy)
@@ -123,34 +97,6 @@ namespace Common.Abstract_Bases.Spells_Manager
             {
                 CastSelectedSpell();
             }
-        }
-
-        private void SubscribeOnSpellsHandler(ISpellsHandlerImplementationBase spellsHandler)
-        {
-            spellsHandler.SpellCanceled += OnSpellCanceled;
-            spellsHandler.SpellHandled += OnSpellHandled;
-            spellsHandler.NeedPlayContinuousActionAnimation += OnNeedPlayContinuousActionAnimation;
-            spellsHandler.NeedPlaySingleActionAnimation += OnNeedPlaySingleActionAnimation;
-            spellsHandler.SpellCasted += OnSpellCasted;
-        }
-
-        private void UnsubscribeFromSpellsHandler(ISpellsHandlerImplementationBase spellsHandler)
-        {
-            spellsHandler.SpellCanceled -= OnSpellCanceled;
-            spellsHandler.SpellHandled -= OnSpellHandled;
-            spellsHandler.NeedPlayContinuousActionAnimation -= OnNeedPlayContinuousActionAnimation;
-            spellsHandler.NeedPlaySingleActionAnimation -= OnNeedPlaySingleActionAnimation;
-            spellsHandler.SpellCasted -= OnSpellCasted;
-        }
-
-        private void OnNeedPlayContinuousActionAnimation(IContinuousActionAnimationData obj)
-        {
-            NeedPlayContinuousActionAnimation?.Invoke(obj);
-        }
-
-        private void OnNeedPlaySingleActionAnimation(IAnimationData obj)
-        {
-            NeedPlaySingleActionAnimation?.Invoke(obj);
         }
 
         protected virtual void OnSpellCanceled()
@@ -194,6 +140,60 @@ namespace Common.Abstract_Bases.Spells_Manager
         protected virtual void OnSpellCasted()
         {
             SpellsSelector.RemoveRememberedSpell();
+        }
+
+        protected override void SubscribeOnEvents()
+        {
+            ContinuousSpellHandler.Enable();
+            InstantSpellHandler.Enable();
+            AnimatorStatusChecker.ActionAnimationKeyMomentTrigger += OnSpellCastPartOfAnimationFinished;
+            AnimatorStatusChecker.AnimatorReadyToPlayActionsAnimations += OnAnimatorReadyForNextAnimation;
+            if (CurrentSpellsHandler == null)
+            {
+                return;
+            }
+
+            SubscribeOnSpellsHandler(CurrentSpellsHandler);
+        }
+
+        protected override void UnsubscribeFromEvents()
+        {
+            ContinuousSpellHandler.Disable();
+            InstantSpellHandler.Disable();
+            if (CurrentSpellsHandler == null)
+            {
+                return;
+            }
+
+            UnsubscribeFromSpellsHandler(CurrentSpellsHandler);
+        }
+
+        private void SubscribeOnSpellsHandler(ISpellsHandlerImplementationBase spellsHandler)
+        {
+            spellsHandler.SpellCanceled += OnSpellCanceled;
+            spellsHandler.SpellHandled += OnSpellHandled;
+            spellsHandler.NeedPlayContinuousActionAnimation += OnNeedPlayContinuousActionAnimation;
+            spellsHandler.NeedPlaySingleActionAnimation += OnNeedPlaySingleActionAnimation;
+            spellsHandler.SpellCasted += OnSpellCasted;
+        }
+
+        private void UnsubscribeFromSpellsHandler(ISpellsHandlerImplementationBase spellsHandler)
+        {
+            spellsHandler.SpellCanceled -= OnSpellCanceled;
+            spellsHandler.SpellHandled -= OnSpellHandled;
+            spellsHandler.NeedPlayContinuousActionAnimation -= OnNeedPlayContinuousActionAnimation;
+            spellsHandler.NeedPlaySingleActionAnimation -= OnNeedPlaySingleActionAnimation;
+            spellsHandler.SpellCasted -= OnSpellCasted;
+        }
+
+        private void OnNeedPlayContinuousActionAnimation(IContinuousActionAnimationData obj)
+        {
+            NeedPlayContinuousActionAnimation?.Invoke(obj);
+        }
+
+        private void OnNeedPlaySingleActionAnimation(IAnimationData obj)
+        {
+            NeedPlaySingleActionAnimation?.Invoke(obj);
         }
     }
 }

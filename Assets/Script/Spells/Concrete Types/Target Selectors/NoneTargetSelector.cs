@@ -1,6 +1,5 @@
+using System;
 using System.Collections.Generic;
-using Common.Interfaces;
-using Common.Readonly_Transform;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
 using Spells.Data_For_Spell_Implementation;
 using Spells.Implementations_Interfaces.Implementations;
@@ -21,7 +20,7 @@ namespace Spells.Concrete_Types.Target_Selectors
         {
             public void Initialize(IDataForSpellImplementation data)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             public void HandleSpellInteractableTriggerEnter(ISpellInteractable spellInteractable)

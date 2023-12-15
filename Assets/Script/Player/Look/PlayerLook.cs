@@ -23,6 +23,8 @@ namespace Player.Look
             _cameraTransform = camera.transform;
         }
 
+        public Quaternion CameraRotation => _cameraTransform.rotation;
+
         public Vector3 LookPointPosition
         {
             get
@@ -38,7 +40,6 @@ namespace Player.Look
             }
         }
 
-        public Quaternion CameraRotation => _cameraTransform.rotation;
         public Vector3 LookDirection => _cameraTransform.forward;
 
         public void LookInputtedWith(Vector2 mouseLookDelta)

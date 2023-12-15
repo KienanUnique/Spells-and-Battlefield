@@ -9,12 +9,6 @@ namespace UI.Concrete_Scenes.Main_Menu
         [SerializeField] private Renderer _renderer;
         private Material _material;
 
-        private void Awake()
-        {
-            _material = _renderer.material;
-            DisableEmission();
-        }
-
         public void OnPointerEnter(PointerEventData eventData)
         {
             EnableEmission();
@@ -22,6 +16,12 @@ namespace UI.Concrete_Scenes.Main_Menu
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            DisableEmission();
+        }
+
+        private void Awake()
+        {
+            _material = _renderer.material;
             DisableEmission();
         }
 

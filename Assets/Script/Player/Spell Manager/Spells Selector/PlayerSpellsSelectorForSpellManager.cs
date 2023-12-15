@@ -20,7 +20,6 @@ namespace Player.Spell_Manager.Spells_Selector
         private readonly ValueWithReactionOnChange<int> _selectedSpellTypeIndex = new ValueWithReactionOnChange<int>(0);
         private readonly ISpellType[] _spellTypesInOrder;
         private readonly ISpellType _lastChanceSpellType;
-        private ISpell _spellToCreate;
         private IList<ISpell> _spellGroupFromWhichToCreateSpell;
         private ISpellType _typeOfSpellToCreate;
 
@@ -42,13 +41,14 @@ namespace Player.Spell_Manager.Spells_Selector
 
         public event Action<ISpellType> SelectedSpellTypeChanged;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
-
-        public ISpell RememberedSpell => _spellToCreate;
         public ISpellType SelectedSpellType => _spellTypesInOrder[_selectedSpellTypeIndex.Value];
-        private ListWithReactionOnChange<ISpell> SelectedSpellGroup => _spellsStorage[SelectedSpellType];
-        private ISpell SelectedSpell => SelectedSpellGroup[0];
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells { get; }
+
+        public ISpell RememberedSpell { get; private set; }
+
+        private ListWithReactionOnChange<ISpell> SelectedSpellGroup => _spellsStorage[SelectedSpellType];
+        private ISpell SelectedSpell => SelectedSpellGroup[0];
 
         public void SelectSpellTypeWithIndex(int indexToSelect)
         {
@@ -100,7 +100,7 @@ namespace Player.Spell_Manager.Spells_Selector
 
             _typeOfSpellToCreate = SelectedSpellType;
             _spellGroupFromWhichToCreateSpell = SelectedSpellGroup;
-            _spellToCreate = SelectedSpell;
+            RememberedSpell = SelectedSpell;
             return true;
         }
 
@@ -113,7 +113,7 @@ namespace Player.Spell_Manager.Spells_Selector
 
             _typeOfSpellToCreate = null;
             _spellGroupFromWhichToCreateSpell = null;
-            _spellToCreate = null;
+            RememberedSpell = null;
         }
 
         protected override void SubscribeOnEvents()

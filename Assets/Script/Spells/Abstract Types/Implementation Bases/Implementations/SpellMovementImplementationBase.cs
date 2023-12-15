@@ -9,16 +9,16 @@ namespace Spells.Abstract_Types.Implementation_Bases.Implementations
         ISpellMovementWithLookPointCalculator
     {
         protected Transform _spellTransform;
+        public abstract void StartMoving();
+
+        public abstract void StopMoving();
+
+        public abstract ILookPointCalculator GetLookPointCalculator();
 
         public override void Initialize(IDataForSpellImplementation data)
         {
             base.Initialize(data);
             _spellTransform = _spellRigidbody.transform;
         }
-
-        public abstract ILookPointCalculator GetLookPointCalculator();
-        public abstract void StartMoving();
-
-        public abstract void StopMoving();
     }
 }

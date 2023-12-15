@@ -23,11 +23,6 @@ namespace Common.Animator_Status_Controller
 
         private Coroutine _updateAnimatorStatusCoroutine;
 
-        private enum AnimatorStatus
-        {
-            Idle, WaitingActionAnimationStart, WaitingActionAnimationEnd
-        }
-
         public AnimatorStatusChecker(IEventInvokerForActionAnimations animationsEventInvoker, Animator animator,
             ICoroutineStarter coroutineStarter)
         {
@@ -39,6 +34,11 @@ namespace Common.Animator_Status_Controller
 
         public event Action AnimatorReadyToPlayActionsAnimations;
         public event Action ActionAnimationKeyMomentTrigger;
+
+        private enum AnimatorStatus
+        {
+            Idle, WaitingActionAnimationStart, WaitingActionAnimationEnd
+        }
 
         public bool IsReadyToPlayActionAnimations => _isReadyToPlayActionsAnimations.Value == AnimatorStatus.Idle;
 

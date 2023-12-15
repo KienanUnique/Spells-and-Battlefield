@@ -14,16 +14,16 @@ namespace Spells.Controllers.Concrete_Types.Continuous
         [SerializeField] private ContinuousActionAnimationData _animationData;
         [SerializeField] private ContinuousSpellPrefabProvider _prefabProvider;
 
-        public override void HandleSpell(ISpellHandler handler)
-        {
-            handler.HandleSpell(this);
-        }
-
         public IDataForContinuousSpellController DataForController =>
             _dataForController.GetImplementationObject(SpellType, Movement, LookPointCalculator);
 
         public IContinuousActionAnimationData AnimationData => _animationData;
 
         public IContinuousSpellPrefabProvider PrefabProvider => _prefabProvider;
+
+        public override void HandleSpell(ISpellHandler handler)
+        {
+            handler.HandleSpell(this);
+        }
     }
 }

@@ -8,6 +8,11 @@ namespace UI.Element.Presenter
     {
         protected abstract IUIElementView View { get; }
 
+        public virtual void Disappear(Action callbackOnAnimationEnd)
+        {
+            View.Disappear(callbackOnAnimationEnd);
+        }
+
         public virtual void Appear()
         {
             View.Appear();
@@ -16,11 +21,6 @@ namespace UI.Element.Presenter
         public virtual void Disappear()
         {
             View.Disappear();
-        }
-
-        public virtual void Disappear(Action callbackOnAnimationEnd)
-        {
-            View.Disappear(callbackOnAnimationEnd);
         }
 
         protected override void SubscribeOnEvents()
