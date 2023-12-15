@@ -8,7 +8,7 @@ namespace Player.Spell_Manager.Settings
     [Serializable]
     public class PlayerSpellManagerSettingsSection : IPlayerSpellManagerSettings
     {
-        [SerializeField] private SpellScriptableObject _lastChanceSpell;
+        [SerializeField] private SpellScriptableObjectBase _lastChanceSpell;
 
         public ISpell LastChanceSpell => _lastChanceSpell;
     }

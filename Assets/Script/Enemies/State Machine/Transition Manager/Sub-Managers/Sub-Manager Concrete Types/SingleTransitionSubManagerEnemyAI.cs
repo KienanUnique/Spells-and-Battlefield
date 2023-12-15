@@ -1,4 +1,5 @@
 ﻿using System;
+using Enemies.State_Machine.States;
 using Enemies.State_Machine.Transition_Conditions;
 using UnityEngine;
 
@@ -8,6 +9,18 @@ namespace Enemies.State_Machine.Transition_Manager.Sub_Managers.Sub_Manager_Conc
     public class SingleTransitionSubManagerEnemyAI : TransitionSubManagerEnemyAIBase
     {
         [SerializeField] private TransitionConditionEnemyAIBase _condition;
+
+        public override bool TryTransit(out IStateEnemyAI stateEnemyAI)
+        {
+            if (_condition.IsConditionCompleted)
+            {
+                stateEnemyAI = NextState;
+                return true;
+            }
+
+            stateEnemyAI = null;
+            return false;
+        }
 
         protected override void HandleStartCheckingConditions()
         {

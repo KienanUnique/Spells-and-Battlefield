@@ -1,10 +1,10 @@
-﻿using Factions;
+﻿using Common.Abstract_Bases.Visual.Settings;
+using Factions;
 using Player.Camera_Effects.Settings;
 using Player.Character.Settings;
 using Player.Look.Settings;
 using Player.Movement.Settings;
 using Player.Spell_Manager.Settings;
-using Player.Visual.Settings;
 using UnityEngine;
 
 namespace Player.Settings
@@ -18,7 +18,7 @@ namespace Player.Settings
         [SerializeField] private PlayerMovementSettingsSection _movement;
         [SerializeField] private PlayerCharacterSettingsSection _character;
         [SerializeField] private PlayerSpellManagerSettingsSection _spellManager;
-        [SerializeField] private PlayerVisualSettingsSection _visual;
+        [SerializeField] private VisualSettingsSection _visual;
         [SerializeField] private FactionScriptableObject _faction;
 
         public IPlayerCameraEffectsSettings CameraEffects => _cameraEffects;
@@ -26,7 +26,7 @@ namespace Player.Settings
         public IPlayerMovementSettings Movement => _movement;
         public IPlayerCharacterSettings Character => _character;
         public IPlayerSpellManagerSettings SpellManager => _spellManager;
-        public IPlayerVisualSettings Visual => _visual;
+        public IVisualSettings Visual => _visual;
         public IFaction Faction => _faction;
     }
 }

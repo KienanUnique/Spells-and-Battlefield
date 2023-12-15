@@ -12,7 +12,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
     {
         [SerializeField] private List<SpellWithCooldownData> _spellsToUseInPriorityOrder;
 
-        public override ISpellSelector GetImplementationObject(ICoroutineStarter coroutineStarter)
+        public override IEnemySpellSelector GetImplementationObject(ICoroutineStarter coroutineStarter)
         {
             List<ISpellWithCooldown> listWithSpells = _spellsToUseInPriorityOrder
                                                       .Select(spellWithCooldownData =>
@@ -21,7 +21,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
                                                       .Cast<ISpellWithCooldown>()
                                                       .ToList();
 
-            return new SpellsWithCooldownSelectorImplementation(listWithSpells);
+            return new EnemySpellsWithCooldownSelectorImplementation(listWithSpells);
         }
     }
 }

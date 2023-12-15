@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
+using Common.Animator_Status_Controller;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Id_Holder;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
@@ -27,7 +28,6 @@ namespace Enemies.Setup.Controller_Setup_Data
         public IPopupHitPointsChangeTextFactory SetPopupHitPointsChangeTextFactory { get; }
         public IEnemyTargetFromTriggersSelector SetTargetFromTriggersSelector { get; }
         public IEnemyLook SetLook { get; }
-        public IEventInvokerForActionAnimations SetEventInvokerForAnimations { get; }
         public IEnemyVisual SetVisual { get; }
         public IEnemyCharacter SetCharacter { get; }
         public IReadonlyTransform SetPopupTextHitPointsChangeAppearCenterPoint { get; }
@@ -37,5 +37,6 @@ namespace Enemies.Setup.Controller_Setup_Data
         public IInformationForSummon SetInformationForSummon { get; }
         public IToolsForSummon SetToolsForSummon { get; }
         public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
+        public IAnimatorStatusChecker SetAnimatorStatusChecker { get; }
     }
 }

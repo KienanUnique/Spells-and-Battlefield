@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using Common;
 using Common.Abstract_Bases.Disableable;
 using Common.Interfaces;
+using Common.Look;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Enemies.Look_Point_Calculator;
@@ -21,11 +23,14 @@ namespace Enemies.Look
         private Vector3 _cachedLookXZ;
         private Coroutine _lookCoroutine;
         private ILookPointCalculator _lookPointCalculator;
+        private RaycastHit _lookForwardRaycastHit;
+        private ILookSettings _lookSettings;
 
         public EnemyLook(Transform transformToRotate, IReadonlyRigidbody thisRigidbody,
             IReadonlyTransform thisPositionReferencePoint,
             IReadonlyEnemyTargetFromTriggersSelector targetFromTriggersSelector, ICoroutineStarter coroutineStarter,
-            Transform transformToRotateForIK, IReadonlyTransform thisIKCenterPoint, float needDistanceFromIKCenterPoint)
+            Transform transformToRotateForIK, IReadonlyTransform thisIKCenterPoint, float needDistanceFromIKCenterPoint,
+            ILookSettings lookSettings)
         {
             _transformToRotate = transformToRotate;
             _coroutineStarter = coroutineStarter;
@@ -38,7 +43,22 @@ namespace Enemies.Look
             _needDistanceFromIKCenterPoint = needDistanceFromIKCenterPoint;
         }
 
-        public Vector3 CurrentLookDirection { get; private set; }
+        public Vector3 LookPointPosition
+        {
+            get
+            {
+                if (Physics.Raycast(ThisPositionReferencePointForLook.Position, LookDirection,
+                        out _lookForwardRaycastHit, _lookSettings.MaxAimRaycastDistance, _lookSettings.AimLayerMask,
+                        QueryTriggerInteraction.Ignore))
+                {
+                    return _lookForwardRaycastHit.point;
+                }
+
+                return ThisPositionReferencePointForLook.Position + LookDirection * _lookSettings.MaxAimRaycastDistance;
+            }
+        }
+
+        public Vector3 LookDirection { get; private set; }
 
         public IReadonlyTransform ThisPositionReferencePointForLook { get; private set; }
 
@@ -101,8 +121,8 @@ namespace Enemies.Look
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (true)
             {
-                CurrentLookDirection = _lookPointCalculator.CalculateLookPointDirection();
-                HandleLookPoint(CurrentLookDirection);
+                LookDirection = _lookPointCalculator.CalculateLookPointDirection();
+                HandleLookPoint(LookDirection);
                 yield return waitForFixedUpdate;
             }
         }

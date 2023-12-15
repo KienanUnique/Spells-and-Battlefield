@@ -25,6 +25,7 @@ MonoBehaviour:
     _maximumOverSpeedValueForFieldOfView: 5
     _overSpeedMaximumEmissionRateOverTime: 200
     _maximumOverSpeedValueForWindTrailEffect: 10
+    _minimumOverSpeedValueForWindTrailEffect: 5
   _look:
     _upperLimit: -40
     _bottomLimit: 70
@@ -55,4 +56,6 @@ MonoBehaviour:
     _lastChanceSpell: {fileID: 11400000, guid: 64f2c7c17c0f77446a5eacd00b9c1249, type: 2}
   _visual:
     _emptyUseSpellAnimation: {fileID: 7400000, guid: 166679ff92a4b7c48864e99cb3e32c74, type: 2}
+    _emptyPrepareContinuousActionAnimation: {fileID: 7400000, guid: d9c8c46c81d66114890bc8ac16272ef0, type: 2}
+    _emptyContinuousActionAnimation: {fileID: 7400000, guid: b1365513424f54f4e8b543502c6969a2, type: 2}
   _faction: {fileID: 11400000, guid: bf8019b83105005438a1b13c003057eb, type: 2}

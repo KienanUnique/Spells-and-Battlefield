@@ -1,15 +1,18 @@
 ﻿using Common.Animation_Data;
+using Common.Animation_Data.Continuous_Action;
 using UnityEngine;
 
 namespace Player.Visual
 {
     public interface IPlayerVisual
     {
-        void PlayUseSpellAnimation(IAnimationData spellAnimationData);
-        void PlayGroundJumpAnimation();
-        void PlayFallAnimation();
-        void PlayLandAnimation();
-        void PlayDieAnimation();
-        void UpdateMovingData(Vector2 movingDirectionNormalized, float ratioOfCurrentVelocityToMaximumVelocity);
+        public void PlayActionAnimation(IAnimationData animationData);
+        public void PlayActionAnimation(IContinuousActionAnimationData animationData);
+        public void PlayGroundJumpAnimation();
+        public void PlayFallAnimation();
+        public void PlayLandAnimation();
+        public void PlayDieAnimation();
+        public void CancelActionAnimation();
+        public void UpdateMovingData(Vector2 movingDirectionNormalized, float ratioOfCurrentVelocityToMaximumVelocity);
     }
 }

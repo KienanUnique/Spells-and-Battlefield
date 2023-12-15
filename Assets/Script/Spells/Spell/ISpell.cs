@@ -9,10 +9,8 @@ namespace Spells.Spell
 {
     public interface ISpell : IPickableCardDataForCreating, IEqualityComparer
     {
-        public IAnimationData SpellAnimationData { get; }
-        public ISpellDataForSpellController SpellDataForSpellController { get; }
-        public ISpellPrefabProvider SpellPrefabProvider { get; }
         public ISpellType SpellType { get; }
         public ILookPointCalculator LookPointCalculator { get; }
+        public void HandleSpell(ISpellHandler handler);
     }
 }

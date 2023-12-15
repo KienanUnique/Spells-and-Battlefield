@@ -9,20 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be24e3d51e3c3724fa102db9aab6b01c, type: 3}
+  m_Script: {fileID: 11500000, guid: 42c5bd49f4714f8698362e65254d0bcc, type: 3}
   m_Name: Fireball
   m_EditorClassIdentifier: 
-  _prefabProvider: {fileID: 11400000, guid: 3eac42da268645142bdf96a71c371773, type: 2}
+  _pickableCardPrefabProvider: {fileID: 11400000, guid: 3eac42da268645142bdf96a71c371773, type: 2}
   _cardInformation:
-    _icon: {fileID: 21300000, guid: 2d0997ac1b1fd664e98202450e7ea2d7, type: 3}
+    _icon: {fileID: 21300000, guid: 8b03ad0628d8cec43a17e35fbc3086e4, type: 3}
     _title: Fireball
-  _animationData: {fileID: 11400000, guid: 2ca3bb4473780c44fbebaa87e854559c, type: 2}
-  _dataForSpellController:
-    _movement: {fileID: 11400000, guid: f0c42f3d1555a414bad15108e760ef71, type: 2}
+  _movement: {fileID: 11400000, guid: f0c42f3d1555a414bad15108e760ef71, type: 2}
+  _type: {fileID: 11400000, guid: f1e40f218d6aa044eb96fed18c41907b, type: 2}
+  _dataForController:
     _appliers:
     - {fileID: 11400000, guid: 7625cdd303a1b204c9c18ee576a62adc, type: 2}
-    _mainTrigger: {fileID: 11400000, guid: 6e4167d6efc4a0649932a733d1797436, type: 2}
     _nextSpellsOnFinish: []
-  _spellPrefabProvider: {fileID: 11400000, guid: 2fa2bf13d9bbe744c8b38256cfb92887, type: 2}
-  _cardPrefabProvider: {fileID: 11400000, guid: 3eac42da268645142bdf96a71c371773, type: 2}
-  _type: {fileID: 11400000, guid: f1e40f218d6aa044eb96fed18c41907b, type: 2}
+    _spellMainTrigger: {fileID: 11400000, guid: 6e4167d6efc4a0649932a733d1797436, type: 2}
+  _animationData: {fileID: 11400000, guid: 2ca3bb4473780c44fbebaa87e854559c, type: 2}
+  _prefabProvider: {fileID: 11400000, guid: 2fa2bf13d9bbe744c8b38256cfb92887, type: 2}

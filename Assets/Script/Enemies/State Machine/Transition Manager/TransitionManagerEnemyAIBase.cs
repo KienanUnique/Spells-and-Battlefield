@@ -9,6 +9,8 @@ namespace Enemies.State_Machine.Transition_Manager
         private bool _isActive;
         public abstract event Action<IStateEnemyAI> NeedTransit;
 
+        public abstract bool TryTransit(out IStateEnemyAI stateEnemyAI);
+
         public void StartCheckingConditions()
         {
             _isActive = true;

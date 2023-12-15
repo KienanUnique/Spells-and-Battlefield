@@ -30,7 +30,7 @@ namespace Spells.Concrete_Types.Target_Selectors
                 _ignoreCasterCollisions = ignoreCasterCollisions;
             }
 
-            public override List<ISpellInteractable> SelectTargets()
+            public override IReadOnlyList<ISpellInteractable> SelectTargets()
             {
                 var selectedTargets = new List<ISpellInteractable>();
                 Collider[] collidersInsideSphere = Physics.OverlapSphere(_spellRigidbody.position, _sphereRadius,

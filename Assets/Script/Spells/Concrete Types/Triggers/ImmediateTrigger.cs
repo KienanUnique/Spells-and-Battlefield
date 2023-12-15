@@ -34,7 +34,7 @@ namespace Spells.Concrete_Types.Triggers
 
             public override SpellTriggerCheckStatusEnum CheckContact(Collider other)
             {
-                return TriggerStatus;
+                return SpellTriggerCheckStatusEnum.Ignore;
             }
 
             public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize)

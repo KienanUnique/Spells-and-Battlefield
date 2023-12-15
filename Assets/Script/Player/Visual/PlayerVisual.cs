@@ -1,6 +1,5 @@
 using Common.Abstract_Bases.Visual;
-using Common.Animation_Data;
-using Player.Visual.Settings;
+using Common.Abstract_Bases.Visual.Settings;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -8,8 +7,6 @@ namespace Player.Visual
 {
     public class PlayerVisual : VisualBase, IPlayerVisual
     {
-        private static readonly int AttackTriggerHash = Animator.StringToHash("Attack");
-        private static readonly int UseSpellFloatSpeedHash = Animator.StringToHash("Use Spell Speed");
         private static readonly int MovingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
         private static readonly int MovingDirectionYFloatHash = Animator.StringToHash("Moving Direction Y");
 
@@ -20,21 +17,16 @@ namespace Player.Visual
         private static readonly int FallTriggerHash = Animator.StringToHash("Fall");
         private static readonly int LandTriggerHash = Animator.StringToHash("Land");
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
-        private readonly IPlayerVisualSettings _settings;
 
-        public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator, IPlayerVisualSettings settings) : base(
+        public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator, IVisualSettings settings) : base(
             rigBuilder, characterAnimator)
         {
-            _settings = settings;
+            Settings = settings;
+            OverrideController = new AnimatorOverrideController(_characterAnimator.runtimeAnimatorController);
         }
 
-        public void PlayUseSpellAnimation(IAnimationData spellAnimationData)
-        {
-            ApplyAnimationOverride(new AnimatorOverrideController(_characterAnimator.runtimeAnimatorController),
-                _settings.EmptyUseSpellAnimation, spellAnimationData.Clip);
-            _characterAnimator.SetFloat(UseSpellFloatSpeedHash, spellAnimationData.AnimationSpeed);
-            _characterAnimator.SetTrigger(AttackTriggerHash);
-        }
+        protected override IVisualSettings Settings { get; }
+        protected override AnimatorOverrideController OverrideController { get; }
 
         public void PlayGroundJumpAnimation()
         {
