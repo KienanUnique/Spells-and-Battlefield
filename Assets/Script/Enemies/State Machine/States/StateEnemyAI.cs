@@ -100,7 +100,6 @@ namespace Enemies.State_Machine.States
             switch (newStatus)
             {
                 case StateEnemyAIStatus.Active:
-                    SubscribeOnTransitionEvents();
                     _transitionManager.StartCheckingConditions();
                     if (_transitionManager.TryTransit(out IStateEnemyAI nextState))
                     {
@@ -109,6 +108,7 @@ namespace Enemies.State_Machine.States
                         return;
                     }
 
+                    SubscribeOnTransitionEvents();
                     break;
                 case StateEnemyAIStatus.Exiting:
                     UnsubscribeFromTransitionEvents();
