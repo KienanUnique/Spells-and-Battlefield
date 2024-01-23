@@ -1,4 +1,6 @@
 ﻿using Common.Animation_Data.Continuous_Action;
+using Common.Readonly_Transform;
+using Spells.Controllers.Concrete_Types.Continuous.Data_For_Activation;
 using Spells.Controllers.Concrete_Types.Continuous.Data_For_Controller;
 using Spells.Controllers.Concrete_Types.Continuous.Prefab_Provider;
 using Spells.Spell.Scriptable_Objects;
@@ -14,9 +16,6 @@ namespace Spells.Controllers.Concrete_Types.Continuous
         [SerializeField] private ContinuousActionAnimationData _animationData;
         [SerializeField] private ContinuousSpellPrefabProvider _prefabProvider;
 
-        public IDataForContinuousSpellController DataForController =>
-            _dataForController.GetImplementationObject(SpellType, Movement, LookPointCalculator);
-
         public IContinuousActionAnimationData AnimationData => _animationData;
 
         public IContinuousSpellPrefabProvider PrefabProvider => _prefabProvider;
@@ -24,6 +23,12 @@ namespace Spells.Controllers.Concrete_Types.Continuous
         public override void HandleSpell(ISpellHandler handler)
         {
             handler.HandleSpell(this);
+        }
+
+        public IDataForActivationContinuousSpellObjectController GetActivationData(ICaster caster,
+            IReadonlyTransform castPoint)
+        {
+            return _dataForController.GetImplementationObject(SpellType, Movement, LookPointCalculator);
         }
     }
 }

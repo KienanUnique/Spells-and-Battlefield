@@ -1,28 +1,24 @@
 ﻿using System;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
-using Common.Readonly_Transform;
-using Spells.Controllers.Concrete_Types.Continuous.Data_For_Controller;
-using Spells.Factory;
+using Spells.Controllers.Concrete_Types.Continuous.Data_For_Activation;
 using UnityEngine;
 
 namespace Spells.Controllers.Concrete_Types.Continuous
 {
-    public class ContinuousSpellObjectController : SpellObjectControllerBase, IInitializableContinuousSpellController
+    public class ContinuousSpellObjectController :
+        SpellObjectControllerBase<IDataForActivationContinuousSpellObjectController>,
+        IInitializableContinuousSpellController
     {
-        private IDataForContinuousSpellController _spellControllerData;
-
-        public void Initialize(IDataForContinuousSpellController spellControllerData, ICaster caster,
-            IReadonlyTransform castPoint, ISpellObjectsFactory spellObjectsFactory)
+        public void Initialize()
         {
-            _spellControllerData = spellControllerData;
-            InitializeBase(caster, spellObjectsFactory, spellControllerData, castPoint);
+            InitializeBase();
             SetInitializedStatus();
         }
 
         public event Action Finished;
 
         public float RatioOfCompletion =>
-            Mathf.Min(TimePassedFromInitialize / _spellControllerData.DurationInSeconds, 1f);
+            Mathf.Min(TimePassedFromActivation / DataForActivation.ConcreteSpellControllerData.DurationInSeconds, 1f);
 
         public void Interrupt()
         {

@@ -1,48 +1,49 @@
-using Common.Abstract_Bases.Initializable_MonoBehaviour;
+using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
 using Common.Readonly_Transform;
 using Spells.Controllers.Concrete_Types.Instant;
+using Spells.Controllers.Concrete_Types.Instant.Data_For_Activation;
 using Spells.Controllers.Concrete_Types.Instant.Data_For_Controller;
 using Spells.Factory;
 using UnityEngine;
 
 namespace Spells.Controllers
 {
-    public class InstantSpellObjectController : SpellObjectControllerBase, IInitializableInstantSpellController
+    public class InstantSpellObjectController :
+        SpellObjectControllerBase<IDataForActivationInstantSpellObjectController>,
+        IInitializableInstantSpellController
     {
-        private IDataForInstantSpellController _spellControllerData;
+        private IDataForInstantSpellControllerFromSetupScriptableObjects _spellControllerFromSetupScriptableObjectsData;
 
-        public void Initialize(IDataForInstantSpellController spellControllerData, ICaster caster,
-            ISpellObjectsFactory spellObjectsFactory, IReadonlyTransform castPoint)
+        public void Initialize(IDataForInstantSpellControllerFromSetupScriptableObjects spellControllerData,
+            ICaster caster, ISpellObjectsFactory spellObjectsFactory, IReadonlyTransform castPoint)
         {
-            _spellControllerData = spellControllerData;
-            InitializeBase(caster, spellObjectsFactory, spellControllerData, castPoint);
+            _spellControllerFromSetupScriptableObjectsData = spellControllerData;
             SetInitializedStatus();
         }
 
-        protected override void FixedUpdate()
+        protected override void CheckTime(float timePassedFromActivation)
         {
-            if (CurrentInitializableMonoBehaviourStatus != InitializableMonoBehaviourStatus.Initialized)
-            {
-                return;
-            }
-
-            base.FixedUpdate();
-            HandleSpellTriggerResponse(_spellControllerData.SpellMainTrigger.CheckTime(TimePassedFromInitialize));
+            base.CheckTime(timePassedFromActivation);
+            HandleSpellTriggerResponse(
+                _spellControllerFromSetupScriptableObjectsData.SpellMainTrigger.CheckTime(timePassedFromActivation));
         }
 
         protected override void HandleTriggerEnter(Collider other)
         {
             base.HandleTriggerEnter(other);
-            HandleSpellTriggerResponse(_spellControllerData.SpellMainTrigger.CheckContact(other));
+            HandleSpellTriggerResponse(
+                _spellControllerFromSetupScriptableObjectsData.SpellMainTrigger.CheckContact(other));
         }
 
         protected override void HandleFinishSpell()
         {
-            foreach (IInformationAboutInstantSpell spell in _spellControllerData.NextSpellsOnFinish)
+            Transform spellTransform = SpellRigidbody.transform;
+            var positionForNextSpell =
+                new PositionDataForInstantiation(spellTransform.position, spellTransform.rotation);
+            foreach (IInformationAboutInstantSpell spell in _spellControllerFromSetupScriptableObjectsData
+                         .NextSpellsOnFinish)
             {
-                Transform spellTransform = SpellRigidbody.transform;
-                SpellObjectsFactory.Create(spell.DataForController, spell.PrefabProvider, Caster,
-                    spellTransform.position, spellTransform.rotation, CastPoint);
+                SpellObjectsFactory.Create(spell.GetActivationData(Caster), spell.PrefabProvider, positionForNextSpell);
             }
 
             base.HandleFinishSpell();

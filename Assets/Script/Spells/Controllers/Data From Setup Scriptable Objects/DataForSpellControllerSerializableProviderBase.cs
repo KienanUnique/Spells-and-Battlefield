@@ -9,7 +9,7 @@ namespace Spells.Controllers.Data_For_Controller
 {
     [Serializable]
     public abstract class DataForSpellControllerSerializableProviderBase<TIDataForController>
-        where TIDataForController : IDataForSpellController
+        where TIDataForController : IInitializableDataForSpellControllerFromSetupScriptableObjects
     {
         [SerializeField] private List<SpellApplierScriptableObject> _appliers;
 

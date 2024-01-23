@@ -2,7 +2,9 @@
 
 namespace Spells.Controllers.Concrete_Types.Continuous.Data_For_Controller
 {
-    public interface IDataForContinuousSpellController : IDataForSpellController
+    public interface
+        IDataForContinuousSpellControllerFromSetupScriptableObjects :
+            IInitializableDataForSpellControllerFromSetupScriptableObjects
     {
         public float DurationInSeconds { get; }
     }

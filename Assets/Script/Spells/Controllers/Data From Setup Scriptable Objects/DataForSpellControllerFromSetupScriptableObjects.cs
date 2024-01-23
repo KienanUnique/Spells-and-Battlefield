@@ -6,10 +6,12 @@ using Spells.Implementations_Interfaces.Implementations;
 
 namespace Spells.Controllers.Data_For_Controller
 {
-    public abstract class DataForSpellController : IDataForSpellController
+    public abstract class
+        DataForSpellControllerFromSetupScriptableObjects :
+            IInitializableDataForSpellControllerFromSetupScriptableObjects
     {
-        protected DataForSpellController(ISpellMovement spellObjectMovement, ISpellType spellType,
-            IReadOnlyList<ISpellApplier> spellAppliers, ILookPointCalculator lookPointCalculator)
+        protected DataForSpellControllerFromSetupScriptableObjects(ISpellMovement spellObjectMovement,
+            ISpellType spellType, IReadOnlyList<ISpellApplier> spellAppliers, ILookPointCalculator lookPointCalculator)
         {
             SpellObjectMovement = spellObjectMovement;
             SpellType = spellType;

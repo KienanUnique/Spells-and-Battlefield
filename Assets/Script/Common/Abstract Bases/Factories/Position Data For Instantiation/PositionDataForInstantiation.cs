@@ -10,6 +10,12 @@ namespace Common.Abstract_Bases.Factories.Position_Data_For_Instantiation
             SpawnRotation = spawnRotation;
         }
 
+        public PositionDataForInstantiation()
+        {
+            SpawnPosition = Vector3.zero;
+            SpawnRotation = Quaternion.identity;
+        }
+
         public Vector3 SpawnPosition { get; }
         public Quaternion SpawnRotation { get; }
     }

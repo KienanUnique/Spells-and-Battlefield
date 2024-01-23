@@ -8,7 +8,7 @@ using Zenject;
 
 namespace UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Indicator.Factory
 {
-    public class ContinuousEffectIndicatorFactory : ObjectPoolingFactoryWithInstantiatorBase<
+    public class ContinuousEffectIndicatorFactory : ObjectPoolingFactoryWithActivation<
             IContinuousEffectIndicatorPresenter, IContinuousEffectIndicatorDataForActivation>,
         IContinuousEffectIndicatorFactory
     {

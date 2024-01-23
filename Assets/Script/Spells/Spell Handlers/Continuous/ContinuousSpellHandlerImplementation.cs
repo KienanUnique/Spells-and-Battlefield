@@ -1,4 +1,5 @@
-﻿using Common.Readonly_Transform;
+﻿using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
+using Common.Readonly_Transform;
 using Spells.Controllers.Concrete_Types.Continuous;
 using Spells.Factory;
 
@@ -45,8 +46,9 @@ namespace Spells.Spell_Handlers.Continuous
         public override void OnSpellCastPartOfAnimationFinished()
         {
             _currentPhase = ContinuousSpellPhases.InAction;
-            _castedSpell = _spellObjectsFactory.Create(_spellToCreate.DataForController, _spellToCreate.PrefabProvider,
-                _caster, _spellSpawnObject);
+            _castedSpell = _spellObjectsFactory.Create(_spellToCreate.GetActivationData(_caster, _spellSpawnObject),
+                _spellToCreate.PrefabProvider,
+                new PositionDataForInstantiation(_spellSpawnObject.Position, _spellSpawnObject.Rotation));
             _spellToCreate = null;
             if (IsEnabled)
             {

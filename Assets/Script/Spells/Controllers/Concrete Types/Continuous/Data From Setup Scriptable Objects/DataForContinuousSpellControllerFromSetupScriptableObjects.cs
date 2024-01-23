@@ -5,10 +5,12 @@ using Spells.Implementations_Interfaces.Implementations;
 
 namespace Spells.Controllers.Concrete_Types.Continuous.Data_For_Controller
 {
-    public class DataForContinuousSpellController : DataForSpellController, IDataForContinuousSpellController
+    public class DataForContinuousSpellControllerFromSetupScriptableObjects :
+        DataForSpellControllerFromSetupScriptableObjects,
+        IDataForContinuousSpellControllerFromSetupScriptableObjects
     {
-        public DataForContinuousSpellController(ISpellMovement spellObjectMovement, ISpellType spellType,
-            IReadOnlyList<ISpellApplier> spellAppliers, ILookPointCalculator lookPointCalculator,
+        public DataForContinuousSpellControllerFromSetupScriptableObjects(ISpellMovement spellObjectMovement,
+            ISpellType spellType, IReadOnlyList<ISpellApplier> spellAppliers, ILookPointCalculator lookPointCalculator,
             float durationInSeconds) : base(spellObjectMovement, spellType, spellAppliers, lookPointCalculator)
         {
             DurationInSeconds = durationInSeconds;

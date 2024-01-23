@@ -7,7 +7,7 @@ using IPrefabProvider = Common.IPrefabProvider;
 
 namespace UI.Concrete_Scenes.In_Game.Popup_Text.Factory
 {
-    public class PopupTextFactory : ObjectPoolingFactoryWithInstantiatorBase<IPopupTextController,
+    public class PopupTextFactory : ObjectPoolingFactoryWithActivation<IPopupTextController,
             IPopupTextControllerDataForActivation>,
         IPopupTextFactory
     {

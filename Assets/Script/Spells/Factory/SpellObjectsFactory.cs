@@ -1,14 +1,13 @@
 ﻿using Common.Abstract_Bases.Factories;
-using Common.Readonly_Transform;
-using Spells.Controllers;
+using Common.Abstract_Bases.Factories.Position_Data_For_Instantiation;
 using Spells.Controllers.Concrete_Types.Continuous;
-using Spells.Controllers.Concrete_Types.Continuous.Data_For_Controller;
+using Spells.Controllers.Concrete_Types.Continuous.Data_For_Activation;
 using Spells.Controllers.Concrete_Types.Continuous.Prefab_Provider;
 using Spells.Controllers.Concrete_Types.Instant;
-using Spells.Controllers.Concrete_Types.Instant.Data_For_Controller;
+using Spells.Controllers.Concrete_Types.Instant.Data_For_Activation;
 using Spells.Controllers.Concrete_Types.Instant.Prefab_Provider;
-using Spells.Implementations_Interfaces.Implementations;
-using Spells.Spell.Interfaces;
+using Spells.Factory.Continuous;
+using Spells.Factory.Instant;
 using UnityEngine;
 using Zenject;
 
@@ -16,39 +15,31 @@ namespace Spells.Factory
 {
     public class SpellObjectsFactory : FactoryWithInstantiatorBase, ISpellObjectsFactory
     {
+        private readonly IInstantSpellsFactory _instantSpellsFactory;
+        private readonly IContinuousSpellsFactory _continuousSpellsFactory;
+
+        private readonly PositionDataForInstantiation _defaultPositionDataForInstantiation =
+            new PositionDataForInstantiation();
+
         public SpellObjectsFactory(IInstantiator instantiator, Transform defaultParentTransform) : base(instantiator,
             defaultParentTransform)
         {
+            _instantSpellsFactory = new InstantSpellsFactory(instantiator, defaultParentTransform,
+                _defaultPositionDataForInstantiation);
+            _continuousSpellsFactory = new ContinuousSpellsFactory(instantiator, defaultParentTransform,
+                _defaultPositionDataForInstantiation);
         }
 
-        public void Create(ISpellDataForSpellController spellData, ISpellPrefabProvider spellPrefabProvider,
-            ICaster caster, Vector3 spawnPosition, Quaternion spawnRotation)
+        public IInstantSpellController Create(IDataForActivationInstantSpellObjectController dataForActivation,
+            IInstantSpellPrefabProvider prefabProvider)
         {
-            var spellController =
-                InstantiatePrefabForComponent<IInitializableSpellObjectController>(spellPrefabProvider, spawnPosition,
-                    spawnRotation);
-            spellController.Initialize(spellData, caster, this);
+            return _instantSpellsFactory.Create(dataForActivation, prefabProvider);
         }
 
-        public IContinuousSpellController Create(IDataForContinuousSpellController spellControllerData,
-            IContinuousSpellPrefabProvider prefabProvider, ICaster caster, IReadonlyTransform castPoint)
+        public IContinuousSpellController Create(IDataForActivationContinuousSpellObjectController dataForActivation,
+            IContinuousSpellPrefabProvider prefabProvider)
         {
-            var spellController =
-                InstantiatePrefabForComponent<IInitializableContinuousSpellController>(prefabProvider,
-                    castPoint.Position, castPoint.Rotation);
-            spellController.Initialize(spellControllerData, caster, castPoint, this);
-            return spellController;
-        }
-
-        public IInstantSpellController Create(IDataForInstantSpellController spellControllerData,
-            IInstantSpellPrefabProvider prefabProvider, ICaster caster, Vector3 spawnPosition, Quaternion spawnRotation,
-            IReadonlyTransform castPoint)
-        {
-            var spellController =
-                InstantiatePrefabForComponent<IInitializableInstantSpellController>(prefabProvider, spawnPosition,
-                    spawnRotation);
-            spellController.Initialize(spellControllerData, caster, this, castPoint);
-            return spellController;
+            return _continuousSpellsFactory.Create(dataForActivation, prefabProvider);
         }
     }
 }

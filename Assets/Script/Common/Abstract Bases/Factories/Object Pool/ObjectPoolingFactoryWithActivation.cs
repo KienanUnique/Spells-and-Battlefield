@@ -11,7 +11,7 @@ using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitia
 namespace Common.Abstract_Bases.Factories.Object_Pool
 {
     public abstract class
-        ObjectPoolingFactoryWithInstantiatorBase<TPoolItem, TDataForActivation> : FactoryWithInstantiatorBase,
+        ObjectPoolingFactoryWithActivation<TPoolItem, TDataForActivation> : FactoryWithInstantiatorBase,
             IDisableable,
             IObjectPoolingFactory where TPoolItem : IObjectPoolItem<TDataForActivation>
     {
@@ -22,7 +22,7 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
         private readonly IPrefabProvider _prefabProvider;
         private readonly List<TPoolItem> _waitingInitializationItems;
 
-        protected ObjectPoolingFactoryWithInstantiatorBase(IInstantiator instantiator, Transform defaultParentTransform,
+        protected ObjectPoolingFactoryWithActivation(IInstantiator instantiator, Transform defaultParentTransform,
             int needItemsCount, IPrefabProvider prefabProvider,
             IPositionDataForInstantiation defaultPositionDataForInstantiation) : base(instantiator,
             defaultParentTransform)
@@ -79,18 +79,22 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
             }
         }
 
-        protected void CreateItem(TDataForActivation dataForActivation)
+        protected TPoolItem CreateItem(TDataForActivation dataForActivation)
         {
+            TPoolItem item;
             if (_items.All(item => item.IsUsed))
             {
                 _nextItemDataForActivations.Enqueue(dataForActivation);
-                InstantiateNewItem();
+                item = InstantiateNewItem();
             }
             else
             {
                 TPoolItem freeItem = _items.Find(item => !item.IsUsed);
                 freeItem.Activate(dataForActivation);
+                item = freeItem;
             }
+
+            return item;
         }
 
         private void SubscribeOnWaitingInitializationItem(IInitializable waitingInitializationItem)
@@ -122,7 +126,7 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
             }
         }
 
-        private void InstantiateNewItem()
+        private TPoolItem InstantiateNewItem()
         {
             var newItem =
                 InstantiatePrefabForComponent<TPoolItem>(_prefabProvider, _defaultPositionDataForInstantiation);
@@ -136,6 +140,8 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
                 _items.Add(newItem);
                 HandleNewFreeItem(newItem);
             }
+
+            return newItem;
         }
 
         private void HandleNewFreeItem(IObjectPoolItem<TDataForActivation> newFreeItem)

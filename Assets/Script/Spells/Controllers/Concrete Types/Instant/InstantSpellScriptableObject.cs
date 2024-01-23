@@ -14,7 +14,7 @@ namespace Spells.Controllers.Concrete_Types.Instant
         [SerializeField] private AnimationData _animationData;
         [SerializeField] private InstantSpellPrefabProvider _prefabProvider;
 
-        public IDataForInstantSpellController DataForController =>
+        public IDataForInstantSpellControllerFromSetupScriptableObjects DataForController =>
             _dataForController.GetImplementationObject(SpellType, Movement, LookPointCalculator);
 
         public IAnimationData AnimationData => _animationData;

@@ -9,18 +9,17 @@ using UnityEngine;
 namespace Spells.Controllers.Concrete_Types.Instant.Data_For_Controller
 {
     [Serializable]
-    public class
-        DataForInstantSpellControllerProvider : DataForSpellControllerSerializableProviderBase<
-            IDataForInstantSpellController>
+    public class DataForInstantSpellControllerProvider : DataForSpellControllerSerializableProviderBase<
+        IDataForInstantSpellControllerFromSetupScriptableObjects>
     {
         [SerializeField] private List<InstantSpellScriptableObject> _nextSpellsOnFinish;
         [SerializeField] private SpellTriggerScriptableObject _spellMainTrigger;
 
-        public override IDataForInstantSpellController GetImplementationObject(ISpellType type, ISpellMovement movement,
-            ILookPointCalculator lookPointCalculator)
+        public override IDataForInstantSpellControllerFromSetupScriptableObjects GetImplementationObject(
+            ISpellType type, ISpellMovement movement, ILookPointCalculator lookPointCalculator)
         {
-            return new DataForInstantSpellController(movement, type, SpellAppliers, lookPointCalculator,
-                _nextSpellsOnFinish, _spellMainTrigger.GetImplementationObject());
+            return new DataForInstantSpellControllerFromSetupScriptableObjects(movement, type, SpellAppliers,
+                lookPointCalculator, _nextSpellsOnFinish, _spellMainTrigger.GetImplementationObject());
         }
     }
 }

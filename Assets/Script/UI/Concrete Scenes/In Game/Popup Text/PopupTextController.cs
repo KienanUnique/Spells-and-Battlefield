@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using Common.Abstract_Bases.Factories.Object_Pool;
+﻿using System.Collections;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Readonly_Transform;
 using DG.Tweening;
@@ -12,7 +10,8 @@ using Random = UnityEngine.Random;
 
 namespace UI.Concrete_Scenes.In_Game.Popup_Text
 {
-    public class PopupTextController : InitializableMonoBehaviourBase,
+    public class PopupTextController :
+        InitializableMonoBehaviourWithObjectPoolingBase<IPopupTextControllerDataForActivation>,
         IInitializablePopupTextController,
         IPopupTextController
     {
@@ -33,20 +32,11 @@ namespace UI.Concrete_Scenes.In_Game.Popup_Text
             SetInitializedStatus();
         }
 
-        public event Action<IObjectPoolItem<IPopupTextControllerDataForActivation>> Deactivated;
-        public bool IsUsed { get; private set; }
-
         private float HalfAnimationDurationInSeconds => _settings.AnimationDurationInSeconds / 2;
 
-        public void Activate(IPopupTextControllerDataForActivation dataForActivation)
+        public override void Activate(IPopupTextControllerDataForActivation dataForActivation)
         {
-            if (IsUsed)
-            {
-                throw new InvalidOperationException();
-            }
-
-            IsUsed = true;
-
+            base.Activate(dataForActivation);
             _textComponent.text = dataForActivation.TextToShow;
 
             _mainTransform.localScale = Vector3.zero;
@@ -94,9 +84,8 @@ namespace UI.Concrete_Scenes.In_Game.Popup_Text
         {
             _mainTransform.DOKill();
             StopCoroutine(_lookAtCameraCoroutine);
-            IsUsed = false;
             gameObject.SetActive(false);
-            Deactivated?.Invoke(this);
+            Deactivate();
         }
 
         private Vector3 CalculatePositionToMove(Vector3 cameraPosition)

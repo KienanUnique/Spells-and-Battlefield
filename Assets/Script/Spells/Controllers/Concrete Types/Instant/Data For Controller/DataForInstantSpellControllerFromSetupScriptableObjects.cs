@@ -6,10 +6,12 @@ using Spells.Implementations_Interfaces.Implementations;
 
 namespace Spells.Controllers.Concrete_Types.Instant.Data_For_Controller
 {
-    public class DataForInstantSpellController : DataForSpellController, IDataForInstantSpellController
+    public class DataForInstantSpellControllerFromSetupScriptableObjects :
+        DataForSpellControllerFromSetupScriptableObjects,
+        IDataForInstantSpellControllerFromSetupScriptableObjects
     {
-        public DataForInstantSpellController(ISpellMovement spellObjectMovement, ISpellType spellType,
-            IReadOnlyList<ISpellApplier> spellAppliers, ILookPointCalculator lookPointCalculator,
+        public DataForInstantSpellControllerFromSetupScriptableObjects(ISpellMovement spellObjectMovement,
+            ISpellType spellType, IReadOnlyList<ISpellApplier> spellAppliers, ILookPointCalculator lookPointCalculator,
             IReadOnlyList<IInformationAboutInstantSpell> nextSpellsOnFinish, ISpellTrigger spellMainTrigger) : base(
             spellObjectMovement, spellType, spellAppliers, lookPointCalculator)
         {
