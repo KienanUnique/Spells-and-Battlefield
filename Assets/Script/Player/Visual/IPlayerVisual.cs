@@ -12,6 +12,9 @@ namespace Player.Visual
         public void PlayFallAnimation();
         public void PlayLandAnimation();
         public void PlayDieAnimation();
+        public void StartPlayingHookAnimation();
+        public void PlayHookPushingAnimation();
+        public void StopPlayingHookAnimation();
         public void CancelActionAnimation();
         public void UpdateMovingData(Vector2 movingDirectionNormalized, float ratioOfCurrentVelocityToMaximumVelocity);
     }

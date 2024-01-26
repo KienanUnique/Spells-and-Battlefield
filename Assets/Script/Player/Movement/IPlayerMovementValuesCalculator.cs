@@ -19,5 +19,6 @@ namespace Player.Movement
         public Vector3 CalculateJumpForce();
         public Vector3 CalculateJumpForce(WallDirection wallDirection);
         public void UpdateMoveInput(Vector2 direction2d);
+        public Vector3 CalculateHookForce(Vector3 hookerHookPushDirection);
     }
 }

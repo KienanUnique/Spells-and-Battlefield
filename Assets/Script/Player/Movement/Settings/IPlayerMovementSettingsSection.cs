@@ -17,5 +17,6 @@ namespace Player.Movement.Settings
         public float WallRunningIncreaseAdditionalMaximumSpeedAcceleration { get; }
         public float WallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration { get; }
         public float NoInputMovingDecreaseAdditionalMaximumSpeedAcceleration { get; }
+        public float HookingGravityForceMultiplier { get; }
     }
 }

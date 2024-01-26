@@ -146,6 +146,11 @@ namespace Player.Movement
             _inputMoveDirection = direction2d;
         }
 
+        public Vector3 CalculateHookForce(Vector3 hookerHookPushDirection)
+        {
+            return hookerHookPushDirection * _settings.HookForce;
+        }
+
         private void ChangeAdditionalMaximumSpeed(float changeSpeed, float endValue)
         {
             if (_currentLocalAdditionalMaximumSpeedChangeTween.IsActive())
