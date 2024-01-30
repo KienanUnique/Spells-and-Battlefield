@@ -23,8 +23,6 @@ namespace Player.Look
             _cameraTransform = camera.transform;
         }
 
-        public Quaternion CameraRotation => _cameraTransform.rotation;
-
         public Vector3 LookPointPosition
         {
             get
@@ -41,6 +39,20 @@ namespace Player.Look
         }
 
         public Vector3 LookDirection => _cameraTransform.forward;
+
+        public bool TryCalculateLookPointWithSphereCast(out Vector3 lookPoint, float maxDistance, float sphereRadius,
+            LayerMask layerMask)
+        {
+            if (Physics.SphereCast(_cameraTransform.position, sphereRadius, _cameraTransform.forward,
+                    out _cameraForwardRaycastHit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
+            {
+                lookPoint = _cameraForwardRaycastHit.point;
+                return true;
+            }
+
+            lookPoint = Vector3.zero;
+            return false;
+        }
 
         public void LookInputtedWith(Vector2 mouseLookDelta)
         {

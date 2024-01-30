@@ -9,6 +9,9 @@ namespace Common.Animator_Status_Controller
 {
     public class AnimatorStatusChecker : BaseWithDisabling, IAnimatorStatusChecker
     {
+        protected readonly ValueWithReactionOnChange<AnimatorStatus> _currentAnimatorStatus =
+            new ValueWithReactionOnChange<AnimatorStatus>(AnimatorStatus.Idle);
+        
         private const float UpdateAnimatorStatusCooldownInSeconds = 0.4f;
         private const string EmptyAnimatorStateName = "Empty State";
         private const string ActionsAnimationsAnimatorLayerName = "Upper Body";
@@ -17,9 +20,6 @@ namespace Common.Animator_Status_Controller
         private readonly IEventInvokerForActionAnimations _animationsEventInvoker;
         private readonly Animator _animator;
         private readonly ICoroutineStarter _coroutineStarter;
-
-        private readonly ValueWithReactionOnChange<AnimatorStatus> _isReadyToPlayActionsAnimations =
-            new ValueWithReactionOnChange<AnimatorStatus>(AnimatorStatus.Idle);
 
         private Coroutine _updateAnimatorStatusCoroutine;
 
@@ -35,12 +35,7 @@ namespace Common.Animator_Status_Controller
         public event Action AnimatorReadyToPlayActionsAnimations;
         public event Action ActionAnimationKeyMomentTrigger;
 
-        private enum AnimatorStatus
-        {
-            Idle, WaitingActionAnimationStart, WaitingActionAnimationEnd
-        }
-
-        public bool IsReadyToPlayActionAnimations => _isReadyToPlayActionsAnimations.Value == AnimatorStatus.Idle;
+        public bool IsReadyToPlayActionAnimations => _currentAnimatorStatus.Value == AnimatorStatus.Idle;
 
         public void StartChecking()
         {
@@ -66,21 +61,21 @@ namespace Common.Animator_Status_Controller
 
         public void HandleActionAnimationCancel()
         {
-            _isReadyToPlayActionsAnimations.Value = AnimatorStatus.WaitingActionAnimationEnd;
+            _currentAnimatorStatus.Value = AnimatorStatus.WaitingActionAnimationEnd;
         }
 
         protected override void SubscribeOnEvents()
         {
             _animationsEventInvoker.ActionAnimationStart += OnActionAnimationStart;
             _animationsEventInvoker.ActionAnimationKeyMomentTrigger += OnActionAnimationKeyMomentTrigger;
-            _isReadyToPlayActionsAnimations.AfterValueChanged += OnAfterAnimatorStatusChanged;
+            _currentAnimatorStatus.AfterValueChanged += OnAfterAnimatorStatusChanged;
         }
 
         protected override void UnsubscribeFromEvents()
         {
             _animationsEventInvoker.ActionAnimationStart -= OnActionAnimationStart;
             _animationsEventInvoker.ActionAnimationKeyMomentTrigger -= OnActionAnimationKeyMomentTrigger;
-            _isReadyToPlayActionsAnimations.AfterValueChanged -= OnAfterAnimatorStatusChanged;
+            _currentAnimatorStatus.AfterValueChanged -= OnAfterAnimatorStatusChanged;
         }
 
         private void OnAfterAnimatorStatusChanged(AnimatorStatus newStatus)
@@ -93,12 +88,12 @@ namespace Common.Animator_Status_Controller
 
         private void OnActionAnimationStart()
         {
-            _isReadyToPlayActionsAnimations.Value = AnimatorStatus.WaitingActionAnimationStart;
+            _currentAnimatorStatus.Value = AnimatorStatus.WaitingActionAnimationStart;
         }
 
         private void OnActionAnimationKeyMomentTrigger()
         {
-            _isReadyToPlayActionsAnimations.Value = AnimatorStatus.WaitingActionAnimationEnd;
+            _currentAnimatorStatus.Value = AnimatorStatus.WaitingActionAnimationEnd;
             ActionAnimationKeyMomentTrigger?.Invoke();
         }
 
@@ -117,13 +112,13 @@ namespace Common.Animator_Status_Controller
             bool isInEmptyState = !_animator.IsInTransition(_actionsAnimationsAnimatorLayer) &&
                                   _animator.GetCurrentAnimatorStateInfo(_actionsAnimationsAnimatorLayer)
                                            .IsName(EmptyAnimatorStateName);
-            _isReadyToPlayActionsAnimations.Value = isInEmptyState switch
+            _currentAnimatorStatus.Value = isInEmptyState switch
             {
-                false when _isReadyToPlayActionsAnimations.Value == AnimatorStatus.WaitingActionAnimationStart =>
+                false when _currentAnimatorStatus.Value == AnimatorStatus.WaitingActionAnimationStart =>
                     AnimatorStatus.WaitingActionAnimationEnd,
-                true when _isReadyToPlayActionsAnimations.Value == AnimatorStatus.WaitingActionAnimationEnd =>
+                true when _currentAnimatorStatus.Value == AnimatorStatus.WaitingActionAnimationEnd =>
                     AnimatorStatus.Idle,
-                _ => _isReadyToPlayActionsAnimations.Value
+                _ => _currentAnimatorStatus.Value
             };
         }
     }

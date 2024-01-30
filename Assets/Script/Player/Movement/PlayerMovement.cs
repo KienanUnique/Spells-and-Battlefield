@@ -48,7 +48,8 @@ namespace Player.Movement
 
         public PlayerMovement(Rigidbody rigidbody, IPlayerMovementSettings movementSettings,
             IGroundChecker groundChecker, IWallChecker wallChecker,
-            IPlayerMovementValuesCalculator movementValuesCalculator, ICoroutineStarter coroutineStarter) : base(
+            IPlayerMovementValuesCalculator movementValuesCalculator, ICoroutineStarter coroutineStarter, IPlayerHooker
+                hooker) : base(
             rigidbody)
         {
             _groundChecker = groundChecker;
@@ -57,6 +58,7 @@ namespace Player.Movement
             _coroutineStarter = coroutineStarter;
             _cashedTransform = _rigidbody.transform;
             _originalParent = _cashedTransform.parent;
+            _hooker = hooker;
             MainRigidbody = new ReadonlyRigidbody(rigidbody);
             _movementValuesCalculator = movementValuesCalculator;
 

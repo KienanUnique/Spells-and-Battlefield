@@ -4,7 +4,6 @@ using Common.Abstract_Bases;
 using Common.Abstract_Bases.Checkers.Ground_Checker;
 using Common.Abstract_Bases.Checkers.Wall_Checker;
 using Common.Abstract_Bases.Disableable;
-using Common.Animator_Status_Controller;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Id_Holder;
 using Common.Interfaces;
@@ -14,6 +13,7 @@ using Common.Readonly_Transform;
 using Common.Settings.Ground_Layer_Mask;
 using Enemies.Spawn.Factory;
 using Enemies.Trigger;
+using Player.Animator_Status_Checker;
 using Player.Camera_Effects;
 using Player.Camera_Effects.Camera_Field_Of_View_Calculator;
 using Player.Camera_Effects.Camera_Particle_System_Controller;
@@ -21,6 +21,8 @@ using Player.Camera_Effects.Camera_Rotator;
 using Player.Character;
 using Player.Look;
 using Player.Movement;
+using Player.Movement.Hooker;
+using Player.Movement.Hooker.Settings;
 using Player.Settings;
 using Player.Spell_Manager;
 using Player.Spell_Manager.Spells_Selector;
@@ -56,6 +58,7 @@ namespace Player.Setup
 
         [SerializeField] private Animator _characterAnimator;
         [SerializeField] private EventInvokerForActionAnimations _eventInvokerForAnimations;
+        [SerializeField] private PlayerEventInvokerForActionAnimations _playerEventInvoker;
 
         [Header("Checkers")] [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private WallChecker _wallChecker;
@@ -80,7 +83,7 @@ namespace Player.Setup
         private ISpellTypesSetting _spellTypesSetting;
         private Rigidbody _thisRigidbody;
         private IToolsForSummon _toolsForSummon;
-        private AnimatorStatusChecker _animatorStatusChecker;
+        private PlayerAnimatorStatusChecker _animatorStatusChecker;
 
         [Inject]
         private void GetDependencies(IPlayerInput playerInput, IPlayerSettings settings,
@@ -127,18 +130,22 @@ namespace Player.Setup
                 particleSystemController);
 
             _cameraTransform = new ReadonlyTransform(_camera.transform);
-            _animatorStatusChecker = new AnimatorStatusChecker(_eventInvokerForAnimations, _characterAnimator, this);
+            _animatorStatusChecker = new PlayerAnimatorStatusChecker(_eventInvokerForAnimations, _characterAnimator,
+                this, _playerEventInvoker);
         }
 
         protected override void Initialize()
         {
+            var playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
+                _settings.Look);
+
+            var hooker = new PlayerHooker(new ReadonlyTransform(_thisRigidbody.transform), playerLook,
+                _settings.Movement.HookerSettings, this);
+
             var playerMovementValuesCalculator =
                 new PlayerMovementValuesCalculator(_settings.Movement, new ReadonlyRigidbody(_thisRigidbody), this);
             var playerMovement = new PlayerMovement(_thisRigidbody, _settings.Movement, _groundChecker, _wallChecker,
-                playerMovementValuesCalculator, this);
-
-            var playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
-                _settings.Look);
+                playerMovementValuesCalculator, this, hooker);
 
             var continuousSpellHandler = new ContinuousSpellHandlerImplementation(_playerCaster, _spellObjectsFactory,
                 _spellSpawnObject.ReadonlyTransform);

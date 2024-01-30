@@ -27,16 +27,26 @@ MonoBehaviour:
     _maximumOverSpeedValueForWindTrailEffect: 10
     _minimumOverSpeedValueForWindTrailEffect: 5
   _look:
-    _upperLimit: -40
-    _bottomLimit: 70
+    _maxAimRaycastDistance: 400
     _aimLayerMask:
       serializedVersion: 2
       m_Bits: 704
+    _upperLimit: -40
+    _bottomLimit: 70
   _movement:
     _moveForce: 4500
     _maximumSpeed: 15
+    _hookForce: 5000
     _normalFrictionCoefficient: 0.108
     _normalGravityForce: 30
+    _hookerSettings:
+      _mask:
+        serializedVersion: 2
+        m_Bits: 1024
+      _maxDistance: 20
+      _minHookDistance: 4
+      _pointSelectionRadius: 1
+      _duration: 1
     _jumpForce: 800
     _dashForce: 1500
     _wallRunningJumpAngleFromWall: 20
@@ -50,6 +60,7 @@ MonoBehaviour:
     _wallRunningIncreaseAdditionalMaximumSpeedAcceleration: 4
     _wallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration: 20
     _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration: 99
+    _hookingGravityForceMultiplier: 0.1
   _character:
     _maximumCountOfHitPoints: 30
   _spellManager:

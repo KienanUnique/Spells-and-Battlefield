@@ -5,6 +5,7 @@ using Common.Id_Holder;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Readonly_Transform;
 using Factions;
+using Player.Animator_Status_Checker;
 using Player.Camera_Effects;
 using Player.Character;
 using Player.Look;
@@ -23,7 +24,7 @@ namespace Player.Setup
             List<IDisableable> itemsNeedDisabling, IReadonlyTransform cameraTransform, IFaction setFaction,
             IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon,
             IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating,
-            IAnimatorStatusChecker setAnimatorStatusChecker)
+            IPlayerAnimatorStatusChecker setAnimatorStatusChecker)
         {
             SetPlayerCameraEffects = playerCameraEffects;
             SetPlayerVisual = playerVisual;
@@ -56,6 +57,6 @@ namespace Player.Setup
         public IInformationForSummon SetInformationForSummon { get; }
         public IToolsForSummon SetToolsForSummon { get; }
         public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
-        public IAnimatorStatusChecker SetAnimatorStatusChecker { get; }
+        public IPlayerAnimatorStatusChecker SetAnimatorStatusChecker { get; }
     }
 }

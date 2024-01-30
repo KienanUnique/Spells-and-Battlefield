@@ -1,4 +1,5 @@
 ﻿using Common.Settings.Sections.Movement.Movement_With_Gravity;
+using Player.Movement.Hooker.Settings;
 
 namespace Player.Movement.Settings
 {
@@ -18,5 +19,6 @@ namespace Player.Movement.Settings
         public float WallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration { get; }
         public float NoInputMovingDecreaseAdditionalMaximumSpeedAcceleration { get; }
         public float HookingGravityForceMultiplier { get; }
+        public IPlayerHookerSettings HookerSettings { get; }
     }
 }

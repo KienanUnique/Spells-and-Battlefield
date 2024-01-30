@@ -17,8 +17,8 @@ namespace Player.Visual
         private static readonly int FallTriggerHash = Animator.StringToHash("Fall");
         private static readonly int LandTriggerHash = Animator.StringToHash("Land");
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
-        private static readonly int IsHookingHash = Animator.StringToHash("IsHooking");
-        private static readonly int HookPushingStartedHash = Animator.StringToHash("HookPushingStarted");
+        private static readonly int IsHookingHash = Animator.StringToHash("Is Hooking");
+        private static readonly int HookPushingStartedHash = Animator.StringToHash("Hook Pushing Started");
 
         public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator, IVisualSettings settings) : base(
             rigBuilder, characterAnimator)

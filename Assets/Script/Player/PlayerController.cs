@@ -191,8 +191,8 @@ namespace Player
             _movement.Dashed += OnDashed;
             _movement.DashCooldownRatioChanged += OnDashCooldownRatioChanged;
             _movement.OverSpeedValueChanged += _cameraEffects.UpdateOverSpeedValue;
-            _movement.HookingStarted += _visual.StartPlayingHookAnimation;
-            _movement.HookingEnded += _visual.StopPlayingHookAnimation;
+            _movement.HookingStarted += OnHookingStarted;
+            _movement.HookingEnded += OnHookingEnded;
 
             _character.CharacterStateChanged += OnCharacterStateChanged;
             _character.HitPointsCountChanged += OnHitPointsCountChanged;
@@ -237,8 +237,8 @@ namespace Player
             _movement.Dashed -= OnDashed;
             _movement.DashCooldownRatioChanged -= OnDashCooldownRatioChanged;
             _movement.OverSpeedValueChanged -= _cameraEffects.UpdateOverSpeedValue;
-            _movement.HookingStarted -= _visual.StartPlayingHookAnimation;
-            _movement.HookingEnded -= _visual.StopPlayingHookAnimation;
+            _movement.HookingStarted -= OnHookingStarted;
+            _movement.HookingEnded -= OnHookingEnded;
 
             _character.CharacterStateChanged -= OnCharacterStateChanged;
             _character.HitPointsCountChanged -= OnHitPointsCountChanged;
@@ -253,6 +253,18 @@ namespace Player
             _spellsManager.ContinuousSpellStarted -= OnContinuousSpellStarted;
             
             _animatorStatusChecker.HookKeyMomentTrigger -= OnHookKeyMomentTrigger;
+        }
+
+        private void OnHookingStarted()
+        {
+            _animatorStatusChecker.HandleHookStart();
+            _visual.StartPlayingHookAnimation();
+        }
+
+        private void OnHookingEnded()
+        {
+            _animatorStatusChecker.HandleHookEnd();
+            _visual.StopPlayingHookAnimation();
         }
 
         private void OnNeedPlayContinuousActionAnimation()
