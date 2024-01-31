@@ -89,7 +89,7 @@ namespace Player.Movement
         public event Action<WallDirection> StartWallRunning;
         public event Action<WallDirection> WallRunningDirectionChanged;
         public event Action EndWallRunning;
-        public event Action HookingStarted;
+        public event IPlayerMovement.HookingStartedEventHandler HookingStarted;
         public event Action HookingEnded;
         public event Action<float> OverSpeedValueChanged;
 
@@ -515,7 +515,7 @@ namespace Player.Movement
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(HookingPlayerInputForceMultiplier);
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .HookingGravityForceMultiplier);
-                    HookingStarted?.Invoke();
+                    HookingStarted?.Invoke(_hooker.HookLookPoint);
                     break;
                 case MovingState.NotInitialized:
                 default:

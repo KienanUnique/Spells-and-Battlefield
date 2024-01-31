@@ -28,6 +28,7 @@ namespace Player.Movement.Hooker
         public event Action HookingEnded;
 
         public Vector3 HookPushDirection { get; private set; }
+        public Vector3 HookLookPoint { get; private set; }
         public bool IsHooking { get; private set; }
 
         public bool TrySetHookPoint()
@@ -38,8 +39,14 @@ namespace Player.Movement.Hooker
                 return false;
             }
 
-            lookPoint.y += _hookSettings.PointYOffset;
+            var originalHookPointY = lookPoint.y; 
+            
+            lookPoint.y = originalHookPointY + _hookSettings.PushPointYOffset;
             _hookPoint = lookPoint;
+            
+            lookPoint.y = originalHookPointY + _hookSettings.LookPointYOffset;
+            HookLookPoint = lookPoint;
+            
             return true;
         }
 

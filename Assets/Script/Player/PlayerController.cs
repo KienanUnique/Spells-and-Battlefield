@@ -255,15 +255,17 @@ namespace Player
             _animatorStatusChecker.HookKeyMomentTrigger -= OnHookKeyMomentTrigger;
         }
 
-        private void OnHookingStarted()
+        private void OnHookingStarted(Vector3 hookLookPoint)
         {
             Debug.Log($"HookingStarted");
             _animatorStatusChecker.HandleHookStart();
             _visual.StartPlayingHookAnimation();
+            _look.StartLookingAtPoint(hookLookPoint);
         }
 
         private void OnHookingEnded()
         {
+            _look.StopLookingAtPoint();
             _animatorStatusChecker.HandleHookEnd();
             _visual.StopPlayingHookAnimation();
         }

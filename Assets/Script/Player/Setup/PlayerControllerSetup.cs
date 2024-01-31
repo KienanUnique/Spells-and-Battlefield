@@ -137,7 +137,7 @@ namespace Player.Setup
         protected override void Initialize()
         {
             var playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
-                _settings.Look);
+                _settings.Look, this);
 
             var hooker = new PlayerHooker(new ReadonlyTransform(_thisRigidbody.transform), playerLook,
                 _settings.Movement.HookerSettings, this);
