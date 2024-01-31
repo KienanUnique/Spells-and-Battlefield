@@ -292,6 +292,7 @@ MonoBehaviour:
   _rigBuilder: {fileID: 3163376710727498730}
   _characterAnimator: {fileID: 1856917474014603066}
   _eventInvokerForAnimations: {fileID: 7250497769501624016}
+  _playerEventInvoker: {fileID: 2426457121527825001}
   _groundChecker: {fileID: 7524277153600398822}
   _wallChecker: {fileID: 1408449592405486887}
   _startTestSpells:
@@ -984,6 +985,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
+--- !u!4 &7209874796889231841 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4104990407734179105, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
+  m_PrefabInstance: {fileID: 6699462797601694912}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8708750814936419678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2603915469980412318, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
@@ -1322,6 +1328,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a4fdceef0184de0acacd32238f2c91c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2426457121527825001 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9031340192901654185, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
+  m_PrefabInstance: {fileID: 6699462797601694912}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e948d3e101034823990451a28776eee0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8776614209605536293 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2681200837636746981, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
@@ -1345,11 +1362,6 @@ Transform:
 --- !u!4 &2038263772945704654 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4661256338310398478, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-  m_PrefabInstance: {fileID: 6699462797601694912}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7209874796889231841 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4104990407734179105, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
   m_PrefabInstance: {fileID: 6699462797601694912}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1999111209708566187 stripped

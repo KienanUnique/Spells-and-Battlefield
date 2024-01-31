@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -433,7 +433,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-54188
+  m_Name: pb_Mesh-62920
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -703,63 +703,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2556643428363581094, guid: ba411558209c7bf4eae98f5b6019839d, type: 3}
   m_PrefabInstance: {fileID: 222498291}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &262728475
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 82.91
-      objectReference: {fileID: 0}
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1438446180018382553, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1782778395989589091, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
-      propertyPath: m_Name
-      value: Setuped Kozel FPS
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ff92ab5a9513d91489ff049a541193a1, type: 3}
 --- !u!1001 &290444095
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1050,7 +993,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-54136
+  m_Name: pb_Mesh-62862
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2622,7 +2565,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-5136
+  m_Name: pb_Mesh-62744
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2633,8 +2576,8 @@ Mesh:
     firstVertex: 0
     vertexCount: 24
     localAABB:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
+      m_Center: {x: 1, y: 1, z: -1}
+      m_Extent: {x: 1, y: 1, z: 1}
   m_Shapes:
     vertices: []
     shapes: []
@@ -2786,7 +2729,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-54256
+  m_Name: pb_Mesh-62990
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3110,7 +3053,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-54170
+  m_Name: pb_Mesh-62902
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

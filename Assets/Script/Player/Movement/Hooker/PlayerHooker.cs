@@ -60,6 +60,7 @@ namespace Player.Movement.Hooker
                 distance = _hookPoint - _rigidbody.Position;
                 if (distance.magnitude < _hookSettings.MinHookDistance)
                 {
+                    Debug.Log("Hook ended (CalculateHookDirection)");
                     _isHooking = false;
                     HookingEnded?.Invoke();
                 }
@@ -74,6 +75,7 @@ namespace Player.Movement.Hooker
             yield return new WaitForSeconds(_hookSettings.Duration);
             if (_isHooking)
             {
+                Debug.Log("Hook ended (RemoveHookAfterTimeOut)");
                 _isHooking = false;
                 HookingEnded?.Invoke();
             }

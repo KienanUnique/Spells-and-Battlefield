@@ -257,6 +257,7 @@ namespace Player
 
         private void OnHookingStarted()
         {
+            Debug.Log($"HookingStarted");
             _animatorStatusChecker.HandleHookStart();
             _visual.StartPlayingHookAnimation();
         }

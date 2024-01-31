@@ -186,6 +186,7 @@ namespace Player.Movement
             {
                 _currentMovingState.Value = MovingState.Hooking;
             }
+            Debug.Log($"Hooking failed");
         }
 
         public void StartPushingTowardsHook()
@@ -231,7 +232,7 @@ namespace Player.Movement
             _groundChecker.ContactStateChanged -= OnGroundedStatusChanged;
             _wallChecker.ContactStateChanged -= OnWallContactStatusChanged;
             _airCoyoteTimeWaiter.Finished -= OnAirCoyoteTimeFinished;
-            _hooker.HookingEnded += OnHookingEnd;
+            _hooker.HookingEnded -= OnHookingEnd;
             _currentMovingState.BeforeValueChanged -= OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged -= OnAfterMovingStateChanged;
             _currentWallDirection.AfterValueChanged -= OnWallDirectionChanged;
@@ -337,6 +338,11 @@ namespace Player.Movement
 
         private void OnGroundedStatusChanged(bool isGrounded)
         {
+            if (_currentMovingState.Value == MovingState.Hooking)
+            {
+                return;
+            }
+            
             if (isGrounded)
             {
                 _currentMovingState.Value = MovingState.OnGround;
@@ -430,6 +436,7 @@ namespace Player.Movement
 
         private void OnAfterMovingStateChanged(MovingState movingState)
         {
+            Debug.Log($"Moving state changed {movingState}");
             switch (movingState)
             {
                 case MovingState.OnGround:
