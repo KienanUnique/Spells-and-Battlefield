@@ -191,6 +191,7 @@ namespace Player.Movement
 
         public void StartPushingTowardsHook()
         {
+            _speedLimitationEnabled = false;
             _hooker.StartCalculatingHookDirection();
         }
 
@@ -301,6 +302,13 @@ namespace Player.Movement
         }
 
         private IEnumerator DashDisableSpeedLimitation()
+        {
+            _speedLimitationEnabled = false;
+            yield return new WaitForSeconds(_movementSettings.DashSpeedLimitationsDisablingForSeconds);
+            _speedLimitationEnabled = true;
+        }
+        
+        private IEnumerator HookDisableSpeedLimitation()
         {
             _speedLimitationEnabled = false;
             yield return new WaitForSeconds(_movementSettings.DashSpeedLimitationsDisablingForSeconds);
@@ -425,6 +433,7 @@ namespace Player.Movement
                     _coroutineStarter.StartCoroutine(WaitForDashCooldownWithTicking());
                     break;
                 case MovingState.Hooking:
+                    _coroutineStarter.StartCoroutine(HookDisableSpeedLimitation());
                     HookingEnded?.Invoke();
                     break;
                 case MovingState.NotInitialized:
@@ -441,6 +450,7 @@ namespace Player.Movement
             {
                 case MovingState.OnGround:
                     _currentCountOfAirJumps = 0;
+                    _speedLimitationEnabled = true;
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(NormalPlayerInputForceMultiplier);
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .NormalGravityForceMultiplier);
@@ -452,6 +462,7 @@ namespace Player.Movement
                     break;
                 case MovingState.CoyoteTime:
                     _currentCountOfAirJumps = 0;
+                    _speedLimitationEnabled = true;
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(NormalPlayerInputForceMultiplier);
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .NormalGravityForceMultiplier);
@@ -479,6 +490,7 @@ namespace Player.Movement
                     break;
                 case MovingState.WallRunning:
                     _currentCountOfAirJumps = 0;
+                    _speedLimitationEnabled = true;
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(WallRunningPlayerInputForceMultiplier);
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .WallRunningGravityForceMultiplier);

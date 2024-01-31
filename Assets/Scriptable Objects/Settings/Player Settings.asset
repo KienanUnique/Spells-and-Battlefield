@@ -39,14 +39,6 @@ MonoBehaviour:
     _hookForce: 25000
     _normalFrictionCoefficient: 0.108
     _normalGravityForce: 30
-    _hookerSettings:
-      _mask:
-        serializedVersion: 2
-        m_Bits: 1024
-      _maxDistance: 2000
-      _minHookDistance: 4
-      _pointSelectionRadius: 1
-      _duration: 20
     _jumpForce: 800
     _dashForce: 1500
     _wallRunningJumpAngleFromWall: 20
@@ -60,7 +52,17 @@ MonoBehaviour:
     _wallRunningIncreaseAdditionalMaximumSpeedAcceleration: 4
     _wallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration: 20
     _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration: 99
+    _hookerSettings:
+      _mask:
+        serializedVersion: 2
+        m_Bits: 1024
+      _maxDistance: 2000
+      _minHookDistance: 10
+      _pointSelectionRadius: 5
+      _duration: 20
+      _pointYOffset: -5
     _hookingGravityForceMultiplier: 0.1
+    _disableSpeedLimitationAfterHookSeconds: 0.7
   _character:
     _maximumCountOfHitPoints: 30
   _spellManager:

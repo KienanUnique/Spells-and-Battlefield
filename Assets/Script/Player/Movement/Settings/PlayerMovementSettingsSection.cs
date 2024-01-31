@@ -8,7 +8,6 @@ namespace Player.Movement.Settings
     [Serializable]
     public class PlayerMovementSettingsSection : MovementOnGroundSettingsSection, IPlayerMovementSettings
     {
-        [SerializeField] private PlayerHookerSettings _hookerSettings;
         [SerializeField] private float _jumpForce = 800f;
         [SerializeField] private float _dashForce = 1500f;
         [SerializeField] private float _wallRunningJumpAngleFromWall = 20f;
@@ -22,7 +21,9 @@ namespace Player.Movement.Settings
         [SerializeField] [Min(0)] private float _wallRunningIncreaseAdditionalMaximumSpeedAcceleration = 4f;
         [SerializeField] [Min(0)] private float _wallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration = 20f;
         [SerializeField] [Min(0)] private float _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration = 99f;
+        [SerializeField] private PlayerHookerSettings _hookerSettings;
         [SerializeField] [Min(0)] private float _hookingGravityForceMultiplier = 0.1f;
+        [SerializeField] [Min(0)] private float _disableSpeedLimitationAfterHookSeconds = 0.7f;
 
         public float GroundDecreaseAdditionalMaximumSpeedAcceleration =>
             _groundDecreaseAdditionalMaximumSpeedAcceleration;
@@ -44,6 +45,9 @@ namespace Player.Movement.Settings
             _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration;
 
         public float HookingGravityForceMultiplier => _hookingGravityForceMultiplier;
+
+        public float DisableSpeedLimitationAfterHookSeconds => _disableSpeedLimitationAfterHookSeconds;
+
         public IPlayerHookerSettings HookerSettings => _hookerSettings;
         public float DashCooldownSeconds => _dashCooldownSeconds;
         public float DashSpeedLimitationsDisablingForSeconds => _dashSpeedLimitationsDisablingForSeconds;

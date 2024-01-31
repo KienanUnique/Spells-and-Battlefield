@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using Common.Interfaces;
-using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Player.Look;
 using Player.Movement.Hooker.Settings;
@@ -15,8 +14,6 @@ namespace Player.Movement.Hooker
         private readonly IReadonlyPlayerLook _look;
         private readonly IPlayerHookerSettings _hookSettings;
         private readonly ICoroutineStarter _coroutineStarter;
-        private Vector3 _hookPushDirection;
-        private bool _isHooking;
         private Vector3 _hookPoint;
 
         public PlayerHooker(IReadonlyTransform rigidbody, IReadonlyPlayerLook look, IPlayerHookerSettings hookSettings,
@@ -30,8 +27,8 @@ namespace Player.Movement.Hooker
 
         public event Action HookingEnded;
 
-        public Vector3 HookPushDirection => _hookPushDirection;
-        public bool IsHooking => _isHooking;
+        public Vector3 HookPushDirection { get; private set; }
+        public bool IsHooking { get; private set; }
 
         public bool TrySetHookPoint()
         {
@@ -41,13 +38,14 @@ namespace Player.Movement.Hooker
                 return false;
             }
 
+            lookPoint.y += _hookSettings.PointYOffset;
             _hookPoint = lookPoint;
             return true;
         }
 
         public void StartCalculatingHookDirection()
         {
-            _isHooking = true;
+            IsHooking = true;
             _coroutineStarter.StartCoroutine(RemoveHookAfterTimeOut());
             _coroutineStarter.StartCoroutine(CalculateHookDirection());
         }
@@ -55,17 +53,17 @@ namespace Player.Movement.Hooker
         private IEnumerator CalculateHookDirection()
         {
             Vector3 distance;
-            while (_isHooking)
+            while (IsHooking)
             {
                 distance = _hookPoint - _rigidbody.Position;
                 if (distance.magnitude < _hookSettings.MinHookDistance)
                 {
                     Debug.Log("Hook ended (CalculateHookDirection)");
-                    _isHooking = false;
+                    IsHooking = false;
                     HookingEnded?.Invoke();
                 }
 
-                _hookPushDirection = distance.normalized;
+                HookPushDirection = distance.normalized;
                 yield return null;
             }
         }
@@ -73,10 +71,10 @@ namespace Player.Movement.Hooker
         private IEnumerator RemoveHookAfterTimeOut()
         {
             yield return new WaitForSeconds(_hookSettings.Duration);
-            if (_isHooking)
+            if (IsHooking)
             {
                 Debug.Log("Hook ended (RemoveHookAfterTimeOut)");
-                _isHooking = false;
+                IsHooking = false;
                 HookingEnded?.Invoke();
             }
         }

@@ -8,6 +8,7 @@ namespace Player.Movement.Hooker.Settings
         public float MaxDistance { get; }
         public float MinHookDistance { get; }
         public float PointSelectionRadius { get; }
+        public float PointYOffset { get; }
         public float Duration { get; }
     }
 }
