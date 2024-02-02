@@ -39,8 +39,9 @@ namespace Player.Movement.Hooker
                 return false;
             }
 
-            var originalHookPointY = lookPoint.y; 
+            var originalHookPointY = lookPoint.y;
             
+            // TODO: replace sphere cast to raycast. If in sphere near point there is IHookPointProvider => get point from it 
             lookPoint.y = originalHookPointY + _hookSettings.PushPointYOffset;
             _hookPoint = lookPoint;
             
