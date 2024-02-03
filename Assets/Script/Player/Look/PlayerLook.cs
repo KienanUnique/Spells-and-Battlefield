@@ -49,12 +49,10 @@ namespace Player.Look
         }
 
         public Vector3 LookDirection => _cameraTransform.forward;
-
-        public bool TryCalculateLookPointWithSphereCast(out Vector3 lookPoint, float maxDistance, float sphereRadius,
-            LayerMask layerMask)
+        public bool TryCalculateLookPointWithMaxDistance(out Vector3 lookPoint, float maxDistance)
         {
-            if (Physics.SphereCast(_cameraTransform.position, sphereRadius, _cameraTransform.forward,
-                    out _cameraForwardRaycastHit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out _cameraForwardRaycastHit,
+                    maxDistance, _lookSettings.AimLayerMask, QueryTriggerInteraction.Ignore))
             {
                 lookPoint = _cameraForwardRaycastHit.point;
                 return true;
@@ -77,18 +75,22 @@ namespace Player.Look
             _cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
             _bodyRotateObject.Rotate(Vector3.up, mouseLookDelta.x);
         }
-
-        // TODO: improve rotation calcilation
+        
         public void StartLookingAtPoint(Vector3 lookPoint)
         {
             _isCameraLockedOnPoint = true;
+            
             _lookLockPoint = lookPoint;
+
+            var bodyPosition = _bodyRotateObject.position;
+            var bodyLookPoint = new Vector3(_lookLockPoint.x, bodyPosition.y, _lookLockPoint.z);
+            var bodyLookDirection = bodyLookPoint - bodyPosition;
+            var bodyLookRotation = Quaternion.LookRotation(bodyLookDirection);
+            
             _startLockedPointRotationSequence?.Kill();
             _startLockedPointRotationSequence
-                .Append(_cameraTransform.DORotateQuaternion(CalculateLockedLookHeadRotation(),
-                    _lookSettings.LookAtStartAnimationDuration))
-                .Join(_bodyRotateObject.DORotateQuaternion(CalculateLockedLookBodyRotation(),
-                    _lookSettings.LookAtStartAnimationDuration))
+                .Append(_bodyRotateObject.DORotateQuaternion(bodyLookRotation, _lookSettings.LookAtStartAnimationDuration))
+                .Join(_cameraTransform.DOLookAt(_lookLockPoint, _lookSettings.LookAtStartAnimationDuration))
                 .SetLink(_linkGameObject)
                 .SetEase(_lookSettings.LookAtStartAnimationEase)
                 .OnComplete(() => { _coroutineStarter.StartCoroutine(LockAtHookPoint()); });
@@ -104,28 +106,9 @@ namespace Player.Look
         {
             while (_isCameraLockedOnPoint)
             {
-                _bodyRotateObject.rotation = CalculateLockedLookBodyRotation();
-                _cameraTransform.rotation = CalculateLockedLookHeadRotation();
+                _cameraTransform.LookAt(_lookLockPoint);
                 yield return null;
             }
-        }
-
-        private Quaternion CalculateLockedLookBodyRotation()
-        {
-            var rotateObjectRotation = Quaternion.LookRotation(_lookLockPoint - _bodyRotateObject.position);
-            var originalRotation = _bodyRotateObject.rotation;
-            rotateObjectRotation.x = originalRotation.x;
-            rotateObjectRotation.z = originalRotation.z;
-            return rotateObjectRotation;
-        }
-        
-        private Quaternion CalculateLockedLookHeadRotation()
-        {
-            var cameraRotation = Quaternion.LookRotation(_lookLockPoint - _cameraTransform.position);
-            var originalRotation = _cameraTransform.rotation;
-            cameraRotation.x = originalRotation.x;
-            cameraRotation.y = originalRotation.y;
-            return cameraRotation;
         }
     }
 }

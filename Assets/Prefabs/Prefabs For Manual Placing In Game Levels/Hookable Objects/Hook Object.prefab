@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5434240093845537068}
   - component: {fileID: 5434240093845537059}
   - component: {fileID: 5434240093845537058}
+  - component: {fileID: 3663357492648362768}
   m_Layer: 10
   m_Name: Hook Object
   m_TagString: Untagged
@@ -30,7 +31,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -248.5, y: 31.5, z: 14}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 2843460639341826497}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -161,55 +163,55 @@ MonoBehaviour:
   - m_Vertices: 0b0000000e00000012000000
   m_SharedTextures: []
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 2, y: 0, z: 0}
-  - {x: 0, y: 2, z: 0}
-  - {x: 2, y: 2, z: 0}
-  - {x: 2, y: 0, z: 0}
-  - {x: 2, y: 0, z: -2}
-  - {x: 2, y: 2, z: 0}
-  - {x: 2, y: 2, z: -2}
-  - {x: 2, y: 0, z: -2}
-  - {x: 0, y: 0, z: -2}
-  - {x: 2, y: 2, z: -2}
-  - {x: 0, y: 2, z: -2}
-  - {x: 0, y: 0, z: -2}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 2, z: -2}
-  - {x: 0, y: 2, z: 0}
-  - {x: 0, y: 2, z: 0}
-  - {x: 2, y: 2, z: 0}
-  - {x: 0, y: 2, z: -2}
-  - {x: 2, y: 2, z: -2}
-  - {x: 0, y: 0, z: -2}
-  - {x: 2, y: 0, z: -2}
-  - {x: 0, y: 0, z: 0}
-  - {x: 2, y: 0, z: 0}
+  - {x: -1, y: -1, z: 1}
+  - {x: 1, y: -1, z: 1}
+  - {x: -1, y: 1, z: 1}
+  - {x: 1, y: 1, z: 1}
+  - {x: 1, y: -1, z: 1}
+  - {x: 1, y: -1, z: -1}
+  - {x: 1, y: 1, z: 1}
+  - {x: 1, y: 1, z: -1}
+  - {x: 1, y: -1, z: -1}
+  - {x: -1, y: -1, z: -1}
+  - {x: 1, y: 1, z: -1}
+  - {x: -1, y: 1, z: -1}
+  - {x: -1, y: -1, z: -1}
+  - {x: -1, y: -1, z: 1}
+  - {x: -1, y: 1, z: -1}
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 1}
+  - {x: 1, y: 1, z: 1}
+  - {x: -1, y: 1, z: -1}
+  - {x: 1, y: 1, z: -1}
+  - {x: -1, y: -1, z: -1}
+  - {x: 1, y: -1, z: -1}
+  - {x: -1, y: -1, z: 1}
+  - {x: 1, y: -1, z: 1}
   m_Textures0:
-  - {x: 0, y: 0}
-  - {x: -2, y: 0}
-  - {x: 0, y: 2}
-  - {x: -2, y: 2}
-  - {x: 0, y: 0}
-  - {x: -2, y: 0}
-  - {x: 0, y: 2}
-  - {x: -2, y: 2}
-  - {x: 2, y: 0}
-  - {x: 0, y: 0}
-  - {x: 2, y: 2}
-  - {x: 0, y: 2}
-  - {x: 2, y: 0}
-  - {x: 0, y: 0}
-  - {x: 2, y: 2}
-  - {x: 0, y: 2}
-  - {x: 0, y: 0}
-  - {x: 2, y: 0}
-  - {x: 0, y: -2}
-  - {x: 2, y: -2}
-  - {x: 0, y: -2}
-  - {x: -2, y: -2}
-  - {x: 0, y: 0}
-  - {x: -2, y: 0}
+  - {x: 1, y: -1}
+  - {x: -1, y: -1}
+  - {x: 1, y: 1}
+  - {x: -1, y: 1}
+  - {x: 1, y: -1}
+  - {x: -1, y: -1}
+  - {x: 1, y: 1}
+  - {x: -1, y: 1}
+  - {x: 1, y: -1}
+  - {x: -1, y: -1}
+  - {x: 1, y: 1}
+  - {x: -1, y: 1}
+  - {x: 1, y: -1}
+  - {x: -1, y: -1}
+  - {x: 1, y: 1}
+  - {x: -1, y: 1}
+  - {x: -1, y: 1}
+  - {x: 1, y: 1}
+  - {x: -1, y: -1}
+  - {x: 1, y: -1}
+  - {x: 1, y: -1}
+  - {x: -1, y: -1}
+  - {x: 1, y: 1}
+  - {x: -1, y: 1}
   m_Textures2: []
   m_Textures3: []
   m_Tangents:
@@ -311,4 +313,47 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 1, y: 1, z: -1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3663357492648362768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5434240093845537057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d616f16f1204e489b19d15d2597febb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hookPoint: {fileID: 2843460639341826497}
+--- !u!1 &6096166577308905115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2843460639341826497}
+  m_Layer: 0
+  m_Name: Hook Point
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2843460639341826497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6096166577308905115}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -5.51, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5434240093845537070}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

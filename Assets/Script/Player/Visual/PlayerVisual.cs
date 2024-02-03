@@ -63,19 +63,16 @@ namespace Player.Visual
 
         public void StartPlayingHookAnimation()
         {
-            Debug.Log("StartPlayingHookAnimation");
             _characterAnimator.SetBool(IsHookingHash, true);
         }
 
         public void PlayHookPushingAnimation()
         {
-            Debug.Log("PlayHookPushingAnimation");
             _characterAnimator.SetTrigger(HookPushingStartedHash);
         }
 
         public void StopPlayingHookAnimation()
         {
-            Debug.Log("StopPlayingHookAnimation");
             _characterAnimator.ResetTrigger(JumpTriggerHash);
             _characterAnimator.ResetTrigger(FallTriggerHash);
             _characterAnimator.ResetTrigger(LandTriggerHash);

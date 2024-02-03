@@ -30,9 +30,11 @@ MonoBehaviour:
     _maxAimRaycastDistance: 400
     _aimLayerMask:
       serializedVersion: 2
-      m_Bits: 704
+      m_Bits: 1728
     _upperLimit: -40
     _bottomLimit: 70
+    _lookAtStartAnimationDuration: 1
+    _lookAtStartAnimationEase: 9
   _movement:
     _moveForce: 4500
     _maximumSpeed: 15
@@ -56,13 +58,12 @@ MonoBehaviour:
       _mask:
         serializedVersion: 2
         m_Bits: 1024
-      _maxDistance: 2000
-      _minHookDistance: 10
+      _maxDistance: 100
+      _minHookDistance: 5
       _pointSelectionRadius: 5
-      _duration: 20
-      _pointYOffset: -5
+      _duration: 4
     _hookingGravityForceMultiplier: 0.1
-    _disableSpeedLimitationAfterHookSeconds: 0.7
+    _disableSpeedLimitationAfterHookSeconds: 3
   _character:
     _maximumCountOfHitPoints: 30
   _spellManager:

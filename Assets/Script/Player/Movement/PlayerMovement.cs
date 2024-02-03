@@ -433,6 +433,7 @@ namespace Player.Movement
                     _coroutineStarter.StartCoroutine(WaitForDashCooldownWithTicking());
                     break;
                 case MovingState.Hooking:
+                    // TODO: add adding hook force for fixed duration after hook. After it ends return player input
                     _coroutineStarter.StartCoroutine(HookDisableSpeedLimitation());
                     HookingEnded?.Invoke();
                     break;
@@ -515,7 +516,7 @@ namespace Player.Movement
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(HookingPlayerInputForceMultiplier);
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .HookingGravityForceMultiplier);
-                    HookingStarted?.Invoke(_hooker.HookLookPoint);
+                    HookingStarted?.Invoke(_hooker.HookPoint);
                     break;
                 case MovingState.NotInitialized:
                 default:

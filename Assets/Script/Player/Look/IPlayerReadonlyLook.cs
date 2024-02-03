@@ -5,7 +5,6 @@ namespace Player.Look
 {
     public interface IReadonlyPlayerLook : IReadonlyLook
     {
-        public bool TryCalculateLookPointWithSphereCast(out Vector3 lookPoint, float maxDistance, float sphereRadius,
-            LayerMask layerMask);
+        public bool TryCalculateLookPointWithMaxDistance(out Vector3 lookPoint, float maxDistance);
     }
 }
