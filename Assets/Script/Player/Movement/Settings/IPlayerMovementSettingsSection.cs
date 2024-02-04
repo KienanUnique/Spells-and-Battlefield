@@ -19,7 +19,7 @@ namespace Player.Movement.Settings
         public float WallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration { get; }
         public float NoInputMovingDecreaseAdditionalMaximumSpeedAcceleration { get; }
         public float HookingGravityForceMultiplier { get; }
-        public float DisableSpeedLimitationAfterHookSeconds { get; }
         public IPlayerHookerSettings HookerSettings { get; }
+        public float ContinuePushingAfterHookEndSeconds { get; }
     }
 }

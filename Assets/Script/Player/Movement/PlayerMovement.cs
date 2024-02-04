@@ -44,13 +44,13 @@ namespace Player.Movement
         private Coroutine _frictionCoroutine;
 
         private bool _speedLimitationEnabled = true;
+        private bool _isInputMovingEnabled = true;
         private Coroutine _wallRunningCalculationCoroutine;
 
         public PlayerMovement(Rigidbody rigidbody, IPlayerMovementSettings movementSettings,
             IGroundChecker groundChecker, IWallChecker wallChecker,
-            IPlayerMovementValuesCalculator movementValuesCalculator, ICoroutineStarter coroutineStarter, IPlayerHooker
-                hooker) : base(
-            rigidbody)
+            IPlayerMovementValuesCalculator movementValuesCalculator, ICoroutineStarter coroutineStarter,
+            IPlayerHooker hooker) : base(rigidbody)
         {
             _groundChecker = groundChecker;
             _wallChecker = wallChecker;
@@ -186,6 +186,7 @@ namespace Player.Movement
             {
                 _currentMovingState.Value = MovingState.Hooking;
             }
+
             Debug.Log($"Hooking failed");
         }
 
@@ -247,8 +248,11 @@ namespace Player.Movement
             {
                 ApplyGravity(_movementValuesCalculator.GravityForce);
 
-                _rigidbody.AddForce(_movementValuesCalculator.MoveForce * Time.fixedDeltaTime);
-
+                if (_isInputMovingEnabled)
+                {
+                    _rigidbody.AddForce(_movementValuesCalculator.MoveForce * Time.fixedDeltaTime);
+                }
+                
                 if (_speedLimitationEnabled)
                 {
                     TryLimitCurrentSpeed();
@@ -307,11 +311,24 @@ namespace Player.Movement
             yield return new WaitForSeconds(_movementSettings.DashSpeedLimitationsDisablingForSeconds);
             _speedLimitationEnabled = true;
         }
-        
-        private IEnumerator HookDisableSpeedLimitation()
+
+        private IEnumerator ContinuePushingAfterHook()
         {
+            var waitForFixedUpdate = new WaitForFixedUpdate();
+            float passedSeconds = 0f;
             _speedLimitationEnabled = false;
-            yield return new WaitForSeconds(_movementSettings.DashSpeedLimitationsDisablingForSeconds);
+            _isInputMovingEnabled = false;
+            while ((_currentMovingState.Value == MovingState.InAir ||
+                    _currentMovingState.Value == MovingState.Hooking) &&
+                   passedSeconds < _movementSettings.ContinuePushingAfterHookEndSeconds)
+            {
+                _rigidbody.AddForce(_movementValuesCalculator.CalculateHookForce(_hooker.AfterHookPushDirection) *
+                                    Time.fixedDeltaTime);
+                yield return waitForFixedUpdate;
+                passedSeconds += Time.fixedDeltaTime;
+            }
+
+            _isInputMovingEnabled = true;
             _speedLimitationEnabled = true;
         }
 
@@ -433,8 +450,7 @@ namespace Player.Movement
                     _coroutineStarter.StartCoroutine(WaitForDashCooldownWithTicking());
                     break;
                 case MovingState.Hooking:
-                    // TODO: add adding hook force for fixed duration after hook. After it ends return player input
-                    _coroutineStarter.StartCoroutine(HookDisableSpeedLimitation());
+                    _coroutineStarter.StartCoroutine(ContinuePushingAfterHook());
                     HookingEnded?.Invoke();
                     break;
                 case MovingState.NotInitialized:

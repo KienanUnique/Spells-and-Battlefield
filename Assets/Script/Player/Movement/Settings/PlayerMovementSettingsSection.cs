@@ -24,6 +24,7 @@ namespace Player.Movement.Settings
         [SerializeField] private PlayerHookerSettings _hookerSettings;
         [SerializeField] [Min(0)] private float _hookingGravityForceMultiplier = 0.1f;
         [SerializeField] [Min(0)] private float _disableSpeedLimitationAfterHookSeconds = 0.7f;
+        [SerializeField] [Min(0)] private float _continuePushingAfterHookSeconds = 0.7f;
 
         public float GroundDecreaseAdditionalMaximumSpeedAcceleration =>
             _groundDecreaseAdditionalMaximumSpeedAcceleration;
@@ -49,6 +50,9 @@ namespace Player.Movement.Settings
         public float DisableSpeedLimitationAfterHookSeconds => _disableSpeedLimitationAfterHookSeconds;
 
         public IPlayerHookerSettings HookerSettings => _hookerSettings;
+
+        public float ContinuePushingAfterHookEndSeconds => _continuePushingAfterHookSeconds;
+
         public float DashCooldownSeconds => _dashCooldownSeconds;
         public float DashSpeedLimitationsDisablingForSeconds => _dashSpeedLimitationsDisablingForSeconds;
         public float CoyoteTimeInSeconds => _coyoteTimeInSeconds;

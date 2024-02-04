@@ -98,8 +98,8 @@ namespace Player.Look
 
         public void StopLookingAtPoint()
         {
-            _isCameraLockedOnPoint = false;
             _startLockedPointRotationSequence?.Kill();
+            _isCameraLockedOnPoint = false;
         }
 
         private IEnumerator LockAtHookPoint()

@@ -64,6 +64,7 @@ MonoBehaviour:
       _duration: 4
     _hookingGravityForceMultiplier: 0.1
     _disableSpeedLimitationAfterHookSeconds: 3
+    _continuePushingAfterHookSeconds: 0.4
   _character:
     _maximumCountOfHitPoints: 30
   _spellManager:

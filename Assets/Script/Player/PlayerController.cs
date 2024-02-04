@@ -174,7 +174,7 @@ namespace Player
             _input.StopUsingSpellInputted += _spellsManager.StopCasting;
             _input.MoveInputted += _movement.MoveInputted;
             _input.LookInputted += _look.LookInputtedWith;
-            _input.UseHookInputted += _movement.TryStartHook;
+            _input.UseHookInputted += OnUseHookInputted;
 
             _input.SelectSpellTypeWithIndex += _spellsManager.SelectSpellTypeWithIndex;
             _input.SelectNextSpellType += _spellsManager.SelectNextSpellType;
@@ -220,7 +220,7 @@ namespace Player
             _input.StopUsingSpellInputted -= _spellsManager.StopCasting;
             _input.MoveInputted -= _movement.MoveInputted;
             _input.LookInputted -= _look.LookInputtedWith;
-            _input.UseHookInputted -= _movement.TryStartHook;
+            _input.UseHookInputted -= OnUseHookInputted;
 
             _input.SelectSpellTypeWithIndex -= _spellsManager.SelectSpellTypeWithIndex;
             _input.SelectNextSpellType -= _spellsManager.SelectNextSpellType;
@@ -254,6 +254,14 @@ namespace Player
             
             _animatorStatusChecker.HookKeyMomentTrigger -= OnHookKeyMomentTrigger;
         }
+        
+        private void OnUseHookInputted()
+        {
+            if (_animatorStatusChecker.IsReadyToPlayActionAnimations)
+            {
+                _movement.TryStartHook();
+            }
+        }
 
         private void OnHookingStarted(Vector3 hookLookPoint)
         {
@@ -265,9 +273,9 @@ namespace Player
 
         private void OnHookingEnded()
         {
-            _look.StopLookingAtPoint();
             _animatorStatusChecker.HandleHookEnd();
             _visual.StopPlayingHookAnimation();
+            _look.StopLookingAtPoint();
         }
 
         private void OnNeedPlayContinuousActionAnimation()

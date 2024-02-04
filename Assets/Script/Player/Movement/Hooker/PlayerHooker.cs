@@ -34,6 +34,7 @@ namespace Player.Movement.Hooker
         public Vector3 HookPoint { get; private set; }
 
         public bool IsHooking { get; private set; }
+        public Vector3 AfterHookPushDirection { get;  private set; }
 
         public bool TrySetHookPoint()
         {
@@ -60,7 +61,7 @@ namespace Player.Movement.Hooker
             }
 
             HookPoint = pointProvider.HookPoint;
-
+            AfterHookPushDirection = (HookPoint - _rigidbody.Position).normalized; 
             return true;
         }
 
@@ -80,8 +81,7 @@ namespace Player.Movement.Hooker
                 distance = HookPoint - _rigidbody.Position;
                 if (distance.magnitude < _hookSettings.MinHookDistance)
                 {
-                    IsHooking = false;
-                    HookingEnded?.Invoke();
+                    EndHooking();
                 }
 
                 HookPushDirection = distance.normalized;
@@ -94,9 +94,14 @@ namespace Player.Movement.Hooker
             yield return new WaitForSeconds(_hookSettings.Duration);
             if (IsHooking)
             {
-                IsHooking = false;
-                HookingEnded?.Invoke();
+                EndHooking();
             }
+        }
+
+        private void EndHooking()
+        {
+            IsHooking = false;
+            HookingEnded?.Invoke();
         }
     }
 }
