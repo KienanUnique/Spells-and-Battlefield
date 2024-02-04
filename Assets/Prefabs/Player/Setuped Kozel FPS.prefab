@@ -413,8 +413,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1438446180018382553}
   - component: {fileID: 4988965230943224826}
-  - component: {fileID: 4064415810411979280}
   - component: {fileID: 9031340192901654185}
+  - component: {fileID: 4064415810411979280}
   m_Layer: 8
   m_Name: Setuped Kozel FPS
   m_TagString: Untagged
@@ -458,18 +458,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!114 &4064415810411979280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1782778395989589091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a4fdceef0184de0acacd32238f2c91c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &9031340192901654185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,6 +468,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e948d3e101034823990451a28776eee0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4064415810411979280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782778395989589091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a4fdceef0184de0acacd32238f2c91c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1823116006296153147
