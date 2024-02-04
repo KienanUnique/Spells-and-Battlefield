@@ -7,7 +7,6 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating
 {
     public interface IMovingPlatformDataForControllerBase
     {
-        float DelayInSeconds { get; }
         IMovingPlatformsSettings Settings { get; }
         float MovementSpeed { get; }
         List<Vector3> Waypoints { get; }

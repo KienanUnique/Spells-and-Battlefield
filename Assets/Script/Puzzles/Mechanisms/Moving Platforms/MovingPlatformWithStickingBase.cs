@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
 using Puzzles.Mechanisms.Moving_Platforms.Settings;
 using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
@@ -8,37 +7,37 @@ using UnityEngine;
 
 namespace Puzzles.Mechanisms.Moving_Platforms
 {
-    public abstract class MovingPlatformWithStickingBase : InitializableMonoBehaviourBase
+    public abstract class MovingPlatformWithStickingBase : MechanismControllerBase
     {
-        protected float _delayInSeconds;
-        protected bool _isTriggersDisabled;
-        protected float _movementSpeed;
-        protected Transform _parentObjectToMove;
-        protected IMovingPlatformsSettings _settings;
-        protected List<Vector3> _waypoints;
         private IColliderTrigger _platformCollider;
 
         protected void Initialize(IMovingPlatformDataForControllerBase dataForControllerBase)
         {
-            _parentObjectToMove = dataForControllerBase.ObjectToMove;
+            Debug.Log("MovingPlatformWithStickingBase initialized");
+            ParentObjectToMove = dataForControllerBase.ObjectToMove;
             _platformCollider = dataForControllerBase.PlatformCollider;
-            _settings = dataForControllerBase.Settings;
-            _movementSpeed = dataForControllerBase.MovementSpeed;
-            _waypoints = dataForControllerBase.Waypoints;
-            _isTriggersDisabled = false;
-            _delayInSeconds = dataForControllerBase.DelayInSeconds;
-            _parentObjectToMove.position = _waypoints.First();
+            Settings = dataForControllerBase.Settings;
+            MovementSpeed = dataForControllerBase.MovementSpeed;
+            Waypoints = dataForControllerBase.Waypoints;
+            ParentObjectToMove.position = Waypoints.First();
             SetInitializedStatus();
         }
 
+        protected float MovementSpeed { get; private set; }
+        protected Transform ParentObjectToMove { get; private set; }
+        protected IMovingPlatformsSettings Settings { get; private set; }
+        protected List<Vector3> Waypoints { get; private set; }
+
         protected override void SubscribeOnEvents()
         {
+            base.SubscribeOnEvents();
             _platformCollider.TriggerEnter += OnPlatformColliderTriggerEnter;
             _platformCollider.TriggerExit += OnPlatformColliderTriggerExit;
         }
 
         protected override void UnsubscribeFromEvents()
         {
+            base.UnsubscribeFromEvents();
             _platformCollider.TriggerEnter -= OnPlatformColliderTriggerEnter;
             _platformCollider.TriggerExit -= OnPlatformColliderTriggerExit;
         }
@@ -50,7 +49,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms
                 return;
             }
 
-            stickable.StickToPlatform(_parentObjectToMove);
+            stickable.StickToPlatform(ParentObjectToMove);
         }
 
         private void OnPlatformColliderTriggerExit(Collider other)
