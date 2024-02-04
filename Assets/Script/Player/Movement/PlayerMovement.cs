@@ -178,7 +178,7 @@ namespace Player.Movement
                 _coroutineStarter.StartCoroutine(DashDisableSpeedLimitation());
                 _rigidbody.velocity = Vector3.zero;
                 _rigidbody.AddForce(cameraForwardDirection * _movementValuesCalculator.DashForce);
-                _currentMovingState.Value = IsGrounded ? MovingState.OnGround : MovingState.InAir;
+                UpdatePlayerState();
             }
         }
 
@@ -188,7 +188,7 @@ namespace Player.Movement
             {
                 return;
             }
-            
+
             if (_hooker.TrySetHookPoint())
             {
                 _currentMovingState.Value = MovingState.Hooking;
@@ -268,7 +268,7 @@ namespace Player.Movement
                     _rigidbody.AddForce(_movementValuesCalculator.CalculateHookForce(_hooker.HookPushDirection) *
                                         Time.fixedDeltaTime);
                 }
-                
+
                 _currentOverSpeedValue.Value = _movementValuesCalculator.CurrentOverSpeedingValue;
 
                 yield return waitForFixedUpdate;
@@ -331,6 +331,11 @@ namespace Player.Movement
                 passedSeconds += Time.fixedDeltaTime;
             }
 
+            UpdatePlayerState();
+        }
+
+        private void UpdatePlayerState()
+        {
             if (IsGrounded)
             {
                 _currentMovingState.Value = MovingState.OnGround;
@@ -376,7 +381,7 @@ namespace Player.Movement
             {
                 return;
             }
-            
+
             if (isGrounded)
             {
                 _currentMovingState.Value = MovingState.OnGround;
