@@ -13,7 +13,6 @@ namespace Puzzles.Mechanisms.Moving_Platforms
 
         protected void Initialize(IMovingPlatformDataForControllerBase dataForControllerBase)
         {
-            Debug.Log("MovingPlatformWithStickingBase initialized");
             ParentObjectToMove = dataForControllerBase.ObjectToMove;
             _platformCollider = dataForControllerBase.PlatformCollider;
             Settings = dataForControllerBase.Settings;

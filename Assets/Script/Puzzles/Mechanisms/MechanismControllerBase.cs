@@ -15,7 +15,6 @@ namespace Puzzles.Mechanisms
 
         protected void AddTriggers(List<IMechanismsTrigger> triggers)
         {
-            Debug.Log($"triggers added = {triggers.Count}");
             _triggers.AddRange(triggers);
             
             if (CurrentInitializableMonoBehaviourStatus != InitializableMonoBehaviourStatus.Initialized ||
@@ -32,7 +31,6 @@ namespace Puzzles.Mechanisms
 
         protected override void SubscribeOnEvents()
         {
-            Debug.Log($"subscribed ({gameObject.name}), IsBusy = {IsBusy}, _triggers count = {_triggers.Count}");
             foreach (IMechanismsTrigger trigger in _triggers)
             {
                 trigger.Triggered += OnTriggered;
@@ -49,7 +47,6 @@ namespace Puzzles.Mechanisms
 
         protected virtual void OnTriggered()
         {
-            Debug.Log($"OnTriggered, IsBusy = {IsBusy}");
             if (IsBusy)
             {
                 return;
