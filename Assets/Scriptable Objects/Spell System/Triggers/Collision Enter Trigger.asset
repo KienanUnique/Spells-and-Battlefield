@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Collision Enter Trigger
   m_EditorClassIdentifier: 
   _timeBeforeFinishTrigger: 10
+  _ignoreCaster: 1
