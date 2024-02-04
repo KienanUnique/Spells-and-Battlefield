@@ -1,5 +1,6 @@
 using Common.Abstract_Bases.Visual;
 using Common.Abstract_Bases.Visual.Settings;
+using Player.Visual.Hook_Trail;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 

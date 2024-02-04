@@ -27,6 +27,7 @@ using Player.Settings;
 using Player.Spell_Manager;
 using Player.Spell_Manager.Spells_Selector;
 using Player.Visual;
+using Player.Visual.Hook_Trail;
 using Spells;
 using Spells.Factory;
 using Spells.Spell;
@@ -72,6 +73,7 @@ namespace Player.Setup
         [Header("Other")] [SerializeField] private ReadonlyTransformGetter _pointForAiming;
         [SerializeField] private ReadonlyTransformGetter _upperPointForSummonedEnemiesPositionCalculating;
         [SerializeField] private List<EnemyTargetTrigger> _triggersForSummonedEnemies;
+        [SerializeField] private TrailRenderer _hookTrailRenderer;
 
         private IPlayerCameraEffects _playerCameraEffects;
         private ICaster _playerCaster;
@@ -158,6 +160,9 @@ namespace Player.Setup
             playerSpellsManager.AddSpell(_spellTypesSetting.LastChanceSpellType,
                 _settings.SpellManager.LastChanceSpell);
 
+            var hookerVisual = new HookTrailVisual(_hookTrailRenderer, _spellSpawnObject.ReadonlyTransform,
+                _settings.HookerVisualSettings, this);
+
             _itemsNeedDisabling.Add(playerMovement);
             _itemsNeedDisabling.Add(playerSpellsManager);
             _itemsNeedDisabling.Add(continuousSpellHandler);
@@ -171,7 +176,8 @@ namespace Player.Setup
             var setupData = new PlayerControllerSetupData(_playerCameraEffects, _playerVisual, _playerCharacter,
                 playerSpellsManager, _playerInput, playerMovement, playerLook, _idHolder, _itemsNeedDisabling,
                 _cameraTransform, _settings.Faction, informationOfSummoner, _toolsForSummon,
-                _upperPointForSummonedEnemiesPositionCalculating.ReadonlyTransform, _animatorStatusChecker);
+                _upperPointForSummonedEnemiesPositionCalculating.ReadonlyTransform, _animatorStatusChecker,
+                hookerVisual);
             controllerToSetup.Initialize(setupData);
         }
     }

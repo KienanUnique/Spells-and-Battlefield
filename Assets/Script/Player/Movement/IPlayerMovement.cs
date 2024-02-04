@@ -11,7 +11,6 @@ namespace Player.Movement
         IPhysicsInteractable,
         IPlayerOverSpeedInformation
     {
-        public delegate void HookingStartedEventHandler(Vector3 hookLookPoint);
         public event Action Land;
         public event Action GroundJump;
         public event Action AirJump;
@@ -19,10 +18,11 @@ namespace Player.Movement
         public event Action<WallDirection> StartWallRunning;
         public event Action<WallDirection> WallRunningDirectionChanged;
         public event Action EndWallRunning;
-        public event HookingStartedEventHandler HookingStarted;
+        public event Action HookingStarted;
         public event Action HookingEnded;
         public Vector2 NormalizedVelocityDirectionXY { get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { get; }
+        public Vector3 HookPoint { get; }
         public IReadonlyRigidbody MainRigidbody { get; }
         public void TryJumpInputted();
         public void TryStartDashAiming();

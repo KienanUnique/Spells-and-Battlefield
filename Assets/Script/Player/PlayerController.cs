@@ -24,6 +24,7 @@ using Player.Movement;
 using Player.Setup;
 using Player.Spell_Manager;
 using Player.Visual;
+using Player.Visual.Hook_Trail;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using Systems.Input_Manager.Concrete_Types.In_Game;
@@ -46,6 +47,7 @@ namespace Player
         private IPlayerSpellsManager _spellsManager;
         private IPlayerVisual _visual;
         private IPlayerAnimatorStatusChecker _animatorStatusChecker;
+        private IHookTrailVisual _hookTrailVisual;
 
         public void Initialize(IPlayerControllerSetupData setupData)
         {
@@ -64,6 +66,7 @@ namespace Player
             InformationForSummon = setupData.SetInformationForSummon;
             ToolsForSummon = setupData.SetToolsForSummon;
             _animatorStatusChecker = setupData.SetAnimatorStatusChecker;
+            _hookTrailVisual = setupData.SetHookTrailVisual;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -206,6 +209,7 @@ namespace Player
             _spellsManager.ContinuousSpellFinished += OnContinuousSpellFinished;
             _spellsManager.ContinuousSpellStarted += OnContinuousSpellStarted;
 
+            _hookTrailVisual.TrailArrivedToHookPoint += OnTrailArrivedToHookPoint;
             _animatorStatusChecker.HookKeyMomentTrigger += OnHookKeyMomentTrigger;
         }
 
@@ -252,9 +256,15 @@ namespace Player
             _spellsManager.ContinuousSpellFinished -= OnContinuousSpellFinished;
             _spellsManager.ContinuousSpellStarted -= OnContinuousSpellStarted;
             
+            _hookTrailVisual.TrailArrivedToHookPoint -= OnTrailArrivedToHookPoint;
             _animatorStatusChecker.HookKeyMomentTrigger -= OnHookKeyMomentTrigger;
         }
-        
+
+        private void OnHookKeyMomentTrigger()
+        {
+            _hookTrailVisual.MoveTrailToPoint(_movement.HookPoint);
+        }
+
         private void OnUseHookInputted()
         {
             if (_animatorStatusChecker.IsReadyToPlayActionAnimations)
@@ -263,16 +273,16 @@ namespace Player
             }
         }
 
-        private void OnHookingStarted(Vector3 hookLookPoint)
+        private void OnHookingStarted()
         {
-            Debug.Log($"HookingStarted");
             _animatorStatusChecker.HandleHookStart();
             _visual.StartPlayingHookAnimation();
-            _look.StartLookingAtPoint(hookLookPoint);
+            _look.StartLookingAtPoint(_movement.HookPoint);
         }
 
         private void OnHookingEnded()
         {
+            _hookTrailVisual.Disappear();
             _animatorStatusChecker.HandleHookEnd();
             _visual.StopPlayingHookAnimation();
             _look.StopLookingAtPoint();
@@ -316,7 +326,7 @@ namespace Player
             DashCooldownRatioChanged?.Invoke(newCooldownRatio);
         }
 
-        private void OnHookKeyMomentTrigger()
+        private void OnTrailArrivedToHookPoint()
         {
             _visual.PlayHookPushingAnimation();
             _movement.StartPushingTowardsHook();

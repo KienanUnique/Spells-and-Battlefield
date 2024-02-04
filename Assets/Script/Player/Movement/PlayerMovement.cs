@@ -89,7 +89,7 @@ namespace Player.Movement
         public event Action<WallDirection> StartWallRunning;
         public event Action<WallDirection> WallRunningDirectionChanged;
         public event Action EndWallRunning;
-        public event IPlayerMovement.HookingStartedEventHandler HookingStarted;
+        public event Action HookingStarted;
         public event Action HookingEnded;
         public event Action<float> OverSpeedValueChanged;
 
@@ -108,6 +108,7 @@ namespace Player.Movement
         public float CurrentDashCooldownRatio { get; private set; }
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
+        public Vector3 HookPoint => _hooker.HookPoint;
         public IReadonlyRigidbody MainRigidbody { get; }
         public float CurrentOverSpeedRatio => _currentOverSpeedValue.Value;
 
@@ -544,7 +545,7 @@ namespace Player.Movement
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(HookingPlayerInputForceMultiplier);
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .HookingGravityForceMultiplier);
-                    HookingStarted?.Invoke(_hooker.HookPoint);
+                    HookingStarted?.Invoke();
                     break;
                 case MovingState.AfterHook:
                     _isInputMovingEnabled = false;

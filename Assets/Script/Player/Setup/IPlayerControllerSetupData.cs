@@ -12,6 +12,7 @@ using Player.Look;
 using Player.Movement;
 using Player.Spell_Manager;
 using Player.Visual;
+using Player.Visual.Hook_Trail;
 using Systems.Input_Manager.Concrete_Types.In_Game;
 
 namespace Player.Setup
@@ -33,5 +34,6 @@ namespace Player.Setup
         public IToolsForSummon SetToolsForSummon { get; }
         public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
         public IPlayerAnimatorStatusChecker SetAnimatorStatusChecker { get; }
+        public IHookTrailVisual SetHookTrailVisual { get; }
     }
 }

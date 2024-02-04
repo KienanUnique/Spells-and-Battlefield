@@ -12,6 +12,7 @@ using Player.Look;
 using Player.Movement;
 using Player.Spell_Manager;
 using Player.Visual;
+using Player.Visual.Hook_Trail;
 using Systems.Input_Manager.Concrete_Types.In_Game;
 
 namespace Player.Setup
@@ -24,7 +25,7 @@ namespace Player.Setup
             List<IDisableable> itemsNeedDisabling, IReadonlyTransform cameraTransform, IFaction setFaction,
             IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon,
             IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating,
-            IPlayerAnimatorStatusChecker setAnimatorStatusChecker)
+            IPlayerAnimatorStatusChecker setAnimatorStatusChecker, IHookTrailVisual setHookTrailVisual)
         {
             SetPlayerCameraEffects = playerCameraEffects;
             SetPlayerVisual = playerVisual;
@@ -41,6 +42,7 @@ namespace Player.Setup
             SetToolsForSummon = setToolsForSummon;
             SetUpperPointForSummonedEnemiesPositionCalculating = setUpperPointForSummonedEnemiesPositionCalculating;
             SetAnimatorStatusChecker = setAnimatorStatusChecker;
+            SetHookTrailVisual = setHookTrailVisual;
         }
 
         public List<IDisableable> SetItemsNeedDisabling { get; }
@@ -58,5 +60,6 @@ namespace Player.Setup
         public IToolsForSummon SetToolsForSummon { get; }
         public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
         public IPlayerAnimatorStatusChecker SetAnimatorStatusChecker { get; }
+        public IHookTrailVisual SetHookTrailVisual { get; }
     }
 }

@@ -5,6 +5,7 @@ using Player.Character.Settings;
 using Player.Look.Settings;
 using Player.Movement.Settings;
 using Player.Spell_Manager.Settings;
+using Player.Visual.Hook_Trail;
 using UnityEngine;
 
 namespace Player.Settings
@@ -20,6 +21,7 @@ namespace Player.Settings
         [SerializeField] private PlayerSpellManagerSettingsSection _spellManager;
         [SerializeField] private VisualSettingsSection _visual;
         [SerializeField] private FactionScriptableObject _faction;
+        [SerializeField] private HookTrailVisualSettings _hookerVisualSettings;
 
         public IPlayerCameraEffectsSettings CameraEffects => _cameraEffects;
         public IPlayerLookSettings Look => _look;
@@ -28,5 +30,6 @@ namespace Player.Settings
         public IPlayerSpellManagerSettings SpellManager => _spellManager;
         public IVisualSettings Visual => _visual;
         public IFaction Faction => _faction;
+        public IHookTrailVisualSettings HookerVisualSettings => _hookerVisualSettings;
     }
 }
