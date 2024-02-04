@@ -34,22 +34,26 @@ namespace Common.Dissolve_Effect_Controller
             }
         }
 
-        public void Appear()
+        public void Appear(TweenCallback callback)
         {
             ChangeDissolveValue(FullDissolveEffectValue);
-            ChangeDissolveValueSmoothly(NoneDissolveEffectValue);
+            ChangeDissolveValueSmoothly(NoneDissolveEffectValue, callback);
         }
 
-        public void Disappear()
+        public void Disappear(TweenCallback callback)
         {
             ChangeDissolveValue(NoneDissolveEffectValue);
-            ChangeDissolveValueSmoothly(FullDissolveEffectValue);
+            ChangeDissolveValueSmoothly(FullDissolveEffectValue, callback);
         }
 
-        private void ChangeDissolveValueSmoothly(float endValue)
+        private void ChangeDissolveValueSmoothly(float endValue, TweenCallback callback)
         {
             Sequence dissolveSequence = DOTween.Sequence();
             dissolveSequence.SetLink(_linkGameObject);
+            if (callback != null)
+            {
+                dissolveSequence.OnComplete(callback);
+            }
 
             foreach (Material material in _materials)
             {

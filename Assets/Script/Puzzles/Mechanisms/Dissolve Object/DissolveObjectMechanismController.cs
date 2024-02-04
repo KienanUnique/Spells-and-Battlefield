@@ -25,15 +25,15 @@ namespace Puzzles.Mechanisms.Dissolve_Object
 
         protected override void StartJob()
         {
+            _isEnabled = !_isEnabled;
+
             if (_isEnabled)
             {
-                _dissolveEffectController.Disappear();
-                _isEnabled = false;
+                _dissolveEffectController.Appear(HandleDoneJob);
             }
             else
             {
-                _dissolveEffectController.Appear();
-                _isEnabled = true;
+                _dissolveEffectController.Disappear(HandleDoneJob);
             }
 
             UpdateCollidersStatus();

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Common.Abstract_Bases;
 using Common.Dissolve_Effect_Controller;
 using Common.Dissolve_Effect_Controller.Settings;
 using Puzzles.Mechanisms_Triggers;
@@ -8,7 +9,7 @@ using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitia
 
 namespace Puzzles.Mechanisms.Dissolve_Object
 {
-    public class DissolveObjectMechanismControllerSetup : MechanismsTriggerSetupBase
+    public class DissolveObjectMechanismControllerSetup : SetupMonoBehaviourBase
     {
         [SerializeField] private List<Renderer> _renderers;
         [SerializeField] private List<Collider> _colliders;
