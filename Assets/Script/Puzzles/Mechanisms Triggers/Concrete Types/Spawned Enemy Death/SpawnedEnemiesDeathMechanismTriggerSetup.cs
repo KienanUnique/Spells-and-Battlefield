@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
 {
-    public class SpawnedEnemiesDeathMechanismTriggerSetup : SetupMonoBehaviourBase
+    public class SpawnedEnemiesDeathMechanismTriggerSetup : MechanismsTriggerSetupBase
     {
         [SerializeField] private List<EnemySpawnerWithTrigger> _triggers;
         private IInitializableSpawnedEnemiesDeathMechanismTrigger _deathMechanismTrigger;
@@ -17,7 +17,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
         protected override void Initialize()
         {
             _deathMechanismTrigger.Initialize(
-                new List<IEnemyDeathTrigger>(_triggers.Where(trigger => trigger.isActiveAndEnabled)));
+                new List<IEnemyDeathTrigger>(_triggers.Where(trigger => trigger.isActiveAndEnabled)), BaseSetupData);
         }
 
         protected override void Prepare()

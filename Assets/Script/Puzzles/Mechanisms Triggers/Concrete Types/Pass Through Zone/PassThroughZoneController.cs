@@ -8,17 +8,13 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Pass_Through_Zone
     {
         private IColliderTrigger _colliderTrigger;
         private IIdentifier _identifier;
-        private bool _needTriggerOneTime;
 
-        public void Initialize(IIdentifier identifier, bool needTriggerOneTime, IColliderTrigger colliderTrigger)
+        public void Initialize(IIdentifier identifier, IColliderTrigger colliderTrigger, MechanismsTriggerBaseSetupData baseSetupData)
         {
             _identifier = identifier;
             _colliderTrigger = colliderTrigger;
-            _needTriggerOneTime = needTriggerOneTime;
-            SetInitializedStatus();
+            InitializeBase(baseSetupData);
         }
-
-        protected override bool NeedTriggerOneTime => _needTriggerOneTime;
 
         protected override void SubscribeOnEvents()
         {

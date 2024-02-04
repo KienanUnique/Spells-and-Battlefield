@@ -17,22 +17,18 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
         private IPlateSettings _plateSettings;
         private Transform _plateTransform;
         private List<Collider> _requiredObjectsOnPanel;
-        private bool _needTriggerOneTime;
 
-        public void Initialize(IIdentifier identifier, bool needTriggerOneTime, Transform plateTransform,
-            IPlateSettings plateSettings, IColliderTrigger colliderTrigger)
+        public void Initialize(IIdentifier identifier, Transform plateTransform, IPlateSettings plateSettings,
+            IColliderTrigger colliderTrigger, MechanismsTriggerBaseSetupData baseSetupData)
         {
             _identifier = identifier;
             _requiredObjectsOnPanel = new List<Collider>();
             _plateTransform = plateTransform;
             _plateSettings = plateSettings;
             _colliderTrigger = colliderTrigger;
-            _needTriggerOneTime = needTriggerOneTime;
-            SetInitializedStatus();
+            InitializeBase(baseSetupData);
             ProcessPressingUp();
         }
-
-        protected override bool NeedTriggerOneTime => _needTriggerOneTime;
 
         protected override void SubscribeOnEvents()
         {

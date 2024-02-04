@@ -19,8 +19,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone
 
         protected override void Initialize()
         {
-            _controller.Initialize(_spellTypesToTriggerOnImplementations, NeedTriggerOneTime,
-                _triggerOnSpellInteraction);
+            _controller.Initialize(_spellTypesToTriggerOnImplementations, _triggerOnSpellInteraction, BaseSetupData);
         }
 
         protected override void Prepare()

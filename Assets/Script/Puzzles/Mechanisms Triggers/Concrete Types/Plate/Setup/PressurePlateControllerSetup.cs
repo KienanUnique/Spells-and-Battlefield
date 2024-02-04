@@ -28,7 +28,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Setup
 
         protected override void Initialize()
         {
-            _controller.Initialize(_identifier, NeedTriggerOneTime, _visualObject, _plateSettings, _colliderTrigger);
+            _controller.Initialize(_identifier, _visualObject, _plateSettings, _colliderTrigger, BaseSetupData);
         }
 
         protected override void Prepare()

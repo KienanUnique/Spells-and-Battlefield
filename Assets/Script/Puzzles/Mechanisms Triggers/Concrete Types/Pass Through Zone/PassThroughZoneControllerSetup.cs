@@ -18,7 +18,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Pass_Through_Zone
 
         protected override void Initialize()
         {
-            _controller.Initialize(_identifier, NeedTriggerOneTime, _colliderTrigger);
+            _controller.Initialize(_identifier, _colliderTrigger, BaseSetupData);
         }
 
         protected override void Prepare()

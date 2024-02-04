@@ -9,17 +9,16 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
     {
         private List<IEnemyDeathTrigger> _triggers;
 
-        public void Initialize(List<IEnemyDeathTrigger> triggers)
+        public void Initialize(List<IEnemyDeathTrigger> triggers, MechanismsTriggerBaseSetupData baseSetupData)
         {
             _triggers = triggers;
-            SetInitializedStatus();
+            InitializeBase(baseSetupData);
             if (IsAllEnemiesDead && !WasTriggered)
             {
                 Trigger();
             }
         }
-
-        protected override bool NeedTriggerOneTime => true;
+        
         private bool IsAllEnemiesDead => _triggers.All(trigger => trigger.IsSpawnedEnemyDied);
 
         protected override void SubscribeOnEvents()

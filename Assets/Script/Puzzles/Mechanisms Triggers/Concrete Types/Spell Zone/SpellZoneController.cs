@@ -8,18 +8,14 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone
     {
         private ITriggerOnSpellInteraction _triggerOnSpellInteraction;
         private List<ISpellType> _typesToTriggerOn;
-        private bool _needTriggerOneTime;
 
-        public void Initialize(List<ISpellType> typesToTriggerOn, bool needTriggerOneTime,
-            ITriggerOnSpellInteraction triggerOnSpellInteraction)
+        public void Initialize(List<ISpellType> typesToTriggerOn, ITriggerOnSpellInteraction triggerOnSpellInteraction,
+            MechanismsTriggerBaseSetupData baseSetupData)
         {
             _typesToTriggerOn = typesToTriggerOn;
             _triggerOnSpellInteraction = triggerOnSpellInteraction;
-            _needTriggerOneTime = needTriggerOneTime;
-            SetInitializedStatus();
+            InitializeBase(baseSetupData);
         }
-
-        protected override bool NeedTriggerOneTime => _needTriggerOneTime;
 
         protected override void SubscribeOnEvents()
         {
