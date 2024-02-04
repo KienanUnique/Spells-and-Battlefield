@@ -5,6 +5,5 @@ namespace Player.Visual.Hook_Trail
     public interface IHookTrailVisualSettings
     {
         float HookTrailSpeed { get; }
-        Ease HookTrailEase { get; }
     }
 }

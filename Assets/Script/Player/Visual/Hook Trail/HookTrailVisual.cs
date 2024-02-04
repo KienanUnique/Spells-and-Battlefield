@@ -9,12 +9,15 @@ namespace Player.Visual.Hook_Trail
 {
     public class HookTrailVisual : IHookTrailVisual
     {
+        private const int TrailPositionsCount = 2;
+
         private readonly TrailRenderer _trailRenderer;
         private readonly IReadonlyTransform _handPoint;
         private readonly IHookTrailVisualSettings _settings;
         private readonly Transform _trailTransform;
         private readonly GameObject _trailGameObject;
         private readonly ICoroutineStarter _coroutineStarter;
+        private readonly Vector3[] _trailPositions = new Vector3[TrailPositionsCount];
 
         private bool _needUpdateTrailPosition;
 
@@ -36,12 +39,13 @@ namespace Player.Visual.Hook_Trail
         {
             _trailRenderer.Clear();
             _trailTransform.position = _handPoint.Position;
-            _trailRenderer.AddPositions(new[] {_handPoint.Position, _handPoint.Position});
+            _trailPositions[0] = _handPoint.Position;
+            _trailPositions[1] = _handPoint.Position;
+            _trailRenderer.AddPositions(_trailPositions);
             _trailGameObject.SetActive(true);
             _trailTransform.DOMove(hookPoint, _settings.HookTrailSpeed)
                            .SetSpeedBased()
                            .SetLink(_trailGameObject)
-                           .SetEase(_settings.HookTrailEase)
                            .OnComplete(HandleArrivingToHookPoint)
                            .OnUpdate(UpdateTrailPositions);
         }
@@ -51,25 +55,28 @@ namespace Player.Visual.Hook_Trail
             _needUpdateTrailPosition = false;
             _trailGameObject.SetActive(false);
             _trailRenderer.Clear();
+            _trailTransform.DOKill();
         }
 
         private void HandleArrivingToHookPoint()
         {
             _needUpdateTrailPosition = true;
-            _coroutineStarter.StartCoroutine(UpdateTrailStartPosition());
+            _coroutineStarter.StartCoroutine(UpdateTrailPositionsContinuously());
             TrailArrivedToHookPoint?.Invoke();
         }
 
         private void UpdateTrailPositions()
         {
-            _trailRenderer.SetPositions(new[] {_trailTransform.position, _handPoint.Position});
+            _trailPositions[0] = _trailTransform.position;
+            _trailPositions[1] = _handPoint.Position;
+            _trailRenderer.SetPositions(_trailPositions);
         }
 
-        private IEnumerator UpdateTrailStartPosition()
+        private IEnumerator UpdateTrailPositionsContinuously()
         {
             while (_needUpdateTrailPosition)
             {
-                _trailRenderer.SetPosition(0, _handPoint.Position);
+                UpdateTrailPositions();
                 yield return null;
             }
         }
