@@ -339,8 +339,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e05e930855424c2fb29fdf32005408f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _needTriggerOneTime: 0
+  _triggerDelayInSeconds: 0
   _colliderTrigger: {fileID: 8030117600401893668}
-  _identifier: {fileID: 0}
+  _identifier: {fileID: 11400000, guid: 7a562847d3045c142af9addafcfefa82, type: 2}
+  _triggerEventType: 1
 --- !u!1 &8030117601739272241
 GameObject:
   m_ObjectHideFlags: 0
