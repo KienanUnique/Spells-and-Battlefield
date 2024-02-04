@@ -6,8 +6,9 @@ namespace Player.Movement.Hooker.Settings
     {
         public LayerMask Mask { get; }
         public float MaxDistance { get; }
-        public float MinHookDistance { get; }
+        public float CancelHookDistance { get; }
         public float PointSelectionRadius { get; }
-        public float Duration { get; }
+        public float MaxDurationInSeconds { get; }
+        public float StartAndCurrentDirectionsMaxAngle { get; }
     }
 }

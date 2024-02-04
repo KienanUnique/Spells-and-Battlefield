@@ -183,12 +183,15 @@ namespace Player.Movement
 
         public void TryStartHook()
         {
+            if (_currentMovingState.Value == MovingState.DashAiming || _currentMovingState.Value == MovingState.Hooking)
+            {
+                return;
+            }
+            
             if (_hooker.TrySetHookPoint())
             {
                 _currentMovingState.Value = MovingState.Hooking;
             }
-
-            Debug.Log($"Hooking failed");
         }
 
         public void StartPushingTowardsHook()
@@ -471,7 +474,6 @@ namespace Player.Movement
 
         private void OnAfterMovingStateChanged(MovingState movingState)
         {
-            Debug.Log($"Moving state changed {movingState}");
             switch (movingState)
             {
                 case MovingState.OnGround:

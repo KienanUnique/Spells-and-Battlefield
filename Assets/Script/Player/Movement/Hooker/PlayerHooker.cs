@@ -19,6 +19,9 @@ namespace Player.Movement.Hooker
         private readonly ICoroutineStarter _coroutineStarter;
         private readonly Collider[] _overlapResults = new Collider[MaxHookColliders];
 
+        private Coroutine _removeHookAfterTimeOutCoroutine;
+        
+
         public PlayerHooker(IReadonlyTransform rigidbody, IReadonlyPlayerLook look, IPlayerHookerSettings hookSettings,
             ICoroutineStarter coroutineStarter)
         {
@@ -32,9 +35,8 @@ namespace Player.Movement.Hooker
 
         public Vector3 HookPushDirection { get; private set; }
         public Vector3 HookPoint { get; private set; }
-
-        public bool IsHooking { get; private set; }
         public Vector3 AfterHookPushDirection { get;  private set; }
+        public bool IsHooking { get; private set; }
 
         public bool TrySetHookPoint()
         {
@@ -61,25 +63,28 @@ namespace Player.Movement.Hooker
             }
 
             HookPoint = pointProvider.HookPoint;
-            AfterHookPushDirection = (HookPoint - _rigidbody.Position).normalized; 
+            var direction = HookPoint - _rigidbody.Position;
+            AfterHookPushDirection = direction.normalized;
             return true;
         }
 
         public void StartCalculatingHookDirection()
         {
             IsHooking = true;
-            _coroutineStarter.StartCoroutine(RemoveHookAfterTimeOut());
+            _removeHookAfterTimeOutCoroutine = _coroutineStarter.StartCoroutine(RemoveHookAfterTimeOut());
             _coroutineStarter.StartCoroutine(CalculateHookDirection());
         }
-
-        // TODO: Add current position calculation to fix hooking back issue
+        
         private IEnumerator CalculateHookDirection()
         {
-            Vector3 distance;
             while (IsHooking)
             {
-                distance = HookPoint - _rigidbody.Position;
-                if (distance.magnitude < _hookSettings.MinHookDistance)
+                var distance = HookPoint - _rigidbody.Position;
+                var distanceMagnitude = distance.magnitude;
+                var isTooClose = distanceMagnitude < _hookSettings.CancelHookDistance;
+                var isAngleTooBig = Vector3.Angle(distance, AfterHookPushDirection) >=
+                                    _hookSettings.StartAndCurrentDirectionsMaxAngle;
+                if (isTooClose || isAngleTooBig)
                 {
                     EndHooking();
                 }
@@ -91,7 +96,7 @@ namespace Player.Movement.Hooker
 
         private IEnumerator RemoveHookAfterTimeOut()
         {
-            yield return new WaitForSeconds(_hookSettings.Duration);
+            yield return new WaitForSeconds(_hookSettings.MaxDurationInSeconds);
             if (IsHooking)
             {
                 EndHooking();
@@ -100,6 +105,12 @@ namespace Player.Movement.Hooker
 
         private void EndHooking()
         {
+            if (!IsHooking)
+            {
+                return;
+            }
+            _coroutineStarter.StopCoroutine(_removeHookAfterTimeOutCoroutine);
+            _removeHookAfterTimeOutCoroutine = null;
             IsHooking = false;
             HookingEnded?.Invoke();
         }

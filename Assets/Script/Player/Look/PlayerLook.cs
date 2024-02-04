@@ -88,6 +88,7 @@ namespace Player.Look
             var bodyLookRotation = Quaternion.LookRotation(bodyLookDirection);
             
             _startLockedPointRotationSequence?.Kill();
+            _startLockedPointRotationSequence = DOTween.Sequence();
             _startLockedPointRotationSequence
                 .Append(_bodyRotateObject.DORotateQuaternion(bodyLookRotation, _lookSettings.LookAtStartAnimationDuration))
                 .Join(_cameraTransform.DOLookAt(_lookLockPoint, _lookSettings.LookAtStartAnimationDuration))

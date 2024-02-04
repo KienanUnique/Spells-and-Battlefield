@@ -23,7 +23,6 @@ namespace Player.Movement.Settings
         [SerializeField] [Min(0)] private float _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration = 99f;
         [SerializeField] private PlayerHookerSettings _hookerSettings;
         [SerializeField] [Min(0)] private float _hookingGravityForceMultiplier = 0.1f;
-        [SerializeField] [Min(0)] private float _disableSpeedLimitationAfterHookSeconds = 0.7f;
         [SerializeField] [Min(0)] private float _continuePushingAfterHookSeconds = 0.7f;
 
         public float GroundDecreaseAdditionalMaximumSpeedAcceleration =>
@@ -46,8 +45,6 @@ namespace Player.Movement.Settings
             _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration;
 
         public float HookingGravityForceMultiplier => _hookingGravityForceMultiplier;
-
-        public float DisableSpeedLimitationAfterHookSeconds => _disableSpeedLimitationAfterHookSeconds;
 
         public IPlayerHookerSettings HookerSettings => _hookerSettings;
 
