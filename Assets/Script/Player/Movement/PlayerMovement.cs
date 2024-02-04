@@ -260,7 +260,6 @@ namespace Player.Movement
                 if (_speedLimitationEnabled)
                 {
                     TryLimitCurrentSpeed();
-                    _currentOverSpeedValue.Value = _movementValuesCalculator.CurrentOverSpeedingValue;
                 }
 
                 if (_hooker.IsHooking)
@@ -268,6 +267,8 @@ namespace Player.Movement
                     _rigidbody.AddForce(_movementValuesCalculator.CalculateHookForce(_hooker.HookPushDirection) *
                                         Time.fixedDeltaTime);
                 }
+                
+                _currentOverSpeedValue.Value = _movementValuesCalculator.CurrentOverSpeedingValue;
 
                 yield return waitForFixedUpdate;
             }
