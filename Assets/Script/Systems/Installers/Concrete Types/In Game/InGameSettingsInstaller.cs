@@ -1,6 +1,6 @@
+using Common.Dissolve_Effect_Controller.Settings;
 using Common.Settings.Ground_Layer_Mask;
 using Enemies.General_Settings;
-using Enemies.Visual.Dissolve_Effect_Controller.Settings;
 using Pickable_Items.Settings;
 using Player.Settings;
 using Puzzles.Mechanisms.Extendable_Object.Settings;

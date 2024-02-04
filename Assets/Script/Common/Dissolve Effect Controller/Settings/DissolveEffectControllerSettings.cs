@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace Enemies.Visual.Dissolve_Effect_Controller.Settings
+namespace Common.Dissolve_Effect_Controller.Settings
 {
     [CreateAssetMenu(fileName = "Dissolve Effect Controller Settings",
         menuName = ScriptableObjectsMenuDirectories.GeneralSettingsDirectory + "Dissolve Effect Controller Settings",

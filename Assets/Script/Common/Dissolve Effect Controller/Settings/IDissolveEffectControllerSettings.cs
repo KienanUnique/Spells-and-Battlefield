@@ -1,6 +1,6 @@
 ﻿using DG.Tweening;
 
-namespace Enemies.Visual.Dissolve_Effect_Controller.Settings
+namespace Common.Dissolve_Effect_Controller.Settings
 {
     public interface IDissolveEffectControllerSettings
     {

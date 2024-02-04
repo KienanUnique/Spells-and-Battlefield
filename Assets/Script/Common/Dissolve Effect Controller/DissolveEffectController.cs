@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using Common.Dissolve_Effect_Controller.Settings;
 using DG.Tweening;
-using Enemies.Visual.Dissolve_Effect_Controller.Settings;
 using UnityEngine;
 
-namespace Enemies.Visual.Dissolve_Effect_Controller
+namespace Common.Dissolve_Effect_Controller
 {
     public class DissolveEffectController : IDissolveEffectController
     {
@@ -15,7 +15,7 @@ namespace Enemies.Visual.Dissolve_Effect_Controller
         private readonly GameObject _linkGameObject;
 
         public DissolveEffectController(IEnumerable<Renderer> renderers, IDissolveEffectControllerSettings settings,
-            GameObject linkGameObject)
+            GameObject linkGameObject, bool isDissolvedAtStart = false)
         {
             _settings = settings;
             _linkGameObject = linkGameObject;
@@ -26,6 +26,12 @@ namespace Enemies.Visual.Dissolve_Effect_Controller
             }
 
             _materials = materials;
+
+            var startDissolveValue = isDissolvedAtStart ? FullDissolveEffectValue : NoneDissolveEffectValue;
+            foreach (Material material in _materials)
+            {
+                material.SetFloat(Dissolve, startDissolveValue);
+            }
         }
 
         public void Appear()

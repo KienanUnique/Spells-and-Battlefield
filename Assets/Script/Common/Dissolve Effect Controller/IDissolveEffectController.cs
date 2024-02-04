@@ -1,4 +1,4 @@
-﻿namespace Enemies.Visual.Dissolve_Effect_Controller
+﻿namespace Common.Dissolve_Effect_Controller
 {
     public interface IDissolveEffectController
     {
