@@ -101,7 +101,8 @@ namespace Player.Movement
             InAir,
             WallRunning,
             DashAiming,
-            Hooking
+            Hooking,
+            AfterHook
         }
 
         public float CurrentDashCooldownRatio { get; private set; }
@@ -252,7 +253,7 @@ namespace Player.Movement
                 {
                     _rigidbody.AddForce(_movementValuesCalculator.MoveForce * Time.fixedDeltaTime);
                 }
-                
+
                 if (_speedLimitationEnabled)
                 {
                     TryLimitCurrentSpeed();
@@ -316,10 +317,7 @@ namespace Player.Movement
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
             float passedSeconds = 0f;
-            _speedLimitationEnabled = false;
-            _isInputMovingEnabled = false;
-            while ((_currentMovingState.Value == MovingState.InAir ||
-                    _currentMovingState.Value == MovingState.Hooking) &&
+            while (_currentMovingState.Value == MovingState.AfterHook &&
                    passedSeconds < _movementSettings.ContinuePushingAfterHookEndSeconds)
             {
                 _rigidbody.AddForce(_movementValuesCalculator.CalculateHookForce(_hooker.AfterHookPushDirection) *
@@ -328,8 +326,14 @@ namespace Player.Movement
                 passedSeconds += Time.fixedDeltaTime;
             }
 
-            _isInputMovingEnabled = true;
-            _speedLimitationEnabled = true;
+            if (IsGrounded)
+            {
+                _currentMovingState.Value = MovingState.OnGround;
+            }
+            else
+            {
+                _currentMovingState.Value = IsInContactWithWall ? MovingState.WallRunning : MovingState.InAir;
+            }
         }
 
         private IEnumerator CalculateCurrentWallDirectionContinuously()
@@ -408,10 +412,12 @@ namespace Player.Movement
             {
                 _currentMovingState.Value = MovingState.OnGround;
             }
-            else
+            else if (IsInContactWithWall)
             {
-                _currentMovingState.Value = IsInContactWithWall ? MovingState.WallRunning : MovingState.InAir;
+                _currentMovingState.Value = MovingState.WallRunning;
             }
+
+            _currentMovingState.Value = MovingState.AfterHook;
         }
 
         private void OnBeforeMovingStateChanged(MovingState movingState)
@@ -450,8 +456,11 @@ namespace Player.Movement
                     _coroutineStarter.StartCoroutine(WaitForDashCooldownWithTicking());
                     break;
                 case MovingState.Hooking:
-                    _coroutineStarter.StartCoroutine(ContinuePushingAfterHook());
                     HookingEnded?.Invoke();
+                    break;
+                case MovingState.AfterHook:
+                    _isInputMovingEnabled = true;
+                    _speedLimitationEnabled = true;
                     break;
                 case MovingState.NotInitialized:
                     break;
@@ -533,6 +542,13 @@ namespace Player.Movement
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .HookingGravityForceMultiplier);
                     HookingStarted?.Invoke(_hooker.HookPoint);
+                    break;
+                case MovingState.AfterHook:
+                    _isInputMovingEnabled = false;
+                    _speedLimitationEnabled = false;
+                    _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
+                        .NormalGravityForceMultiplier);
+                    _coroutineStarter.StartCoroutine(ContinuePushingAfterHook());
                     break;
                 case MovingState.NotInitialized:
                 default:

@@ -58,13 +58,13 @@ MonoBehaviour:
       _mask:
         serializedVersion: 2
         m_Bits: 1024
-      _maxDistance: 100
+      _maxDistance: 50
       _minHookDistance: 5
       _pointSelectionRadius: 5
       _duration: 4
     _hookingGravityForceMultiplier: 0.1
     _disableSpeedLimitationAfterHookSeconds: 3
-    _continuePushingAfterHookSeconds: 0.4
+    _continuePushingAfterHookSeconds: 0.1
   _character:
     _maximumCountOfHitPoints: 30
   _spellManager:
