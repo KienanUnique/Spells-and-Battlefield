@@ -7,7 +7,6 @@ using Common.Abstract_Bases.Character.Hit_Points_Character_Change_Information;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animation_Data;
 using Common.Animation_Data.Continuous_Action;
-using Common.Animator_Status_Controller;
 using Common.Collection_With_Reaction_On_Change;
 using Common.Id_Holder;
 using Common.Interfaces;
@@ -17,6 +16,7 @@ using Common.Mechanic_Effects.Source;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Factions;
+using Player.Animator_Status_Checker;
 using Player.Camera_Effects;
 using Player.Character;
 using Player.Look;
@@ -24,6 +24,7 @@ using Player.Movement;
 using Player.Setup;
 using Player.Spell_Manager;
 using Player.Visual;
+using Player.Visual.Hook_Trail;
 using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using Systems.Input_Manager.Concrete_Types.In_Game;
@@ -45,7 +46,8 @@ namespace Player
         private IPlayerMovement _movement;
         private IPlayerSpellsManager _spellsManager;
         private IPlayerVisual _visual;
-        private IAnimatorStatusChecker _animatorStatusChecker;
+        private IPlayerAnimatorStatusChecker _animatorStatusChecker;
+        private IHookTrailVisual _hookTrailVisual;
 
         public void Initialize(IPlayerControllerSetupData setupData)
         {
@@ -64,6 +66,7 @@ namespace Player
             InformationForSummon = setupData.SetInformationForSummon;
             ToolsForSummon = setupData.SetToolsForSummon;
             _animatorStatusChecker = setupData.SetAnimatorStatusChecker;
+            _hookTrailVisual = setupData.SetHookTrailVisual;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -174,6 +177,7 @@ namespace Player
             _input.StopUsingSpellInputted += _spellsManager.StopCasting;
             _input.MoveInputted += _movement.MoveInputted;
             _input.LookInputted += _look.LookInputtedWith;
+            _input.UseHookInputted += OnUseHookInputted;
 
             _input.SelectSpellTypeWithIndex += _spellsManager.SelectSpellTypeWithIndex;
             _input.SelectNextSpellType += _spellsManager.SelectNextSpellType;
@@ -190,6 +194,8 @@ namespace Player
             _movement.Dashed += OnDashed;
             _movement.DashCooldownRatioChanged += OnDashCooldownRatioChanged;
             _movement.OverSpeedValueChanged += _cameraEffects.UpdateOverSpeedValue;
+            _movement.HookingStarted += OnHookingStarted;
+            _movement.HookingEnded += OnHookingEnded;
 
             _character.CharacterStateChanged += OnCharacterStateChanged;
             _character.HitPointsCountChanged += OnHitPointsCountChanged;
@@ -202,6 +208,9 @@ namespace Player
             _spellsManager.SelectedSpellTypeChanged += OnSelectedSpellTypeChanged;
             _spellsManager.ContinuousSpellFinished += OnContinuousSpellFinished;
             _spellsManager.ContinuousSpellStarted += OnContinuousSpellStarted;
+
+            _hookTrailVisual.TrailArrivedToHookPoint += OnTrailArrivedToHookPoint;
+            _animatorStatusChecker.HookKeyMomentTrigger += OnHookKeyMomentTrigger;
         }
 
         protected override void UnsubscribeFromEvents()
@@ -215,6 +224,7 @@ namespace Player
             _input.StopUsingSpellInputted -= _spellsManager.StopCasting;
             _input.MoveInputted -= _movement.MoveInputted;
             _input.LookInputted -= _look.LookInputtedWith;
+            _input.UseHookInputted -= OnUseHookInputted;
 
             _input.SelectSpellTypeWithIndex -= _spellsManager.SelectSpellTypeWithIndex;
             _input.SelectNextSpellType -= _spellsManager.SelectNextSpellType;
@@ -231,6 +241,8 @@ namespace Player
             _movement.Dashed -= OnDashed;
             _movement.DashCooldownRatioChanged -= OnDashCooldownRatioChanged;
             _movement.OverSpeedValueChanged -= _cameraEffects.UpdateOverSpeedValue;
+            _movement.HookingStarted -= OnHookingStarted;
+            _movement.HookingEnded -= OnHookingEnded;
 
             _character.CharacterStateChanged -= OnCharacterStateChanged;
             _character.HitPointsCountChanged -= OnHitPointsCountChanged;
@@ -243,6 +255,37 @@ namespace Player
             _spellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
             _spellsManager.ContinuousSpellFinished -= OnContinuousSpellFinished;
             _spellsManager.ContinuousSpellStarted -= OnContinuousSpellStarted;
+            
+            _hookTrailVisual.TrailArrivedToHookPoint -= OnTrailArrivedToHookPoint;
+            _animatorStatusChecker.HookKeyMomentTrigger -= OnHookKeyMomentTrigger;
+        }
+
+        private void OnHookKeyMomentTrigger()
+        {
+            _hookTrailVisual.MoveTrailToPoint(_movement.HookPoint);
+        }
+
+        private void OnUseHookInputted()
+        {
+            if (_animatorStatusChecker.IsReadyToPlayActionAnimations)
+            {
+                _movement.TryStartHook();
+            }
+        }
+
+        private void OnHookingStarted()
+        {
+            _animatorStatusChecker.HandleHookStart();
+            _visual.StartPlayingHookAnimation();
+            _look.StartLookingAtPoint(_movement.HookPoint);
+        }
+
+        private void OnHookingEnded()
+        {
+            _hookTrailVisual.Disappear();
+            _animatorStatusChecker.HandleHookEnd();
+            _visual.StopPlayingHookAnimation();
+            _look.StopLookingAtPoint();
         }
 
         private void OnNeedPlayContinuousActionAnimation()
@@ -281,6 +324,12 @@ namespace Player
         private void OnDashCooldownRatioChanged(float newCooldownRatio)
         {
             DashCooldownRatioChanged?.Invoke(newCooldownRatio);
+        }
+
+        private void OnTrailArrivedToHookPoint()
+        {
+            _visual.PlayHookPushingAnimation();
+            _movement.StartPushingTowardsHook();
         }
 
         private void OnInitializationStatusChanged(InitializableMonoBehaviourStatus newStatus)

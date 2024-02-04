@@ -5,12 +5,14 @@ using Common.Id_Holder;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Readonly_Transform;
 using Factions;
+using Player.Animator_Status_Checker;
 using Player.Camera_Effects;
 using Player.Character;
 using Player.Look;
 using Player.Movement;
 using Player.Spell_Manager;
 using Player.Visual;
+using Player.Visual.Hook_Trail;
 using Systems.Input_Manager.Concrete_Types.In_Game;
 
 namespace Player.Setup
@@ -31,6 +33,7 @@ namespace Player.Setup
         public IInformationForSummon SetInformationForSummon { get; }
         public IToolsForSummon SetToolsForSummon { get; }
         public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
-        public IAnimatorStatusChecker SetAnimatorStatusChecker { get; }
+        public IPlayerAnimatorStatusChecker SetAnimatorStatusChecker { get; }
+        public IHookTrailVisual SetHookTrailVisual { get; }
     }
 }

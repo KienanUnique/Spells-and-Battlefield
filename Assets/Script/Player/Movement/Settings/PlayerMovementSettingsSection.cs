@@ -1,5 +1,6 @@
 ﻿using System;
 using Common.Settings.Sections.Movement.Movement_With_Gravity;
+using Player.Movement.Hooker.Settings;
 using UnityEngine;
 
 namespace Player.Movement.Settings
@@ -20,6 +21,9 @@ namespace Player.Movement.Settings
         [SerializeField] [Min(0)] private float _wallRunningIncreaseAdditionalMaximumSpeedAcceleration = 4f;
         [SerializeField] [Min(0)] private float _wallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration = 20f;
         [SerializeField] [Min(0)] private float _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration = 99f;
+        [SerializeField] private PlayerHookerSettings _hookerSettings;
+        [SerializeField] [Min(0)] private float _hookingGravityForceMultiplier = 0.1f;
+        [SerializeField] [Min(0)] private float _continuePushingAfterHookSeconds = 0.7f;
 
         public float GroundDecreaseAdditionalMaximumSpeedAcceleration =>
             _groundDecreaseAdditionalMaximumSpeedAcceleration;
@@ -39,6 +43,12 @@ namespace Player.Movement.Settings
 
         public float NoInputMovingDecreaseAdditionalMaximumSpeedAcceleration =>
             _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration;
+
+        public float HookingGravityForceMultiplier => _hookingGravityForceMultiplier;
+
+        public IPlayerHookerSettings HookerSettings => _hookerSettings;
+
+        public float ContinuePushingAfterHookEndSeconds => _continuePushingAfterHookSeconds;
 
         public float DashCooldownSeconds => _dashCooldownSeconds;
         public float DashSpeedLimitationsDisablingForSeconds => _dashSpeedLimitationsDisablingForSeconds;

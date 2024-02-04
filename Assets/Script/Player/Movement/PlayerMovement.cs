@@ -8,6 +8,7 @@ using Common.Abstract_Bases.Movement.Coefficients_Calculator;
 using Common.Interfaces;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
+using Player.Movement.Hooker;
 using Player.Movement.Settings;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ namespace Player.Movement
         private const float NormalPlayerInputForceMultiplier = 1;
         private const float WallRunningPlayerInputForceMultiplier = 1.5f;
         private const float DashAimingPlayerInputForceMultiplier = 0;
+        private const float HookingPlayerInputForceMultiplier = 0;
 
         private const RigidbodyConstraints RigidbodyConstraintsFreezeRotationAndPosition =
             RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
@@ -35,18 +37,20 @@ namespace Player.Movement
         private readonly Transform _originalParent;
         private readonly CoyoteTimeWaiter _airCoyoteTimeWaiter;
         private readonly IPlayerMovementValuesCalculator _movementValuesCalculator;
+        private readonly IPlayerHooker _hooker;
 
         private bool _canDash = true;
         private int _currentCountOfAirJumps;
         private Coroutine _frictionCoroutine;
 
         private bool _speedLimitationEnabled = true;
+        private bool _isInputMovingEnabled = true;
         private Coroutine _wallRunningCalculationCoroutine;
 
         public PlayerMovement(Rigidbody rigidbody, IPlayerMovementSettings movementSettings,
             IGroundChecker groundChecker, IWallChecker wallChecker,
-            IPlayerMovementValuesCalculator movementValuesCalculator, ICoroutineStarter coroutineStarter) : base(
-            rigidbody)
+            IPlayerMovementValuesCalculator movementValuesCalculator, ICoroutineStarter coroutineStarter,
+            IPlayerHooker hooker) : base(rigidbody)
         {
             _groundChecker = groundChecker;
             _wallChecker = wallChecker;
@@ -54,6 +58,7 @@ namespace Player.Movement
             _coroutineStarter = coroutineStarter;
             _cashedTransform = _rigidbody.transform;
             _originalParent = _cashedTransform.parent;
+            _hooker = hooker;
             MainRigidbody = new ReadonlyRigidbody(rigidbody);
             _movementValuesCalculator = movementValuesCalculator;
 
@@ -84,6 +89,8 @@ namespace Player.Movement
         public event Action<WallDirection> StartWallRunning;
         public event Action<WallDirection> WallRunningDirectionChanged;
         public event Action EndWallRunning;
+        public event Action HookingStarted;
+        public event Action HookingEnded;
         public event Action<float> OverSpeedValueChanged;
 
         private enum MovingState
@@ -93,12 +100,15 @@ namespace Player.Movement
             CoyoteTime,
             InAir,
             WallRunning,
-            DashAiming
+            DashAiming,
+            Hooking,
+            AfterHook
         }
 
         public float CurrentDashCooldownRatio { get; private set; }
         public Vector2 NormalizedVelocityDirectionXY { private set; get; }
         public float RatioOfCurrentVelocityToMaximumVelocity { private set; get; }
+        public Vector3 HookPoint => _hooker.HookPoint;
         public IReadonlyRigidbody MainRigidbody { get; }
         public float CurrentOverSpeedRatio => _currentOverSpeedValue.Value;
 
@@ -172,6 +182,25 @@ namespace Player.Movement
             }
         }
 
+        public void TryStartHook()
+        {
+            if (_currentMovingState.Value == MovingState.DashAiming || _currentMovingState.Value == MovingState.Hooking)
+            {
+                return;
+            }
+            
+            if (_hooker.TrySetHookPoint())
+            {
+                _currentMovingState.Value = MovingState.Hooking;
+            }
+        }
+
+        public void StartPushingTowardsHook()
+        {
+            _speedLimitationEnabled = false;
+            _hooker.StartCalculatingHookDirection();
+        }
+
         public void MoveInputted(Vector2 direction2d)
         {
             NormalizedVelocityDirectionXY = direction2d;
@@ -198,6 +227,7 @@ namespace Player.Movement
             _groundChecker.ContactStateChanged += OnGroundedStatusChanged;
             _wallChecker.ContactStateChanged += OnWallContactStatusChanged;
             _airCoyoteTimeWaiter.Finished += OnAirCoyoteTimeFinished;
+            _hooker.HookingEnded += OnHookingEnd;
             _currentMovingState.BeforeValueChanged += OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged += OnAfterMovingStateChanged;
             _currentWallDirection.AfterValueChanged += OnWallDirectionChanged;
@@ -209,6 +239,7 @@ namespace Player.Movement
             _groundChecker.ContactStateChanged -= OnGroundedStatusChanged;
             _wallChecker.ContactStateChanged -= OnWallContactStatusChanged;
             _airCoyoteTimeWaiter.Finished -= OnAirCoyoteTimeFinished;
+            _hooker.HookingEnded -= OnHookingEnd;
             _currentMovingState.BeforeValueChanged -= OnBeforeMovingStateChanged;
             _currentMovingState.AfterValueChanged -= OnAfterMovingStateChanged;
             _currentWallDirection.AfterValueChanged -= OnWallDirectionChanged;
@@ -222,13 +253,23 @@ namespace Player.Movement
             {
                 ApplyGravity(_movementValuesCalculator.GravityForce);
 
-                _rigidbody.AddForce(_movementValuesCalculator.MoveForce * Time.fixedDeltaTime);
+                if (_isInputMovingEnabled)
+                {
+                    _rigidbody.AddForce(_movementValuesCalculator.MoveForce * Time.fixedDeltaTime);
+                }
 
                 if (_speedLimitationEnabled)
                 {
                     TryLimitCurrentSpeed();
-                    _currentOverSpeedValue.Value = _movementValuesCalculator.CurrentOverSpeedingValue;
                 }
+
+                if (_hooker.IsHooking)
+                {
+                    _rigidbody.AddForce(_movementValuesCalculator.CalculateHookForce(_hooker.HookPushDirection) *
+                                        Time.fixedDeltaTime);
+                }
+                
+                _currentOverSpeedValue.Value = _movementValuesCalculator.CurrentOverSpeedingValue;
 
                 yield return waitForFixedUpdate;
             }
@@ -277,6 +318,29 @@ namespace Player.Movement
             _speedLimitationEnabled = true;
         }
 
+        private IEnumerator ContinuePushingAfterHook()
+        {
+            var waitForFixedUpdate = new WaitForFixedUpdate();
+            float passedSeconds = 0f;
+            while (_currentMovingState.Value == MovingState.AfterHook &&
+                   passedSeconds < _movementSettings.ContinuePushingAfterHookEndSeconds)
+            {
+                _rigidbody.AddForce(_movementValuesCalculator.CalculateHookForce(_hooker.AfterHookPushDirection) *
+                                    Time.fixedDeltaTime);
+                yield return waitForFixedUpdate;
+                passedSeconds += Time.fixedDeltaTime;
+            }
+
+            if (IsGrounded)
+            {
+                _currentMovingState.Value = MovingState.OnGround;
+            }
+            else
+            {
+                _currentMovingState.Value = IsInContactWithWall ? MovingState.WallRunning : MovingState.InAir;
+            }
+        }
+
         private IEnumerator CalculateCurrentWallDirectionContinuously()
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
@@ -308,20 +372,18 @@ namespace Player.Movement
 
         private void OnGroundedStatusChanged(bool isGrounded)
         {
+            if (_currentMovingState.Value == MovingState.Hooking)
+            {
+                return;
+            }
+            
             if (isGrounded)
             {
                 _currentMovingState.Value = MovingState.OnGround;
             }
             else
             {
-                if (IsInContactWithWall)
-                {
-                    _currentMovingState.Value = MovingState.WallRunning;
-                }
-                else
-                {
-                    _currentMovingState.Value = MovingState.CoyoteTime;
-                }
+                _currentMovingState.Value = IsInContactWithWall ? MovingState.WallRunning : MovingState.CoyoteTime;
             }
         }
 
@@ -347,6 +409,20 @@ namespace Player.Movement
         private void OnOverSpeedValueChanged(float newRatio)
         {
             OverSpeedValueChanged?.Invoke(newRatio);
+        }
+
+        private void OnHookingEnd()
+        {
+            if (IsGrounded)
+            {
+                _currentMovingState.Value = MovingState.OnGround;
+            }
+            else if (IsInContactWithWall)
+            {
+                _currentMovingState.Value = MovingState.WallRunning;
+            }
+
+            _currentMovingState.Value = MovingState.AfterHook;
         }
 
         private void OnBeforeMovingStateChanged(MovingState movingState)
@@ -384,6 +460,13 @@ namespace Player.Movement
                     Dashed?.Invoke();
                     _coroutineStarter.StartCoroutine(WaitForDashCooldownWithTicking());
                     break;
+                case MovingState.Hooking:
+                    HookingEnded?.Invoke();
+                    break;
+                case MovingState.AfterHook:
+                    _isInputMovingEnabled = true;
+                    _speedLimitationEnabled = true;
+                    break;
                 case MovingState.NotInitialized:
                     break;
                 default:
@@ -397,6 +480,7 @@ namespace Player.Movement
             {
                 case MovingState.OnGround:
                     _currentCountOfAirJumps = 0;
+                    _speedLimitationEnabled = true;
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(NormalPlayerInputForceMultiplier);
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .NormalGravityForceMultiplier);
@@ -408,6 +492,7 @@ namespace Player.Movement
                     break;
                 case MovingState.CoyoteTime:
                     _currentCountOfAirJumps = 0;
+                    _speedLimitationEnabled = true;
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(NormalPlayerInputForceMultiplier);
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .NormalGravityForceMultiplier);
@@ -435,6 +520,7 @@ namespace Player.Movement
                     break;
                 case MovingState.WallRunning:
                     _currentCountOfAirJumps = 0;
+                    _speedLimitationEnabled = true;
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(WallRunningPlayerInputForceMultiplier);
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .WallRunningGravityForceMultiplier);
@@ -454,6 +540,19 @@ namespace Player.Movement
                 case MovingState.DashAiming:
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(DashAimingPlayerInputForceMultiplier);
                     DashAiming?.Invoke();
+                    break;
+                case MovingState.Hooking:
+                    _movementValuesCalculator.ChangePlayerInputForceMultiplier(HookingPlayerInputForceMultiplier);
+                    _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
+                        .HookingGravityForceMultiplier);
+                    HookingStarted?.Invoke();
+                    break;
+                case MovingState.AfterHook:
+                    _isInputMovingEnabled = false;
+                    _speedLimitationEnabled = false;
+                    _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
+                        .NormalGravityForceMultiplier);
+                    _coroutineStarter.StartCoroutine(ContinuePushingAfterHook());
                     break;
                 case MovingState.NotInitialized:
                 default:
