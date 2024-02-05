@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using Common.Collider_With_Disabling;
 using Common.Dissolve_Effect_Controller;
 using Puzzles.Mechanisms_Triggers;
-using UnityEngine;
 
 namespace Puzzles.Mechanisms.Dissolve_Object
 {
@@ -9,11 +9,11 @@ namespace Puzzles.Mechanisms.Dissolve_Object
         IInitializableDissolveObjectMechanismController
     {
         private IDissolveEffectController _dissolveEffectController;
-        private List<Collider> _collidersToDisable;
+        private List<IColliderWithDisabling> _collidersToDisable;
         private bool _isEnabled;
 
         public void Initialize(bool isEnabledAtStart, List<IMechanismsTrigger> triggers,
-            IDissolveEffectController dissolveEffectController, List<Collider> collidersToDisable)
+            IDissolveEffectController dissolveEffectController, List<IColliderWithDisabling> collidersToDisable)
         {
             AddTriggers(triggers);
             _dissolveEffectController = dissolveEffectController;
@@ -41,9 +41,19 @@ namespace Puzzles.Mechanisms.Dissolve_Object
 
         private void UpdateCollidersStatus()
         {
-            foreach (var colliderToDisable in _collidersToDisable)
+            if (_isEnabled)
             {
-                colliderToDisable.enabled = _isEnabled;
+                foreach (var colliderToDisable in _collidersToDisable)
+                {
+                    colliderToDisable.EnableCollider();
+                }
+            }
+            else
+            {
+                foreach (var colliderToDisable in _collidersToDisable)
+                {
+                    colliderToDisable.DisableCollider();
+                }
             }
         }
     }

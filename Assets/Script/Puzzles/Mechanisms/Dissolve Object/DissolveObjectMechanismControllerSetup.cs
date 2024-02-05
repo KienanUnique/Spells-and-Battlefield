@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases;
+using Common.Collider_With_Disabling;
 using Common.Dissolve_Effect_Controller;
 using Common.Dissolve_Effect_Controller.Settings;
 using Puzzles.Mechanisms_Triggers;
@@ -12,7 +13,7 @@ namespace Puzzles.Mechanisms.Dissolve_Object
     public class DissolveObjectMechanismControllerSetup : SetupMonoBehaviourBase
     {
         [SerializeField] private List<Renderer> _renderers;
-        [SerializeField] private List<Collider> _colliders;
+        [SerializeField] private List<ColliderWithDisabling> _colliders;
         [SerializeField] private List<MechanismsTriggerBase> _triggers;
         [SerializeField] private bool _isEnabledAtStart = true;
 
@@ -38,7 +39,7 @@ namespace Puzzles.Mechanisms.Dissolve_Object
             var dissolveController = new DissolveEffectController(_renderers, _dissolveEffectControllerSettings,
                 gameObject, !_isEnabledAtStart);
             _controller.Initialize(_isEnabledAtStart, new List<IMechanismsTrigger>(_triggers), dissolveController,
-                _colliders);
+                new List<IColliderWithDisabling>(_colliders));
         }
     }
 }

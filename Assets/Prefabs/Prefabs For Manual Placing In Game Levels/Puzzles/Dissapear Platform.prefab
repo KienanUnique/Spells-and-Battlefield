@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8257360256249642}
   - component: {fileID: 4994326493291885474}
   - component: {fileID: 1273741763726905548}
+  - component: {fileID: 7185573023615087773}
   m_Layer: 6
   m_Name: Dissapear Platform
   m_TagString: Untagged
@@ -125,10 +126,22 @@ MonoBehaviour:
   _renderers:
   - {fileID: 7766932623359759897}
   _colliders:
-  - {fileID: 8257360256249642}
+  - {fileID: 7185573023615087773}
   _triggers:
   - {fileID: 2395749659786987287}
   _isEnabledAtStart: 1
+--- !u!114 &7185573023615087773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538923414373600058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9382881694d2a094bab19486e992b7df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5642971811117123247
 PrefabInstance:
   m_ObjectHideFlags: 0
