@@ -5,44 +5,32 @@ using Puzzles.Mechanisms_Triggers;
 
 namespace Puzzles.Mechanisms.Dissolve_Object
 {
-    public class DissolveObjectMechanismController : MechanismControllerBase,
-        IInitializableDissolveObjectMechanismController
+    public abstract class DissolveObjectMechanismControllerBase : MechanismControllerBase
     {
         private IDissolveEffectController _dissolveEffectController;
         private List<IColliderWithDisabling> _collidersToDisable;
-        private bool _isEnabled;
+        protected bool IsEnabled { get; private set; }
 
-        public void Initialize(bool isEnabledAtStart, List<IMechanismsTrigger> triggers,
-            IDissolveEffectController dissolveEffectController, List<IColliderWithDisabling> collidersToDisable)
+        public void InitializeBase(bool isEnabledAtStart, IDissolveEffectController dissolveEffectController,
+            List<IColliderWithDisabling> collidersToDisable)
         {
-            AddTriggers(triggers);
             _dissolveEffectController = dissolveEffectController;
             _collidersToDisable = collidersToDisable;
-            _isEnabled = isEnabledAtStart;
-            UpdateCollidersStatus();
+            ChangeState(isEnabledAtStart);
             SetInitializedStatus();
         }
 
-        protected override void StartJob()
+        protected void ChangeState(bool newIsEnabled)
         {
-            _isEnabled = !_isEnabled;
+            if (newIsEnabled == IsEnabled)
+            {
+                return;
+            }
 
-            if (_isEnabled)
+            IsEnabled = newIsEnabled;
+            if (newIsEnabled)
             {
                 _dissolveEffectController.Appear(HandleDoneJob);
-            }
-            else
-            {
-                _dissolveEffectController.Disappear(HandleDoneJob);
-            }
-
-            UpdateCollidersStatus();
-        }
-
-        private void UpdateCollidersStatus()
-        {
-            if (_isEnabled)
-            {
                 foreach (var colliderToDisable in _collidersToDisable)
                 {
                     colliderToDisable.EnableCollider();
@@ -50,6 +38,7 @@ namespace Puzzles.Mechanisms.Dissolve_Object
             }
             else
             {
+                _dissolveEffectController.Disappear(HandleDoneJob);
                 foreach (var colliderToDisable in _collidersToDisable)
                 {
                     colliderToDisable.DisableCollider();

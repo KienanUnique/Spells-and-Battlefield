@@ -2,9 +2,8 @@
 using Common.Collider_With_Disabling;
 using Common.Dissolve_Effect_Controller;
 using Puzzles.Mechanisms_Triggers;
-using UnityEngine;
 
-namespace Puzzles.Mechanisms.Dissolve_Object
+namespace Puzzles.Mechanisms.Dissolve_Object.Concrete_Types.Default
 {
     public interface IInitializableDissolveObjectMechanismController
     {
