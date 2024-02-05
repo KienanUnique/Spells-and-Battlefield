@@ -11,7 +11,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Trigger_Zone
     {
         [SerializeField] private ColliderTrigger _colliderTrigger;
         [SerializeField] private IdentifierScriptableObjectBase _identifier;
-        [SerializeField] private TriggerEventType _triggerEventType;
+        [SerializeField] private TriggerZoneEventType _triggerEventType;
         private IInitializableTriggerZoneController _controller;
 
         protected override IEnumerable<IInitializable> ObjectsToWaitBeforeInitialization =>

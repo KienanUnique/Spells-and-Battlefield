@@ -5,7 +5,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Trigger_Zone
 {
     public interface IInitializableTriggerZoneController
     {
-        public void Initialize(IIdentifier identifier, IColliderTrigger colliderTrigger, TriggerEventType eventType,
+        public void Initialize(IIdentifier identifier, IColliderTrigger colliderTrigger, TriggerZoneEventType eventType,
             MechanismsTriggerBaseSetupData baseSetupData);
     }
 }

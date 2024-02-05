@@ -8,9 +8,9 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Trigger_Zone
     {
         private IColliderTrigger _colliderTrigger;
         private IIdentifier _identifier;
-        private TriggerEventType _eventType;
+        private TriggerZoneEventType _eventType;
 
-        public void Initialize(IIdentifier identifier, IColliderTrigger colliderTrigger, TriggerEventType eventType,
+        public void Initialize(IIdentifier identifier, IColliderTrigger colliderTrigger, TriggerZoneEventType eventType,
             MechanismsTriggerBaseSetupData baseSetupData)
         {
             _identifier = identifier;
@@ -33,7 +33,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Trigger_Zone
 
         private void OnTriggerEnter(Collider obj)
         {
-            if ((_eventType == TriggerEventType.Both || _eventType == TriggerEventType.Enter) &&
+            if ((_eventType == TriggerZoneEventType.Both || _eventType == TriggerZoneEventType.Enter) &&
                 _identifier.IsObjectOfRequiredType(obj))
             {
                 TryInvokeTriggerEvent();
@@ -42,7 +42,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Trigger_Zone
 
         private void OnTriggerExit(Collider obj)
         {
-            if ((_eventType == TriggerEventType.Both || _eventType == TriggerEventType.Exit) &&
+            if ((_eventType == TriggerZoneEventType.Both || _eventType == TriggerZoneEventType.Exit) &&
                 _identifier.IsObjectOfRequiredType(obj))
             {
                 TryInvokeTriggerEvent();

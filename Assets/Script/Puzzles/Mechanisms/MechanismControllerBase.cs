@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Puzzles.Mechanisms_Triggers;
-using UnityEngine;
 
 namespace Puzzles.Mechanisms
 {
-    public abstract class MechanismControllerBase : InitializableMonoBehaviourBase
+    public abstract class MechanismControllerBase : InitializableMonoBehaviourBase, IMechanismController
     {
         private readonly List<IMechanismsTrigger> _triggers = new List<IMechanismsTrigger>();
+
+        public event Action JobStarted;
+        public event Action JobEnded;
 
         protected bool IsBusy { get; private set; }
 
@@ -16,7 +19,7 @@ namespace Puzzles.Mechanisms
         protected void AddTriggers(List<IMechanismsTrigger> triggers)
         {
             _triggers.AddRange(triggers);
-            
+
             if (CurrentInitializableMonoBehaviourStatus != InitializableMonoBehaviourStatus.Initialized ||
                 !isActiveAndEnabled)
             {
@@ -54,11 +57,13 @@ namespace Puzzles.Mechanisms
 
             IsBusy = true;
             StartJob();
+            JobStarted?.Invoke();
         }
 
         protected void HandleDoneJob()
         {
             IsBusy = false;
+            JobEnded?.Invoke();
         }
     }
 }
