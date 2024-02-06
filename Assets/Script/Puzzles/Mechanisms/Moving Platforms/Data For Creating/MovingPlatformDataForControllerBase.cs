@@ -7,10 +7,9 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating
 {
     public class MovingPlatformDataForControllerBase : IMovingPlatformDataForControllerBase
     {
-        public MovingPlatformDataForControllerBase(float delayInSeconds, IMovingPlatformsSettings settings,
-            float movementSpeed, List<Vector3> waypoints, Transform objectToMove, IColliderTrigger platformCollider)
+        public MovingPlatformDataForControllerBase(IMovingPlatformsSettings settings, float movementSpeed,
+            List<Vector3> waypoints, Transform objectToMove, IColliderTrigger platformCollider)
         {
-            DelayInSeconds = delayInSeconds;
             Settings = settings;
             MovementSpeed = movementSpeed;
             Waypoints = waypoints;
@@ -18,7 +17,6 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating
             PlatformCollider = platformCollider;
         }
 
-        public float DelayInSeconds { get; }
         public IMovingPlatformsSettings Settings { get; }
         public float MovementSpeed { get; }
         public List<Vector3> Waypoints { get; }

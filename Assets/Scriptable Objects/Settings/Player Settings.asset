@@ -27,14 +27,18 @@ MonoBehaviour:
     _maximumOverSpeedValueForWindTrailEffect: 10
     _minimumOverSpeedValueForWindTrailEffect: 5
   _look:
-    _upperLimit: -40
-    _bottomLimit: 70
+    _maxAimRaycastDistance: 400
     _aimLayerMask:
       serializedVersion: 2
-      m_Bits: 704
+      m_Bits: 1728
+    _upperLimit: -40
+    _bottomLimit: 70
+    _lookAtStartAnimationDuration: 1
+    _lookAtStartAnimationEase: 9
   _movement:
     _moveForce: 4500
     _maximumSpeed: 15
+    _hookForce: 25000
     _normalFrictionCoefficient: 0.108
     _normalGravityForce: 30
     _jumpForce: 800
@@ -50,6 +54,17 @@ MonoBehaviour:
     _wallRunningIncreaseAdditionalMaximumSpeedAcceleration: 4
     _wallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration: 20
     _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration: 99
+    _hookerSettings:
+      _mask:
+        serializedVersion: 2
+        m_Bits: 1024
+      _maxDistance: 50
+      _cancelHookDistance: 5
+      _pointSelectionRadius: 5
+      _startAndCurrentDirectionsMaxAngle: 90
+      _maxDurationInSeconds: 4
+    _hookingGravityForceMultiplier: 0.1
+    _continuePushingAfterHookSeconds: 0.1
   _character:
     _maximumCountOfHitPoints: 30
   _spellManager:
@@ -59,3 +74,6 @@ MonoBehaviour:
     _emptyPrepareContinuousActionAnimation: {fileID: 7400000, guid: d9c8c46c81d66114890bc8ac16272ef0, type: 2}
     _emptyContinuousActionAnimation: {fileID: 7400000, guid: b1365513424f54f4e8b543502c6969a2, type: 2}
   _faction: {fileID: 11400000, guid: bf8019b83105005438a1b13c003057eb, type: 2}
+  _hookerVisualSettings:
+    _hookTrailSpeed: 140
+    _hookTrailEase: 1

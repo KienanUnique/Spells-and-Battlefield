@@ -10,52 +10,30 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform
     public class MovingPlatformController : MovingPlatformWithStickingBase, IInitializableMovingPlatformController
     {
         private bool _needMoveBackward;
-        private List<IMechanismsTrigger> _triggers;
 
         public void Initialize(List<IMechanismsTrigger> triggers,
             IMovingPlatformDataForControllerBase dataForControllerBase)
         {
-            _triggers = triggers;
+            AddTriggers(triggers);
             base.Initialize(dataForControllerBase);
             SetInitializedStatus();
         }
 
-        protected override void SubscribeOnEvents()
+        protected override void StartJob()
         {
-            base.SubscribeOnEvents();
-            foreach (IMechanismsTrigger trigger in _triggers)
-            {
-                trigger.Triggered += OnTriggered;
-            }
-        }
-
-        protected override void UnsubscribeFromEvents()
-        {
-            base.UnsubscribeFromEvents();
-            foreach (IMechanismsTrigger trigger in _triggers)
-            {
-                trigger.Triggered -= OnTriggered;
-            }
-        }
-
-        private void OnTriggered()
-        {
-            if (_isTriggersDisabled)
-            {
-                return;
-            }
-
-            _isTriggersDisabled = true;
-            _parentObjectToMove.DOKill();
-            var path = new List<Vector3>(_waypoints);
+            ParentObjectToMove.DOKill();
+            
+            var path = new List<Vector3>(Waypoints);
             if (_needMoveBackward)
             {
                 path.Reverse();
             }
 
-            _parentObjectToMove.DOPath(path.ToArray(), _movementSpeed, _settings.MovementPathType)
-                               .ApplyCustomSetupForMovingPlatforms(gameObject, _settings, _delayInSeconds)
-                               .OnKill(() => _isTriggersDisabled = false);
+            ParentObjectToMove.DOPath(path.ToArray(), MovementSpeed, Settings.MovementPathType)
+                              .SetSpeedBased()
+                              .SetEase(Settings.MovementEase)
+                              .SetLink(gameObject)
+                              .OnKill(HandleDoneJob);
 
             _needMoveBackward = !_needMoveBackward;
         }

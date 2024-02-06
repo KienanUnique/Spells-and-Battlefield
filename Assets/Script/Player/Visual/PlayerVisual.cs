@@ -1,11 +1,12 @@
 using Common.Abstract_Bases.Visual;
 using Common.Abstract_Bases.Visual.Settings;
+using Player.Visual.Hook_Trail;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 namespace Player.Visual
 {
-    public class PlayerVisual : VisualBase, IPlayerVisual
+    public class PlayerVisual : VisualBase, IPlayerVisual 
     {
         private static readonly int MovingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
         private static readonly int MovingDirectionYFloatHash = Animator.StringToHash("Moving Direction Y");
@@ -17,6 +18,8 @@ namespace Player.Visual
         private static readonly int FallTriggerHash = Animator.StringToHash("Fall");
         private static readonly int LandTriggerHash = Animator.StringToHash("Land");
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
+        private static readonly int IsHookingHash = Animator.StringToHash("Is Hooking");
+        private static readonly int HookPushingStartedHash = Animator.StringToHash("Hook Pushing Started");
 
         public PlayerVisual(RigBuilder rigBuilder, Animator characterAnimator, IVisualSettings settings) : base(
             rigBuilder, characterAnimator)
@@ -55,7 +58,27 @@ namespace Player.Visual
             _characterAnimator.ResetTrigger(JumpTriggerHash);
             _characterAnimator.ResetTrigger(FallTriggerHash);
             _characterAnimator.ResetTrigger(LandTriggerHash);
+            _characterAnimator.ResetTrigger(HookPushingStartedHash);
             _characterAnimator.SetTrigger(DieTriggerHash);
+        }
+
+        public void StartPlayingHookAnimation()
+        {
+            _characterAnimator.SetBool(IsHookingHash, true);
+        }
+
+        public void PlayHookPushingAnimation()
+        {
+            _characterAnimator.SetTrigger(HookPushingStartedHash);
+        }
+
+        public void StopPlayingHookAnimation()
+        {
+            _characterAnimator.ResetTrigger(JumpTriggerHash);
+            _characterAnimator.ResetTrigger(FallTriggerHash);
+            _characterAnimator.ResetTrigger(LandTriggerHash);
+            _characterAnimator.ResetTrigger(HookPushingStartedHash);
+            _characterAnimator.SetBool(IsHookingHash, false);
         }
 
         public void UpdateMovingData(Vector2 movingDirectionNormalized, float ratioOfCurrentVelocityToMaximumVelocity)

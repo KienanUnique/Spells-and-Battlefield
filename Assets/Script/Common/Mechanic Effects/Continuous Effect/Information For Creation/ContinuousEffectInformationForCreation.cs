@@ -5,8 +5,8 @@ namespace Common.Mechanic_Effects.Continuous_Effect.Information_For_Creation
 {
     public class ContinuousEffectInformationForCreation : IContinuousEffectInformationForCreation
     {
-        public ContinuousEffectInformationForCreation(float cooldownInSeconds, List<IMechanicEffect> mechanics, float durationInSeconds,
-            bool needIgnoreCooldown, Sprite icon)
+        public ContinuousEffectInformationForCreation(float cooldownInSeconds, List<IMechanicEffect> mechanics,
+            float durationInSeconds, bool needIgnoreCooldown, Sprite icon)
         {
             CooldownInSeconds = cooldownInSeconds;
             Mechanics = mechanics;

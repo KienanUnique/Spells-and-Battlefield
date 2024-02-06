@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
 using Puzzles.Mechanisms_Triggers;
@@ -13,6 +14,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
         private int _currentWaypoint;
         private List<IMechanismsTrigger> _moveNextTriggers;
         private List<IMechanismsTrigger> _movePreviousTriggers;
+        private MoveDirection _needMoveDirection;
 
         public void Initialize(List<IMechanismsTrigger> moveNextTriggers, List<IMechanismsTrigger> movePreviousTriggers,
             IMovingPlatformDataForControllerBase dataForControllerBase)
@@ -20,69 +22,82 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
             _moveNextTriggers = moveNextTriggers;
             _movePreviousTriggers = movePreviousTriggers;
             _currentWaypoint = 0;
+            AddTriggers(_moveNextTriggers);
+            AddTriggers(_movePreviousTriggers);
             base.Initialize(dataForControllerBase);
             SetInitializedStatus();
         }
 
-        private int LastWaypointIndex => _waypoints.Count - 1;
+        private enum MoveDirection
+        {
+            Next, Previous
+        }
+
+        private int LastWaypointIndex => Waypoints.Count - 1;
+
+        protected override void StartJob()
+        {
+            switch (_needMoveDirection)
+            {
+                case MoveDirection.Next when _currentWaypoint < LastWaypointIndex:
+                    _currentWaypoint++;
+                    MoveToPosition(Waypoints[_currentWaypoint]);
+                    break;
+                case MoveDirection.Previous when _currentWaypoint > 0:
+                    _currentWaypoint--;
+                    MoveToPosition(Waypoints[_currentWaypoint]);
+                    break;
+            }
+        }
 
         protected override void SubscribeOnEvents()
         {
-            base.SubscribeOnEvents();
             foreach (IMechanismsTrigger trigger in _moveNextTriggers)
             {
-                trigger.Triggered += TryMoveToNextWaypoint;
+                trigger.Triggered += SetNextMovementDirection;
             }
 
             foreach (IMechanismsTrigger trigger in _movePreviousTriggers)
             {
-                trigger.Triggered += TryMoveToPreviousWaypoint;
+                trigger.Triggered += SetPreviousMovementDirection;
             }
+
+            base.SubscribeOnEvents();
         }
 
         protected override void UnsubscribeFromEvents()
         {
-            base.UnsubscribeFromEvents();
             foreach (IMechanismsTrigger trigger in _moveNextTriggers)
             {
-                trigger.Triggered -= TryMoveToNextWaypoint;
+                trigger.Triggered -= SetNextMovementDirection;
             }
 
             foreach (IMechanismsTrigger trigger in _movePreviousTriggers)
             {
-                trigger.Triggered -= TryMoveToPreviousWaypoint;
+                trigger.Triggered -= SetPreviousMovementDirection;
             }
+
+            base.UnsubscribeFromEvents();
         }
 
-        private void TryMoveToNextWaypoint()
+        private void SetNextMovementDirection()
         {
-            if (_isTriggersDisabled || _currentWaypoint >= LastWaypointIndex)
-            {
-                return;
-            }
-
-            _currentWaypoint++;
-            MoveToPosition(_waypoints[_currentWaypoint]);
+            _needMoveDirection = MoveDirection.Next;
         }
 
-        private void TryMoveToPreviousWaypoint()
+        private void SetPreviousMovementDirection()
         {
-            if (_isTriggersDisabled || _currentWaypoint <= 0)
-            {
-                return;
-            }
-
-            _currentWaypoint--;
-            MoveToPosition(_waypoints[_currentWaypoint]);
+            _needMoveDirection = MoveDirection.Previous;
         }
 
         private void MoveToPosition(Vector3 waypoint)
         {
-            _isTriggersDisabled = true;
-            _parentObjectToMove.DOKill();
-            _parentObjectToMove.DOMove(waypoint, _movementSpeed)
-                               .ApplyCustomSetupForMovingPlatforms(gameObject, _settings, _delayInSeconds)
-                               .OnKill(() => _isTriggersDisabled = false);
+            ParentObjectToMove.DOKill();
+            ParentObjectToMove.DOMove(waypoint, MovementSpeed)
+                              .SetSpeedBased()
+                              .SetEase(Settings.MovementEase)
+                              .SetLink(gameObject)
+                              .OnKill(HandleDoneJob);
         }
     }
 }

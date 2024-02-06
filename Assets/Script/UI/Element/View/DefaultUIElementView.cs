@@ -31,6 +31,11 @@ namespace UI.Element.View
             Disappear(null);
         }
 
+        public virtual void DisappearWithoutAnimation()
+        {
+            _cachedTransform.localScale = Vector3.zero;
+        }
+
         public void Disappear(Action callbackOnAnimationEnd)
         {
             _cachedTransform.DOKill();
@@ -38,11 +43,6 @@ namespace UI.Element.View
                             .ApplyCustomSetupForUI(_cachedGameObject)
                             .SetEase(_settings.ScaleAnimationEase)
                             .OnComplete(() => { callbackOnAnimationEnd?.Invoke(); });
-        }
-
-        public virtual void DisappearWithoutAnimation()
-        {
-            _cachedTransform.localScale = Vector3.zero;
         }
     }
 }

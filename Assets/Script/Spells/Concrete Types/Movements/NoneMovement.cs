@@ -1,5 +1,3 @@
-using Common.Interfaces;
-using Common.Readonly_Transform;
 using Enemies.Look_Point_Calculator;
 using Enemies.Look_Point_Calculator.Concrete_Types;
 using Spells.Abstract_Types.Scriptable_Objects.Parts;
@@ -24,17 +22,17 @@ namespace Spells.Concrete_Types.Movements
             {
             }
 
-            public ILookPointCalculator GetLookPointCalculator()
-            {
-                return new KeepLookDirectionLookPointCalculator();
-            }
-
             public void StartMoving()
             {
             }
 
             public void StopMoving()
             {
+            }
+
+            public ILookPointCalculator GetLookPointCalculator()
+            {
+                return new KeepLookDirectionLookPointCalculator();
             }
         }
     }

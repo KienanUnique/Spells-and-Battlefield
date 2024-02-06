@@ -19,14 +19,6 @@ namespace Spells.Controllers
             SetInitializedStatus();
         }
 
-        private void HandleSpellTriggerResponse(SpellTriggerCheckStatusEnum response)
-        {
-            if (response == SpellTriggerCheckStatusEnum.Finish)
-            {
-                HandleFinishSpell();
-            }
-        }
-
         protected override void FixedUpdate()
         {
             if (CurrentInitializableMonoBehaviourStatus != InitializableMonoBehaviourStatus.Initialized)
@@ -54,6 +46,14 @@ namespace Spells.Controllers
             }
 
             base.HandleFinishSpell();
+        }
+
+        private void HandleSpellTriggerResponse(SpellTriggerCheckStatusEnum response)
+        {
+            if (response == SpellTriggerCheckStatusEnum.Finish)
+            {
+                HandleFinishSpell();
+            }
         }
     }
 }

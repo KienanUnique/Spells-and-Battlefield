@@ -6,7 +6,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone
 {
     public interface IInitializableSpellZoneController
     {
-        public void Initialize(List<ISpellType> typesToTriggerOn, bool needTriggerOneTime,
-            ITriggerOnSpellInteraction triggerOnSpellInteraction);
+        public void Initialize(List<ISpellType> typesToTriggerOn, ITriggerOnSpellInteraction triggerOnSpellInteraction,
+            MechanismsTriggerBaseSetupData baseSetupData);
     }
 }

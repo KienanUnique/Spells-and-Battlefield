@@ -7,7 +7,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate.Setup
 {
     public interface IInitializablePressurePlateController
     {
-        public void Initialize(IIdentifier identifier, bool needTriggerOneTime, Transform plateTransform,
-            IPlateSettings plateSettings, IColliderTrigger colliderTrigger);
+        public void Initialize(IIdentifier identifier, Transform plateTransform, IPlateSettings plateSettings,
+            IColliderTrigger colliderTrigger, MechanismsTriggerBaseSetupData baseSetupData);
     }
 }

@@ -42,6 +42,24 @@ namespace Enemies.State_Machine.Transition_Manager
             }
         }
 
+        public override bool TryTransit(out IStateEnemyAI stateEnemyAI)
+        {
+            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
+            {
+                if (!subManager.TryTransit(out IStateEnemyAI nextStateEnemyAI))
+                {
+                    continue;
+                }
+
+                stateEnemyAI = nextStateEnemyAI;
+                UnsubscribeFromTransitionEvents();
+                return true;
+            }
+
+            stateEnemyAI = null;
+            return false;
+        }
+
         public void HandleCompletedAction()
         {
             if (_needTransitAfterAction)
@@ -104,24 +122,6 @@ namespace Enemies.State_Machine.Transition_Manager
         {
             UnsubscribeFromTransitionEvents();
             NeedTransit?.Invoke(nextState);
-        }
-
-        public override bool TryTransit(out IStateEnemyAI stateEnemyAI)
-        {
-            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
-            {
-                if (!subManager.TryTransit(out IStateEnemyAI nextStateEnemyAI))
-                {
-                    continue;
-                }
-
-                stateEnemyAI = nextStateEnemyAI;
-                UnsubscribeFromTransitionEvents();
-                return true;
-            }
-
-            stateEnemyAI = null;
-            return false;
         }
     }
 }

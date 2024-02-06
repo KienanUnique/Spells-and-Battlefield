@@ -5,6 +5,7 @@ using Player.Character.Settings;
 using Player.Look.Settings;
 using Player.Movement.Settings;
 using Player.Spell_Manager.Settings;
+using Player.Visual.Hook_Trail;
 
 namespace Player.Settings
 {
@@ -17,5 +18,6 @@ namespace Player.Settings
         public IPlayerSpellManagerSettings SpellManager { get; }
         public IVisualSettings Visual { get; }
         public IFaction Faction { get; }
+        public IHookTrailVisualSettings HookerVisualSettings { get; }
     }
 }

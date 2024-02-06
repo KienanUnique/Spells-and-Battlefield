@@ -32,12 +32,12 @@ namespace Systems.Scenes_Controller.Concrete_Types
         }
 
         public event Action LoadingNextSceneStarted;
+        public IComicsData ComicsToShow => _gameLevelInformationStorage.StoredLevelComicsData;
 
         public IGameLevelLootUnlocker CurrentGameLevelLootUnlocker =>
             _gameLevelInformationStorage.CurrentGameLevelLootUnlocker;
 
         public IReadOnlyCollection<IGameLevelData> GameLevels => _settings.GameLevels;
-        public IComicsData ComicsToShow => _gameLevelInformationStorage.StoredLevelComicsData;
 
         public void LoadNextGameLevel()
         {

@@ -5,6 +5,6 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
 {
     public interface IInitializableSpawnedEnemiesDeathMechanismTrigger
     {
-        void Initialize(List<IEnemyDeathTrigger> triggers);
+        void Initialize(List<IEnemyDeathTrigger> triggers, MechanismsTriggerBaseSetupData baseSetupData);
     }
 }

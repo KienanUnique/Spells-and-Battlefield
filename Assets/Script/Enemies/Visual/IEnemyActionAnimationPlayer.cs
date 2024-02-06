@@ -1,6 +1,5 @@
 ﻿using Common.Animation_Data;
 using Common.Animation_Data.Continuous_Action;
-using Common.Animator_Status_Controller;
 
 namespace Enemies.Visual
 {

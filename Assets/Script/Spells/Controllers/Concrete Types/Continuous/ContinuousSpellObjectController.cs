@@ -29,6 +29,12 @@ namespace Spells.Controllers.Concrete_Types.Continuous
             HandleFinishSpell();
         }
 
+        protected override void HandleFinishSpell()
+        {
+            Finished?.Invoke();
+            base.HandleFinishSpell();
+        }
+
         private void Update()
         {
             if (CurrentInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Initialized &&
@@ -36,12 +42,6 @@ namespace Spells.Controllers.Concrete_Types.Continuous
             {
                 HandleFinishSpell();
             }
-        }
-
-        protected override void HandleFinishSpell()
-        {
-            Finished?.Invoke();
-            base.HandleFinishSpell();
         }
     }
 }

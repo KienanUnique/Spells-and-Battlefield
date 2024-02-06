@@ -15,5 +15,6 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
         public event Action<int> SelectSpellTypeWithIndex;
         public event Action SelectNextSpellType;
         public event Action SelectPreviousSpellType;
+        public event Action UseHookInputted;
     }
 }

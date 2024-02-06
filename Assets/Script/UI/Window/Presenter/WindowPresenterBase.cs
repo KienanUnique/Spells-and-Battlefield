@@ -20,6 +20,13 @@ namespace UI.Window.Presenter
             return WindowModel.Equals(other);
         }
 
+        public override void Disappear(Action callbackOnAnimationEnd)
+        {
+            UnsubscribeFromWindowEvents();
+            WindowModel.Disappear();
+            base.Disappear(callbackOnAnimationEnd);
+        }
+
         public override void Appear()
         {
             SubscribeOnWindowEvents();
@@ -32,13 +39,6 @@ namespace UI.Window.Presenter
             UnsubscribeFromWindowEvents();
             WindowModel.Disappear();
             base.Disappear();
-        }
-
-        public override void Disappear(Action callbackOnAnimationEnd)
-        {
-            UnsubscribeFromWindowEvents();
-            WindowModel.Disappear();
-            base.Disappear(callbackOnAnimationEnd);
         }
 
         protected abstract void SubscribeOnWindowEvents();

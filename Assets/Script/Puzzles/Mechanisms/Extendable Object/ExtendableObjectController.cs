@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
-using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using DG.Tweening;
 using Puzzles.Mechanisms.Extendable_Object.Settings;
 using Puzzles.Mechanisms.Extendable_Object.Setup;
@@ -10,7 +9,7 @@ using UnityEngine;
 
 namespace Puzzles.Mechanisms.Extendable_Object
 {
-    public class ExtendableObjectController : InitializableMonoBehaviourBase, IInitializableExtendableObjectController
+    public class ExtendableObjectController : MechanismControllerBase, IInitializableExtendableObjectController
     {
         private const float PulledInScaleZ = 0f;
         private float _animationDuration;
@@ -20,14 +19,13 @@ namespace Puzzles.Mechanisms.Extendable_Object
         private Vector3 _pulledOutPosition;
         private float _pulledOutScaleZ;
         private IExtendableObjectsSettings _settings;
-        private List<IMechanismsTrigger> _triggers;
+        private Sequence _sequence;
 
         public void Initialize(List<IMechanismsTrigger> triggers, ExtendableObjectState startState,
             Vector3 startPosition, Vector3 endPosition, float animationDuration, Transform objectToExtend,
             IExtendableObjectsSettings settings)
         {
             _objectToExtend = objectToExtend;
-            _triggers = triggers;
             _pulledOutScaleZ = Vector3.Distance(endPosition, startPosition);
             _pulledOutPosition = (endPosition + startPosition) / 2;
             _pulledInPosition = startPosition;
@@ -50,30 +48,12 @@ namespace Puzzles.Mechanisms.Extendable_Object
                     throw new ArgumentOutOfRangeException(nameof(startState), startState, null);
             }
 
+            AddTriggers(triggers);
+
             SetInitializedStatus();
         }
 
-        protected override void SubscribeOnEvents()
-        {
-            foreach (IMechanismsTrigger trigger in _triggers)
-            {
-                trigger.Triggered += OnTriggered;
-            }
-
-            _currentState.AfterValueChanged += OnPlatformStateChanged;
-        }
-
-        protected override void UnsubscribeFromEvents()
-        {
-            foreach (IMechanismsTrigger trigger in _triggers)
-            {
-                trigger.Triggered -= OnTriggered;
-            }
-
-            _currentState.AfterValueChanged -= OnPlatformStateChanged;
-        }
-
-        private void OnTriggered()
+        protected override void StartJob()
         {
             switch (_currentState.Value)
             {
@@ -86,6 +66,18 @@ namespace Puzzles.Mechanisms.Extendable_Object
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        protected override void SubscribeOnEvents()
+        {
+            base.SubscribeOnEvents();
+            _currentState.AfterValueChanged += OnPlatformStateChanged;
+        }
+
+        protected override void UnsubscribeFromEvents()
+        {
+            base.UnsubscribeFromEvents();
+            _currentState.AfterValueChanged -= OnPlatformStateChanged;
         }
 
         private void OnPlatformStateChanged(ExtendableObjectState newState)
@@ -105,13 +97,14 @@ namespace Puzzles.Mechanisms.Extendable_Object
 
         private void MoveToState(float targetScaleZ, Vector3 targetPosition)
         {
-            _objectToExtend.DOComplete();
-            _objectToExtend.DOScaleZ(targetScaleZ, _animationDuration)
-                           .SetEase(_settings.AnimationEase)
-                           .SetLink(gameObject);
-            _objectToExtend.DOMove(targetPosition, _animationDuration)
-                           .SetEase(_settings.AnimationEase)
-                           .SetLink(gameObject);
+            _sequence?.Kill(true);
+            _sequence = DOTween.Sequence();
+
+            _sequence.Append(_objectToExtend.DOScaleZ(targetScaleZ, _animationDuration))
+                     .Join(_objectToExtend.DOMove(targetPosition, _animationDuration))
+                     .SetEase(_settings.AnimationEase)
+                     .SetLink(gameObject)
+                     .OnComplete(HandleDoneJob);
         }
     }
 }

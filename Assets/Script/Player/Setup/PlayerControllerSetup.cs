@@ -4,7 +4,6 @@ using Common.Abstract_Bases;
 using Common.Abstract_Bases.Checkers.Ground_Checker;
 using Common.Abstract_Bases.Checkers.Wall_Checker;
 using Common.Abstract_Bases.Disableable;
-using Common.Animator_Status_Controller;
 using Common.Event_Invoker_For_Action_Animations;
 using Common.Id_Holder;
 using Common.Interfaces;
@@ -14,6 +13,7 @@ using Common.Readonly_Transform;
 using Common.Settings.Ground_Layer_Mask;
 using Enemies.Spawn.Factory;
 using Enemies.Trigger;
+using Player.Animator_Status_Checker;
 using Player.Camera_Effects;
 using Player.Camera_Effects.Camera_Field_Of_View_Calculator;
 using Player.Camera_Effects.Camera_Particle_System_Controller;
@@ -21,10 +21,13 @@ using Player.Camera_Effects.Camera_Rotator;
 using Player.Character;
 using Player.Look;
 using Player.Movement;
+using Player.Movement.Hooker;
+using Player.Movement.Hooker.Settings;
 using Player.Settings;
 using Player.Spell_Manager;
 using Player.Spell_Manager.Spells_Selector;
 using Player.Visual;
+using Player.Visual.Hook_Trail;
 using Spells;
 using Spells.Factory;
 using Spells.Spell;
@@ -56,6 +59,7 @@ namespace Player.Setup
 
         [SerializeField] private Animator _characterAnimator;
         [SerializeField] private EventInvokerForActionAnimations _eventInvokerForAnimations;
+        [SerializeField] private PlayerEventInvokerForActionAnimations _playerEventInvoker;
 
         [Header("Checkers")] [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private WallChecker _wallChecker;
@@ -69,6 +73,7 @@ namespace Player.Setup
         [Header("Other")] [SerializeField] private ReadonlyTransformGetter _pointForAiming;
         [SerializeField] private ReadonlyTransformGetter _upperPointForSummonedEnemiesPositionCalculating;
         [SerializeField] private List<EnemyTargetTrigger> _triggersForSummonedEnemies;
+        [SerializeField] private TrailRenderer _hookTrailRenderer;
 
         private IPlayerCameraEffects _playerCameraEffects;
         private ICaster _playerCaster;
@@ -80,7 +85,7 @@ namespace Player.Setup
         private ISpellTypesSetting _spellTypesSetting;
         private Rigidbody _thisRigidbody;
         private IToolsForSummon _toolsForSummon;
-        private AnimatorStatusChecker _animatorStatusChecker;
+        private PlayerAnimatorStatusChecker _animatorStatusChecker;
 
         [Inject]
         private void GetDependencies(IPlayerInput playerInput, IPlayerSettings settings,
@@ -127,18 +132,22 @@ namespace Player.Setup
                 particleSystemController);
 
             _cameraTransform = new ReadonlyTransform(_camera.transform);
-            _animatorStatusChecker = new AnimatorStatusChecker(_eventInvokerForAnimations, _characterAnimator, this);
+            _animatorStatusChecker = new PlayerAnimatorStatusChecker(_eventInvokerForAnimations, _characterAnimator,
+                this, _playerEventInvoker);
         }
 
         protected override void Initialize()
         {
+            var playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
+                _settings.Look, this);
+
+            var hooker = new PlayerHooker(new ReadonlyTransform(_thisRigidbody.transform), playerLook,
+                _settings.Movement.HookerSettings, this);
+
             var playerMovementValuesCalculator =
                 new PlayerMovementValuesCalculator(_settings.Movement, new ReadonlyRigidbody(_thisRigidbody), this);
             var playerMovement = new PlayerMovement(_thisRigidbody, _settings.Movement, _groundChecker, _wallChecker,
-                playerMovementValuesCalculator, this);
-
-            var playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
-                _settings.Look);
+                playerMovementValuesCalculator, this, hooker);
 
             var continuousSpellHandler = new ContinuousSpellHandlerImplementation(_playerCaster, _spellObjectsFactory,
                 _spellSpawnObject.ReadonlyTransform);
@@ -150,6 +159,9 @@ namespace Player.Setup
                 spellsSelector, _animatorStatusChecker);
             playerSpellsManager.AddSpell(_spellTypesSetting.LastChanceSpellType,
                 _settings.SpellManager.LastChanceSpell);
+
+            var hookerVisual = new HookTrailVisual(_hookTrailRenderer, _spellSpawnObject.ReadonlyTransform,
+                _settings.HookerVisualSettings, this);
 
             _itemsNeedDisabling.Add(playerMovement);
             _itemsNeedDisabling.Add(playerSpellsManager);
@@ -164,7 +176,8 @@ namespace Player.Setup
             var setupData = new PlayerControllerSetupData(_playerCameraEffects, _playerVisual, _playerCharacter,
                 playerSpellsManager, _playerInput, playerMovement, playerLook, _idHolder, _itemsNeedDisabling,
                 _cameraTransform, _settings.Faction, informationOfSummoner, _toolsForSummon,
-                _upperPointForSummonedEnemiesPositionCalculating.ReadonlyTransform, _animatorStatusChecker);
+                _upperPointForSummonedEnemiesPositionCalculating.ReadonlyTransform, _animatorStatusChecker,
+                hookerVisual);
             controllerToSetup.Initialize(setupData);
         }
     }

@@ -5,6 +5,5 @@ namespace Enemies.Look.Settings
 {
     public interface IEnemyLookSettingsProvider : IImplementationObjectProvider<ILookSettings>
     {
-        
     }
 }

@@ -23,25 +23,17 @@ namespace Player.Spell_Manager
             _playerSpellsSelector = spellsSelector;
         }
 
-        public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
-        public event Action<ISpellType> SelectedSpellTypeChanged;
         public event Action ContinuousSpellStarted;
         public event Action ContinuousSpellFinished;
+
+        public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
+        public event Action<ISpellType> SelectedSpellTypeChanged;
         public float ContinuousSpellRatioOfCompletion => ContinuousSpellHandler.RatioOfCompletion;
 
         public ISpellType SelectedSpellType => _playerSpellsSelector.SelectedSpellType;
 
         public ReadOnlyDictionary<ISpellType, IReadonlyListWithReactionOnChange<ISpell>> Spells =>
             _playerSpellsSelector.Spells;
-
-        protected override void OnSpellCastPartOfAnimationFinished()
-        {
-            base.OnSpellCastPartOfAnimationFinished();
-            if (IsCurrentSpellContinuous && CurrentSpellsHandler != null)
-            {
-                ContinuousSpellStarted?.Invoke();
-            }
-        }
 
         public void AddSpell(ISpellType spellType, ISpell newSpell)
         {
@@ -76,22 +68,21 @@ namespace Player.Spell_Manager
             base.SubscribeOnEvents();
         }
 
+        protected override void OnSpellCastPartOfAnimationFinished()
+        {
+            base.OnSpellCastPartOfAnimationFinished();
+            if (IsCurrentSpellContinuous && CurrentSpellsHandler != null)
+            {
+                ContinuousSpellStarted?.Invoke();
+            }
+        }
+
         protected override void UnsubscribeFromEvents()
         {
             _playerSpellsSelector.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
             _playerSpellsSelector.TryingToUseEmptySpellTypeGroup -= OnTryingToUseEmptySpellTypeGroup;
 
             base.UnsubscribeFromEvents();
-        }
-
-        private void OnTryingToUseEmptySpellTypeGroup(ISpellType obj)
-        {
-            TryingToUseEmptySpellTypeGroup?.Invoke(obj);
-        }
-
-        private void OnSelectedSpellTypeChanged(ISpellType obj)
-        {
-            SelectedSpellTypeChanged?.Invoke(obj);
         }
 
         protected override void OnSpellHandled()
@@ -102,6 +93,16 @@ namespace Player.Spell_Manager
             }
 
             base.OnSpellHandled();
+        }
+
+        private void OnTryingToUseEmptySpellTypeGroup(ISpellType obj)
+        {
+            TryingToUseEmptySpellTypeGroup?.Invoke(obj);
+        }
+
+        private void OnSelectedSpellTypeChanged(ISpellType obj)
+        {
+            SelectedSpellTypeChanged?.Invoke(obj);
         }
     }
 }

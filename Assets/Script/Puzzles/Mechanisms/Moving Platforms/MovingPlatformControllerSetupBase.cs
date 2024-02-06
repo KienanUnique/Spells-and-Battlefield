@@ -14,7 +14,6 @@ namespace Puzzles.Mechanisms.Moving_Platforms
         [SerializeField] private List<Transform> _waypointTransforms;
         [SerializeField] private ColliderTrigger _platformColliderTrigger;
         [SerializeField] private float _movementSpeed = 16;
-        [SerializeField] private float _delayInSeconds;
         private IMovingPlatformsSettings _settings;
         private List<Vector3> _waypoints;
 
@@ -28,8 +27,8 @@ namespace Puzzles.Mechanisms.Moving_Platforms
 
         protected sealed override void Initialize()
         {
-            Initialize(new MovingPlatformDataForControllerBase(_delayInSeconds, _settings, _movementSpeed, _waypoints,
-                _objectToMove, _platformColliderTrigger));
+            Initialize(new MovingPlatformDataForControllerBase(_settings, _movementSpeed, _waypoints, _objectToMove,
+                _platformColliderTrigger));
         }
 
         protected override void Prepare()

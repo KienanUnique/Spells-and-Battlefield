@@ -15,13 +15,12 @@ namespace Enemies.State_Machine.States
         [SerializeField] private MainTransitionManagerEnemyAI _transitionManager;
         private IStateEnemyAI _cachedNextState;
         private ValueWithReactionOnChange<StateEnemyAIStatus> _currentStateStatus;
-        private IReadonlyAnimatorStatusChecker _animatorStatusChecker;
 
         public void Initialize(IEnemyStateMachineControllable stateMachineControllable,
             IReadonlyAnimatorStatusChecker animatorStatusChecker)
         {
             StateMachineControllable = stateMachineControllable;
-            _animatorStatusChecker = animatorStatusChecker;
+            AnimatorStatusChecker = animatorStatusChecker;
             _currentStateStatus = new ValueWithReactionOnChange<StateEnemyAIStatus>(StateEnemyAIStatus.NonActive);
             SetItemsNeedDisabling(new List<IDisableable> {_transitionManager});
             SpecialInitializeAction();
@@ -40,7 +39,7 @@ namespace Enemies.State_Machine.States
         public int StateID => GetInstanceID();
         protected IEnemyStateMachineControllable StateMachineControllable { get; private set; }
 
-        protected IReadonlyAnimatorStatusChecker AnimatorStatusChecker => _animatorStatusChecker;
+        protected IReadonlyAnimatorStatusChecker AnimatorStatusChecker { get; private set; }
 
         protected StateEnemyAIStatus CurrentStatus => _currentStateStatus.Value;
 
@@ -100,7 +99,6 @@ namespace Enemies.State_Machine.States
             switch (newStatus)
             {
                 case StateEnemyAIStatus.Active:
-                    SubscribeOnTransitionEvents();
                     _transitionManager.StartCheckingConditions();
                     if (_transitionManager.TryTransit(out IStateEnemyAI nextState))
                     {
@@ -109,6 +107,7 @@ namespace Enemies.State_Machine.States
                         return;
                     }
 
+                    SubscribeOnTransitionEvents();
                     break;
                 case StateEnemyAIStatus.Exiting:
                     UnsubscribeFromTransitionEvents();

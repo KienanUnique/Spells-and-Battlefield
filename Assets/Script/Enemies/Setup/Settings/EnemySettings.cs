@@ -17,7 +17,7 @@ namespace Enemies.Setup.Settings
         [SerializeField] private LootDropperProvider _lootDropperProvider;
         [SerializeField] private EnemyLookSettingsProvider _lookSettingsProvider;
         [SerializeField] private AnimatorOverrideController _baseAnimatorOverrideController;
-        
+
         public IEnemyCharacterProvider CharacterProvider => _characterProvider;
         public IEnemyMovementProvider MovementProvider => _movementProvider;
         public ITargetPathfinderProvider TargetPathfinderProvider => _targetPathfinderProvider;

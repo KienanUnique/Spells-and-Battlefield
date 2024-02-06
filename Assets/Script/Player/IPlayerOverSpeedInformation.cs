@@ -4,7 +4,7 @@ namespace Player
 {
     public interface IPlayerOverSpeedInformation
     {
-        public float CurrentOverSpeedRatio { get; }
         public event Action<float> OverSpeedValueChanged;
+        public float CurrentOverSpeedRatio { get; }
     }
 }

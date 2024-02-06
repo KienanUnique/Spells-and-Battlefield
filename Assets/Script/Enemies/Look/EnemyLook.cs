@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Common;
 using Common.Abstract_Bases.Disableable;
 using Common.Interfaces;
 using Common.Look;
@@ -43,6 +42,8 @@ namespace Enemies.Look
             _needDistanceFromIKCenterPoint = needDistanceFromIKCenterPoint;
         }
 
+        public IReadonlyTransform ThisPositionReferencePointForLook { get; private set; }
+
         public Vector3 LookPointPosition
         {
             get
@@ -59,8 +60,6 @@ namespace Enemies.Look
         }
 
         public Vector3 LookDirection { get; private set; }
-
-        public IReadonlyTransform ThisPositionReferencePointForLook { get; private set; }
 
         public void StartLooking()
         {

@@ -34,14 +34,14 @@ namespace Player.Camera_Effects.Settings
         public Ease ChangeCameraFOVAnimationEase => _changeCameraFOVAnimationEase;
 
         public float MaximumOverSpeedValueForFieldOfView => _maximumOverSpeedValueForFieldOfView;
-
-        public float RotationAngle => _rotationAngle;
-        public float RotateDuration => _rotateDuration;
-        public Ease RotationAnimationEase => _rotationAnimationEase;
         public float OverSpeedMaximumEmissionRateOverTime => _overSpeedMaximumEmissionRateOverTime;
 
         public float MaximumOverSpeedValueForWindTrailEffect => _maximumOverSpeedValueForWindTrailEffect;
 
         public float MinimumOverSpeedValueForWindTrailEffect => _minimumOverSpeedValueForWindTrailEffect;
+
+        public float RotationAngle => _rotationAngle;
+        public float RotateDuration => _rotateDuration;
+        public Ease RotationAnimationEase => _rotationAnimationEase;
     }
 }
