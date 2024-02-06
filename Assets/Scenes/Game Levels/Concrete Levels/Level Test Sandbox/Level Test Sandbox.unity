@@ -849,7 +849,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 538923414373600058, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_Name
-      value: Dissapear Platform (Restorable) (2)
+      value: Disappear Platform (Restorable) (2)
       objectReference: {fileID: 0}
     - target: {fileID: 5732581422897559681, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_RootOrder
@@ -1059,7 +1059,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 538923414373600058, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_Name
-      value: Dissapear Platform (Restorable) (4)
+      value: Disappear Platform (Restorable) (4)
       objectReference: {fileID: 0}
     - target: {fileID: 5732581422897559681, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_RootOrder
@@ -1482,7 +1482,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 538923414373600058, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_Name
-      value: Dissapear Platform (Restorable) (1)
+      value: Disappear Platform (Restorable) (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5732581422897559681, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_RootOrder
@@ -1980,7 +1980,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 538923414373600058, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_Name
-      value: Dissapear Platform (Restorable) (6)
+      value: Disappear Platform (Restorable) (6)
       objectReference: {fileID: 0}
     - target: {fileID: 5732581422897559681, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_RootOrder
@@ -2264,7 +2264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1194632337}
   m_Layer: 0
-  m_Name: Dissapear Platforms (Single Use)
+  m_Name: Disappear Platforms (Single Use)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2547,7 +2547,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 538923414373600058, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_Name
-      value: Dissapear Platform (Restorable) (5)
+      value: Disappear Platform (Restorable) (5)
       objectReference: {fileID: 0}
     - target: {fileID: 5732581422897559681, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_RootOrder
@@ -2649,7 +2649,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 538923414373600058, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_Name
-      value: Dissapear Platform (Restorable) (3)
+      value: Disappear Platform (Restorable) (3)
       objectReference: {fileID: 0}
     - target: {fileID: 5732581422897559681, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_RootOrder
@@ -2711,7 +2711,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 538923414373600058, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_Name
-      value: Dissapear Platform (Restorable) (7)
+      value: Disappear Platform (Restorable) (7)
       objectReference: {fileID: 0}
     - target: {fileID: 5732581422897559681, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_RootOrder
@@ -2773,7 +2773,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 538923414373600058, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_Name
-      value: Dissapear Platform (Restorable)
+      value: Disappear Platform (Restorable)
       objectReference: {fileID: 0}
     - target: {fileID: 5732581422897559681, guid: 322a9a89a7ea0e24da537559152e8f82, type: 3}
       propertyPath: m_RootOrder
@@ -3292,7 +3292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1779314736}
   m_Layer: 0
-  m_Name: Dissapear Platforms (Restorable)
+  m_Name: Disappear Platforms (Restorable)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

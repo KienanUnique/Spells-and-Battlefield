@@ -19,7 +19,7 @@ namespace Puzzles.Mechanisms.Dissolve_Object.Concrete_Types.Split
             _disappearTriggers = disappearTriggers;
             _appearTriggers = appearTriggers;
 
-            _isEnabled = IsEnabled;
+            _isEnabled = isEnabledAtStart;
             InitializeBase(isEnabledAtStart, dissolveEffectController, collidersToDisable);
         }
 
@@ -54,13 +54,13 @@ namespace Puzzles.Mechanisms.Dissolve_Object.Concrete_Types.Split
             {
                 trigger.Triggered -= OnDisappearTriggered;
             }
-            
+
             base.UnsubscribeFromEvents();
         }
 
         private void OnAppearTriggered()
         {
-            if (IsBusy)
+            if (IsBusy || _isEnabled)
             {
                 return;
             }
@@ -71,7 +71,7 @@ namespace Puzzles.Mechanisms.Dissolve_Object.Concrete_Types.Split
 
         private void OnDisappearTriggered()
         {
-            if (IsBusy)
+            if (IsBusy || !_isEnabled)
             {
                 return;
             }
