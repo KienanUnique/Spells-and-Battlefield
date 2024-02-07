@@ -5,6 +5,5 @@
         public float NormalFrictionCoefficient { get; }
         public float MoveForce { get; }
         public float MaximumSpeed { get; }
-        public float HookForce { get; }
     }
 }

@@ -9,6 +9,7 @@ namespace Player.Movement.Settings
         public float JumpForce { get; }
         public float WallRunningJumpAngleTowardsUp { get; }
         public float DashForce { get; }
+        public float HookForce { get; }
         public float WallRunningGravityForceMultiplier { get; }
         public float DashCooldownSeconds { get; }
         public float AfterDashDurationForSeconds { get; }

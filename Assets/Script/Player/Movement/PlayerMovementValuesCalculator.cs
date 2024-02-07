@@ -151,7 +151,7 @@ namespace Player.Movement
 
         public Vector3 CalculateHookForce(Vector3 hookerHookPushDirection)
         {
-            return hookerHookPushDirection * _settings.HookForce;
+            return hookerHookPushDirection * _playerMovementSettings.HookForce;
         }
 
         public void EnableInput()

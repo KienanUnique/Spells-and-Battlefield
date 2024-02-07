@@ -486,7 +486,6 @@ namespace Player.Movement
 
         private void OnAfterMovingStateChanged(MovingState movingState)
         {
-            Debug.Log($"movingState: {movingState}");
             switch (movingState)
             {
                 case MovingState.OnGround:
