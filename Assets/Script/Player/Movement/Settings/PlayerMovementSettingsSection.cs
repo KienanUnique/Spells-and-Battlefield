@@ -13,7 +13,7 @@ namespace Player.Movement.Settings
         [SerializeField] private float _wallRunningJumpAngleFromWall = 20f;
         [SerializeField] private float _wallRunningGravityForceMultiplier = 0.08f;
         [SerializeField] private float _dashCooldownSeconds = 5f;
-        [SerializeField] private float _dashSpeedLimitationsDisablingForSeconds = 0.3f;
+        [SerializeField] private float _afterDashDurationForSeconds = 0.3f;
         [SerializeField] private float _coyoteTimeInSeconds = 0.1f;
         [Range(0, 1f)] [SerializeField] private float _flyingFrictionCoefficient = 0.175f;
         [SerializeField] [Min(0)] private float _groundDecreaseAdditionalMaximumSpeedAcceleration = 5f;
@@ -45,13 +45,10 @@ namespace Player.Movement.Settings
             _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration;
 
         public float HookingGravityForceMultiplier => _hookingGravityForceMultiplier;
-
         public IPlayerHookerSettings HookerSettings => _hookerSettings;
-
         public float ContinuePushingAfterHookEndSeconds => _continuePushingAfterHookSeconds;
-
         public float DashCooldownSeconds => _dashCooldownSeconds;
-        public float DashSpeedLimitationsDisablingForSeconds => _dashSpeedLimitationsDisablingForSeconds;
+        public float AfterDashDurationForSeconds => _afterDashDurationForSeconds;
         public float CoyoteTimeInSeconds => _coyoteTimeInSeconds;
     }
 }

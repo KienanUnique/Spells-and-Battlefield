@@ -5,6 +5,7 @@ namespace Player.Movement
 {
     public interface IPlayerMovementValuesCalculator : IMovementValuesCalculator
     {
+        public bool IsInputMovingEnabled { get; }
         public float GravityForce { get; }
         public float BaseMaximumSpeed { get; }
         public float DashForce { get; }
@@ -20,5 +21,7 @@ namespace Player.Movement
         public Vector3 CalculateJumpForce(WallDirection wallDirection);
         public void UpdateMoveInput(Vector2 direction2d);
         public Vector3 CalculateHookForce(Vector3 hookerHookPushDirection);
+        public void EnableInput();
+        public void DisableInput();
     }
 }

@@ -42,7 +42,7 @@ MonoBehaviour:
     _normalFrictionCoefficient: 0.108
     _normalGravityForce: 30
     _jumpForce: 800
-    _dashForce: 1500
+    _dashForce: 1750
     _wallRunningJumpAngleFromWall: 20
     _wallRunningGravityForceMultiplier: 0.08
     _dashCooldownSeconds: 5
@@ -76,4 +76,3 @@ MonoBehaviour:
   _faction: {fileID: 11400000, guid: bf8019b83105005438a1b13c003057eb, type: 2}
   _hookerVisualSettings:
     _hookTrailSpeed: 140
-    _hookTrailEase: 1
