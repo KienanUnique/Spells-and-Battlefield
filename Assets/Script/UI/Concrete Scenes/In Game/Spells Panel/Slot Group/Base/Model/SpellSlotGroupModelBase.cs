@@ -8,6 +8,7 @@ using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Information;
+using UnityEngine;
 
 namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
 {
@@ -22,7 +23,8 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
             ISpellType spellTypeToRepresent)
         {
             _spellGroupToRepresent = spellGroupToRepresent;
-            _slots = new SortedSet<ObjectWithUsageFlag<ISlotInformation>>(new SortedSlotInformationComparer());
+            var sortedSlotInformationComparer = new SortedSlotInformationComparer();
+            _slots = new SortedSet<ObjectWithUsageFlag<ISlotInformation>>(sortedSlotInformationComparer);
             _slotObjects = new List<ObjectWithUsageFlag<ISpellSlot>>();
             IsSelected = false;
             Type = spellTypeToRepresent;
@@ -99,41 +101,39 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
             slotInformation.SetAsUsed();
         }
 
-        protected void MoveSlotsBack(ISlotInformation includedUpToSlot)
+        protected void MoveSlotsFront(int startIndex)
         {
-            List<ObjectWithUsageFlag<ISlotInformation>> slotsList = _slots.ToList();
-            int finishItemIndex = slotsList.FindIndex(slot => slot.StoredObject.CompareTo(includedUpToSlot) == 0);
-            int slotIndex;
-            int lastUsedSlotIndex = slotsList.FindLastIndex(slot => slot.IsUsed);
-            int startIndex;
-            if (lastUsedSlotIndex == _slots.Count - 1)
+            for (int i = _slots.Count - 1 - startIndex; i < _slots.Count; i++)
             {
-                ObjectWithUsageFlag<ISpellSlot> lastSlotObject = _slotObjects.First(slotObject =>
-                    slotObject.StoredObject.CurrentSlotInformation == _slots.Last().StoredObject);
+                var slotToFree = _slots.ElementAt(i);
+                if (!slotToFree.IsUsed)
+                {
+                    continue;
+                }
+
+                var lastSlotObject = FindSlotController(slotToFree.StoredObject);
                 lastSlotObject.StoredObject.DisappearAndForgetSpell();
-                startIndex = lastUsedSlotIndex - 1;
-            }
-            else
-            {
-                startIndex = lastUsedSlotIndex;
+                lastSlotObject.SetAsFree();
+                slotToFree.SetAsFree();
             }
 
-            for (slotIndex = startIndex; slotIndex >= finishItemIndex; slotIndex++)
+            for (var i = _slots.Count - 2; i >= startIndex; i--)
             {
-                if (_slots.ElementAt(slotIndex).IsUsed)
+                var fromMoveSlot = _slots.ElementAt(i);
+                if (!fromMoveSlot.IsUsed)
                 {
-                    ISpellSlot currentSpellController = _slotObjects.Find(slotObject =>
-                                                                        slotObject.StoredObject.CurrentSlotInformation
-                                                                            .CompareTo(_slots.ElementAt(slotIndex)
-                                                                                .StoredObject) ==
-                                                                        0)
-                                                                    .StoredObject;
-                    currentSpellController.MoveToSlot(_slots.ElementAt(slotIndex + 1).StoredObject);
+                    continue;
                 }
-                else
-                {
-                    break;
-                }
+
+                var currentSpellControllerWithDisabling = FindSlotController(fromMoveSlot.StoredObject);
+                var currentSpellController = currentSpellControllerWithDisabling.StoredObject;
+
+                var nextSlotIndex = i + 1;
+                var nextSlot = _slots.ElementAt(nextSlotIndex);
+
+                currentSpellController.MoveToSlot(nextSlot.StoredObject);
+                fromMoveSlot.SetAsFree();
+                nextSlot.SetAsUsed();
             }
         }
 
@@ -149,14 +149,12 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
                     throw new InvalidOperationException("Trying to fill already filled slot");
                 }
 
-                if (slotIndex < _spellGroupToRepresent.Count)
-                {
-                    AppearSlot(currentSlot, _spellGroupToRepresent[slotIndex]);
-                }
-                else
+                if (slotIndex >= _spellGroupToRepresent.Count)
                 {
                     break;
                 }
+
+                AppearSlot(currentSlot, _spellGroupToRepresent[slotIndex]);
             }
         }
 
@@ -173,11 +171,17 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
                 slotObject.SetAsFree();
             }
 
-            ObjectWithUsageFlag<ISlotInformation> slotWithUsageFlag = _slots.ElementAt(0);
-            ObjectWithUsageFlag<ISpellSlot> slotObjectWithUsageFlag = _slotObjects.ElementAt(0);
+            ObjectWithUsageFlag<ISlotInformation> slotWithUsageFlag = _slots.First();
+            ObjectWithUsageFlag<ISpellSlot> slotObjectWithUsageFlag = _slotObjects.First();
             slotObjectWithUsageFlag.StoredObject.AppearAsEmptySlot(slotWithUsageFlag.StoredObject);
             slotObjectWithUsageFlag.SetAsUsed();
             slotWithUsageFlag.SetAsUsed();
+        }
+
+        private ObjectWithUsageFlag<ISpellSlot> FindSlotController(ISlotInformation spellSlot)
+        {
+            return _slotObjects.Find(slotObject =>
+                slotObject.IsUsed && slotObject.StoredObject.CurrentSlotInformation.CompareTo(spellSlot) == 0);
         }
 
         protected class ObjectWithUsageFlag<T>
