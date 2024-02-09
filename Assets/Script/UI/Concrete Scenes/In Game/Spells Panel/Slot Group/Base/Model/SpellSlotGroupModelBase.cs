@@ -8,6 +8,7 @@ using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Information;
+using UnityEngine;
 
 namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
 {
@@ -99,41 +100,40 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
             slotInformation.SetAsUsed();
         }
 
-        protected void MoveSlotsBack(ISlotInformation includedUpToSlot)
+        protected void MoveSlotsFront(int startIndex)
         {
-            List<ObjectWithUsageFlag<ISlotInformation>> slotsList = _slots.ToList();
-            int finishItemIndex = slotsList.FindIndex(slot => slot.StoredObject.CompareTo(includedUpToSlot) == 0);
-            int slotIndex;
-            int lastUsedSlotIndex = slotsList.FindLastIndex(slot => slot.IsUsed);
-            int startIndex;
-            if (lastUsedSlotIndex == _slots.Count - 1)
+            Debug.Log($"MoveSlotsFront: startIndex = {startIndex}");
+            for (int i = _slots.Count - 1 - startIndex; i <= _slots.Count - 1; i++)
             {
+                Debug.Log($"_slots.ElementAt({i}).IsUsed: {_slots.ElementAt(i).IsUsed}");
+                if (!_slots.ElementAt(i).IsUsed)
+                {
+                    continue;
+                }
+
                 ObjectWithUsageFlag<ISpellSlot> lastSlotObject = _slotObjects.First(slotObject =>
-                    slotObject.StoredObject.CurrentSlotInformation == _slots.Last().StoredObject);
+                    slotObject.StoredObject.CurrentSlotInformation.CompareTo(_slots.ElementAt(i).StoredObject) == 0);
                 lastSlotObject.StoredObject.DisappearAndForgetSpell();
-                startIndex = lastUsedSlotIndex - 1;
-            }
-            else
-            {
-                startIndex = lastUsedSlotIndex;
+                lastSlotObject.SetAsFree();
+                _slots.ElementAt(i).SetAsFree();
             }
 
-            for (slotIndex = startIndex; slotIndex >= finishItemIndex; slotIndex++)
+            for (var i = _slots.Count - 2; i >= startIndex; i--)
             {
-                if (_slots.ElementAt(slotIndex).IsUsed)
+                if (!_slots.ElementAt(i).IsUsed)
                 {
-                    ISpellSlot currentSpellController = _slotObjects.Find(slotObject =>
-                                                                        slotObject.StoredObject.CurrentSlotInformation
-                                                                            .CompareTo(_slots.ElementAt(slotIndex)
-                                                                                .StoredObject) ==
-                                                                        0)
-                                                                    .StoredObject;
-                    currentSpellController.MoveToSlot(_slots.ElementAt(slotIndex + 1).StoredObject);
+                    continue;
                 }
-                else
-                {
-                    break;
-                }
+
+                ISpellSlot currentSpellController = _slotObjects.Find(slotObject =>
+                                                                    slotObject.StoredObject.CurrentSlotInformation
+                                                                              .CompareTo(_slots.ElementAt(i)
+                                                                                  .StoredObject) ==
+                                                                    0)
+                                                                .StoredObject;
+                var nextSlot = i + 1;
+                currentSpellController.MoveToSlot(_slots.ElementAt(nextSlot).StoredObject);
+                _slots.ElementAt(nextSlot).SetAsFree();
             }
         }
 
@@ -173,8 +173,8 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
                 slotObject.SetAsFree();
             }
 
-            ObjectWithUsageFlag<ISlotInformation> slotWithUsageFlag = _slots.ElementAt(0);
-            ObjectWithUsageFlag<ISpellSlot> slotObjectWithUsageFlag = _slotObjects.ElementAt(0);
+            ObjectWithUsageFlag<ISlotInformation> slotWithUsageFlag = _slots.First();
+            ObjectWithUsageFlag<ISpellSlot> slotObjectWithUsageFlag = _slotObjects.First();
             slotObjectWithUsageFlag.StoredObject.AppearAsEmptySlot(slotWithUsageFlag.StoredObject);
             slotObjectWithUsageFlag.SetAsUsed();
             slotWithUsageFlag.SetAsUsed();

@@ -8,6 +8,7 @@ using Spells.Spell;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Information;
+using UnityEngine;
 
 namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Model
 {
@@ -64,15 +65,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Concrete_Types.Defa
                 return;
             }
 
-            ObjectWithUsageFlag<ISlotInformation> frontSlotInformation = _slots.First();
-            ObjectWithUsageFlag<ISpellSlot> frontSlotObject = _slotObjects.First(slotObject =>
-                slotObject.StoredObject.CurrentSlotInformation == frontSlotInformation.StoredObject);
-            if (frontSlotObject.StoredObject.IsEmptySlot)
-            {
-                frontSlotObject.StoredObject.DisappearAndForgetSpell();
-                frontSlotObject.SetAsFree();
-                frontSlotInformation.SetAsFree();
-            }
+            TryRemoveEmptySlot();
 
             AppearSlot(args.Item);
         }
@@ -142,14 +135,31 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Concrete_Types.Defa
 
         private void OnItemInserted(ItemWithIndexEventArgs<ISpell> args)
         {
+            TryRemoveEmptySlot();
+            MoveSlotsFront(args.Index);
             ObjectWithUsageFlag<ISlotInformation> slotInformation = _slots.ElementAt(args.Index);
-            MoveSlotsBack(slotInformation.StoredObject);
             AppearSlot(slotInformation, args.Item);
         }
 
         private void OnItemsCleared(EventArgs args)
         {
             DisappearAllSlotsAndShowEmpty();
+        }
+
+        private void TryRemoveEmptySlot()
+        {
+            var frontSlotInformation = _slots.First();
+            var frontSlotObject = _slotObjects.First(slotObject =>
+                slotObject.StoredObject.CurrentSlotInformation == frontSlotInformation.StoredObject);
+            if (!frontSlotObject.StoredObject.IsEmptySlot)
+            {
+                return;
+            }
+
+            frontSlotObject.StoredObject.DisappearAndForgetSpell();
+            frontSlotObject.SetAsFree();
+            frontSlotInformation.SetAsFree();
+            Debug.Log("Front slot set as free");
         }
     }
 }
