@@ -24,4 +24,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Comics Cutscene/Comics Cutscene.unity
     guid: 9d2f0ade2397d2b4a8271777d60b440e
+  - enabled: 1
+    path: Assets/Scenes/Game Levels/Concrete Levels/Level Dialogue Test/Level Dialogue
+      Test.unity
+    guid: aa4630c659ab65b4688d6e43592ed56a
   m_configObjects: {}
