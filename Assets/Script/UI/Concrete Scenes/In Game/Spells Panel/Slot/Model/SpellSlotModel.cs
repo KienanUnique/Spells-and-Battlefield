@@ -25,14 +25,6 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot.Model
 
         public void Appear(ISpell spell, ISlotInformation slot, bool isShowingEmptySlot)
         {
-            if (isShowingEmptySlot)
-            {
-                Debug.Log($"Appear empty: {slot.LocalPosition}");
-            }
-            else
-            {
-                Debug.Log($"Appear: {spell.CardInformation.Title}, {slot.LocalPosition}");
-            }
             if (IsVisible)
             {
                 throw new InvalidOperationException("Slot is already visible");
@@ -46,8 +38,6 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot.Model
 
         public void Disappear()
         {
-            Debug.Log(
-                $"Disappear: {CurrentSpell.CardInformation.Title}, {CurrentSlotInformation.LocalPosition}, {IsEmptySlot}");
             if (!IsVisible)
             {
                 throw new InvalidOperationException("Slot is already non visible");
@@ -61,8 +51,6 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot.Model
 
         public void MoveToSlot(ISlotInformation slot)
         {
-            Debug.Log(
-                $"MoveToSlot: {CurrentSpell.CardInformation.Title}, {CurrentSlotInformation.LocalPosition} => {slot.LocalPosition}, {IsEmptySlot}");
             if (!IsVisible)
             {
                 throw new InvalidOperationException("Unable to move non visible slot");

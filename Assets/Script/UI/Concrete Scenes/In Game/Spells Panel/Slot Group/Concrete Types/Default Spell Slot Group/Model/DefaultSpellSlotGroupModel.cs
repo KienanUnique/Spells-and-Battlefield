@@ -159,7 +159,6 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Concrete_Types.Defa
             frontSlotObject.StoredObject.DisappearAndForgetSpell();
             frontSlotObject.SetAsFree();
             frontSlotInformation.SetAsFree();
-            Debug.Log("Front slot set as free");
         }
     }
 }
