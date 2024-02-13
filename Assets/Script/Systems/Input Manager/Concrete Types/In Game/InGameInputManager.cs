@@ -32,6 +32,7 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
         public event Action SelectNextSpellType;
         public event Action SelectPreviousSpellType;
         public event Action UseHookInputted;
+        public event Action InteractInputted;
 
         public new void SwitchToUIInput()
         {
@@ -61,6 +62,7 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
             Controls.Character.SwitchToSpellTypeWithIndex3.performed += OnPerformedSwitchToSpellTypeWithIndex3;
             Controls.Character.SwitchSpellType.performed += OnSwitchSpellType;
             Controls.Character.UseHook.performed += OnUseHookPerformed;
+            Controls.Character.Interact.performed += OnInteractPerformed;
         }
 
         protected override void OnDisable()
@@ -78,6 +80,12 @@ namespace Systems.Input_Manager.Concrete_Types.In_Game
             Controls.Character.SwitchToSpellTypeWithIndex3.performed -= OnPerformedSwitchToSpellTypeWithIndex3;
             Controls.Character.SwitchSpellType.performed -= OnSwitchSpellType;
             Controls.Character.UseHook.performed -= OnUseHookPerformed;
+            Controls.Character.Interact.performed -= OnInteractPerformed;
+        }
+
+        private void OnInteractPerformed(InputAction.CallbackContext obj)
+        {
+            InteractInputted?.Invoke();
         }
 
         private void OnUseHookPerformed(InputAction.CallbackContext obj)

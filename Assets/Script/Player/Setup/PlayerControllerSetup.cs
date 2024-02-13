@@ -22,12 +22,13 @@ using Player.Character;
 using Player.Look;
 using Player.Movement;
 using Player.Movement.Hooker;
-using Player.Movement.Hooker.Settings;
+using Player.Press_Key_Interactor;
 using Player.Settings;
 using Player.Spell_Manager;
 using Player.Spell_Manager.Spells_Selector;
 using Player.Visual;
 using Player.Visual.Hook_Trail;
+using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
 using Spells;
 using Spells.Factory;
 using Spells.Spell;
@@ -74,6 +75,7 @@ namespace Player.Setup
         [SerializeField] private ReadonlyTransformGetter _upperPointForSummonedEnemiesPositionCalculating;
         [SerializeField] private List<EnemyTargetTrigger> _triggersForSummonedEnemies;
         [SerializeField] private TrailRenderer _hookTrailRenderer;
+        [SerializeField] private ColliderTrigger _pressKeyCollider;
 
         private IPlayerCameraEffects _playerCameraEffects;
         private ICaster _playerCaster;
@@ -141,8 +143,8 @@ namespace Player.Setup
             var playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
                 _settings.Look, this);
 
-            var hooker = new PlayerHooker(new ReadonlyTransform(_thisRigidbody.transform), playerLook,
-                _settings.Movement.HookerSettings, this);
+            var readonlyTransform = new ReadonlyTransform(_thisRigidbody.transform);
+            var hooker = new PlayerHooker(readonlyTransform, playerLook, _settings.Movement.HookerSettings, this);
 
             var playerMovementValuesCalculator =
                 new PlayerMovementValuesCalculator(_settings.Movement, new ReadonlyRigidbody(_thisRigidbody), this);
@@ -163,12 +165,15 @@ namespace Player.Setup
             var hookerVisual = new HookTrailVisual(_hookTrailRenderer, _spellSpawnObject.ReadonlyTransform,
                 _settings.HookerVisualSettings, this);
 
+            var pressKeyInteractor = new PressKeyInteractor(readonlyTransform, _pressKeyCollider);
+
             _itemsNeedDisabling.Add(playerMovement);
             _itemsNeedDisabling.Add(playerSpellsManager);
             _itemsNeedDisabling.Add(continuousSpellHandler);
             _itemsNeedDisabling.Add(instantSpellHandler);
             _itemsNeedDisabling.Add(spellsSelector);
             _itemsNeedDisabling.Add(_animatorStatusChecker);
+            _itemsNeedDisabling.Add(pressKeyInteractor);
 
             var controllerToSetup = GetComponent<IInitializablePlayerController>();
             var informationOfSummoner = new InformationForSummon(GetComponent<ISummoner>(), _settings.Faction,
@@ -177,7 +182,7 @@ namespace Player.Setup
                 playerSpellsManager, _playerInput, playerMovement, playerLook, _idHolder, _itemsNeedDisabling,
                 _cameraTransform, _settings.Faction, informationOfSummoner, _toolsForSummon,
                 _upperPointForSummonedEnemiesPositionCalculating.ReadonlyTransform, _animatorStatusChecker,
-                hookerVisual);
+                hookerVisual, pressKeyInteractor);
             controllerToSetup.Initialize(setupData);
         }
     }

@@ -10,6 +10,7 @@ using Player.Camera_Effects;
 using Player.Character;
 using Player.Look;
 using Player.Movement;
+using Player.Press_Key_Interactor;
 using Player.Spell_Manager;
 using Player.Visual;
 using Player.Visual.Hook_Trail;
@@ -35,5 +36,6 @@ namespace Player.Setup
         public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
         public IPlayerAnimatorStatusChecker SetAnimatorStatusChecker { get; }
         public IHookTrailVisual SetHookTrailVisual { get; }
+        IPressKeyInteractor SetPressKeyInteractor { get; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Common.Abstract_Bases.Disableable;
-using Common.Animator_Status_Controller;
 using Common.Id_Holder;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Readonly_Transform;
@@ -10,6 +9,7 @@ using Player.Camera_Effects;
 using Player.Character;
 using Player.Look;
 using Player.Movement;
+using Player.Press_Key_Interactor;
 using Player.Spell_Manager;
 using Player.Visual;
 using Player.Visual.Hook_Trail;
@@ -25,7 +25,7 @@ namespace Player.Setup
             List<IDisableable> itemsNeedDisabling, IReadonlyTransform cameraTransform, IFaction setFaction,
             IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon,
             IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating,
-            IPlayerAnimatorStatusChecker setAnimatorStatusChecker, IHookTrailVisual setHookTrailVisual)
+            IPlayerAnimatorStatusChecker setAnimatorStatusChecker, IHookTrailVisual setHookTrailVisual, IPressKeyInteractor setPressKeyInteractor)
         {
             SetPlayerCameraEffects = playerCameraEffects;
             SetPlayerVisual = playerVisual;
@@ -43,6 +43,7 @@ namespace Player.Setup
             SetUpperPointForSummonedEnemiesPositionCalculating = setUpperPointForSummonedEnemiesPositionCalculating;
             SetAnimatorStatusChecker = setAnimatorStatusChecker;
             SetHookTrailVisual = setHookTrailVisual;
+            SetPressKeyInteractor = setPressKeyInteractor;
         }
 
         public List<IDisableable> SetItemsNeedDisabling { get; }
@@ -61,5 +62,6 @@ namespace Player.Setup
         public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }
         public IPlayerAnimatorStatusChecker SetAnimatorStatusChecker { get; }
         public IHookTrailVisual SetHookTrailVisual { get; }
+        public IPressKeyInteractor SetPressKeyInteractor { get; }
     }
 }

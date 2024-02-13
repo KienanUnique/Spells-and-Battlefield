@@ -21,6 +21,7 @@ using Player.Camera_Effects;
 using Player.Character;
 using Player.Look;
 using Player.Movement;
+using Player.Press_Key_Interactor;
 using Player.Setup;
 using Player.Spell_Manager;
 using Player.Visual;
@@ -48,6 +49,7 @@ namespace Player
         private IPlayerVisual _visual;
         private IPlayerAnimatorStatusChecker _animatorStatusChecker;
         private IHookTrailVisual _hookTrailVisual;
+        private IPressKeyInteractor _pressKeyInteractor;
 
         public void Initialize(IPlayerControllerSetupData setupData)
         {
@@ -67,6 +69,7 @@ namespace Player
             ToolsForSummon = setupData.SetToolsForSummon;
             _animatorStatusChecker = setupData.SetAnimatorStatusChecker;
             _hookTrailVisual = setupData.SetHookTrailVisual;
+            _pressKeyInteractor = setupData.SetPressKeyInteractor;
 
             SetItemsNeedDisabling(setupData.SetItemsNeedDisabling);
             SetInitializedStatus();
@@ -178,6 +181,7 @@ namespace Player
             _input.MoveInputted += _movement.MoveInputted;
             _input.LookInputted += _look.LookInputtedWith;
             _input.UseHookInputted += OnUseHookInputted;
+            _input.InteractInputted += _pressKeyInteractor.TryInteract;
 
             _input.SelectSpellTypeWithIndex += _spellsManager.SelectSpellTypeWithIndex;
             _input.SelectNextSpellType += _spellsManager.SelectNextSpellType;
@@ -225,6 +229,7 @@ namespace Player
             _input.MoveInputted -= _movement.MoveInputted;
             _input.LookInputted -= _look.LookInputtedWith;
             _input.UseHookInputted -= OnUseHookInputted;
+            _input.InteractInputted -= _pressKeyInteractor.TryInteract;
 
             _input.SelectSpellTypeWithIndex -= _spellsManager.SelectSpellTypeWithIndex;
             _input.SelectNextSpellType -= _spellsManager.SelectNextSpellType;
