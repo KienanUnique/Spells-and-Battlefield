@@ -1,11 +1,7 @@
-﻿using System;
-
-namespace Player.Press_Key_Interactor
+﻿namespace Player.Press_Key_Interactor
 {
-    public interface IPressKeyInteractor
+    public interface IPressKeyInteractor : IPlayerAsPressKeyInteractor
     {
-        public event Action CanInteract;
-        public event Action CanNotInteract;
         public void TryInteract();
     }
 }

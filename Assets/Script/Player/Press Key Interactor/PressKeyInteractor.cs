@@ -21,13 +21,13 @@ namespace Player.Press_Key_Interactor
             _colliderTrigger = colliderTrigger;
         }
 
-        public event Action CanInteract;
-        public event Action CanNotInteract;
-        private bool CanInteractNow => !_colliders.IsEmpty();
+        public event Action CanInteractNow;
+        public event Action CanNotInteractNow;
+        public bool CanInteract => !_colliders.IsEmpty();
 
         public void TryInteract()
         {
-            if (!CanInteractNow)
+            if (!CanInteract)
             {
                 return;
             }
@@ -54,7 +54,7 @@ namespace Player.Press_Key_Interactor
 
             if (_colliders.IsEmpty())
             {
-                CanNotInteract?.Invoke();
+                CanNotInteractNow?.Invoke();
             }
         }
 
@@ -64,7 +64,7 @@ namespace Player.Press_Key_Interactor
             
             if (_colliders.Count == 1)
             {
-                CanInteract?.Invoke();
+                CanInteractNow?.Invoke();
             }
         }
 

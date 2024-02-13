@@ -5,6 +5,7 @@ using Common.Mechanic_Effects.Concrete_Types.Push;
 using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Enemies;
 using Pickable_Items.Picker_Interfaces;
+using Player.Press_Key_Interactor;
 using Puzzles.Mechanisms.Moving_Platforms;
 using Spells;
 
@@ -23,7 +24,8 @@ namespace Player
         IPickableSpellPicker,
         IMovable,
         IPlayerInitializationStatus,
-        IToMovingPlatformStickable
+        IToMovingPlatformStickable,
+        IPlayerAsPressKeyInteractor
     {
     }
 }

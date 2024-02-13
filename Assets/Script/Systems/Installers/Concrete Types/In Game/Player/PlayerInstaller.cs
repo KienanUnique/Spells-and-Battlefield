@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Player;
+using Player.Press_Key_Interactor;
 using Player.Spawn;
 using Player.Spell_Manager;
 using UnityEngine;
@@ -24,7 +25,8 @@ namespace Systems.Installers.Concrete_Types.In_Game.Player
                      {
                          typeof(IPlayerInformationProvider),
                          typeof(IPlayerSpellsManagerInformation),
-                         typeof(IPlayerInitializationStatus)
+                         typeof(IPlayerInitializationStatus),
+                         typeof(IPlayerAsPressKeyInteractor)
                      })
                      .FromComponentInNewPrefab(_prefabProvider.Prefab)
                      .AsSingle()

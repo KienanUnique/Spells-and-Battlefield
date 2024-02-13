@@ -86,6 +86,9 @@ namespace Player
         public event Action ContinuousSpellFinished;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
+        public event Action CanInteractNow;
+        public event Action CanNotInteractNow;
+        public bool CanInteract => _pressKeyInteractor.CanInteract;
         public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
@@ -215,6 +218,9 @@ namespace Player
 
             _hookTrailVisual.TrailArrivedToHookPoint += OnTrailArrivedToHookPoint;
             _animatorStatusChecker.HookKeyMomentTrigger += OnHookKeyMomentTrigger;
+
+            _pressKeyInteractor.CanInteractNow += OnCanInteractNow;
+            _pressKeyInteractor.CanNotInteractNow += OnCanNotInteractNow;
         }
 
         protected override void UnsubscribeFromEvents()
@@ -263,6 +269,19 @@ namespace Player
             
             _hookTrailVisual.TrailArrivedToHookPoint -= OnTrailArrivedToHookPoint;
             _animatorStatusChecker.HookKeyMomentTrigger -= OnHookKeyMomentTrigger;
+            
+            _pressKeyInteractor.CanInteractNow -= OnCanInteractNow;
+            _pressKeyInteractor.CanNotInteractNow -= OnCanNotInteractNow;
+        }
+
+        private void OnCanNotInteractNow()
+        {
+            CanNotInteractNow?.Invoke();
+        }
+
+        private void OnCanInteractNow()
+        {
+            CanInteractNow?.Invoke();
         }
 
         private void OnHookKeyMomentTrigger()

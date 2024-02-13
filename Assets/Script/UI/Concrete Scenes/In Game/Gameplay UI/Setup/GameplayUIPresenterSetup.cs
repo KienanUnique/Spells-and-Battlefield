@@ -5,6 +5,7 @@ using UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Presenter;
 using UI.Concrete_Scenes.In_Game.Damage_Indicator.Presenter;
 using UI.Concrete_Scenes.In_Game.Gameplay_UI.Model;
 using UI.Concrete_Scenes.In_Game.Gameplay_UI.Presenter;
+using UI.Concrete_Scenes.In_Game.Interact_Key_Popup.Presenter;
 using UI.Concrete_Scenes.In_Game.Player_Information_Panel.Presenter;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Panel.Presenter;
 using UI.Element;
@@ -20,6 +21,7 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Setup
         [SerializeField] private UIAimIconPresenter _aim;
         [SerializeField] private DamageIndicatorPresenter _damageIndicator;
         [SerializeField] private ContinuousEffectsPanelPresenter _continuousEffectsPanelPresenter;
+        [SerializeField] private InteractKeyPopupPresenter _interactKeyPopupPresenter;
         private IGameplayUIModel _model;
         private IInitializableGameplayUIPresenter _presenter;
 
@@ -30,7 +32,8 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Setup
                 _playerInformation,
                 _aim,
                 _damageIndicator,
-                _continuousEffectsPanelPresenter
+                _continuousEffectsPanelPresenter,
+                _interactKeyPopupPresenter
             };
 
         protected override void Initialize()
@@ -48,7 +51,8 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Setup
                     _playerInformation,
                     _aim,
                     _damageIndicator,
-                    _continuousEffectsPanelPresenter
+                    _continuousEffectsPanelPresenter,
+                    _interactKeyPopupPresenter
                 });
             _presenter = GetComponent<IInitializableGameplayUIPresenter>();
         }
