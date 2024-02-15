@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4189981003517305672
+--- !u!1 &7805757617025955976
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4189981003517305673}
-  - component: {fileID: 7920122280363986433}
-  - component: {fileID: 7472442878398495580}
-  - component: {fileID: 8969407260504008197}
-  m_Layer: 11
-  m_Name: Press Key Trigger
+  - component: {fileID: 8697354739960629468}
+  - component: {fileID: 5324704189855310593}
+  - component: {fileID: 7203511643858877365}
+  m_Layer: 0
+  m_Name: Run Dialogue Mechanism
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4189981003517305673
+--- !u!4 &8697354739960629468
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4189981003517305672}
+  m_GameObject: {fileID: 7805757617025955976}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,42 +32,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &7920122280363986433
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4189981003517305672}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7472442878398495580
+--- !u!114 &5324704189855310593
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4189981003517305672}
+  m_GameObject: {fileID: 7805757617025955976}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0ae238de4a04c42b694a57d0d1970a4, type: 3}
+  m_Script: {fileID: 11500000, guid: fcd42d8be08b488cb2bbd4c81fb97198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8969407260504008197
+--- !u!114 &7203511643858877365
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4189981003517305672}
+  m_GameObject: {fileID: 7805757617025955976}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ed6a3d16cf9439cb0f2758bfcf58d04, type: 3}
+  m_Script: {fileID: 11500000, guid: d2995bfcaeb8481e8bb5b6cc4f4a4a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _needTriggerOneTime: 0
-  _triggerDelayInSeconds: 0
+  _triggers: []
+  _dialog: {fileID: 0}

@@ -1,7 +1,9 @@
 ﻿using System;
+using Systems.Dialog.Provider;
 using Systems.Input_Manager;
 using Systems.Scenes_Controller.Concrete_Types;
 using UI.Concrete_Scenes.In_Game.Gameplay_UI;
+using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Window;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Game_Over_Window;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Level_Completed_Window;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Pause_Window;
@@ -22,10 +24,12 @@ namespace UI.Managers.Concrete_Types.In_Game
         private IScenesController _scenesController;
         private ILoadingWindow _loadingWindow;
         private IInputManagerForUI _inputManagerForUI;
+        private IDialogWindow _dialogWindow;
 
         public void Initialize(IInputManagerForUI inputManagerForUI, IGameplayUI gameplayUI,
             IGameOverWindow gameOverWindow, IPauseWindow pauseWindow, ILevelCompletedWindow levelCompletedWindow,
-            IScenesController scenesController, ILoadingWindow loadingWindow, IUIWindowsStackManager windowsManager)
+            IScenesController scenesController, ILoadingWindow loadingWindow, IDialogWindow dialogWindow,
+            IUIWindowsStackManager windowsManager)
         {
             _inputManagerForUI = inputManagerForUI;
             _gameplayUI = gameplayUI;
@@ -35,6 +39,7 @@ namespace UI.Managers.Concrete_Types.In_Game
             _windowsManager = windowsManager;
             _scenesController = scenesController;
             _loadingWindow = loadingWindow;
+            _dialogWindow = dialogWindow;
             SetInitializedStatus();
         }
 
@@ -55,6 +60,12 @@ namespace UI.Managers.Concrete_Types.In_Game
                 _ => throw new ArgumentOutOfRangeException(nameof(needElementsGroup), needElementsGroup, null)
             };
             _windowsManager.Open(elementToOpen);
+        }
+
+        public void OpenDialog(IDialogProvider dialog)
+        {
+            _dialogWindow.SetDialog(dialog);
+            _windowsManager.Open(_dialogWindow);
         }
 
         protected override void SubscribeOnEvents()

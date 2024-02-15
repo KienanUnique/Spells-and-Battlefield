@@ -82,4 +82,10 @@
     public const string PopupTextProvidersDirectory = RootDirectory + "Popup Texts/";
 
     #endregion
+
+    #region Dialogs
+
+    public const string DialogsDirectory = RootDirectory + "Dialogs/";
+
+    #endregion
 }

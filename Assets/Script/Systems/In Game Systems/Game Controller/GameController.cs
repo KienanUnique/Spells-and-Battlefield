@@ -3,6 +3,8 @@ using Common;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Player;
+using Systems.Dialog;
+using Systems.Dialog.Provider;
 using Systems.In_Game_Systems.Level_Finish_Zone;
 using Systems.In_Game_Systems.Time_Controller;
 using Systems.Input_Manager.Concrete_Types.In_Game;
@@ -20,10 +22,11 @@ namespace Systems.In_Game_Systems.Game_Controller
         private ILevelFinishZone _levelFinishZone;
         private IPlayerInformationProvider _playerInformationProvider;
         private ITimeController _timeController;
+        private IDialogStarterForGameManager _dialogStarter;
 
         public void Initialize(IInGameManagerUI inGameManagerUI, IPlayerInformationProvider playerInformationProvider,
             IInGameSystemInputManager inGameSystemInput, ITimeController timeController,
-            ILevelFinishZone levelFinishZone)
+            ILevelFinishZone levelFinishZone, IDialogStarterForGameManager dialogStarter)
         {
             _inGameManagerUI = inGameManagerUI;
             _playerInformationProvider = playerInformationProvider;
@@ -32,6 +35,7 @@ namespace Systems.In_Game_Systems.Game_Controller
             _levelFinishZone = levelFinishZone;
             _currentGameState = new ValueWithReactionOnChange<GameState>(GameState.Playing);
             _lastState = _currentGameState.Value;
+            _dialogStarter = dialogStarter;
             SetInitializedStatus();
             _timeController.RestoreTimeToNormal();
             OnAfterGameStateChanged(_currentGameState.Value);
@@ -42,13 +46,17 @@ namespace Systems.In_Game_Systems.Game_Controller
             Playing,
             Pause,
             GameOver,
-            LevelCompleted
+            LevelCompleted,
+            InDialog
         }
 
         protected override void SubscribeOnEvents()
         {
             _currentGameState.AfterValueChanged += OnAfterGameStateChanged;
             _currentGameState.BeforeValueChanged += OnBeforeGameStateChanged;
+            
+            _dialogStarter.NeedStartDialog += OnNeedStartDialog;
+            
             if (_currentGameState.Value == GameState.Playing)
             {
                 SubscribeOnPlayingEvents();
@@ -63,6 +71,8 @@ namespace Systems.In_Game_Systems.Game_Controller
         {
             _currentGameState.AfterValueChanged -= OnAfterGameStateChanged;
             _currentGameState.BeforeValueChanged -= OnBeforeGameStateChanged;
+            
+            _dialogStarter.NeedStartDialog -= OnNeedStartDialog;
 
             if (_currentGameState.Value == GameState.Playing)
             {
@@ -115,6 +125,11 @@ namespace Systems.In_Game_Systems.Game_Controller
                 case GameState.LevelCompleted:
                     UnsubscribeFromUIEvents();
                     break;
+                case GameState.InDialog:
+                    UnsubscribeFromUIEvents();
+                    _timeController.RestoreTimeToPrevious();
+                    _dialogStarter.HandleDialogEnd();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(previousState), previousState, null);
             }
@@ -146,6 +161,10 @@ namespace Systems.In_Game_Systems.Game_Controller
                     _timeController.StopTime();
                     _inGameSystemInput.SwitchToUIInput();
                     _inGameManagerUI.SwitchTo(InGameUIElementsGroup.LevelCompletedWindow);
+                    break;
+                case GameState.InDialog:
+                    SubscribeOnUIEvents();
+                    _inGameSystemInput.SwitchToUIInput();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -179,6 +198,15 @@ namespace Systems.In_Game_Systems.Game_Controller
         private void OnCloseWindowInputted()
         {
             _currentGameState.Value = _lastState;
+        }
+        
+        private void OnNeedStartDialog(IDialogProvider dialogProvider)
+        {
+            if (_currentGameState.Value == GameState.Playing)
+            {
+                _currentGameState.Value = GameState.InDialog;
+                _inGameManagerUI.OpenDialog(dialogProvider);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using Common.Abstract_Bases;
 using Systems.Input_Manager;
 using Systems.Scenes_Controller.Concrete_Types;
 using UI.Concrete_Scenes.In_Game.Gameplay_UI.Presenter;
+using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Window.Presenter;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Game_Over_Window.Presenter;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Level_Completed_Window.Presenter;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Pause_Window.Presenter;
@@ -21,6 +22,8 @@ namespace UI.Managers.Concrete_Types.In_Game.Setup
         [SerializeField] private PauseInGameWindowPresenter _pauseWindow;
         [SerializeField] private LevelCompletedWindowPresenter _levelCompletedWindow;
         [SerializeField] private LoadingWindowPresenter _loadingWindow;
+        [SerializeField] private DialogWindowPresenter _dialogWindow;
+        
         private IInitializableInGameManagerUI _presenter;
         private IScenesController _scenesController;
         private IInputManagerForUI _inputManagerForUI;
@@ -40,14 +43,15 @@ namespace UI.Managers.Concrete_Types.In_Game.Setup
                 _gameOverWindow,
                 _pauseWindow,
                 _levelCompletedWindow,
-                _loadingWindow
+                _loadingWindow,
+                _dialogWindow
             };
 
         protected override void Initialize()
         {
             _stackManager = new UIWindowsStackManager(_gameplayUI);
             _presenter.Initialize(_inputManagerForUI, _gameplayUI, _gameOverWindow, _pauseWindow, _levelCompletedWindow,
-                _scenesController, _loadingWindow, _stackManager);
+                _scenesController, _loadingWindow, _dialogWindow, _stackManager);
         }
 
         protected override void Prepare()
