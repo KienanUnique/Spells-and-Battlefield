@@ -143,6 +143,15 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""41b27a80-589a-4f45-a6e9-16fc9ffec7b8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -332,6 +341,17 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""action"": ""Use Hook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a5bfbd6-7435-4577-bcfe-1c7963a0de35"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -446,6 +466,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         m_Character_SwitchToSpellTypeWithIndex3 = m_Character.FindAction("Switch To Spell Type With Index 3", throwIfNotFound: true);
         m_Character_SwitchSpellType = m_Character.FindAction("Switch Spell Type", throwIfNotFound: true);
         m_Character_UseHook = m_Character.FindAction("Use Hook", throwIfNotFound: true);
+        m_Character_Interact = m_Character.FindAction("Interact", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_CloseWindow = m_UI.FindAction("Close Window", throwIfNotFound: true);
@@ -527,6 +548,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_SwitchToSpellTypeWithIndex3;
     private readonly InputAction m_Character_SwitchSpellType;
     private readonly InputAction m_Character_UseHook;
+    private readonly InputAction m_Character_Interact;
     public struct CharacterActions
     {
         private @MainControls m_Wrapper;
@@ -544,6 +566,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         public InputAction @SwitchToSpellTypeWithIndex3 => m_Wrapper.m_Character_SwitchToSpellTypeWithIndex3;
         public InputAction @SwitchSpellType => m_Wrapper.m_Character_SwitchSpellType;
         public InputAction @UseHook => m_Wrapper.m_Character_UseHook;
+        public InputAction @Interact => m_Wrapper.m_Character_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -592,6 +615,9 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @UseHook.started += instance.OnUseHook;
             @UseHook.performed += instance.OnUseHook;
             @UseHook.canceled += instance.OnUseHook;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -635,6 +661,9 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @UseHook.started -= instance.OnUseHook;
             @UseHook.performed -= instance.OnUseHook;
             @UseHook.canceled -= instance.OnUseHook;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -776,6 +805,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         void OnSwitchToSpellTypeWithIndex3(InputAction.CallbackContext context);
         void OnSwitchSpellType(InputAction.CallbackContext context);
         void OnUseHook(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
