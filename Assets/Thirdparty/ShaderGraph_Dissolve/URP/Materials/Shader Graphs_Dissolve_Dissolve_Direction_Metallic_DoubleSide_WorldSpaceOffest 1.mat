@@ -2,16 +2,17 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Graphs_Dissolve_Dissolve_Direction_Metallic_DoubleSide_WorldSpaceOffest
     1
-  m_Shader: {fileID: -6465566751694194690, guid: 479a3a5ebe2be224c9db1e0fd92977df,
-    type: 3}
-  m_ShaderKeywords: BOOLEAN_USE_WROLDSPACE_ON
+  m_Shader: {fileID: -6465566751694194690, guid: 479a3a5ebe2be224c9db1e0fd92977df, type: 3}
+  m_ValidKeywords:
+  - BOOLEAN_USE_WROLDSPACE_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -35,6 +36,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - BOOLEAN_DIRECTION_FROM_EULERANGLE: 0
     - BOOLEAN_USE_WROLDSPACE: 1
@@ -59,3 +61,17 @@ Material:
     - _NoiseUVSpeed: {r: 1, g: 1, b: 0, a: 0}
     - _Offest: {r: 0, g: 0, b: 0, a: 0}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []
+--- !u!114 &3728064611333973274
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
