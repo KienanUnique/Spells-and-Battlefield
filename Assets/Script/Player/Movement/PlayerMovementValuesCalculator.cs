@@ -23,6 +23,7 @@ namespace Player.Movement
         private Tweener _currentLocalAdditionalMaximumSpeedResetTween;
         private Vector2 _inputMoveDirection = Vector2.zero;
         private float _currentOverSpeedRatio;
+        private bool _isInputMovingEnabled = true;
 
         public PlayerMovementValuesCalculator(IPlayerMovementSettings movementSettings,
             IReadonlyRigidbody readonlyRigidbody, ICoroutineStarter coroutineStarter) : base(movementSettings)
@@ -34,6 +35,8 @@ namespace Player.Movement
 
         public override float MaximumSpeedCalculated =>
             (_settings.MaximumSpeed + _localAdditionalMaximumSpeed) * ExternalSetSpeedRatio;
+
+        public bool IsInputMovingEnabled => _isInputMovingEnabled;
 
         public float GravityForce => _playerMovementSettings.NormalGravityForce * _currentGravityForceMultiplier;
 
@@ -54,12 +57,12 @@ namespace Player.Movement
             {
                 Vector3 inversedVelocity = -_readonlyRigidbody.InverseTransformDirection(_readonlyRigidbody.Velocity);
                 Vector3 finalFrictionForce = Vector3.zero;
-                if (_inputMoveDirection.x == 0)
+                if (!_isInputMovingEnabled || _inputMoveDirection.x == 0)
                 {
                     finalFrictionForce += inversedVelocity.x * _readonlyRigidbody.Right;
                 }
 
-                if (_inputMoveDirection.y == 0)
+                if (!_isInputMovingEnabled || _inputMoveDirection.y == 0)
                 {
                     finalFrictionForce += inversedVelocity.z * _readonlyRigidbody.Forward;
                 }
@@ -148,7 +151,17 @@ namespace Player.Movement
 
         public Vector3 CalculateHookForce(Vector3 hookerHookPushDirection)
         {
-            return hookerHookPushDirection * _settings.HookForce;
+            return hookerHookPushDirection * _playerMovementSettings.HookForce;
+        }
+
+        public void EnableInput()
+        {
+            _isInputMovingEnabled = true;
+        }
+
+        public void DisableInput()
+        {
+            _isInputMovingEnabled = false;
         }
 
         private void ChangeAdditionalMaximumSpeed(float changeSpeed, float endValue)

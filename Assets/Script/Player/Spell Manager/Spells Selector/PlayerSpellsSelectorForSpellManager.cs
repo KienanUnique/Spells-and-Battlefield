@@ -48,7 +48,7 @@ namespace Player.Spell_Manager.Spells_Selector
         public ISpell RememberedSpell { get; private set; }
 
         private ListWithReactionOnChange<ISpell> SelectedSpellGroup => _spellsStorage[SelectedSpellType];
-        private ISpell SelectedSpell => SelectedSpellGroup[0];
+        private ISpell SelectedSpell => SelectedSpellGroup.First();
 
         public void SelectSpellTypeWithIndex(int indexToSelect)
         {
@@ -77,7 +77,7 @@ namespace Player.Spell_Manager.Spells_Selector
         {
             if (_spellsStorage.ContainsKey(spellType))
             {
-                _spellsStorage[spellType].Add(newSpell);
+                _spellsStorage[spellType].Insert(0, newSpell);
             }
             else
             {

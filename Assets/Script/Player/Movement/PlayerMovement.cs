@@ -44,7 +44,6 @@ namespace Player.Movement
         private Coroutine _frictionCoroutine;
 
         private bool _speedLimitationEnabled = true;
-        private bool _isInputMovingEnabled = true;
         private Coroutine _wallRunningCalculationCoroutine;
 
         public PlayerMovement(Rigidbody rigidbody, IPlayerMovementSettings movementSettings,
@@ -101,6 +100,7 @@ namespace Player.Movement
             InAir,
             WallRunning,
             DashAiming,
+            AfterDash,
             Hooking,
             AfterHook
         }
@@ -175,10 +175,9 @@ namespace Player.Movement
         {
             if (_currentMovingState.Value == MovingState.DashAiming)
             {
-                _coroutineStarter.StartCoroutine(DashDisableSpeedLimitation());
+                _currentMovingState.Value = MovingState.AfterDash;
                 _rigidbody.velocity = Vector3.zero;
                 _rigidbody.AddForce(cameraForwardDirection * _movementValuesCalculator.DashForce);
-                UpdatePlayerState();
             }
         }
 
@@ -253,7 +252,7 @@ namespace Player.Movement
             {
                 ApplyGravity(_movementValuesCalculator.GravityForce);
 
-                if (_isInputMovingEnabled)
+                if (_movementValuesCalculator.IsInputMovingEnabled)
                 {
                     _rigidbody.AddForce(_movementValuesCalculator.MoveForce * Time.fixedDeltaTime);
                 }
@@ -306,16 +305,18 @@ namespace Player.Movement
                 passedTime = Time.time - startTime;
                 UpdateCooldownRatio(passedTime / _movementSettings.DashCooldownSeconds);
             } while (passedTime < _movementSettings.DashCooldownSeconds);
-
+            
             _canDash = true;
             UpdateCooldownRatio(1f);
         }
 
-        private IEnumerator DashDisableSpeedLimitation()
+        private IEnumerator ExitFromDashAfterDelay()
         {
-            _speedLimitationEnabled = false;
-            yield return new WaitForSeconds(_movementSettings.DashSpeedLimitationsDisablingForSeconds);
-            _speedLimitationEnabled = true;
+            yield return new WaitForSeconds(_movementSettings.AfterDashDurationForSeconds);
+            if (_currentMovingState.Value == MovingState.AfterDash)
+            {
+                UpdatePlayerState();
+            }
         }
 
         private IEnumerator ContinuePushingAfterHook()
@@ -465,11 +466,15 @@ namespace Player.Movement
                     Dashed?.Invoke();
                     _coroutineStarter.StartCoroutine(WaitForDashCooldownWithTicking());
                     break;
+                case MovingState.AfterDash:
+                    _speedLimitationEnabled = true;
+                    _movementValuesCalculator.EnableInput();
+                    break;
                 case MovingState.Hooking:
                     HookingEnded?.Invoke();
                     break;
                 case MovingState.AfterHook:
-                    _isInputMovingEnabled = true;
+                    _movementValuesCalculator.EnableInput();
                     _speedLimitationEnabled = true;
                     break;
                 case MovingState.NotInitialized:
@@ -546,6 +551,11 @@ namespace Player.Movement
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(DashAimingPlayerInputForceMultiplier);
                     DashAiming?.Invoke();
                     break;
+                case MovingState.AfterDash:
+                    _movementValuesCalculator.DisableInput();
+                    _speedLimitationEnabled = false;
+                    _coroutineStarter.StartCoroutine(ExitFromDashAfterDelay());
+                    break;
                 case MovingState.Hooking:
                     _movementValuesCalculator.ChangePlayerInputForceMultiplier(HookingPlayerInputForceMultiplier);
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
@@ -553,7 +563,7 @@ namespace Player.Movement
                     HookingStarted?.Invoke();
                     break;
                 case MovingState.AfterHook:
-                    _isInputMovingEnabled = false;
+                    _movementValuesCalculator.DisableInput();
                     _speedLimitationEnabled = false;
                     _movementValuesCalculator.ChangeGravityForceMultiplier(_movementSettings
                         .NormalGravityForceMultiplier);
