@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spell Panel Settings
   m_EditorClassIdentifier: 
   _slotSection:
-    _emptySlotIcon: {fileID: 21300000, guid: 0525793900d728a42936791a8a6de63b, type: 3}
+    _emptySlotIcon: {fileID: 21300000, guid: e1e2a505ba50b2941b8418c89fd2fdf4, type: 3}
     _scaleAnimationEase: 15
     _scaleAnimationDuration: 0.3
     _moveAnimationEase: 21
