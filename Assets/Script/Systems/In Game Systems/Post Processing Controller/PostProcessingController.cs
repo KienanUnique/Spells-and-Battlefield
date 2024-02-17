@@ -20,6 +20,7 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller
         private IPlayerInformationProvider _playerInformationProvider;
         private IPostProcessingControllerSettings _settings;
         private GameObject _gameObjectToLink;
+        private Tween _dialogTween;
 
         public void Initialize(IPlayerInformationProvider playerInformationProvider, Volume dashEffectsVolume,
             Volume dashAimingEffectsVolume, Volume dialogEffectsVolume, IPostProcessingControllerSettings settings,
@@ -57,12 +58,14 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller
 
         private void AppearDialogEffects()
         {
-            EnableVolume(_dialogEffectsVolume, _settings.ApplyDialogEffectsVolumeDurationSeconds);
+            _dialogTween?.Kill();
+            _dialogTween = EnableVolume(_dialogEffectsVolume, _settings.ApplyDialogEffectsVolumeDurationSeconds);
         }
 
         private void DisappearDialogEffects()
         {
-            DisableVolume(_dialogEffectsVolume, _settings.ApplyDialogEffectsVolumeDurationSeconds);
+            _dialogTween?.Kill();
+            _dialogTween = DisableVolume(_dialogEffectsVolume, _settings.ApplyDialogEffectsVolumeDurationSeconds);
         }
 
         private void AppearDashAimingEffects()
