@@ -1,6 +1,7 @@
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using DG.Tweening;
 using Player;
+using Systems.Dialog;
 using Systems.In_Game_Systems.Post_Processing_Controller.Settings;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -14,21 +15,26 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller
 
         private Volume _dashEffectsVolume;
         private Volume _dashAimingEffectsVolume;
+        private Volume _dialogEffectsVolume;
+        private IDialogService _dialogService;
         private IPlayerInformationProvider _playerInformationProvider;
         private IPostProcessingControllerSettings _settings;
         private GameObject _gameObjectToLink;
 
         public void Initialize(IPlayerInformationProvider playerInformationProvider, Volume dashEffectsVolume,
-            Volume dashAimingEffectsVolume, IPostProcessingControllerSettings settings)
+            Volume dashAimingEffectsVolume, Volume dialogEffectsVolume, IPostProcessingControllerSettings settings,
+            IDialogService dialogService)
         {
             _playerInformationProvider = playerInformationProvider;
             _dashEffectsVolume = dashEffectsVolume;
             _dashAimingEffectsVolume = dashAimingEffectsVolume;
+            _dialogEffectsVolume = dialogEffectsVolume;
+            _dialogService = dialogService;
             _settings = settings;
             _gameObjectToLink = gameObject;
             SetInitializedStatus();
-            _dashEffectsVolume.weight = 0;
-            _dashEffectsVolume.enabled = false;
+            DisableVolumeInstantly(_dashEffectsVolume);
+            DisableVolumeInstantly(_dialogEffectsVolume);
         }
 
         protected override void SubscribeOnEvents()
@@ -36,6 +42,8 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller
             _playerInformationProvider.DashAiming += AppearDashAimingEffects;
             _playerInformationProvider.DashAimingCanceled += DisappearDashAimingEffects;
             _playerInformationProvider.Dashed += PlayDashEffects;
+            _dialogService.DialogStarted += AppearDialogEffects;
+            _dialogService.DialogEnded += DisappearDialogEffects;
         }
 
         protected override void UnsubscribeFromEvents()
@@ -43,6 +51,18 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller
             _playerInformationProvider.DashAiming -= AppearDashAimingEffects;
             _playerInformationProvider.DashAimingCanceled -= DisappearDashAimingEffects;
             _playerInformationProvider.Dashed -= PlayDashEffects;
+            _dialogService.DialogStarted -= AppearDialogEffects;
+            _dialogService.DialogEnded -= DisappearDialogEffects;
+        }
+
+        private void AppearDialogEffects()
+        {
+            EnableVolume(_dialogEffectsVolume, _settings.ApplyDialogEffectsVolumeDurationSeconds);
+        }
+
+        private void DisappearDialogEffects()
+        {
+            DisableVolume(_dialogEffectsVolume, _settings.ApplyDialogEffectsVolumeDurationSeconds);
         }
 
         private void AppearDashAimingEffects()
@@ -83,6 +103,12 @@ namespace Systems.In_Game_Systems.Post_Processing_Controller
                    .SetLink(gameObject)
                    .SetEase(_settings.ApplyEffectsVolumeEase)
                    .SetLink(_gameObjectToLink);
+        }
+
+        private void DisableVolumeInstantly(Volume volume)
+        {
+            volume.weight = 0;
+            volume.enabled = false;
         }
     }
 }
