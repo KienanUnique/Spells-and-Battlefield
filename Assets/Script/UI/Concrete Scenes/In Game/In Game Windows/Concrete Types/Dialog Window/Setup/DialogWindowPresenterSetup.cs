@@ -1,8 +1,10 @@
-﻿using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Window.Model;
+﻿using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Window.Avatar;
+using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Window.Model;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Window.Presenter;
 using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Window.View;
 using UI.Window.Setup;
 using UnityEngine;
+using UnityEngine.UI;
 using Yarn.Unity;
 
 namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Window.Setup
@@ -10,6 +12,7 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Windo
     public class DialogWindowPresenterSetup : WindowPresenterSetupBase
     {
         [SerializeField] private DialogueRunner _dialogueRunner;
+        [SerializeField] private Image _avatar;
 
         private IInitializableDialogWindowPresenter _presenter;
         private IDialogWindowModel _model;
@@ -19,7 +22,8 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Windo
         {
             base.Prepare();
             _presenter = GetComponent<IInitializableDialogWindowPresenter>();
-            _view = new DialogWindowView(transform, DefaultUIElementViewSettings);
+            var avatarView = new AvatarView(_avatar.transform, DefaultUIElementViewSettings, _avatar);
+            _view = new DialogWindowView(transform, DefaultUIElementViewSettings, avatarView);
         }
 
         protected override void Initialize()

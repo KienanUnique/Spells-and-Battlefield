@@ -1,5 +1,6 @@
 ﻿using Common.Id_Holder;
 using Systems.Dialog.Provider;
+using UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Window.Avatar;
 using UI.Managers.Concrete_Types.In_Game;
 using UI.Window.Model;
 using Yarn.Unity;
