@@ -31,29 +31,24 @@ MonoBehaviour:
     _aimLayerMask:
       serializedVersion: 2
       m_Bits: 1728
-    _upperLimit: -40
+    _upperLimit: -90
     _bottomLimit: 70
     _lookAtStartAnimationDuration: 1
     _lookAtStartAnimationEase: 9
   _movement:
     _moveForce: 4500
     _maximumSpeed: 15
-    _hookForce: 25000
     _normalFrictionCoefficient: 0.108
     _normalGravityForce: 30
     _jumpForce: 800
     _dashForce: 1750
+    _dashCooldownSeconds: 5
+    _afterDashDurationForSeconds: 0.3
     _wallRunningJumpAngleFromWall: 20
     _wallRunningGravityForceMultiplier: 0.08
-    _dashCooldownSeconds: 5
-    _dashSpeedLimitationsDisablingForSeconds: 0.3
-    _coyoteTimeInSeconds: 0.1
-    _flyingFrictionCoefficient: 0.2
-    _groundDecreaseAdditionalMaximumSpeedAcceleration: 5
-    _airDecreaseAdditionalMaximumSpeedAcceleration: 1
     _wallRunningIncreaseAdditionalMaximumSpeedAcceleration: 4
     _wallRunningIncreaseLimitAdditionalMaximumSpeedAcceleration: 20
-    _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration: 99
+    _hookForce: 25000
     _hookerSettings:
       _mask:
         serializedVersion: 2
@@ -65,6 +60,11 @@ MonoBehaviour:
       _maxDurationInSeconds: 4
     _hookingGravityForceMultiplier: 0.1
     _continuePushingAfterHookSeconds: 0.1
+    _coyoteTimeInSeconds: 0.1
+    _flyingFrictionCoefficient: 0.2
+    _airDecreaseAdditionalMaximumSpeedAcceleration: 1
+    _groundDecreaseAdditionalMaximumSpeedAcceleration: 5
+    _noInputMovingDecreaseAdditionalMaximumSpeedAcceleration: 99
   _character:
     _maximumCountOfHitPoints: 30
   _spellManager:
