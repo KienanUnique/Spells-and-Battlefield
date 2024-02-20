@@ -7,6 +7,7 @@ namespace Puzzles.Mechanisms.Run_Dialog
 {
     public interface IInitializableRunDialogMechanismController
     {
-        void Initialize(IDialogProvider dialog, IDialogService dialogService, List<IMechanismsTrigger> triggers);
+        void Initialize(List<IDialogProvider> allDialogs, IDialogService dialogService,
+            List<IMechanismsTrigger> triggers);
     }
 }

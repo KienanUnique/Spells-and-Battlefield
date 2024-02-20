@@ -1,31 +1,19 @@
-﻿title: Start
+﻿title: Test_1_Start
 position: -40,-182
 ---
-<<declare $npcNormal = "Citizen_2">>
-<<declare $npcHappy = "Citizen_1">>
-<<declare $npcAngry = "Guard_1">>
+<<change_avatar {$AV_testNPC_normal}>>
 
-<<jump Greetings>>
-===
-
-
-title: Greetings
-position: -39,107
----
-
-<<change_avatar {$npcNormal}>>
-
-Narrator: Hi, I'm the narrator for this beginner's guide!
-Narrator: I'm talking to you with Yarn Spinner!
-Narrator: What do you think of all this, then?
+{$testNPC}: Hi, I'm the narrator for this beginner's guide!
+{$testNPC}: I'm talking to you with Yarn Spinner!
+{$testNPC}: What do you think of all this, then?
     -> It's alright, I guess.
-        <<change_avatar {$npcAngry}>>
-        Narrator: Well, that's not very nice.
-        <<change_avatar {$npcNormal}>>
-        Narrator: I'm trying my best here.
+        <<change_avatar {$AV_testNPC_angry}>>
+        {$testNPC}: Well, that's not very nice.
+        <<change_avatar {$AV_testNPC_normal}>>
+        {$testNPC}: I'm trying my best here.
     -> It's great. I love it.
-        <<change_avatar {$npcHappy}>>
-        Narrator: Oh, you're too kind.
-        <<change_avatar {$npcNormal}>>
-        Narrator: I'm just doing my job.
+        <<change_avatar {$AV_testNPC_happy}>>
+        {$testNPC}: Oh, you're too kind.
+        <<change_avatar {$AV_testNPC_normal}>>
+        {$testNPC}: I'm just doing my job.
 ===

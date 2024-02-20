@@ -12,7 +12,7 @@ namespace Puzzles.Mechanisms.Run_Dialog
     public class RunDialogMechanismControllerSetup : SetupMonoBehaviourBase
     {
         [SerializeField] private List<MechanismsTriggerBase> _triggers;
-        [SerializeField] private DialogProvider _dialog;
+        [SerializeField] private List<DialogProvider> _availableDialogs;
 
         private IDialogService _dialogService;
         private IInitializableRunDialogMechanismController _controller;
@@ -32,7 +32,8 @@ namespace Puzzles.Mechanisms.Run_Dialog
 
         protected override void Initialize()
         {
-            _controller.Initialize(_dialog, _dialogService, new List<IMechanismsTrigger>(_triggers));
+            _controller.Initialize(new List<IDialogProvider>(_availableDialogs), _dialogService,
+                new List<IMechanismsTrigger>(_triggers));
         }
     }
 }

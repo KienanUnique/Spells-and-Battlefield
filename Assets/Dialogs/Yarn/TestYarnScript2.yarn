@@ -1,0 +1,18 @@
+title: Test_2_Start
+position: -40,-182
+---
+<<change_avatar {$AV_testNPC_normal}>>
+
+{$testNPC}: Rolling d20!
+
+<<declare $result = 0>>
+<<set $result to dice(20)>>
+
+{$testNPC}: You rolled: {$result}
+
+<<if $result == 20 or $result == 1>>
+    {$testNPC}: Woooow!
+<<endif>>
+
+{$testNPC}: My lucky number is {random_range(1,10)}!
+===
