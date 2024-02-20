@@ -1,0 +1,19 @@
+﻿title: Test_1_Start
+position: -40,-182
+---
+<<change_avatar {$AV_test_skull_normal}>>
+
+{$test_skull}: Hi, I'm the narrator for this beginner's guide!
+{$test_skull}: I'm talking to you with Yarn Spinner!
+{$test_skull}: What do you think of all this, then?
+    -> It's alright, I guess.
+        <<change_avatar {$AV_test_skull_angry}>>
+        {$test_skull}: Well, that's not very nice.
+        <<change_avatar {$AV_test_skull_normal}>>
+        {$test_skull}: I'm trying my best here.
+    -> It's great. I love it.
+        <<change_avatar {$AV_test_skull_happy}>>
+        {$test_skull}: Oh, you're too kind.
+        <<change_avatar {$AV_test_skull_normal}>>
+        {$test_skull}: I'm just doing my job.
+===

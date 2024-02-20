@@ -1,0 +1,11 @@
+title: DECLARE_AVATARS
+---
+<<declare $AV_test_skull_normal = "Citizen_2">>
+<<declare $AV_test_skull_happy = "Citizen_1">>
+<<declare $AV_test_skull_angry = "Guard_1">>
+===
+
+title: DECLARE_NAMES
+---
+<<declare $test_skull = "Skull">>
+===
