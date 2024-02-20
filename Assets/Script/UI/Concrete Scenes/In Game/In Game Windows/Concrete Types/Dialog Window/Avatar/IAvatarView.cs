@@ -5,5 +5,6 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Windo
     public interface IAvatarView
     {
         public void ChangeAvatar(Sprite newSprite);
+        public void ResetAvatar();
     }
 }

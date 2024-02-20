@@ -15,16 +15,6 @@ namespace Systems.Installers.Concrete_Types.In_Game
         public override void InstallBindings()
         {
             InstallManager();
-            InstallDialogStarter();
-        }
-
-        private void InstallDialogStarter()
-        {
-            var dialogStarter = new DialogService();
-            
-            Container.Bind(new List<Type> {typeof(IDialogStarterForGameManager), typeof(IDialogService)})
-                     .FromInstance(dialogStarter)
-                     .AsSingle();
         }
 
         private void InstallManager()

@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dialogueRunner: {fileID: 7326649665689223893}
   _avatar: {fileID: 8358320987801765520}
+  _avatarRoot: {fileID: 5748610854244059681}
 --- !u!1001 &2844565017898749847
 PrefabInstance:
   m_ObjectHideFlags: 0

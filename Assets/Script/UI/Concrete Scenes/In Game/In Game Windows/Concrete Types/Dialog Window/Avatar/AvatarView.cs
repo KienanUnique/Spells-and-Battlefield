@@ -17,7 +17,25 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Windo
 
         public void ChangeAvatar(Sprite newSprite)
         {
-            Disappear();
+            if (_image.sprite == null)
+            {
+                AppearAsSprite(newSprite);
+                return;
+            }
+            
+            Disappear(() =>
+            {
+                AppearAsSprite(newSprite);
+            });
+        }
+        
+        public void ResetAvatar()
+        {
+            _image.sprite = null;
+        }
+
+        private void AppearAsSprite(Sprite newSprite)
+        {
             _image.sprite = newSprite;
             Appear();
         }

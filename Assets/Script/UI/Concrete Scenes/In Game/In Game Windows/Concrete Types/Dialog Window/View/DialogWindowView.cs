@@ -19,5 +19,10 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Windo
         {
             _avatarView.ChangeAvatar(newSprite);
         }
+
+        public void ResetAvatar()
+        {
+            _avatarView.ResetAvatar();
+        }
     }
 }

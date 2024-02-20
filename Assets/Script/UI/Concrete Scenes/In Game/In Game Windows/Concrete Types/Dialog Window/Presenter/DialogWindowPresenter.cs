@@ -19,24 +19,29 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Windo
             _model = model;
             _view = view;
             _dialogueRunner = dialogueRunner;
+            _dialogueRunner.AddCommandHandler<string>("change_avatar", _model.TryChangeAvatar);
             SetInitializedStatus();
         }
         protected override IUIWindowModel WindowModel => _model;
         protected override IUIWindowView WindowView => _view;
-        
+
         public void SetDialog(IDialogProvider dialog)
         {
             _model.SetDialog(dialog);
         }
-        
+
         protected override void SubscribeOnWindowEvents()
         {
             _dialogueRunner.onDialogueComplete.AddListener(_model.OnDialogueComplete);
+            _model.NeedChangeAvatar += _view.ChangeAvatar;
+            _model.NeedResetAvatar += _view.ResetAvatar;
         }
 
         protected override void UnsubscribeFromWindowEvents()
         {
             _dialogueRunner.onDialogueComplete.RemoveListener(_model.OnDialogueComplete);
+            _model.NeedChangeAvatar -= _view.ChangeAvatar;
+            _model.NeedResetAvatar -= _view.ResetAvatar;
         }
     }
 }
