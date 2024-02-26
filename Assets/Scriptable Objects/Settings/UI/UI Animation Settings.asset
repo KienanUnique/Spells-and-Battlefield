@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f25494207074a45ba900c28830e7753, type: 3}
   m_Name: UI Animation Settings
   m_EditorClassIdentifier: 
-  _scaleAnimationDuration: 0.4
-  _scaleAnimationEase: 24
+  _scaleAnimationDuration: 0.1
+  _scaleAnimationEase: 3
