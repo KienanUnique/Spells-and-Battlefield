@@ -76,10 +76,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 20
+    m_Left: 30
     m_Right: 20
     m_Top: 20
-    m_Bottom: 20
+    m_Bottom: 30
   m_ChildAlignment: 4
   m_Spacing: 10
   m_ChildForceExpandWidth: 1
@@ -135,9 +135,17 @@ PrefabInstance:
       value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 8179597090648489390, guid: ed0760087bce314418f08c99f222297c, type: 3}
+      propertyPath: m_margin.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179597090648489390, guid: ed0760087bce314418f08c99f222297c, type: 3}
       propertyPath: m_fontSizeBase
       value: 36
       objectReference: {fileID: 0}
+    - target: {fileID: 8179597090648489390, guid: ed0760087bce314418f08c99f222297c, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -5966596113516289782, guid: 544c9f2d9bd776d4889b1a821fa12109, type: 2}
     - target: {fileID: 8179597090648489390, guid: ed0760087bce314418f08c99f222297c, type: 3}
       propertyPath: m_enableAutoSizing
       value: 0
@@ -149,6 +157,10 @@ PrefabInstance:
     - target: {fileID: 8179597090648489390, guid: ed0760087bce314418f08c99f222297c, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179597090648489390, guid: ed0760087bce314418f08c99f222297c, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8179597090648489391, guid: ed0760087bce314418f08c99f222297c, type: 3}
       propertyPath: m_Pivot.x
