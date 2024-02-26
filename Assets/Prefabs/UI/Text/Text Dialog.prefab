@@ -9,8 +9,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3720129204691003364, guid: eec19d7becf65244ea38dfa9266dd7d0, type: 3}
       propertyPath: m_Name
-      value: Text Base
+      value: Text Dialog
       objectReference: {fileID: 0}
+    - target: {fileID: 3720129204691003366, guid: eec19d7becf65244ea38dfa9266dd7d0, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 544c9f2d9bd776d4889b1a821fa12109, type: 2}
     - target: {fileID: 3720129204691003367, guid: eec19d7becf65244ea38dfa9266dd7d0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

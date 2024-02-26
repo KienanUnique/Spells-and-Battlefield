@@ -16,12 +16,20 @@ PrefabInstance:
       value: Title
       objectReference: {fileID: 0}
     - target: {fileID: 3720129204691003366, guid: eec19d7becf65244ea38dfa9266dd7d0, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8874421619660376096, guid: 51a953fac79953747948d251051f5cff, type: 2}
+    - target: {fileID: 3720129204691003366, guid: eec19d7becf65244ea38dfa9266dd7d0, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 3720129204691003366, guid: eec19d7becf65244ea38dfa9266dd7d0, type: 3}
       propertyPath: m_TextStyleHashCode
       value: 97690656
+      objectReference: {fileID: 0}
+    - target: {fileID: 3720129204691003366, guid: eec19d7becf65244ea38dfa9266dd7d0, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3720129204691003366, guid: eec19d7becf65244ea38dfa9266dd7d0, type: 3}
       propertyPath: m_enableVertexGradient
