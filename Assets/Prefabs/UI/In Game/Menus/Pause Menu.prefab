@@ -119,6 +119,10 @@ PrefabInstance:
       propertyPath: m_fontColorGradientPreset
       value: 
       objectReference: {fileID: 11400000, guid: 58fe1b09634ec484fa13980dd25d4108, type: 2}
+    - target: {fileID: 5991231026603005771, guid: a07b4c0f4e4c6f843b3ebfe0202f5913, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8874421619660376096, guid: 51a953fac79953747948d251051f5cff, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a07b4c0f4e4c6f843b3ebfe0202f5913, type: 3}
 --- !u!114 &3735062008094018773 stripped
@@ -255,6 +259,14 @@ PrefabInstance:
       propertyPath: m_fontColorGradientPreset
       value: 
       objectReference: {fileID: 11400000, guid: 58fe1b09634ec484fa13980dd25d4108, type: 2}
+    - target: {fileID: 5991231026603005771, guid: 94634fbfa0660cc4d976fdd5bdc5011e, type: 3}
+      propertyPath: m_fontSize
+      value: 18.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5991231026603005771, guid: 94634fbfa0660cc4d976fdd5bdc5011e, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8874421619660376096, guid: 51a953fac79953747948d251051f5cff, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94634fbfa0660cc4d976fdd5bdc5011e, type: 3}
 --- !u!114 &941077703739490492 stripped
@@ -387,6 +399,10 @@ PrefabInstance:
       propertyPath: m_fontColorGradientPreset
       value: 
       objectReference: {fileID: 11400000, guid: 58fe1b09634ec484fa13980dd25d4108, type: 2}
+    - target: {fileID: 5991231026603005771, guid: 5060bf55fb0e27b4eb92e0550a1c1f07, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8874421619660376096, guid: 51a953fac79953747948d251051f5cff, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5060bf55fb0e27b4eb92e0550a1c1f07, type: 3}
 --- !u!114 &9083050626381609082 stripped
@@ -411,9 +427,29 @@ PrefabInstance:
       propertyPath: m_text
       value: Pause
       objectReference: {fileID: 0}
+    - target: {fileID: 482486819829074364, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 482486819829074364, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 482486819829074364, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 482486819829074364, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 482486819829074364, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 482486819829074365, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7877660402856538740, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
       propertyPath: m_text
@@ -545,14 +581,14 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: cdb84f4df2a0d6c4e853214e580c69d3, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
---- !u!1 &1481629598836625841 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7877660403378058657, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
-  m_PrefabInstance: {fileID: 8781135416680965136}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1481629598836625840 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7877660403378058656, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
+  m_PrefabInstance: {fileID: 8781135416680965136}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1481629598836625841 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7877660403378058657, guid: 88b474b2ad3dc6c41a823a4b78534887, type: 3}
   m_PrefabInstance: {fileID: 8781135416680965136}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2623956842143961251
