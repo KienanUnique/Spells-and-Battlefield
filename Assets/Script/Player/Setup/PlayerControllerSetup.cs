@@ -36,6 +36,7 @@ using Spells.Spell.Scriptable_Objects;
 using Spells.Spell_Handlers.Continuous;
 using Spells.Spell_Types_Settings;
 using Systems.Input_Manager.Concrete_Types.In_Game;
+using Systems.Scenes_Controller.Concrete_Types;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using Zenject;
@@ -65,7 +66,7 @@ namespace Player.Setup
         [Header("Checkers")] [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private WallChecker _wallChecker;
 
-        [Header("Spells")] [SerializeField] private List<SpellScriptableObjectBase> _startTestSpells;
+        [Header("Spells")]
         [SerializeField] private ReadonlyTransformGetter _spellSpawnObject;
         private IReadonlyTransform _cameraTransform;
         private IIdHolder _idHolder;
@@ -88,12 +89,15 @@ namespace Player.Setup
         private Rigidbody _thisRigidbody;
         private IToolsForSummon _toolsForSummon;
         private PlayerAnimatorStatusChecker _animatorStatusChecker;
+        private ICurrentLevelDataProvider _currentLevelDataProvider;
 
         [Inject]
         private void GetDependencies(IPlayerInput playerInput, IPlayerSettings settings,
             ISpellObjectsFactory spellObjectsFactory, ISpellTypesSetting spellTypesSetting,
-            IGroundLayerMaskSetting groundLayerMaskSetting, IEnemyFactory enemyFactory)
+            IGroundLayerMaskSetting groundLayerMaskSetting, IEnemyFactory enemyFactory,
+            ICurrentLevelDataProvider currentLevelDataProvider)
         {
+            _currentLevelDataProvider = currentLevelDataProvider;
             _playerInput = playerInput;
             _settings = settings;
             _spellObjectsFactory = spellObjectsFactory;
@@ -155,8 +159,11 @@ namespace Player.Setup
                 _spellSpawnObject.ReadonlyTransform);
             var instantSpellHandler = new PlayerInstantSpellHandlerImplementationBase(_playerCaster,
                 _spellObjectsFactory, _spellSpawnObject.ReadonlyTransform, playerLook);
+
+            var startSpells = _currentLevelDataProvider.CurrentLevel.StartSpells;
             var spellsSelector =
-                new PlayerSpellsSelectorForSpellManager(new List<ISpell>(_startTestSpells), _spellTypesSetting);
+                new PlayerSpellsSelectorForSpellManager(startSpells, _spellTypesSetting);
+            
             var playerSpellsManager = new PlayerSpellsManager(continuousSpellHandler, instantSpellHandler,
                 spellsSelector, _animatorStatusChecker);
             playerSpellsManager.AddSpell(_spellTypesSetting.LastChanceSpellType,

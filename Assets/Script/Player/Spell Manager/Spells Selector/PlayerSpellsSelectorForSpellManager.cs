@@ -14,16 +14,16 @@ namespace Player.Spell_Manager.Spells_Selector
 {
     public class PlayerSpellsSelectorForSpellManager : BaseWithDisabling, IPlayerSpellsSelectorForSpellManager
     {
-        private readonly Dictionary<ISpellType, ListWithReactionOnChange<ISpell>> _spellsStorage =
-            new Dictionary<ISpellType, ListWithReactionOnChange<ISpell>>();
+        private readonly Dictionary<ISpellType, ListWithReactionOnChange<ISpell>> _spellsStorage = new();
 
-        private readonly ValueWithReactionOnChange<int> _selectedSpellTypeIndex = new ValueWithReactionOnChange<int>(0);
+        private readonly ValueWithReactionOnChange<int> _selectedSpellTypeIndex = new(0);
         private readonly ISpellType[] _spellTypesInOrder;
         private readonly ISpellType _lastChanceSpellType;
         private IList<ISpell> _spellGroupFromWhichToCreateSpell;
         private ISpellType _typeOfSpellToCreate;
 
-        public PlayerSpellsSelectorForSpellManager(List<ISpell> startTestSpells, ISpellTypesSetting spellTypesSetting)
+        public PlayerSpellsSelectorForSpellManager(IEnumerable<ISpell> startSpells,
+            ISpellTypesSetting spellTypesSetting)
         {
             _spellTypesInOrder = spellTypesSetting.TypesListInOrder.ToArray();
             foreach (ISpellType type in spellTypesSetting.TypesListInOrder)
@@ -35,7 +35,11 @@ namespace Player.Spell_Manager.Spells_Selector
                 _spellsStorage.ToDictionary(keyValuePair => keyValuePair.Key,
                     keyValuePair => (IReadonlyListWithReactionOnChange<ISpell>) keyValuePair.Value));
 
-            startTestSpells.ForEach(AddSpell);
+            foreach (var startSpell in startSpells)
+            {
+                AddSpell(startSpell);
+            }
+
             _lastChanceSpellType = spellTypesSetting.LastChanceSpellType;
         }
 

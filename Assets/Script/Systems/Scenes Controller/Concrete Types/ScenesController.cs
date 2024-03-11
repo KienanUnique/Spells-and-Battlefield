@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 namespace Systems.Scenes_Controller.Concrete_Types
 {
-    public class ScenesController : IInGameSceneController, IComicsToShowProvider
+    public class ScenesController : IInGameSceneController, IComicsToShowProvider, ICurrentLevelDataProvider
     {
         private readonly IScenesSettings _settings;
         private readonly IGameLevelInformationStorage _gameLevelInformationStorage;
@@ -38,6 +38,7 @@ namespace Systems.Scenes_Controller.Concrete_Types
             _gameLevelInformationStorage.CurrentGameLevelLootUnlocker;
 
         public IReadOnlyCollection<IGameLevelData> GameLevels => _settings.GameLevels;
+        public IGameLevelData CurrentLevel => _gameLevelInformationStorage.StoredLevelData;
 
         public void LoadNextGameLevel()
         {

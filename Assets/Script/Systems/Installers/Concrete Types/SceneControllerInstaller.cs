@@ -31,7 +31,10 @@ namespace Systems.Installers.Concrete_Types
         {
             Container.Bind(new List<Type>
                      {
-                         typeof(IInGameSceneController), typeof(IScenesController), typeof(IComicsToShowProvider)
+                         typeof(IInGameSceneController),
+                         typeof(IScenesController),
+                         typeof(IComicsToShowProvider),
+                         typeof(ICurrentLevelDataProvider)
                      })
                      .FromInstance(_scenesController)
                      .AsSingle()

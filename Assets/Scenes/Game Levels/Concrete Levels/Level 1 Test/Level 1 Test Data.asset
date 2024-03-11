@@ -16,3 +16,12 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: 305a245ce707ec54b91c2ea672005e74, type: 3}
   _nameToShow: Level 1 Test
   _comicsAfterScene: {fileID: 11400000, guid: b2470ea3a8606fa42b6adafa0d184f95, type: 2}
+  _startSpells:
+  - {fileID: 11400000, guid: 26af71275f173f747ba0fe1c21ab5809, type: 2}
+  - {fileID: 11400000, guid: b70b95decaaac2e46af860a758b1ecfd, type: 2}
+  - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+  - {fileID: 11400000, guid: 918e7fc265aea184faf164714d13dfe3, type: 2}
+  - {fileID: 11400000, guid: b70b95decaaac2e46af860a758b1ecfd, type: 2}
+  - {fileID: 11400000, guid: b70b95decaaac2e46af860a758b1ecfd, type: 2}
+  - {fileID: 11400000, guid: b70b95decaaac2e46af860a758b1ecfd, type: 2}
+  - {fileID: 11400000, guid: 9fe8e540a7cac7a4384b720ac0e5af3b, type: 2}
