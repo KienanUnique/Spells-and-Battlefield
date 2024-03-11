@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Avatar View Settings
   m_EditorClassIdentifier: 
   _scaleAnimationDuration: 0.2
-  _scaleAnimationEase: 9
+  _appearScaleAnimationEase: 27
+  _disappearScaleAnimationEase: 26

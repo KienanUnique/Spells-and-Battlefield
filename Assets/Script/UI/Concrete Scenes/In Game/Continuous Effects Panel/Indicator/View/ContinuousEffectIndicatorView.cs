@@ -36,7 +36,7 @@ namespace UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Indicator.View
             _cachedTransform.DOKill();
             _cachedTransform.DOScale(Vector3.one, _settings.ScaleAnimationDuration)
                             .ApplyCustomSetupForUI(_cachedGameObject)
-                            .SetEase(_settings.ScaleAnimationEase);
+                            .SetEase(_settings.AppearScaleAnimationEase);
         }
 
         public void UpdateRatioOfCompletedPartToEntireDuration(float newRatio)
@@ -49,7 +49,7 @@ namespace UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Indicator.View
             _cachedTransform.DOKill();
             _cachedTransform.DOScale(Vector3.zero, _settings.ScaleAnimationDuration)
                             .ApplyCustomSetupForUI(_cachedGameObject)
-                            .SetEase(_settings.ScaleAnimationEase)
+                            .SetEase(_settings.DisappearScaleAnimationEase)
                             .OnComplete(DisappearWithoutAnimation);
         }
 

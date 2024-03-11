@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Continuous Effect Indicator Settings
   m_EditorClassIdentifier: 
   _scaleAnimationDuration: 0.4
-  _scaleAnimationEase: 24
+  _appearScaleAnimationEase: 27
+  _disappearScaleAnimationEase: 26

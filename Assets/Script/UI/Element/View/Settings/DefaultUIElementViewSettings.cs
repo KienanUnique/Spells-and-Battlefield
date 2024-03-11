@@ -9,9 +9,11 @@ namespace UI.Element.View.Settings
     public class DefaultUIElementViewSettings : ScriptableObject, IDefaultUIElementViewSettings
     {
         [SerializeField] private float _scaleAnimationDuration = 0.4f;
-        [SerializeField] private Ease _scaleAnimationEase = Ease.OutElastic;
+        [SerializeField] private Ease _appearScaleAnimationEase = Ease.OutElastic;
+        [SerializeField] private Ease _disappearScaleAnimationEase = Ease.InElastic;
 
         public float ScaleAnimationDuration => _scaleAnimationDuration;
-        public Ease ScaleAnimationEase => _scaleAnimationEase;
+        public Ease AppearScaleAnimationEase => _appearScaleAnimationEase;
+        public Ease DisappearScaleAnimationEase => _disappearScaleAnimationEase;
     }
 }

@@ -15,4 +15,4 @@ MonoBehaviour:
   _appearFadeDuration: 0.1
   _appearFadeEase: 9
   _disappearFadeDuration: 1
-  _disappearFadeEase: 9
+  _disappearFadeEase: 8
