@@ -1,6 +1,7 @@
 ﻿using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Interfaces;
 using Common.Readonly_Transform;
+using Spells.Collision_Collider;
 using Spells.Controllers.Data_For_Controller;
 using Spells.Data_For_Spell_Implementation;
 using Spells.Factory;
@@ -14,6 +15,8 @@ namespace Spells.Controllers
     [RequireComponent(typeof(SpellTargetsDetector))]
     public class SpellObjectControllerBase : InitializableMonoBehaviourBase, ICoroutineStarter
     {
+        [SerializeField] private SpellCollisionTriggerBase _spellCollisionTrigger;
+        
         private IDataForSpellController _spellControllerData;
         private float _initializeTime;
 
@@ -54,10 +57,12 @@ namespace Spells.Controllers
 
         protected override void SubscribeOnEvents()
         {
+            _spellCollisionTrigger.TriggerEntered += OnTriggerEntered;
         }
 
         protected override void UnsubscribeFromEvents()
         {
+            _spellCollisionTrigger.TriggerEntered -= OnTriggerEntered;
         }
 
         protected override void OnInitialized()
@@ -80,17 +85,17 @@ namespace Spells.Controllers
             _initializeTime = Time.time;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerEntered(Collider other)
         {
-            if (other.TryGetComponent(out ISpellInteractable otherAsSpellInteractable))
-            {
-                otherAsSpellInteractable.InteractAsSpellType(_spellControllerData.SpellType);
-            }
-
             if (other.isTrigger ||
                 CurrentInitializableMonoBehaviourStatus != InitializableMonoBehaviourStatus.Initialized)
             {
                 return;
+            }
+            
+            if (other.TryGetComponent(out ISpellInteractable otherAsSpellInteractable))
+            {
+                otherAsSpellInteractable.InteractAsSpellType(_spellControllerData.SpellType);
             }
 
             foreach (ISpellApplier spellApplier in _spellControllerData.SpellAppliers)
