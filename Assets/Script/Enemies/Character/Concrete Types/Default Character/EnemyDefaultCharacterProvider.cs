@@ -2,6 +2,7 @@
 using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Readonly_Transform;
 using Enemies.Character.Provider;
+using Factions;
 using UnityEngine;
 
 namespace Enemies.Character.Concrete_Types.Default_Character
@@ -14,9 +15,11 @@ namespace Enemies.Character.Concrete_Types.Default_Character
         [SerializeField] private EnemyCharacterSettingsSection _settings;
 
         public override IDisableableEnemyCharacter GetImplementationObject(ICoroutineStarter coroutineStarter,
-            IReadonlyTransform thisTransform, GameObject gameObjectToLink, ISummoner summoner = null)
+            IReadonlyTransform thisTransform, GameObject gameObjectToLink, IFaction startFaction,
+            ISummoner summoner = null)
         {
-            return new EnemyDefaultCharacter(coroutineStarter, _settings, thisTransform, gameObjectToLink, summoner);
+            return new EnemyDefaultCharacter(coroutineStarter, _settings, thisTransform, gameObjectToLink, startFaction,
+                summoner);
         }
     }
 }

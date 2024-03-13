@@ -31,7 +31,6 @@ namespace Enemies.Setup.Controller_Setup_Data
         public IEnemyCharacter SetCharacter { get; }
         public IReadonlyTransform SetPopupTextHitPointsChangeAppearCenterPoint { get; }
         public ILootDropper SetLootDropper { get; }
-        public IFaction SetFaction { get; }
         public IReadonlyTransform SetPointForAiming { get; }
         public IInformationForSummon SetInformationForSummon { get; }
         public IToolsForSummon SetToolsForSummon { get; }

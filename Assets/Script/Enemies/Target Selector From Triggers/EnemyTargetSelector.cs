@@ -13,18 +13,19 @@ namespace Enemies.Target_Selector_From_Triggers
 {
     public class EnemyTargetFromTriggersSelector : BaseWithDisabling, IEnemyTargetFromTriggersSelector
     {
-        private readonly IFaction _thisFaction;
-        private readonly List<IEnemyTarget> _targets = new();
+        private readonly IFactionHolder _factionHolder;
+        private readonly List<IEnemyTarget> _aggressiveTargets = new();
+        private readonly List<IEnemyTarget> _allTargets = new();
         private readonly List<IEnemyTargetTrigger> _triggers = new();
         private readonly IReadonlyTransform _thisTransform;
         private readonly float _targetSelectorUpdateCooldownInSeconds;
         private readonly ICoroutineStarter _coroutineStarter;
         private Coroutine _selectingTargetsCoroutine;
 
-        public EnemyTargetFromTriggersSelector(IFaction thisFaction, IReadonlyTransform thisTransform,
+        public EnemyTargetFromTriggersSelector(IFactionHolder factionHolder, IReadonlyTransform thisTransform,
             ICoroutineStarter coroutineStarter, float targetSelectorUpdateCooldownInSeconds)
         {
-            _thisFaction = thisFaction;
+            _factionHolder = factionHolder;
             _thisTransform = thisTransform;
             _targetSelectorUpdateCooldownInSeconds = targetSelectorUpdateCooldownInSeconds;
             _coroutineStarter = coroutineStarter;
@@ -33,6 +34,7 @@ namespace Enemies.Target_Selector_From_Triggers
         public event IReadonlyEnemyTargetFromTriggersSelector.CurrentTargetChangedEventHandler CurrentTargetChanged;
         public IEnemyTarget CurrentTarget { get; private set; }
         private bool IsActive => _selectingTargetsCoroutine != null;
+        private IFaction CurrentFaction => _factionHolder.Faction;
 
         public void AddTrigger(IEnemyTargetTrigger trigger)
         {
@@ -72,6 +74,21 @@ namespace Enemies.Target_Selector_From_Triggers
             _selectingTargetsCoroutine = null;
         }
 
+        public void ResetTargets()
+        {
+            _aggressiveTargets.Clear();
+            foreach (var target in _allTargets)
+            {
+                if (IsFriendly(target))
+                {
+                    continue;
+                }
+                _aggressiveTargets.Add(target);
+            }
+            UpdateSelectedTarget();
+        }
+        
+
         protected sealed override void SubscribeOnEvents()
         {
             foreach (var trigger in _triggers)
@@ -79,7 +96,7 @@ namespace Enemies.Target_Selector_From_Triggers
                 SubscribeOnTriggerEvents(trigger);
             }
 
-            foreach (var target in _targets)
+            foreach (var target in _allTargets)
             {
                 SubscribeOnInitializedTarget(target);
             }
@@ -92,7 +109,7 @@ namespace Enemies.Target_Selector_From_Triggers
                 UnsubscribeFromTriggerEvents(trigger);
             }
 
-            foreach (var target in _targets)
+            foreach (var target in _allTargets)
             {
                 UnsubscribeFromInitializedTarget(target);
             }
@@ -112,7 +129,7 @@ namespace Enemies.Target_Selector_From_Triggers
 
         private void OnTargetDetected(IEnemyTarget newTarget)
         {
-            if (_targets.Contains(newTarget))
+            if (_allTargets.Contains(newTarget))
             {
                 return;
             }
@@ -123,11 +140,38 @@ namespace Enemies.Target_Selector_From_Triggers
         private void SubscribeOnInitializedTarget(IEnemyTarget target)
         {
             target.CharacterStateChanged += OnTargetStateChanged;
+            target.FactionChanged += OnFactionChanged;
         }
 
         private void UnsubscribeFromInitializedTarget(IEnemyTarget target)
         {
             target.CharacterStateChanged -= OnTargetStateChanged;
+            target.FactionChanged -= OnFactionChanged;
+        }
+
+        private void OnFactionChanged(IFaction newFaction)
+        {
+            foreach (var target in _aggressiveTargets)
+            {
+                if (!IsFriendly(target))
+                {
+                    continue;
+                }
+
+                _aggressiveTargets.Remove(target);
+            }
+            
+            foreach (var target in _allTargets)
+            {
+                if (IsFriendly(target))
+                {
+                    continue;
+                }
+
+                _aggressiveTargets.Add(target);
+            }
+            
+            UpdateSelectedTarget();
         }
 
         private void OnTargetStateChanged(CharacterState newState)
@@ -142,11 +186,16 @@ namespace Enemies.Target_Selector_From_Triggers
                 return target.CurrentCharacterState == CharacterState.Dead;
             }
 
-            var targetsToRemove = new List<IEnemyTarget>(_targets.Where(IsTargetDead));
+            var targetsToRemove = new List<IEnemyTarget>(_allTargets.Where(IsTargetDead));
             foreach (var enemyTarget in targetsToRemove)
             {
                 RemoveTarget(enemyTarget);
             }
+        }
+        
+        private bool IsFriendly(IEnemyTarget target)
+        {
+            return CurrentFaction.GetRelationshipToOtherFraction(target.Faction) == OtherFactionRelationship.Friendly;
         }
 
         private IEnumerator UpdateCurrentTargetCoroutine()
@@ -161,19 +210,23 @@ namespace Enemies.Target_Selector_From_Triggers
 
         private void HandleNewDetectedTarget(IEnemyTarget newTarget)
         {
-            if (_targets.Contains(newTarget) ||
-                _thisFaction.GetRelationshipToOtherFraction(newTarget.Faction) == OtherFactionRelationship.Friendly ||
-                newTarget.CurrentCharacterState == CharacterState.Dead)
+            if (newTarget.CurrentCharacterState == CharacterState.Dead)
             {
                 return;
             }
 
-            _targets.Add(newTarget);
-
+            _allTargets.Add(newTarget);
             if (IsEnabled)
             {
                 SubscribeOnInitializedTarget(newTarget);
             }
+
+            if (IsFriendly(newTarget))
+            {
+                return;
+            }
+
+            _aggressiveTargets.Add(newTarget);
 
             UpdateSelectedTarget();
         }
@@ -202,8 +255,14 @@ namespace Enemies.Target_Selector_From_Triggers
                 trigger.ForgetTarget(targetToRemove);
             }
 
-            _targets.Remove(targetToRemove);
+            _allTargets.Remove(targetToRemove);
 
+            if (!_aggressiveTargets.Contains(targetToRemove))
+            {
+                return;
+            }
+
+            _aggressiveTargets.Remove(targetToRemove);
             if (CurrentTarget == null || targetToRemove == CurrentTarget)
             {
                 UpdateSelectedTarget();
@@ -217,10 +276,10 @@ namespace Enemies.Target_Selector_From_Triggers
                 return;
             }
 
-            var nextTarget = _targets.Count switch
+            var nextTarget = _aggressiveTargets.Count switch
             {
                 0 => null,
-                1 => _targets.First(),
+                1 => _aggressiveTargets.First(),
                 _ => GetClosestTarget()
             };
 
@@ -236,15 +295,15 @@ namespace Enemies.Target_Selector_From_Triggers
 
         private IEnemyTarget GetClosestTarget()
         {
-            var closestTarget = _targets[0];
+            var closestTarget = _aggressiveTargets[0];
             var closestDistance = CalculateDistanceToTarget(closestTarget);
-            for (var i = 1; i < _targets.Count; i++)
+            for (var i = 1; i < _aggressiveTargets.Count; i++)
             {
-                var tmpDistance = CalculateDistanceToTarget(_targets[i]);
+                var tmpDistance = CalculateDistanceToTarget(_aggressiveTargets[i]);
                 if (tmpDistance < closestDistance)
                 {
                     closestDistance = tmpDistance;
-                    closestTarget = _targets[i];
+                    closestTarget = _aggressiveTargets[i];
                 }
             }
 

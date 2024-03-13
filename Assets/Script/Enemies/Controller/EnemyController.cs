@@ -66,7 +66,6 @@ namespace Enemies.Controller
             _character = setupData.SetCharacter;
             _popupTextHitPointsChangeAppearCenterPoint = setupData.SetPopupTextHitPointsChangeAppearCenterPoint;
             PointForAiming = setupData.SetPointForAiming;
-            Faction = setupData.SetFaction;
             InformationForSummon = setupData.SetInformationForSummon;
             ToolsForSummon = setupData.SetToolsForSummon;
             UpperPointForSummonedEnemiesPositionCalculating =
@@ -79,6 +78,7 @@ namespace Enemies.Controller
         public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
         public event Action<IAppliedContinuousEffectInformation> ContinuousEffectAdded;
         public event Action<CharacterState> CharacterStateChanged;
+        public event Action<IFaction> FactionChanged;
         public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
@@ -93,7 +93,7 @@ namespace Enemies.Controller
         public IReadonlyRigidbody ReadonlyRigidbody => _movement.ReadonlyRigidbody;
 
         public IEnemyTargetFromTriggersSelector TargetFromTriggersSelector { get; private set; }
-        public IFaction Faction { get; private set; }
+        public IFaction Faction => _character.Faction;
         public IReadonlyTransform PointForAiming { get; private set; }
         public int Id => _idHolder.Id;
 
@@ -200,6 +200,16 @@ namespace Enemies.Controller
         {
             _movement.UnstickFromPlatform();
         }
+        
+        public void RevertFaction()
+        {
+            _character.RevertFaction();
+        }
+
+        public void ResetFactionToDefault()
+        {
+            _character.ResetFactionToDefault();
+        }
 
         protected override void SubscribeOnEvents()
         {
@@ -207,6 +217,7 @@ namespace Enemies.Controller
             _character.CharacterStateChanged += OnCharacterStateChanged;
             _character.HitPointsCountChanged += OnHitPointsCountChanged;
             _character.ContinuousEffectAdded += OnContinuousEffectAdded;
+            _character.FactionChanged += OnFactionChanged;
             _movement.MovingStateChanged += _visual.UpdateMovingData;
             _enemyStateMachineAI.NeedChangeLookPointCalculator += OnNeedChangeLookPointCalculator;
         }
@@ -217,6 +228,7 @@ namespace Enemies.Controller
             _character.CharacterStateChanged -= OnCharacterStateChanged;
             _character.HitPointsCountChanged -= OnHitPointsCountChanged;
             _character.ContinuousEffectAdded -= OnContinuousEffectAdded;
+            _character.FactionChanged -= OnFactionChanged;
             _movement.MovingStateChanged -= _visual.UpdateMovingData;
             _enemyStateMachineAI.NeedChangeLookPointCalculator -= OnNeedChangeLookPointCalculator;
         }
@@ -269,6 +281,11 @@ namespace Enemies.Controller
             _popupHitPointsChangeTextFactory.Create(changeInformation.TypeOfHitPointsChange,
                 changeInformation.HitPointsChangeValue, _popupTextHitPointsChangeAppearCenterPoint.Position);
             HitPointsCountChanged?.Invoke(changeInformation);
+        }
+        
+        private void OnFactionChanged(IFaction obj)
+        {
+            FactionChanged?.Invoke(obj);
         }
 
         private void DropSpell()

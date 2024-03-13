@@ -29,7 +29,6 @@ namespace Player.Setup
         public IPlayerVisual SetPlayerVisual { get; }
         public IPlayerCameraEffects SetPlayerCameraEffects { get; }
         public IReadonlyTransform SetCameraTransform { get; }
-        public IFaction SetFaction { get; }
         public IInformationForSummon SetInformationForSummon { get; }
         public IToolsForSummon SetToolsForSummon { get; }
         public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }

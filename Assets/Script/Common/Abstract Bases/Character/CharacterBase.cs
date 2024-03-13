@@ -7,22 +7,25 @@ using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Mechanic_Effects.Continuous_Effect;
 using Common.Mechanic_Effects.Source;
 using Common.Settings.Sections.Character;
+using Factions;
 using UnityEngine;
 
 namespace Common.Abstract_Bases.Character
 {
     public abstract class CharacterBase : BaseWithDisabling, ICharacterBase
     {
-        protected readonly ICharacterSettings _characterSettings;
-        protected readonly ICoroutineStarter _coroutineStarter;
-        protected readonly GameObject _gameObjectToLink;
-        protected readonly List<IAppliedContinuousEffect> _currentEffects;
-        protected readonly ValueWithReactionOnChange<CharacterState> _currentState;
         protected readonly HitPointsCalculator _hitPointsCalculator;
         protected readonly ISummoner _summoner;
+        private readonly ICharacterSettings _characterSettings;
+        private readonly ICoroutineStarter _coroutineStarter;
+        private readonly GameObject _gameObjectToLink;
+        private readonly List<IAppliedContinuousEffect> _currentEffects;
+        private readonly ValueWithReactionOnChange<CharacterState> _currentState;
+        private readonly IFaction _defaultFaction;
+        private IFaction _currentFaction;
 
         protected CharacterBase(ICoroutineStarter coroutineStarter, ICharacterSettings characterSettings,
-            GameObject gameObjectToLink, ISummoner summoner = null)
+            GameObject gameObjectToLink, IFaction startFaction, ISummoner summoner = null)
         {
             _coroutineStarter = coroutineStarter;
             _characterSettings = characterSettings;
@@ -31,14 +34,18 @@ namespace Common.Abstract_Bases.Character
             _currentEffects = new List<IAppliedContinuousEffect>();
             _gameObjectToLink = gameObjectToLink;
             _summoner = summoner;
+            _defaultFaction = startFaction;
+            _currentFaction = _defaultFaction;
         }
 
         public event Action<CharacterState> CharacterStateChanged;
         public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
         public event Action<IAppliedContinuousEffectInformation> ContinuousEffectAdded;
+        public event Action<IFaction> FactionChanged;
 
         public CharacterState CurrentCharacterState => _currentState.Value;
         public float HitPointCountRatio => _hitPointsCalculator.HitPointCountRatio;
+        public IFaction Faction { get; }
 
         public IReadOnlyList<IAppliedContinuousEffectInformation> CurrentContinuousEffects =>
             new List<IAppliedContinuousEffectInformation>(_currentEffects);
@@ -80,6 +87,23 @@ namespace Common.Abstract_Bases.Character
             }
 
             _hitPointsCalculator.HandleHeal(countOfHitPoints, sourceInformation);
+        }
+
+        public void RevertFaction()
+        {
+            _currentFaction = _currentFaction.RevertFaction;
+            FactionChanged?.Invoke(_currentFaction);
+        }
+
+        public void ResetFactionToDefault()
+        {
+            if (_currentFaction.Equals(_defaultFaction))
+            {
+                return;
+            }
+
+            _currentFaction = _defaultFaction;
+            FactionChanged?.Invoke(_currentFaction);
         }
 
         protected sealed override void SubscribeOnEvents()

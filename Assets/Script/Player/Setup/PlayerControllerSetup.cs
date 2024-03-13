@@ -47,6 +47,8 @@ namespace Player.Setup
     [RequireComponent(typeof(PlayerController))]
     public class PlayerControllerSetup : SetupMonoBehaviourBase, ICoroutineStarter
     {
+        private readonly List<IDisableable> _itemsNeedDisabling = new();
+
         [Header("Camera")] [SerializeField] private ReadonlyTransformGetter _cameraFollowObject;
         [SerializeField] private Transform _objectToRotateHorizontally;
         [SerializeField] private GameObject _cameraEffectsGameObject;
@@ -68,7 +70,6 @@ namespace Player.Setup
 
         private IReadonlyTransform _cameraTransform;
         private IIdHolder _idHolder;
-        private List<IDisableable> _itemsNeedDisabling;
 
         [Header("Other")] [SerializeField] private ReadonlyTransformGetter _pointForAiming;
         [SerializeField] private ReadonlyTransformGetter _upperPointForSummonedEnemiesPositionCalculating;
@@ -78,7 +79,6 @@ namespace Player.Setup
 
         private IPlayerCameraEffects _playerCameraEffects;
         private ICaster _playerCaster;
-        private IPlayerCharacter _playerCharacter;
         private IPlayerInput _playerInput;
         private IPlayerVisual _playerVisual;
         private IPlayerSettings _settings;
@@ -119,12 +119,6 @@ namespace Player.Setup
             _idHolder = GetComponent<IdHolder>();
             _thisRigidbody = GetComponent<Rigidbody>();
 
-            var playerCharacter = new PlayerCharacter(this, _settings.Character, gameObject);
-
-            _itemsNeedDisabling = new List<IDisableable> {playerCharacter};
-
-            _playerCharacter = playerCharacter;
-
             _playerVisual = new PlayerVisual(_rigBuilder, _characterAnimator, _settings.Visual);
             var cameraFieldOfViewController =
                 new PlayerCameraFieldOfViewController(_settings.CameraEffects, _camera, this);
@@ -142,6 +136,8 @@ namespace Player.Setup
 
         protected override void Initialize()
         {
+            var playerCharacter = new PlayerCharacter(this, _settings.Character, gameObject, _settings.Faction);
+
             var playerLook = new PlayerLook(_camera, _cameraFollowObject.ReadonlyTransform, _objectToRotateHorizontally,
                 _settings.Look, this);
 
@@ -171,6 +167,7 @@ namespace Player.Setup
 
             var pressKeyInteractor = new PressKeyInteractor(readonlyTransform, _pressKeyCollider);
 
+            _itemsNeedDisabling.Add(playerCharacter);
             _itemsNeedDisabling.Add(playerMovement);
             _itemsNeedDisabling.Add(playerSpellsManager);
             _itemsNeedDisabling.Add(continuousSpellHandler);
@@ -182,9 +179,9 @@ namespace Player.Setup
             var controllerToSetup = GetComponent<IInitializablePlayerController>();
             var informationOfSummoner = new InformationForSummon(GetComponent<ISummoner>(), _settings.Faction,
                 new List<IEnemyTargetTrigger>(_triggersForSummonedEnemies));
-            var setupData = new PlayerControllerSetupData(_playerCameraEffects, _playerVisual, _playerCharacter,
+            var setupData = new PlayerControllerSetupData(_playerCameraEffects, _playerVisual, playerCharacter,
                 playerSpellsManager, _playerInput, playerMovement, playerLook, _idHolder, _itemsNeedDisabling,
-                _cameraTransform, _settings.Faction, informationOfSummoner, _toolsForSummon,
+                _cameraTransform, informationOfSummoner, _toolsForSummon,
                 _upperPointForSummonedEnemiesPositionCalculating.ReadonlyTransform, _animatorStatusChecker,
                 hookerVisual, pressKeyInteractor);
             controllerToSetup.Initialize(setupData);

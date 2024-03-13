@@ -64,7 +64,6 @@ namespace Player
             CameraTransform = setupData.SetCameraTransform;
             UpperPointForSummonedEnemiesPositionCalculating =
                 setupData.SetUpperPointForSummonedEnemiesPositionCalculating;
-            Faction = setupData.SetFaction;
             InformationForSummon = setupData.SetInformationForSummon;
             ToolsForSummon = setupData.SetToolsForSummon;
             _animatorStatusChecker = setupData.SetAnimatorStatusChecker;
@@ -88,6 +87,7 @@ namespace Player
         public event Action ContinuousSpellFinished;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
+        public event Action<IFaction> FactionChanged;
         public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
@@ -97,7 +97,7 @@ namespace Player
             _character.CurrentContinuousEffects;
 
         public CharacterState CurrentCharacterState => _character.CurrentCharacterState;
-        public IFaction Faction { get; private set; }
+        public IFaction Faction => _character.Faction;
         public IReadonlyTransform PointForAiming => UpperPointForSummonedEnemiesPositionCalculating;
         public int Id => _idHolder.Id;
         public IReadonlyRigidbody MainRigidbody => _movement.MainRigidbody;

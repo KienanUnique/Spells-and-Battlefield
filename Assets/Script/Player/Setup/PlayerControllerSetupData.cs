@@ -22,7 +22,7 @@ namespace Player.Setup
         public PlayerControllerSetupData(IPlayerCameraEffects playerCameraEffects, IPlayerVisual playerVisual,
             IPlayerCharacter playerCharacter, IPlayerSpellsManager playerSpellsManager, IPlayerInput playerInput,
             IPlayerMovement playerMovement, IPlayerLook playerLook, IIdHolder idHolder,
-            List<IDisableable> itemsNeedDisabling, IReadonlyTransform cameraTransform, IFaction setFaction,
+            List<IDisableable> itemsNeedDisabling, IReadonlyTransform cameraTransform,
             IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon,
             IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating,
             IPlayerAnimatorStatusChecker setAnimatorStatusChecker, IHookTrailVisual setHookTrailVisual,
@@ -38,7 +38,6 @@ namespace Player.Setup
             SetIDHolder = idHolder;
             SetItemsNeedDisabling = itemsNeedDisabling;
             SetCameraTransform = cameraTransform;
-            SetFaction = setFaction;
             SetInformationForSummon = setInformationForSummon;
             SetToolsForSummon = setToolsForSummon;
             SetUpperPointForSummonedEnemiesPositionCalculating = setUpperPointForSummonedEnemiesPositionCalculating;
@@ -57,7 +56,6 @@ namespace Player.Setup
         public IPlayerVisual SetPlayerVisual { get; }
         public IPlayerCameraEffects SetPlayerCameraEffects { get; }
         public IReadonlyTransform SetCameraTransform { get; }
-        public IFaction SetFaction { get; }
         public IInformationForSummon SetInformationForSummon { get; }
         public IToolsForSummon SetToolsForSummon { get; }
         public IReadonlyTransform SetUpperPointForSummonedEnemiesPositionCalculating { get; }

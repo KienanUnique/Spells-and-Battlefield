@@ -43,6 +43,8 @@ namespace Common.Mechanic_Effects.Concrete_Types.Change_Speed
                 {
                     movable?.DivideSpeedRatioBy(_changeSpeedRatio);
                 }
+                
+                _affectedTargets.Clear();
             }
         }
     }

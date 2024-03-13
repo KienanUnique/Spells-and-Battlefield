@@ -6,7 +6,9 @@ namespace Factions
         order = 0)]
     public class FactionScriptableObject : ScriptableObject, IFaction
     {
+        [SerializeField] private FactionScriptableObject _revertFaction;
         public int Id => GetInstanceID();
+        public IFaction RevertFaction => _revertFaction;
 
         public bool Equals(IFaction other)
         {

@@ -4,6 +4,7 @@
     {
         public void StartSelecting();
         public void StopSelecting();
+        public void ResetTargets();
     }
 
     public interface IReadonlyEnemyTargetFromTriggersSelector

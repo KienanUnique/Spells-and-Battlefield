@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fe7838b8ce948cea480c1d6c2df033f, type: 3}
   m_Name: Player Faction
   m_EditorClassIdentifier: 
-  _name: Player
+  _revertFaction: {fileID: 11400000, guid: 532fc442916f5fb418225d66e415a2b7, type: 2}

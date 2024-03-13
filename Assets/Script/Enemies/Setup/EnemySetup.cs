@@ -154,8 +154,12 @@ namespace Enemies.Setup
             var targetPathfinder =
                 _settings.TargetPathfinderProvider.GetImplementationObject(targetPathfinderSetupData);
 
-            var targetFromTriggersSelector = new EnemyTargetFromTriggersSelector(_faction, thisReadonlyRigidbody, this,
-                _generalEnemySettings.TargetSelectorUpdateCooldownInSeconds);
+            var enemyCharacter =
+                _settings.CharacterProvider.GetImplementationObject(this, thisReadonlyRigidbody, gameObject, _faction,
+                    _summoner);
+
+            var targetFromTriggersSelector = new EnemyTargetFromTriggersSelector(enemyCharacter, thisReadonlyRigidbody,
+                this, _generalEnemySettings.TargetSelectorUpdateCooldownInSeconds);
 
             var enemyLook = new EnemyLook(_thisRigidbody.transform, thisReadonlyRigidbody, thisReadonlyRigidbody,
                 targetFromTriggersSelector, this, _transformToRotateForIK, _thisIKCenterPoint.ReadonlyTransform,
@@ -167,9 +171,6 @@ namespace Enemies.Setup
             var movementSetupData = new EnemyMovementSetupData(_thisRigidbody, targetFromTriggersSelector, this,
                 targetPathfinder, _summoner, _collider);
             var enemyMovement = _settings.MovementProvider.GetImplementationObject(movementSetupData);
-
-            var enemyCharacter =
-                _settings.CharacterProvider.GetImplementationObject(this, thisReadonlyRigidbody, gameObject, _summoner);
 
             var targetTriggers = new List<IEnemyTargetTrigger>(_externalTargetTriggers);
             targetTriggers.AddRange(_localTargetTriggers);
@@ -192,7 +193,7 @@ namespace Enemies.Setup
             var baseSetupData = new EnemyControllerSetupData(_enemyStateMachineAI, enemyMovement, itemsNeedDisabling,
                 _idHolder, _generalEnemySettings, _popupHitPointsChangeTextFactory, targetFromTriggersSelector,
                 enemyLook, _animatorStatusChecker, enemyVisual, enemyCharacter,
-                _popupTextHitPointsChangeAppearCenterPoint.ReadonlyTransform, lootDropper, _faction,
+                _popupTextHitPointsChangeAppearCenterPoint.ReadonlyTransform, lootDropper,
                 _pointForAiming.ReadonlyTransform, informationOfSummoner, _toolsForSummon,
                 _lootSpawnPoint.ReadonlyTransform);
 

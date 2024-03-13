@@ -5,7 +5,7 @@ using Common.Mechanic_Effects.Continuous_Effect;
 
 namespace Common.Abstract_Bases.Character
 {
-    public interface ICharacterInformationProvider
+    public interface ICharacterInformationProvider : ICharacterWithFaction
     {
         public event Action<CharacterState> CharacterStateChanged;
         public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
