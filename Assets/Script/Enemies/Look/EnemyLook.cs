@@ -136,7 +136,7 @@ namespace Enemies.Look
                 _transformToRotate.rotation = Quaternion.LookRotation(_cachedLookXZ);
             }
 
-            Vector3 needDirection = Vector3.Reflect(lookRotation, _thisIKCenterPoint.Up);
+            var needDirection = Vector3.Reflect(lookRotation, _thisIKCenterPoint.Up);
             _transformToRotateForIK.position =
                 _needDistanceFromIKCenterPoint * needDirection + _thisIKCenterPoint.Position;
         }

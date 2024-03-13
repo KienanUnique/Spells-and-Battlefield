@@ -42,12 +42,12 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
                 return;
             }
 
-            foreach (TPoolItem objectPoolItem in _items)
+            foreach (var objectPoolItem in _items)
             {
                 objectPoolItem.Deactivated += OnItemDeactivated;
             }
 
-            foreach (TPoolItem waitingInitializationItem in _waitingInitializationItems)
+            foreach (var waitingInitializationItem in _waitingInitializationItems)
             {
                 SubscribeOnWaitingInitializationItem(waitingInitializationItem);
             }
@@ -60,12 +60,12 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
                 return;
             }
 
-            foreach (TPoolItem objectPoolItem in _items)
+            foreach (var objectPoolItem in _items)
             {
                 objectPoolItem.Deactivated -= OnItemDeactivated;
             }
 
-            foreach (TPoolItem waitingInitializationItem in _waitingInitializationItems)
+            foreach (var waitingInitializationItem in _waitingInitializationItems)
             {
                 UnsubscribeFromWaitingInitializationItem(waitingInitializationItem);
             }
@@ -88,7 +88,7 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
             }
             else
             {
-                TPoolItem freeItem = _items.Find(item => !item.IsUsed);
+                var freeItem = _items.Find(item => !item.IsUsed);
                 freeItem.Activate(dataForActivation);
             }
         }
@@ -113,7 +113,7 @@ namespace Common.Abstract_Bases.Factories.Object_Pool
         {
             if (newInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Initialized)
             {
-                TPoolItem initializedItem = _waitingInitializationItems.First(item =>
+                var initializedItem = _waitingInitializationItems.First(item =>
                     item.CurrentInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Initialized);
                 UnsubscribeFromWaitingInitializationItem(initializedItem);
                 _waitingInitializationItems.Remove(initializedItem);

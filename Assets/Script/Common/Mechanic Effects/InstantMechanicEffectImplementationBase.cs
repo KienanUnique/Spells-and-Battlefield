@@ -11,7 +11,7 @@ namespace Common.Mechanic_Effects
         public virtual void ApplyEffectToTargets(IEnumerable<IInteractable> targets,
             IEffectSourceInformation sourceInformation)
         {
-            foreach (IInteractable interactableTarget in targets)
+            foreach (var interactableTarget in targets)
             {
                 ApplyEffectToTarget(interactableTarget, sourceInformation);
             }

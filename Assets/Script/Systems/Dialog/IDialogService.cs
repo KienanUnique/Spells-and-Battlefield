@@ -5,8 +5,8 @@ namespace Systems.Dialog
 {
     public interface IDialogService
     {
-        public void StartDialog(IDialogProvider dialog);
         public event Action DialogStarted;
         public event Action DialogEnded;
+        public void StartDialog(IDialogProvider dialog);
     }
 }

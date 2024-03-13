@@ -21,8 +21,7 @@ namespace Enemies.Spawn.Spawner.Setup
     {
         private const float MaxGroundRaycastDistance = 100f;
 
-        private readonly ExternalDependenciesInitializationWaiter _dependenciesWaiter =
-            new ExternalDependenciesInitializationWaiter(false);
+        private readonly ExternalDependenciesInitializationWaiter _dependenciesWaiter = new(false);
 
         [SerializeField] private EnemyDataForSpawning _objectToSpawn;
         private IEnemyFactory _enemyFactory;
@@ -51,9 +50,9 @@ namespace Enemies.Spawn.Spawner.Setup
         protected override void Prepare()
         {
             _spawner = GetComponent<IInitializableEnemySpawnerWithTrigger>();
-            Vector3 spawnPosition =
-                Physics.Raycast(transform.position, Vector3.down, out RaycastHit downRaycastHit,
-                    MaxGroundRaycastDistance, _groundLayerMaskSetting.Mask, QueryTriggerInteraction.Ignore)
+            var spawnPosition =
+                Physics.Raycast(transform.position, Vector3.down, out var downRaycastHit, MaxGroundRaycastDistance,
+                    _groundLayerMaskSetting.Mask, QueryTriggerInteraction.Ignore)
                     ? downRaycastHit.point
                     : transform.position;
             _thisPositionData = new PositionDataForInstantiation(spawnPosition, transform.rotation);

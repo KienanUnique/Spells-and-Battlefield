@@ -1,7 +1,6 @@
 ﻿using System;
 using Spells.Spell;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Information;
-using UnityEngine;
 
 namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot.Model
 {

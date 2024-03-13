@@ -7,11 +7,10 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
 {
     public abstract class InitializableMonoBehaviourBase : MonoBehaviour, IInitializableWithActionsPool
     {
-        private readonly List<Action> _actionsAfterInitialization = new List<Action>();
+        private readonly List<Action> _actionsAfterInitialization = new();
 
         private readonly ValueWithReactionOnChange<InitializableMonoBehaviourStatus> _currentStatus =
-            new ValueWithReactionOnChange<InitializableMonoBehaviourStatus>(InitializableMonoBehaviourStatus
-                .NonInitialized);
+            new(InitializableMonoBehaviourStatus.NonInitialized);
 
         private List<IDisableable> _itemsNeedDisabling;
 
@@ -68,7 +67,7 @@ namespace Common.Abstract_Bases.Initializable_MonoBehaviour
         {
             SubscribeOnBaseEvents();
             _currentStatus.Value = InitializableMonoBehaviourStatus.Initialized;
-            foreach (Action action in _actionsAfterInitialization)
+            foreach (var action in _actionsAfterInitialization)
             {
                 action.Invoke();
             }

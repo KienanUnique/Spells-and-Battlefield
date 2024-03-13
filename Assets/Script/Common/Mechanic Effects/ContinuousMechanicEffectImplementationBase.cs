@@ -20,7 +20,7 @@ namespace Common.Mechanic_Effects
         {
             if (target is IContinuousEffectApplicable continuousEffectApplicableTarget)
             {
-                IContinuousEffect effect = _effectFactory.Create(target);
+                var effect = _effectFactory.Create(target);
                 continuousEffectApplicableTarget.ApplyContinuousEffect(effect);
             }
         }
@@ -28,7 +28,7 @@ namespace Common.Mechanic_Effects
         public virtual void ApplyEffectToTargets(IEnumerable<IInteractable> targets,
             IEffectSourceInformation sourceInformation)
         {
-            foreach (IInteractable target in targets)
+            foreach (var target in targets)
             {
                 ApplyEffectToTarget(target, sourceInformation);
             }

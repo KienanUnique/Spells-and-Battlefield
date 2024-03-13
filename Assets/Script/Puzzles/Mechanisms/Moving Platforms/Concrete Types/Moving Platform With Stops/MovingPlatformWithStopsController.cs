@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DG.Tweening;
 using Puzzles.Mechanisms.Moving_Platforms.Data_For_Creating;
 using Puzzles.Mechanisms_Triggers;
@@ -52,12 +51,12 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
 
         protected override void SubscribeOnEvents()
         {
-            foreach (IMechanismsTrigger trigger in _moveNextTriggers)
+            foreach (var trigger in _moveNextTriggers)
             {
                 trigger.Triggered += SetNextMovementDirection;
             }
 
-            foreach (IMechanismsTrigger trigger in _movePreviousTriggers)
+            foreach (var trigger in _movePreviousTriggers)
             {
                 trigger.Triggered += SetPreviousMovementDirection;
             }
@@ -67,12 +66,12 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform_Wit
 
         protected override void UnsubscribeFromEvents()
         {
-            foreach (IMechanismsTrigger trigger in _moveNextTriggers)
+            foreach (var trigger in _moveNextTriggers)
             {
                 trigger.Triggered -= SetNextMovementDirection;
             }
 
-            foreach (IMechanismsTrigger trigger in _movePreviousTriggers)
+            foreach (var trigger in _movePreviousTriggers)
             {
                 trigger.Triggered -= SetPreviousMovementDirection;
             }

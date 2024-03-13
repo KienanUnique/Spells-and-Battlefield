@@ -25,7 +25,8 @@ namespace Player.Setup
             List<IDisableable> itemsNeedDisabling, IReadonlyTransform cameraTransform, IFaction setFaction,
             IInformationForSummon setInformationForSummon, IToolsForSummon setToolsForSummon,
             IReadonlyTransform setUpperPointForSummonedEnemiesPositionCalculating,
-            IPlayerAnimatorStatusChecker setAnimatorStatusChecker, IHookTrailVisual setHookTrailVisual, IPressKeyInteractor setPressKeyInteractor)
+            IPlayerAnimatorStatusChecker setAnimatorStatusChecker, IHookTrailVisual setHookTrailVisual,
+            IPressKeyInteractor setPressKeyInteractor)
         {
             SetPlayerCameraEffects = playerCameraEffects;
             SetPlayerVisual = playerVisual;

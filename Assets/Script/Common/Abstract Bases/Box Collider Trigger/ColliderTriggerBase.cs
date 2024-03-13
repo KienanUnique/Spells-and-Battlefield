@@ -7,7 +7,7 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
     [RequireComponent(typeof(Collider))]
     public abstract class ColliderTriggerBase<TRequiredObject> : MonoBehaviour
     {
-        protected readonly List<TRequiredObject> _requiredObjectsInside = new List<TRequiredObject>();
+        protected readonly List<TRequiredObject> _requiredObjectsInside = new();
         protected event Action<TRequiredObject> RequiredObjectEnteringDetected;
         protected event Action<TRequiredObject> RequiredObjectExitingDetected;
 

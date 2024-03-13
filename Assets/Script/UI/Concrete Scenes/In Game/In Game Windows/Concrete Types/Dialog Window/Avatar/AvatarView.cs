@@ -22,13 +22,10 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Windo
                 AppearAsSprite(newSprite);
                 return;
             }
-            
-            Disappear(() =>
-            {
-                AppearAsSprite(newSprite);
-            });
+
+            Disappear(() => { AppearAsSprite(newSprite); });
         }
-        
+
         public void ResetAvatar()
         {
             _image.sprite = null;

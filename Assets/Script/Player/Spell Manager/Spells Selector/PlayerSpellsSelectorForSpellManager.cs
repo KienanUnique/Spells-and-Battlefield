@@ -26,7 +26,7 @@ namespace Player.Spell_Manager.Spells_Selector
             ISpellTypesSetting spellTypesSetting)
         {
             _spellTypesInOrder = spellTypesSetting.TypesListInOrder.ToArray();
-            foreach (ISpellType type in spellTypesSetting.TypesListInOrder)
+            foreach (var type in spellTypesSetting.TypesListInOrder)
             {
                 _spellsStorage.Add(type, new ListWithReactionOnChange<ISpell>());
             }
@@ -61,7 +61,7 @@ namespace Player.Spell_Manager.Spells_Selector
 
         public void SelectNextSpellType()
         {
-            int nextIndex = _selectedSpellTypeIndex.Value + 1;
+            var nextIndex = _selectedSpellTypeIndex.Value + 1;
             if (nextIndex < _spellTypesInOrder.Length)
             {
                 SelectSpellTypeWithIndex(nextIndex);
@@ -70,7 +70,7 @@ namespace Player.Spell_Manager.Spells_Selector
 
         public void SelectPreviousSpellType()
         {
-            int nextIndex = _selectedSpellTypeIndex.Value - 1;
+            var nextIndex = _selectedSpellTypeIndex.Value - 1;
             if (nextIndex >= 0)
             {
                 SelectSpellTypeWithIndex(nextIndex);

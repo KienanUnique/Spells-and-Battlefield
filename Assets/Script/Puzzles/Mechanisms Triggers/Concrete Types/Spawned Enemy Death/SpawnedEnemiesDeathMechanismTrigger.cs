@@ -18,7 +18,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
                 Trigger();
             }
         }
-        
+
         private bool IsAllEnemiesDead => _triggers.All(trigger => trigger.IsSpawnedEnemyDied);
 
         protected override void SubscribeOnEvents()
@@ -28,7 +28,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
                 return;
             }
 
-            foreach (IEnemyDeathTrigger enemyDeathTrigger in _triggers)
+            foreach (var enemyDeathTrigger in _triggers)
             {
                 enemyDeathTrigger.SpawnedEnemyDied += OnSpawnedEnemyDied;
             }
@@ -36,7 +36,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spawned_Enemy_Death
 
         protected override void UnsubscribeFromEvents()
         {
-            foreach (IEnemyDeathTrigger enemyDeathTrigger in _triggers)
+            foreach (var enemyDeathTrigger in _triggers)
             {
                 enemyDeathTrigger.SpawnedEnemyDied -= OnSpawnedEnemyDied;
             }

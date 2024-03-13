@@ -64,7 +64,7 @@ namespace Spells.Concrete_Types.Movements
                         _currentAngle -= 360;
                     }
 
-                    Vector3 orbit = Vector3.forward * _radius;
+                    var orbit = Vector3.forward * _radius;
                     orbit = Quaternion.Euler(0, _currentAngle, 0) * orbit;
                     _spellRigidbody.MovePosition(Caster.MainTransform.Position + orbit);
                     yield return null;

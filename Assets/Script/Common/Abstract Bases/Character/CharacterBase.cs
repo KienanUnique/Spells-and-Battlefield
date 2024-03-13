@@ -132,7 +132,7 @@ namespace Common.Abstract_Bases.Character
         {
             if (newState == CharacterState.Dead)
             {
-                foreach (IAppliedContinuousEffect effect in _currentEffects)
+                foreach (var effect in _currentEffects)
                 {
                     effect.EffectEnded -= OnEffectEnded;
                     effect.End();
@@ -166,7 +166,7 @@ namespace Common.Abstract_Bases.Character
                     return;
                 }
 
-                int oldCountOfHitPoints = CurrentCountOfHitPoints;
+                var oldCountOfHitPoints = CurrentCountOfHitPoints;
                 CurrentCountOfHitPoints -= countOfHitPoints;
                 if (CurrentCountOfHitPoints < 0)
                 {
@@ -185,7 +185,7 @@ namespace Common.Abstract_Bases.Character
                     return;
                 }
 
-                int oldCountOfHitPoints = CurrentCountOfHitPoints;
+                var oldCountOfHitPoints = CurrentCountOfHitPoints;
                 CurrentCountOfHitPoints += countOfHitPoints;
                 if (CurrentCountOfHitPoints > _maximumCountOfHitPoints)
                 {

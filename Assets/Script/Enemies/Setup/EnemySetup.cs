@@ -11,12 +11,9 @@ using Common.Mechanic_Effects.Concrete_Types.Summon;
 using Common.Readonly_Rigidbody;
 using Common.Readonly_Transform;
 using Common.Settings.Ground_Layer_Mask;
-using Enemies.Character;
 using Enemies.Controller;
 using Enemies.General_Settings;
 using Enemies.Look;
-using Enemies.Loot_Dropper;
-using Enemies.Movement;
 using Enemies.Movement.Setup_Data;
 using Enemies.Setup.Controller_Setup_Data;
 using Enemies.Setup.Settings;
@@ -24,7 +21,6 @@ using Enemies.Spawn.Factory;
 using Enemies.State_Machine;
 using Enemies.State_Machine.States;
 using Enemies.State_Machine.Transition_Conditions;
-using Enemies.Target_Pathfinder;
 using Enemies.Target_Pathfinder.Setup_Data;
 using Enemies.Target_Selector_From_Triggers;
 using Enemies.Trigger;
@@ -155,7 +151,7 @@ namespace Enemies.Setup
         {
             var thisReadonlyRigidbody = new ReadonlyRigidbody(_thisRigidbody);
             var targetPathfinderSetupData = new TargetPathfinderSetupData(thisReadonlyRigidbody, this);
-            ITargetPathfinder targetPathfinder =
+            var targetPathfinder =
                 _settings.TargetPathfinderProvider.GetImplementationObject(targetPathfinderSetupData);
 
             var targetFromTriggersSelector = new EnemyTargetFromTriggersSelector(_faction, thisReadonlyRigidbody, this,
@@ -170,17 +166,16 @@ namespace Enemies.Setup
 
             var movementSetupData = new EnemyMovementSetupData(_thisRigidbody, targetFromTriggersSelector, this,
                 targetPathfinder, _summoner, _collider);
-            IDisableableEnemyMovement enemyMovement =
-                _settings.MovementProvider.GetImplementationObject(movementSetupData);
+            var enemyMovement = _settings.MovementProvider.GetImplementationObject(movementSetupData);
 
-            IDisableableEnemyCharacter enemyCharacter =
+            var enemyCharacter =
                 _settings.CharacterProvider.GetImplementationObject(this, thisReadonlyRigidbody, gameObject, _summoner);
 
             var targetTriggers = new List<IEnemyTargetTrigger>(_externalTargetTriggers);
             targetTriggers.AddRange(_localTargetTriggers);
             targetFromTriggersSelector.AddTriggers(targetTriggers);
 
-            ILootDropper lootDropper = _settings.LootDropperProvider.GetImplementation(_itemsFactory,
+            var lootDropper = _settings.LootDropperProvider.GetImplementation(_itemsFactory,
                 _lootSpawnPoint.ReadonlyTransform, _gameLevelLootUnlocker);
 
             var itemsNeedDisabling = new List<IDisableable>
@@ -203,12 +198,12 @@ namespace Enemies.Setup
 
             _enemyStateMachineAI.Initialize(_controller);
 
-            foreach (IInitializableStateEnemyAI initializableStateEnemyAI in _states)
+            foreach (var initializableStateEnemyAI in _states)
             {
                 initializableStateEnemyAI.Initialize(_controller, _animatorStatusChecker);
             }
 
-            foreach (IInitializableTransitionEnemyAI initializableTransitionEnemyAI in _transitions)
+            foreach (var initializableTransitionEnemyAI in _transitions)
             {
                 initializableTransitionEnemyAI.Initialize(_controller);
             }

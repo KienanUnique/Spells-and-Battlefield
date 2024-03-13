@@ -6,7 +6,7 @@ namespace Player.Press_Key_Interactor
     {
         public event Action CanInteractNow;
         public event Action CanNotInteractNow;
-        
+
         public bool CanInteract { get; }
     }
 }

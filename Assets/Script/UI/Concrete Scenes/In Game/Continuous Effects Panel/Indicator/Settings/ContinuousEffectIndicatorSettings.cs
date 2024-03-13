@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using UI.Element.View.Settings;
+﻿using UI.Element.View.Settings;
 using UnityEngine;
 
 namespace UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Indicator.Settings

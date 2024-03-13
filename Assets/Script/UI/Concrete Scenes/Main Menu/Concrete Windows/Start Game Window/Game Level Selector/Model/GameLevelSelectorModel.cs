@@ -20,7 +20,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
 
         public void SetDefaultSelection()
         {
-            IGameLevelItem selectedItem = LevelItems.First();
+            var selectedItem = LevelItems.First();
             _lastSelectedLevelItem = selectedItem;
             selectedItem.Select();
         }
@@ -38,7 +38,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
 
         public void Appear()
         {
-            foreach (IGameLevelItem levelItem in LevelItems)
+            foreach (var levelItem in LevelItems)
             {
                 levelItem.Appear();
             }
@@ -46,7 +46,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
 
         public void Disappear()
         {
-            foreach (IGameLevelItem levelItem in LevelItems)
+            foreach (var levelItem in LevelItems)
             {
                 levelItem.Disappear();
             }

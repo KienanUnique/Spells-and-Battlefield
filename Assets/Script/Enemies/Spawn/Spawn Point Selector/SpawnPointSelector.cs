@@ -18,32 +18,32 @@ namespace Enemies.Spawn.Spawn_Point_Selector
             float spawnAreaRadius, IReadonlyTransform spawnAreaCenterTransform)
         {
             var minimumCountOfCollisions = int.MaxValue;
-            Vector3 bestPointPosition = Vector3.zero;
+            var bestPointPosition = Vector3.zero;
             RaycastHit hit;
             var overlapColliders = new Collider[MaxCountOfDetectedCollisions];
 
-            Vector3 projectedForwardDirection = Vector3.ProjectOnPlane(spawnAreaCenterTransform.Forward, Vector3.up);
-            Vector3 projectedForwardDirectionWithOffset =
+            var projectedForwardDirection = Vector3.ProjectOnPlane(spawnAreaCenterTransform.Forward, Vector3.up);
+            var projectedForwardDirectionWithOffset =
                 (Quaternion.AngleAxis(AngleOffsetFromForwardDirection, Vector3.up) * projectedForwardDirection)
                 .normalized;
 
             for (var i = 0; i < CountOfCheckDirections; i++)
             {
-                Vector3 rotation = Quaternion.AngleAxis(i * AngleBetweenCheckDirectories, Vector3.up) *
-                                   projectedForwardDirectionWithOffset;
-                Vector3 pointToCheck = spawnAreaCenterTransform.Position + rotation * spawnAreaRadius;
+                var rotation = Quaternion.AngleAxis(i * AngleBetweenCheckDirectories, Vector3.up) *
+                               projectedForwardDirectionWithOffset;
+                var pointToCheck = spawnAreaCenterTransform.Position + rotation * spawnAreaRadius;
 
                 if (!Physics.Raycast(pointToCheck, Vector3.down, out hit, Mathf.Infinity, groundLayer))
                 {
                     continue;
                 }
 
-                float radius = spawnObjectSize.Radius + SpawnObjectOffsetRadius;
-                Vector3 startCenterSpherePoint = hit.point + _upOffsetFromTheGround + radius * Vector3.up;
-                Vector3 endCenterSpherePoint = startCenterSpherePoint + (spawnObjectSize.Height + radius) * Vector3.up;
+                var radius = spawnObjectSize.Radius + SpawnObjectOffsetRadius;
+                var startCenterSpherePoint = hit.point + _upOffsetFromTheGround + radius * Vector3.up;
+                var endCenterSpherePoint = startCenterSpherePoint + (spawnObjectSize.Height + radius) * Vector3.up;
 
                 Array.Clear(overlapColliders, 0, overlapColliders.Length);
-                int numCollisions = Physics.OverlapCapsuleNonAlloc(startCenterSpherePoint, endCenterSpherePoint, radius,
+                var numCollisions = Physics.OverlapCapsuleNonAlloc(startCenterSpherePoint, endCenterSpherePoint, radius,
                     overlapColliders, ~0, QueryTriggerInteraction.Ignore);
 
                 if (numCollisions == 0)

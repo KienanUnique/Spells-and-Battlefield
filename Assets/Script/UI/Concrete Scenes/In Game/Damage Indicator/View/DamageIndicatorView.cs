@@ -21,13 +21,13 @@ namespace UI.Concrete_Scenes.In_Game.Damage_Indicator.View
 
         public void IndicateAboutExternalDamage(float screenSpaceDamageAngle)
         {
-            int indexOfElement = Mathf.RoundToInt(screenSpaceDamageAngle / _indicatorElementAngle);
+            var indexOfElement = Mathf.RoundToInt(screenSpaceDamageAngle / _indicatorElementAngle);
             _indicatorsInClockwiseOrder[indexOfElement].AppearTemporarily();
         }
 
         public void IndicateAboutLocalDamage()
         {
-            foreach (IDamageIndicatorElement damageIndicatorElement in _indicatorsInClockwiseOrder)
+            foreach (var damageIndicatorElement in _indicatorsInClockwiseOrder)
             {
                 damageIndicatorElement.AppearTemporarily();
             }

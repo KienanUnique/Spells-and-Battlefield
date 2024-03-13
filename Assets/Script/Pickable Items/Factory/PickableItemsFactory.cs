@@ -18,7 +18,7 @@ namespace Pickable_Items.Factory
         public IPickableItem Create(IPickableItemDataForCreating dataForCreating, Vector3 position,
             Vector3? dropDirection)
         {
-            GameObject createdItem = InstantiatePrefab(dataForCreating.PickableItemPrefabProvider,
+            var createdItem = InstantiatePrefab(dataForCreating.PickableItemPrefabProvider,
                 position, Quaternion.identity);
 
             var strategySettable = createdItem.GetComponent<IPickableItemControllerSetupBase>();

@@ -82,7 +82,7 @@ namespace Enemies.State_Machine.Transition_Conditions.Concrete_Types
                 return false;
             }
 
-            float calculatedDistance = Vector3.Distance(_cashedTransform.position, CurrentTargetPosition);
+            var calculatedDistance = Vector3.Distance(_cashedTransform.position, CurrentTargetPosition);
             switch (_typeOfComparison)
             {
                 case TypeOfComparison.IsMore:

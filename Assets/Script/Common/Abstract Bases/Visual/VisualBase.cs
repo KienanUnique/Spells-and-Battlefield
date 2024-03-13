@@ -45,10 +45,9 @@ namespace Common.Abstract_Bases.Visual
             _characterAnimator.ResetTrigger(CancelActionAnimationTriggerHash);
             var animationOverrides = new List<AnimationOverride>
             {
-                new AnimationOverride(Settings.EmptyPrepareContinuousActionAnimation,
+                new(Settings.EmptyPrepareContinuousActionAnimation,
                     animationData.PrepareContinuousActionAnimation.Clip),
-                new AnimationOverride(Settings.EmptyContinuousActionAnimation,
-                    animationData.ContinuousActionAnimation.Clip)
+                new(Settings.EmptyContinuousActionAnimation, animationData.ContinuousActionAnimation.Clip)
             };
             ApplyAnimationOverride(OverrideController, animationOverrides);
             _characterAnimator.SetFloat(PrepareContinuousActionFloatSpeedHash,
@@ -75,9 +74,9 @@ namespace Common.Abstract_Bases.Visual
             var originalOverrides = new List<KeyValuePair<AnimationClip, AnimationClip>>(baseController.overridesCount);
             baseController.GetOverrides(originalOverrides);
 
-            foreach (AnimationOverride animationOverride in overrides)
+            foreach (var animationOverride in overrides)
             {
-                KeyValuePair<AnimationClip, AnimationClip> actionClipOverride =
+                var actionClipOverride =
                     originalOverrides.Find(clipOverride => clipOverride.Key == animationOverride.OriginalClip);
                 originalOverrides.Remove(actionClipOverride);
                 originalOverrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(animationOverride.OriginalClip,

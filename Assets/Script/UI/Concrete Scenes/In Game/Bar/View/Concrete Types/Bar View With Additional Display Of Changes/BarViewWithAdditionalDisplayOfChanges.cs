@@ -24,7 +24,7 @@ namespace UI.Concrete_Scenes.In_Game.Bar.View.Concrete_Types.Bar_View_With_Addit
         {
             _sequence.Kill();
             _sequence = DOTween.Sequence();
-            float oldValueRatio = _foreground.fillAmount;
+            var oldValueRatio = _foreground.fillAmount;
             _sequence.Append(DOVirtual.Float(oldValueRatio, newFillAmount, _settings.ChangeDuration,
                 currentValueRatio => _foreground.fillAmount = currentValueRatio));
             _sequence.Append(DOVirtual.Float(oldValueRatio, newFillAmount, _settings.ChangeDuration,

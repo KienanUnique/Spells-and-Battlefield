@@ -54,9 +54,9 @@ namespace Systems.In_Game_Systems.Game_Controller
         {
             _currentGameState.AfterValueChanged += OnAfterGameStateChanged;
             _currentGameState.BeforeValueChanged += OnBeforeGameStateChanged;
-            
+
             _dialogStarter.NeedStartDialog += OnNeedStartDialog;
-            
+
             if (_currentGameState.Value == GameState.Playing)
             {
                 SubscribeOnPlayingEvents();
@@ -71,7 +71,7 @@ namespace Systems.In_Game_Systems.Game_Controller
         {
             _currentGameState.AfterValueChanged -= OnAfterGameStateChanged;
             _currentGameState.BeforeValueChanged -= OnBeforeGameStateChanged;
-            
+
             _dialogStarter.NeedStartDialog -= OnNeedStartDialog;
 
             if (_currentGameState.Value == GameState.Playing)
@@ -199,7 +199,7 @@ namespace Systems.In_Game_Systems.Game_Controller
         {
             _currentGameState.Value = _lastState;
         }
-        
+
         private void OnNeedStartDialog(IDialogProvider dialogProvider)
         {
             if (_currentGameState.Value == GameState.Playing)

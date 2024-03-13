@@ -10,6 +10,8 @@ namespace Puzzles.Mechanisms_Triggers
         private bool _needTriggerOneTime;
         private bool _isCooldownNow;
         private float _triggerDelayInSeconds;
+        public event Action Triggered;
+        protected bool WasTriggered { private set; get; }
 
         protected void InitializeBase(MechanismsTriggerBaseSetupData setupData)
         {
@@ -17,12 +19,10 @@ namespace Puzzles.Mechanisms_Triggers
             _triggerDelayInSeconds = setupData.TriggerDelayInSeconds;
             SetInitializedStatus();
         }
-        public event Action Triggered;
-        protected bool WasTriggered { private set; get; }
 
         protected void TryInvokeTriggerEvent()
         {
-            if ((_needTriggerOneTime && WasTriggered) || _isCooldownNow)
+            if (_needTriggerOneTime && WasTriggered || _isCooldownNow)
             {
                 return;
             }

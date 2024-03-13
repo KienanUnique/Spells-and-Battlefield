@@ -43,7 +43,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells
             base.SpecialInitializeAction();
             _currentLookPointCalculator = new FollowTargetLookPointCalculator();
             _spellSpawnPoint = _spellSpawnObjectReadonlyTransformGetter.ReadonlyTransform;
-            IEnemySpellSelector spellsSelector = _useSpellsStateData.GetSpellSelector(this);
+            var spellsSelector = _useSpellsStateData.GetSpellSelector(this);
             AddItemNeedDisabling(spellsSelector);
             var continuousSpellHandlerImplementation = new ContinuousSpellHandlerImplementation(_enemyController,
                 _spellObjectsFactory, _spellSpawnPoint);

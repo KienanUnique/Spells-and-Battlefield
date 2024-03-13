@@ -28,7 +28,7 @@ namespace Enemies.Character
         public void ApplyEffectsToTargets(IReadOnlyCollection<IEnemyTarget> targets,
             IReadOnlyCollection<IMechanicEffect> mechanicEffects)
         {
-            foreach (IMechanicEffect effect in mechanicEffects)
+            foreach (var effect in mechanicEffects)
             {
                 effect.ApplyEffectToTargets(targets, _thisEffectSourceInformation);
             }

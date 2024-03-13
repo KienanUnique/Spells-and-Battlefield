@@ -16,7 +16,7 @@ namespace Common.Abstract_Bases.Checkers
         public event Action<bool> ContactStateChanged;
 
         public bool IsColliding => _isCollidingWithReaction.Value;
-        public ReadOnlyCollection<Collider> Colliders => new ReadOnlyCollection<Collider>(_colliders);
+        public ReadOnlyCollection<Collider> Colliders => new(_colliders);
         protected abstract LayerMask NeedObjectsMask { get; }
         protected abstract void SpecialAwakeAction();
 

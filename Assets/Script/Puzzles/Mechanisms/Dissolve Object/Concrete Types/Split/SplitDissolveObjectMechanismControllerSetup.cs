@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Puzzles.Mechanisms_Triggers;
 using UnityEngine;
-using IInitializable = Common.Abstract_Bases.Initializable_MonoBehaviour.IInitializable;
 
 namespace Puzzles.Mechanisms.Dissolve_Object.Concrete_Types.Split
 {

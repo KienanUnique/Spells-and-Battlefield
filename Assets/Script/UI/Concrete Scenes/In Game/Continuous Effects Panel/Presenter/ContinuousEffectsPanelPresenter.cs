@@ -19,7 +19,7 @@ namespace UI.Concrete_Scenes.In_Game.Continuous_Effects_Panel.Presenter
             _view = view;
             _characterInformation = characterInformation;
             SetInitializedStatus();
-            foreach (IAppliedContinuousEffectInformation effect in _characterInformation.CurrentContinuousEffects)
+            foreach (var effect in _characterInformation.CurrentContinuousEffects)
             {
                 OnContinuousEffectAdded(effect);
             }

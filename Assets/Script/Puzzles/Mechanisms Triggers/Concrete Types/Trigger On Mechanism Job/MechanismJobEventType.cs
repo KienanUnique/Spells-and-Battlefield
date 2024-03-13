@@ -2,7 +2,6 @@
 {
     public enum MechanismJobEventType
     {
-        Started,
-        Finished
+        Started, Finished
     }
 }

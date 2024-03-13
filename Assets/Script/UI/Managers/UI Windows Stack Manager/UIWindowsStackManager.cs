@@ -7,7 +7,7 @@ namespace UI.Managers.UI_Windows_Stack_Manager
 {
     public class UIWindowsStackManager : IUIWindowsStackManager
     {
-        private readonly Stack<IUIWindow> _windowsStack = new Stack<IUIWindow>();
+        private readonly Stack<IUIWindow> _windowsStack = new();
 
         public UIWindowsStackManager(IUIWindow window)
         {

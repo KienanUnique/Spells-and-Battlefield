@@ -32,6 +32,12 @@
 
     #endregion
 
+    #region Dialogs
+
+    public const string DialogsDirectory = RootDirectory + "Dialogs/";
+
+    #endregion
+
     #region Spells
 
     public const string SpellSystemDirectory = RootDirectory + "Spell System/";
@@ -80,12 +86,6 @@
     public const string UIPrefabProvidersDirectory = RootDirectory + "UI/";
     public const string PickableItemsProvidersDirectory = RootDirectory + "Pickable Items/";
     public const string PopupTextProvidersDirectory = RootDirectory + "Popup Texts/";
-
-    #endregion
-
-    #region Dialogs
-
-    public const string DialogsDirectory = RootDirectory + "Dialogs/";
 
     #endregion
 }

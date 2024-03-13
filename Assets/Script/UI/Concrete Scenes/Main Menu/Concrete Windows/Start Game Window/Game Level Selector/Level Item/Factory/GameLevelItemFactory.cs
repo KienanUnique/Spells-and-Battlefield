@@ -22,7 +22,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
             Transform parentTransform)
         {
             var items = new List<IInitializableGameLevelItem>();
-            foreach (IGameLevelData currentLevelData in levelData)
+            foreach (var currentLevelData in levelData)
             {
                 var setup =
                     _instantiator.InstantiatePrefabForComponent<IGameLevelItemPresenterSetup>(_prefabProvider.Prefab,

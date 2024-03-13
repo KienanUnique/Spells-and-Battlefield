@@ -9,12 +9,11 @@ namespace Common.Animator_Status_Controller
 {
     public class AnimatorStatusChecker : BaseWithDisabling, IAnimatorStatusChecker
     {
-        protected readonly ValueWithReactionOnChange<AnimatorStatus> _currentAnimatorStatus =
-            new ValueWithReactionOnChange<AnimatorStatus>(AnimatorStatus.Idle);
-        
         private const float UpdateAnimatorStatusCooldownInSeconds = 0.4f;
         private const string EmptyAnimatorStateName = "Empty State";
         private const string ActionsAnimationsAnimatorLayerName = "Upper Body";
+
+        protected readonly ValueWithReactionOnChange<AnimatorStatus> _currentAnimatorStatus = new(AnimatorStatus.Idle);
 
         private readonly int _actionsAnimationsAnimatorLayer;
         private readonly IEventInvokerForActionAnimations _animationsEventInvoker;
@@ -109,15 +108,15 @@ namespace Common.Animator_Status_Controller
 
         private void UpdateStatusUsingAnimator()
         {
-            bool isInEmptyState = !_animator.IsInTransition(_actionsAnimationsAnimatorLayer) &&
-                                  _animator.GetCurrentAnimatorStateInfo(_actionsAnimationsAnimatorLayer)
-                                           .IsName(EmptyAnimatorStateName);
+            var isInEmptyState = !_animator.IsInTransition(_actionsAnimationsAnimatorLayer) &&
+                                 _animator.GetCurrentAnimatorStateInfo(_actionsAnimationsAnimatorLayer)
+                                          .IsName(EmptyAnimatorStateName);
             _currentAnimatorStatus.Value = isInEmptyState switch
             {
-                false when _currentAnimatorStatus.Value == AnimatorStatus.WaitingActionAnimationStart =>
-                    AnimatorStatus.WaitingActionAnimationEnd,
-                true when _currentAnimatorStatus.Value == AnimatorStatus.WaitingActionAnimationEnd =>
-                    AnimatorStatus.Idle,
+                false when _currentAnimatorStatus.Value == AnimatorStatus.WaitingActionAnimationStart => AnimatorStatus
+                    .WaitingActionAnimationEnd,
+                true when _currentAnimatorStatus.Value == AnimatorStatus.WaitingActionAnimationEnd => AnimatorStatus
+                    .Idle,
                 _ => _currentAnimatorStatus.Value
             };
         }

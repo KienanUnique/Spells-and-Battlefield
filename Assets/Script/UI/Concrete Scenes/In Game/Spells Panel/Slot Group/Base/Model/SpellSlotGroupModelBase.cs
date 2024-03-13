@@ -8,7 +8,6 @@ using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Information;
-using UnityEngine;
 
 namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
 {
@@ -29,12 +28,12 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
             IsSelected = false;
             Type = spellTypeToRepresent;
 
-            foreach (ISlotInformation slot in slotsInformation)
+            foreach (var slot in slotsInformation)
             {
                 _slots.Add(new ObjectWithUsageFlag<ISlotInformation>(slot, false));
             }
 
-            foreach (ISpellSlot slotObject in slotControllers)
+            foreach (var slotObject in slotControllers)
             {
                 _slotObjects.Add(new ObjectWithUsageFlag<ISpellSlot>(slotObject, false));
                 slotObject.ChangeBackgroundColor(spellTypeToRepresent.VisualisationColor);
@@ -75,7 +74,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
 
         protected ObjectWithUsageFlag<ISpellSlot> FindUsedSpellObjectInSlot(ISlotInformation slotInformationToSearch)
         {
-            foreach (ObjectWithUsageFlag<ISpellSlot> slotObject in _slotObjects)
+            foreach (var slotObject in _slotObjects)
             {
                 if (slotObject.IsUsed &&
                     slotObject.StoredObject.CurrentSlotInformation.CompareTo(slotInformationToSearch) == 0)
@@ -89,13 +88,13 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
 
         protected void AppearSlot(ISpell spellToShow)
         {
-            ObjectWithUsageFlag<ISlotInformation> freeSlot = _slots.First(slotObject => !slotObject.IsUsed);
+            var freeSlot = _slots.First(slotObject => !slotObject.IsUsed);
             AppearSlot(freeSlot, spellToShow);
         }
 
         protected void AppearSlot(ObjectWithUsageFlag<ISlotInformation> slotInformation, ISpell spellToShow)
         {
-            ObjectWithUsageFlag<ISpellSlot> freeSlotObject = _slotObjects.First(slotObject => !slotObject.IsUsed);
+            var freeSlotObject = _slotObjects.First(slotObject => !slotObject.IsUsed);
             freeSlotObject.StoredObject.AppearAsSlot(slotInformation.StoredObject, spellToShow);
             freeSlotObject.SetAsUsed();
             slotInformation.SetAsUsed();
@@ -103,7 +102,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
 
         protected void MoveSlotsFront(int startIndex)
         {
-            for (int i = _slots.Count - 1 - startIndex; i < _slots.Count; i++)
+            for (var i = _slots.Count - 1 - startIndex; i < _slots.Count; i++)
             {
                 var slotToFree = _slots.ElementAt(i);
                 if (!slotToFree.IsUsed)
@@ -139,10 +138,10 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
 
         protected void FillEmptySlots()
         {
-            int firstEmptySlotIndex = _slots.ToList().FindIndex(slot => !slot.IsUsed);
-            for (int slotIndex = firstEmptySlotIndex; slotIndex < _slots.Count; slotIndex++)
+            var firstEmptySlotIndex = _slots.ToList().FindIndex(slot => !slot.IsUsed);
+            for (var slotIndex = firstEmptySlotIndex; slotIndex < _slots.Count; slotIndex++)
             {
-                ObjectWithUsageFlag<ISlotInformation> currentSlot = _slots.ElementAt(slotIndex);
+                var currentSlot = _slots.ElementAt(slotIndex);
 
                 if (currentSlot.IsUsed)
                 {
@@ -160,19 +159,19 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model
 
         protected void DisappearAllSlotsAndShowEmpty()
         {
-            foreach (ObjectWithUsageFlag<ISlotInformation> slot in _slots)
+            foreach (var slot in _slots)
             {
                 slot.SetAsFree();
             }
 
-            foreach (ObjectWithUsageFlag<ISpellSlot> slotObject in _slotObjects.Where(slotObject => slotObject.IsUsed))
+            foreach (var slotObject in _slotObjects.Where(slotObject => slotObject.IsUsed))
             {
                 slotObject.StoredObject.DisappearAndForgetSpell();
                 slotObject.SetAsFree();
             }
 
-            ObjectWithUsageFlag<ISlotInformation> slotWithUsageFlag = _slots.First();
-            ObjectWithUsageFlag<ISpellSlot> slotObjectWithUsageFlag = _slotObjects.First();
+            var slotWithUsageFlag = _slots.First();
+            var slotObjectWithUsageFlag = _slotObjects.First();
             slotObjectWithUsageFlag.StoredObject.AppearAsEmptySlot(slotWithUsageFlag.StoredObject);
             slotObjectWithUsageFlag.SetAsUsed();
             slotWithUsageFlag.SetAsUsed();

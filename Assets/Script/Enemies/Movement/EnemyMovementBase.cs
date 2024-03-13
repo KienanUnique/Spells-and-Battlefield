@@ -166,7 +166,7 @@ namespace Enemies.Movement
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
             _targetPathfinder.StartUpdatingPathForKeepingTransformOnDistance(targetPosition, needDistance);
-            Vector3 direction = Vector3.zero;
+            var direction = Vector3.zero;
             while (true)
             {
                 if (_targetPathfinder.IsPathComplete())
@@ -199,10 +199,10 @@ namespace Enemies.Movement
 
         private void ApplyFriction(Vector3 needMoveDirection)
         {
-            Vector3 currentVelocity = VelocityForLimitations;
-            Vector3 needFrictionDirection = Time.deltaTime *
-                                            MovementValuesCalculator.CalculateFrictionForce(currentVelocity.magnitude) *
-                                            (needMoveDirection - currentVelocity.normalized);
+            var currentVelocity = VelocityForLimitations;
+            var needFrictionDirection = Time.deltaTime *
+                                        MovementValuesCalculator.CalculateFrictionForce(currentVelocity.magnitude) *
+                                        (needMoveDirection - currentVelocity.normalized);
             _rigidbody.AddForce(needFrictionDirection);
         }
     }

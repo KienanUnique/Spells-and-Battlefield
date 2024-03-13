@@ -12,7 +12,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Camera_Movement_Controller
     {
         private readonly Transform _cameraTransform;
         private readonly ICameraMovementInMenuSceneSettings _cameraMovementSettings;
-        private readonly Stack<CameraRoute> _passedRoutes = new Stack<CameraRoute>();
+        private readonly Stack<CameraRoute> _passedRoutes = new();
 
         private bool _needRotateCameraTowardsNextWaypoint;
         private Tweener _rotateCameraTowardsNextWaypointTweener;
@@ -29,7 +29,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Camera_Movement_Controller
         {
             var routeToMove =
                 new CameraRoute(_cameraTransform.position, waypoints, _cameraTransform.rotation.eulerAngles);
-            Sequence forwardSequence = DOTween.Sequence();
+            var forwardSequence = DOTween.Sequence();
             forwardSequence.ApplyCustomSetupForUI(_cameraTransform.gameObject);
             forwardSequence.Append(_cameraTransform
                                    .DOPath(routeToMove.ForwardRoute.ToArray(),
@@ -64,8 +64,8 @@ namespace UI.Concrete_Scenes.Main_Menu.Camera_Movement_Controller
                 return;
             }
 
-            CameraRoute routeToMove = _passedRoutes.Pop();
-            Sequence returnSequence = DOTween.Sequence();
+            var routeToMove = _passedRoutes.Pop();
+            var returnSequence = DOTween.Sequence();
             returnSequence.ApplyCustomSetupForUI(_cameraTransform.gameObject);
             _needRotateCameraTowardsNextWaypoint = true;
             returnSequence.Append(_cameraTransform

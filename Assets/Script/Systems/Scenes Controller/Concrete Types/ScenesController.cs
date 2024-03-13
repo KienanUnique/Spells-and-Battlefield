@@ -20,8 +20,8 @@ namespace Systems.Scenes_Controller.Concrete_Types
         {
             _settings = settings;
             _gameLevelInformationStorage = new GameLevelInformationStorage(settings.GameLevels);
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            IGameLevelData currentSceneAsGameLevel =
+            var currentSceneName = SceneManager.GetActiveScene().name;
+            var currentSceneAsGameLevel =
                 _settings.GameLevels.FirstOrDefault(level => level.SceneName == currentSceneName);
             if (currentSceneAsGameLevel != default)
             {
@@ -33,12 +33,12 @@ namespace Systems.Scenes_Controller.Concrete_Types
 
         public event Action LoadingNextSceneStarted;
         public IComicsData ComicsToShow => _gameLevelInformationStorage.StoredLevelComicsData;
+        public IGameLevelData CurrentLevel => _gameLevelInformationStorage.StoredLevelData;
 
         public IGameLevelLootUnlocker CurrentGameLevelLootUnlocker =>
             _gameLevelInformationStorage.CurrentGameLevelLootUnlocker;
 
         public IReadOnlyCollection<IGameLevelData> GameLevels => _settings.GameLevels;
-        public IGameLevelData CurrentLevel => _gameLevelInformationStorage.StoredLevelData;
 
         public void LoadNextGameLevel()
         {

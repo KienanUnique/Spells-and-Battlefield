@@ -22,31 +22,11 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Windo
             _dialogRunner = dialogRunner;
             _avatarStorage = avatarStorage;
         }
-        
+
         public event Action<Sprite> NeedChangeAvatar;
         public event Action NeedResetAvatar;
 
         public override bool CanBeClosedByPlayer => true;
-
-        public override void Appear()
-        {
-            NeedResetAvatar?.Invoke();
-            _currentAvatar = string.Empty;
-            _dialogRunner.StartDialogue(_dialogToOpen.StartNode);
-            base.Appear();
-        }
-
-        public override void Disappear()
-        {
-            base.Disappear();
-
-            if (!_dialogRunner.IsDialogueRunning)
-            {
-                return;
-            }
-
-            _dialogRunner.Stop();
-        }
 
         public void SetDialog(IDialogProvider dialog)
         {
@@ -68,6 +48,26 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Windo
         public void OnDialogueComplete()
         {
             Manager.TryCloseCurrentWindow();
+        }
+
+        public override void Appear()
+        {
+            NeedResetAvatar?.Invoke();
+            _currentAvatar = string.Empty;
+            _dialogRunner.StartDialogue(_dialogToOpen.StartNode);
+            base.Appear();
+        }
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (!_dialogRunner.IsDialogueRunning)
+            {
+                return;
+            }
+
+            _dialogRunner.Stop();
         }
     }
 }

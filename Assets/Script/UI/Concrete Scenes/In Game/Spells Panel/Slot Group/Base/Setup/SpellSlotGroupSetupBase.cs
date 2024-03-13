@@ -47,7 +47,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Setup
             get
             {
                 var initializableObjects = new List<IInitializable>();
-                foreach (SpellSlotPresenter slot in _slots)
+                foreach (var slot in _slots)
                 {
                     if (slot is IInitializable initializableSlot)
                     {
@@ -69,16 +69,15 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Setup
         protected override void Initialize()
         {
             var slotsInformation = new SortedSet<ISlotInformation>();
-            foreach (SpellSlotPresenter slot in _slots)
+            foreach (var slot in _slots)
             {
                 slotsInformation.Add(slot.CurrentSlotInformation);
             }
 
-            IReadonlyListWithReactionOnChange<ISpell> spellsGroupToRepresent =
-                _managerInformation.Spells[TypeToRepresent];
+            var spellsGroupToRepresent = _managerInformation.Spells[TypeToRepresent];
 
-            TModel model = CreateModel(slotsInformation, _slots, spellsGroupToRepresent);
-            TView view = CreateView(_rectTransform, _settings, spellsGroupToRepresent.Count);
+            var model = CreateModel(slotsInformation, _slots, spellsGroupToRepresent);
+            var view = CreateView(_rectTransform, _settings, spellsGroupToRepresent.Count);
 
             _itemsNeedDisabling.Add(model);
             _presenter.Initialize(model, view, _itemsNeedDisabling);

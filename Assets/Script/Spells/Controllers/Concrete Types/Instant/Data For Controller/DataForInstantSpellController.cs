@@ -24,7 +24,7 @@ namespace Spells.Controllers.Concrete_Types.Instant.Data_For_Controller
         {
             get
             {
-                List<ISpellImplementation> baseSpellImplementations = base.SpellImplementations;
+                var baseSpellImplementations = base.SpellImplementations;
                 baseSpellImplementations.Add(SpellMainTrigger);
                 return baseSpellImplementations;
             }

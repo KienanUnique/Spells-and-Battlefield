@@ -45,7 +45,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
 
         protected override void SubscribeOnEvents()
         {
-            foreach (ISpellWithCooldown spell in _spellsToUseInPriorityOrder)
+            foreach (var spell in _spellsToUseInPriorityOrder)
             {
                 spell.CanUseAgain += SelectMostPrioritizedReadyToUseSpell;
             }
@@ -53,7 +53,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
 
         protected override void UnsubscribeFromEvents()
         {
-            foreach (ISpellWithCooldown spell in _spellsToUseInPriorityOrder)
+            foreach (var spell in _spellsToUseInPriorityOrder)
             {
                 spell.CanUseAgain -= SelectMostPrioritizedReadyToUseSpell;
             }
@@ -61,7 +61,7 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
 
         private void SelectMostPrioritizedReadyToUseSpell()
         {
-            bool canUseSpellsBefore = CanUseSpell;
+            var canUseSpellsBefore = CanUseSpell;
             _mostPrioritizedReadyToUseSpellSpell = _spellsToUseInPriorityOrder.FirstOrDefault(spell => spell.CanUse);
             if (!canUseSpellsBefore && CanUseSpell)
             {

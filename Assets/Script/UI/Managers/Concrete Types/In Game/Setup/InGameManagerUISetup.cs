@@ -23,7 +23,7 @@ namespace UI.Managers.Concrete_Types.In_Game.Setup
         [SerializeField] private LevelCompletedWindowPresenter _levelCompletedWindow;
         [SerializeField] private LoadingWindowPresenter _loadingWindow;
         [SerializeField] private DialogWindowPresenter _dialogWindow;
-        
+
         private IInitializableInGameManagerUI _presenter;
         private IScenesController _scenesController;
         private IInputManagerForUI _inputManagerForUI;

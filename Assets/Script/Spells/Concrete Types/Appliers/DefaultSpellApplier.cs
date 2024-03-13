@@ -57,21 +57,21 @@ namespace Spells.Concrete_Types.Appliers
 
             public override SpellTriggerCheckStatusEnum CheckContact(Collider other)
             {
-                SpellTriggerCheckStatusEnum response = _spellTrigger.CheckContact(other);
+                var response = _spellTrigger.CheckContact(other);
                 HandleSpellTriggerResponse(response);
                 return response;
             }
 
             public override SpellTriggerCheckStatusEnum CheckTime(float timePassedFromInitialize)
             {
-                SpellTriggerCheckStatusEnum response = _spellTrigger.CheckTime(timePassedFromInitialize);
+                var response = _spellTrigger.CheckTime(timePassedFromInitialize);
                 HandleSpellTriggerResponse(response);
                 return response;
             }
 
             public override void HandleRollbackableEffects()
             {
-                foreach (IMechanicEffect effect in _spellMechanicEffects)
+                foreach (var effect in _spellMechanicEffects)
                 {
                     if (effect is IMechanicEffectWithRollback effectWithRollback)
                     {
@@ -91,7 +91,7 @@ namespace Spells.Concrete_Types.Appliers
 
             private void HandleSpellEffect()
             {
-                IReadOnlyList<ISpellInteractable> selectedTargets = _targetSelector.SelectTargets();
+                var selectedTargets = _targetSelector.SelectTargets();
                 _spellMechanicEffects.ForEach(mechanicEffect =>
                     mechanicEffect.ApplyEffectToTargets(new List<IInteractable>(selectedTargets),
                         _effectSourceInformation));

@@ -36,7 +36,7 @@ namespace Systems.Installers.Concrete_Types.In_Game.Player
 
         private void OnPlayerInstantiated(InjectContext arg1, PlayerController playerController)
         {
-            Transform playerTransform = playerController.transform;
+            var playerTransform = playerController.transform;
             playerTransform.position = _playerSpawnMarkerHolder.ObjectToHold.SpawnPosition;
             playerTransform.rotation = _playerSpawnMarkerHolder.ObjectToHold.SpawnRotation;
         }

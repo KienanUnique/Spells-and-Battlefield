@@ -1,12 +1,11 @@
 using Common.Abstract_Bases.Visual;
 using Common.Abstract_Bases.Visual.Settings;
-using Player.Visual.Hook_Trail;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 namespace Player.Visual
 {
-    public class PlayerVisual : VisualBase, IPlayerVisual 
+    public class PlayerVisual : VisualBase, IPlayerVisual
     {
         private static readonly int MovingDirectionXFloatHash = Animator.StringToHash("Moving Direction X");
         private static readonly int MovingDirectionYFloatHash = Animator.StringToHash("Moving Direction Y");

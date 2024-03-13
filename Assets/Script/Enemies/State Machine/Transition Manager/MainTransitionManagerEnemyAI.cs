@@ -44,9 +44,9 @@ namespace Enemies.State_Machine.Transition_Manager
 
         public override bool TryTransit(out IStateEnemyAI stateEnemyAI)
         {
-            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
+            foreach (var subManager in AllSubManagers)
             {
-                if (!subManager.TryTransit(out IStateEnemyAI nextStateEnemyAI))
+                if (!subManager.TryTransit(out var nextStateEnemyAI))
                 {
                     continue;
                 }
@@ -71,7 +71,7 @@ namespace Enemies.State_Machine.Transition_Manager
         protected override void SubscribeOnEvents()
         {
             base.SubscribeOnEvents();
-            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
+            foreach (var subManager in AllSubManagers)
             {
                 subManager.Enable();
             }
@@ -80,7 +80,7 @@ namespace Enemies.State_Machine.Transition_Manager
         protected override void UnsubscribeFromEvents()
         {
             base.UnsubscribeFromEvents();
-            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
+            foreach (var subManager in AllSubManagers)
             {
                 subManager.Disable();
             }
@@ -88,7 +88,7 @@ namespace Enemies.State_Machine.Transition_Manager
 
         protected override void HandleStartCheckingConditions()
         {
-            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
+            foreach (var subManager in AllSubManagers)
             {
                 subManager.StartCheckingConditions();
             }
@@ -96,7 +96,7 @@ namespace Enemies.State_Machine.Transition_Manager
 
         protected override void HandleStopCheckingConditions()
         {
-            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
+            foreach (var subManager in AllSubManagers)
             {
                 subManager.StopCheckingConditions();
             }
@@ -104,7 +104,7 @@ namespace Enemies.State_Machine.Transition_Manager
 
         protected override void SubscribeOnTransitionEvents()
         {
-            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
+            foreach (var subManager in AllSubManagers)
             {
                 subManager.NeedTransit += TransitNextState;
             }
@@ -112,7 +112,7 @@ namespace Enemies.State_Machine.Transition_Manager
 
         protected override void UnsubscribeFromTransitionEvents()
         {
-            foreach (ITransitionManagerEnemyAIWithDisabling subManager in AllSubManagers)
+            foreach (var subManager in AllSubManagers)
             {
                 subManager.NeedTransit -= TransitNextState;
             }

@@ -9,7 +9,7 @@ namespace Spells.Collision_Collider.Concrete_Types
     {
         [SerializeField] private List<ColliderWithMasksChecking> _collidersWithMasks;
         [SerializeField] private List<ColliderTrigger> _defaultColliders;
-        
+
         public override event Action<Collider> TriggerEntered;
 
         private void OnEnable()
@@ -18,7 +18,7 @@ namespace Spells.Collision_Collider.Concrete_Types
             {
                 collidersWithMask.TriggerEntered += OnTriggerEntered;
             }
-            
+
             foreach (var defaultCollider in _defaultColliders)
             {
                 defaultCollider.TriggerEnter += OnTriggerEntered;
@@ -31,7 +31,7 @@ namespace Spells.Collision_Collider.Concrete_Types
             {
                 collidersWithMask.TriggerEntered -= OnTriggerEntered;
             }
-            
+
             foreach (var defaultCollider in _defaultColliders)
             {
                 defaultCollider.TriggerEnter -= OnTriggerEntered;

@@ -30,7 +30,7 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen.Model
         public void Disappear(Action callbackOnAnimationEnd)
         {
             var callbackWasUsed = false;
-            foreach (IComicsPanel panel in _panelsInOrder)
+            foreach (var panel in _panelsInOrder)
             {
                 panel.Disappear(() =>
                 {
@@ -53,7 +53,7 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen.Model
 
         public void Disappear()
         {
-            foreach (IComicsPanel panel in _panelsInOrder)
+            foreach (var panel in _panelsInOrder)
             {
                 panel.Disappear();
             }

@@ -14,6 +14,7 @@ namespace UI.Managers.Concrete_Types.In_Game.Setup
     {
         public void Initialize(IInputManagerForUI inputManagerForUI, IGameplayUI gameplayUI,
             IGameOverWindow gameOverWindow, IPauseWindow pauseWindow, ILevelCompletedWindow levelCompletedWindow,
-            IScenesController scenesController, ILoadingWindow loadingWindow, IDialogWindow dialogWindow, IUIWindowsStackManager windowsManager);
+            IScenesController scenesController, ILoadingWindow loadingWindow, IDialogWindow dialogWindow,
+            IUIWindowsStackManager windowsManager);
     }
 }

@@ -23,7 +23,6 @@ namespace Player.Movement
         private Tweener _currentLocalAdditionalMaximumSpeedResetTween;
         private Vector2 _inputMoveDirection = Vector2.zero;
         private float _currentOverSpeedRatio;
-        private bool _isInputMovingEnabled = true;
 
         public PlayerMovementValuesCalculator(IPlayerMovementSettings movementSettings,
             IReadonlyRigidbody readonlyRigidbody, ICoroutineStarter coroutineStarter) : base(movementSettings)
@@ -36,7 +35,7 @@ namespace Player.Movement
         public override float MaximumSpeedCalculated =>
             (_settings.MaximumSpeed + _localAdditionalMaximumSpeed) * ExternalSetSpeedRatio;
 
-        public bool IsInputMovingEnabled => _isInputMovingEnabled;
+        public bool IsInputMovingEnabled { get; private set; } = true;
 
         public float GravityForce => _playerMovementSettings.NormalGravityForce * _currentGravityForceMultiplier;
 
@@ -55,14 +54,14 @@ namespace Player.Movement
         {
             get
             {
-                Vector3 inversedVelocity = -_readonlyRigidbody.InverseTransformDirection(_readonlyRigidbody.Velocity);
-                Vector3 finalFrictionForce = Vector3.zero;
-                if (!_isInputMovingEnabled || _inputMoveDirection.x == 0)
+                var inversedVelocity = -_readonlyRigidbody.InverseTransformDirection(_readonlyRigidbody.Velocity);
+                var finalFrictionForce = Vector3.zero;
+                if (!IsInputMovingEnabled || _inputMoveDirection.x == 0)
                 {
                     finalFrictionForce += inversedVelocity.x * _readonlyRigidbody.Right;
                 }
 
-                if (!_isInputMovingEnabled || _inputMoveDirection.y == 0)
+                if (!IsInputMovingEnabled || _inputMoveDirection.y == 0)
                 {
                     finalFrictionForce += inversedVelocity.z * _readonlyRigidbody.Forward;
                 }
@@ -77,7 +76,7 @@ namespace Player.Movement
         {
             get
             {
-                float overSpeedValue = _readonlyRigidbody.Velocity.magnitude - BaseMaximumSpeed;
+                var overSpeedValue = _readonlyRigidbody.Velocity.magnitude - BaseMaximumSpeed;
                 if (overSpeedValue < 0)
                 {
                     overSpeedValue = 0;
@@ -91,7 +90,7 @@ namespace Player.Movement
 
         private static Vector3 RotateTowardsUp(Vector3 start, float angle)
         {
-            Vector3 axis = Vector3.Cross(start, Vector3.up);
+            var axis = Vector3.Cross(start, Vector3.up);
             if (axis == Vector3.zero)
             {
                 axis = Vector3.right;
@@ -132,7 +131,7 @@ namespace Player.Movement
 
         public Vector3 CalculateJumpForce(WallDirection wallDirection)
         {
-            Vector3 needDirection = wallDirection switch
+            var needDirection = wallDirection switch
             {
                 WallDirection.Left => _readonlyRigidbody.Right,
                 WallDirection.Right => _readonlyRigidbody.Right * -1,
@@ -156,12 +155,12 @@ namespace Player.Movement
 
         public void EnableInput()
         {
-            _isInputMovingEnabled = true;
+            IsInputMovingEnabled = true;
         }
 
         public void DisableInput()
         {
-            _isInputMovingEnabled = false;
+            IsInputMovingEnabled = false;
         }
 
         private void ChangeAdditionalMaximumSpeed(float changeSpeed, float endValue)

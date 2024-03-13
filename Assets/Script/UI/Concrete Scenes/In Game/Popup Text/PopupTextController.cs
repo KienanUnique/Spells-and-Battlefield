@@ -59,7 +59,7 @@ namespace UI.Concrete_Scenes.In_Game.Popup_Text
             {
             }
 
-            Sequence needSequence = DOTween.Sequence();
+            var needSequence = DOTween.Sequence();
             needSequence.ApplyCustomSetupForUI(_mainTransform.gameObject);
             needSequence.Append(_mainTransform.DOScale(Vector3.one, HalfAnimationDurationInSeconds)
                                               .SetEase(_settings.ScaleEase));
@@ -101,13 +101,13 @@ namespace UI.Concrete_Scenes.In_Game.Popup_Text
 
         private Vector3 CalculatePositionToMove(Vector3 cameraPosition)
         {
-            Vector3 circleCenter = _mainTransform.position;
-            Vector3 circleNormalVector = (circleCenter - cameraPosition).normalized;
+            var circleCenter = _mainTransform.position;
+            var circleNormalVector = (circleCenter - cameraPosition).normalized;
 
-            Vector3 circleNormal = Vector3.Cross(circleNormalVector, Vector3.up).normalized;
+            var circleNormal = Vector3.Cross(circleNormalVector, Vector3.up).normalized;
 
-            float randomAngle = Random.Range(0f, Mathf.PI);
-            float randomRadius = Random.Range(_settings.MoveMinimumRadius, _settings.MoveMaximumRadius);
+            var randomAngle = Random.Range(0f, Mathf.PI);
+            var randomRadius = Random.Range(_settings.MoveMinimumRadius, _settings.MoveMaximumRadius);
 
             return circleCenter +
                    randomRadius * (Mathf.Cos(randomAngle) * circleNormal + Mathf.Sin(randomAngle) * Vector3.up);

@@ -133,14 +133,14 @@ namespace Player.Movement
                  _currentMovingState.Value == MovingState.InAir) &&
                 _currentCountOfAirJumps < MaxCountOfAirJumps)
             {
-                Vector3 newVelocity = _rigidbody.velocity;
+                var newVelocity = _rigidbody.velocity;
                 if (newVelocity.y < 0)
                 {
                     newVelocity.y = 0;
                 }
 
                 _rigidbody.velocity = newVelocity;
-                Vector3 jumpForce = _currentMovingState.Value == MovingState.WallRunning
+                var jumpForce = _currentMovingState.Value == MovingState.WallRunning
                     ? _movementValuesCalculator.CalculateJumpForce(_currentWallDirection.Value)
                     : _movementValuesCalculator.CalculateJumpForce();
 
@@ -297,7 +297,7 @@ namespace Player.Movement
         private IEnumerator WaitForDashCooldownWithTicking()
         {
             _canDash = false;
-            float startTime = Time.time;
+            var startTime = Time.time;
             float passedTime;
             do
             {
@@ -305,7 +305,7 @@ namespace Player.Movement
                 passedTime = Time.time - startTime;
                 UpdateCooldownRatio(passedTime / _movementSettings.DashCooldownSeconds);
             } while (passedTime < _movementSettings.DashCooldownSeconds);
-            
+
             _canDash = true;
             UpdateCooldownRatio(1f);
         }
@@ -322,7 +322,7 @@ namespace Player.Movement
         private IEnumerator ContinuePushingAfterHook()
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
-            float passedSeconds = 0f;
+            var passedSeconds = 0f;
             while (_currentMovingState.Value == MovingState.AfterHook &&
                    passedSeconds < _movementSettings.ContinuePushingAfterHookEndSeconds)
             {
@@ -407,8 +407,8 @@ namespace Player.Movement
 
         private WallDirection CalculateCurrentWallDirection()
         {
-            Vector3 closestPoint = _wallChecker.Colliders[0].ClosestPoint(CurrentPosition);
-            float dot = Vector3.Dot(_cashedTransform.right, closestPoint - CurrentPosition);
+            var closestPoint = _wallChecker.Colliders[0].ClosestPoint(CurrentPosition);
+            var dot = Vector3.Dot(_cashedTransform.right, closestPoint - CurrentPosition);
             return dot < 0 ? WallDirection.Left : WallDirection.Right;
         }
 

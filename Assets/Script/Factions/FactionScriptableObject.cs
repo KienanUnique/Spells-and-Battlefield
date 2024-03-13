@@ -15,9 +15,7 @@ namespace Factions
 
         public OtherFactionRelationship GetRelationshipToOtherFraction(IFaction other)
         {
-            OtherFactionRelationship result = Equals(this, other)
-                ? OtherFactionRelationship.Friendly
-                : OtherFactionRelationship.Aggressive;
+            var result = Equals(this, other) ? OtherFactionRelationship.Friendly : OtherFactionRelationship.Aggressive;
             return result;
         }
     }

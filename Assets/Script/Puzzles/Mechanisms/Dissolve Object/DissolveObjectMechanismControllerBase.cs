@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common.Collider_With_Disabling;
 using Common.Dissolve_Effect_Controller;
-using Puzzles.Mechanisms_Triggers;
 
 namespace Puzzles.Mechanisms.Dissolve_Object
 {

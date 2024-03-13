@@ -32,7 +32,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
 
         protected override void SubscribeOnEvents()
         {
-            foreach (IGameLevelItem levelItem in _model.LevelItems)
+            foreach (var levelItem in _model.LevelItems)
             {
                 levelItem.Selected += OnLevelItemSelected;
             }
@@ -40,7 +40,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
 
         protected override void UnsubscribeFromEvents()
         {
-            foreach (IGameLevelItem levelItem in _model.LevelItems)
+            foreach (var levelItem in _model.LevelItems)
             {
                 levelItem.Selected -= OnLevelItemSelected;
             }

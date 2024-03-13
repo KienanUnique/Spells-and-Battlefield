@@ -16,7 +16,7 @@ namespace UI.Managers.Setter
 
         protected override void Initialize()
         {
-            foreach (IUIWindowManagerSettable dependentOnIInGameUIControllable in _inGameUIControllableSettableObjects)
+            foreach (var dependentOnIInGameUIControllable in _inGameUIControllableSettableObjects)
             {
                 dependentOnIInGameUIControllable.SetUIWindowManager(_managerUI);
             }

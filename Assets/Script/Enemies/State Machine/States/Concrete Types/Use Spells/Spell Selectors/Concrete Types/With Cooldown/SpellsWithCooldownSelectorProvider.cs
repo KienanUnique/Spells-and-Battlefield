@@ -14,12 +14,11 @@ namespace Enemies.State_Machine.States.Concrete_Types.Use_Spells.Spell_Selectors
 
         public override IEnemySpellSelector GetImplementationObject(ICoroutineStarter coroutineStarter)
         {
-            List<ISpellWithCooldown> listWithSpells = _spellsToUseInPriorityOrder
-                                                      .Select(spellWithCooldownData =>
-                                                          new SpellWithCooldown(spellWithCooldownData,
-                                                              coroutineStarter))
-                                                      .Cast<ISpellWithCooldown>()
-                                                      .ToList();
+            var listWithSpells = _spellsToUseInPriorityOrder
+                                 .Select(spellWithCooldownData =>
+                                     new SpellWithCooldown(spellWithCooldownData, coroutineStarter))
+                                 .Cast<ISpellWithCooldown>()
+                                 .ToList();
 
             return new EnemySpellsWithCooldownSelectorImplementation(listWithSpells);
         }

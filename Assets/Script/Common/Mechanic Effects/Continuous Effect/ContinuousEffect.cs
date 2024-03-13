@@ -82,7 +82,7 @@ namespace Common.Mechanic_Effects.Continuous_Effect
 
             _coroutineStarter = null;
 
-            foreach (IMechanicEffect mechanic in _mechanics)
+            foreach (var mechanic in _mechanics)
             {
                 if (mechanic is IMechanicEffectWithRollback mechanicEffectWithRollback)
                 {

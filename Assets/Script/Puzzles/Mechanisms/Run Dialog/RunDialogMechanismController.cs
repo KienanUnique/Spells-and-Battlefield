@@ -14,7 +14,8 @@ namespace Puzzles.Mechanisms.Run_Dialog
         private List<IDialogProvider> _availableDialogs;
         private IDialogService _dialogService;
 
-        public void Initialize(List<IDialogProvider> allDialogs, IDialogService dialogService, List<IMechanismsTrigger> triggers)
+        public void Initialize(List<IDialogProvider> allDialogs, IDialogService dialogService,
+            List<IMechanismsTrigger> triggers)
         {
             _allDialogs = allDialogs;
             _dialogService = dialogService;
@@ -47,12 +48,12 @@ namespace Puzzles.Mechanisms.Run_Dialog
             {
                 _availableDialogs.AddRange(_allDialogs);
             }
-            
+
             var dialogIndex = Random.Range(0, _availableDialogs.Count);
             var needDialog = _availableDialogs.ElementAt(dialogIndex);
-            
+
             _availableDialogs.RemoveAt(dialogIndex);
-            
+
             return needDialog;
         }
     }

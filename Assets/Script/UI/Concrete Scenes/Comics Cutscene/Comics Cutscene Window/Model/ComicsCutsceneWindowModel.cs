@@ -68,7 +68,7 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Cutscene_Window.Model
 
         private void OpenScreenWithIndex(int index)
         {
-            IComicsScreen previousScreen = CurrentScreen;
+            var previousScreen = CurrentScreen;
             CurrentScreen = _screens[index];
             NewScreenOpened?.Invoke(previousScreen, CurrentScreen);
             CurrentScreen.Appear();

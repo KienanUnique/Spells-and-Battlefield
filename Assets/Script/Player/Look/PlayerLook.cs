@@ -49,6 +49,50 @@ namespace Player.Look
         }
 
         public Vector3 LookDirection => _cameraTransform.forward;
+
+        public void LookInputtedWith(Vector2 mouseLookDelta)
+        {
+            if (_isCameraLockedOnPoint)
+            {
+                return;
+            }
+
+            _cameraTransform.position = _cameraRootTransform.Position;
+            _xRotation -= mouseLookDelta.y;
+            _xRotation = Mathf.Clamp(_xRotation, _lookSettings.UpperLimit, _lookSettings.BottomLimit);
+
+            _cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
+            _bodyRotateObject.Rotate(Vector3.up, mouseLookDelta.x);
+        }
+
+        public void StartLookingAtPoint(Vector3 lookPoint)
+        {
+            _isCameraLockedOnPoint = true;
+
+            _lookLockPoint = lookPoint;
+
+            var bodyPosition = _bodyRotateObject.position;
+            var bodyLookPoint = new Vector3(_lookLockPoint.x, bodyPosition.y, _lookLockPoint.z);
+            var bodyLookDirection = bodyLookPoint - bodyPosition;
+            var bodyLookRotation = Quaternion.LookRotation(bodyLookDirection);
+
+            _startLockedPointRotationSequence?.Kill();
+            _startLockedPointRotationSequence = DOTween.Sequence();
+            _startLockedPointRotationSequence
+                .Append(_bodyRotateObject.DORotateQuaternion(bodyLookRotation,
+                    _lookSettings.LookAtStartAnimationDuration))
+                .Join(_cameraTransform.DOLookAt(_lookLockPoint, _lookSettings.LookAtStartAnimationDuration))
+                .SetLink(_linkGameObject)
+                .SetEase(_lookSettings.LookAtStartAnimationEase)
+                .OnComplete(() => { _coroutineStarter.StartCoroutine(LockAtHookPoint()); });
+        }
+
+        public void StopLookingAtPoint()
+        {
+            _startLockedPointRotationSequence?.Kill();
+            _isCameraLockedOnPoint = false;
+        }
+
         public bool TryCalculateLookPointWithMaxDistance(out Vector3 lookPoint, float maxDistance)
         {
             if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out _cameraForwardRaycastHit,
@@ -60,47 +104,6 @@ namespace Player.Look
 
             lookPoint = Vector3.zero;
             return false;
-        }
-
-        public void LookInputtedWith(Vector2 mouseLookDelta)
-        {
-            if (_isCameraLockedOnPoint)
-            {
-                return;
-            }
-            _cameraTransform.position = _cameraRootTransform.Position;
-            _xRotation -= mouseLookDelta.y;
-            _xRotation = Mathf.Clamp(_xRotation, _lookSettings.UpperLimit, _lookSettings.BottomLimit);
-
-            _cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
-            _bodyRotateObject.Rotate(Vector3.up, mouseLookDelta.x);
-        }
-        
-        public void StartLookingAtPoint(Vector3 lookPoint)
-        {
-            _isCameraLockedOnPoint = true;
-            
-            _lookLockPoint = lookPoint;
-
-            var bodyPosition = _bodyRotateObject.position;
-            var bodyLookPoint = new Vector3(_lookLockPoint.x, bodyPosition.y, _lookLockPoint.z);
-            var bodyLookDirection = bodyLookPoint - bodyPosition;
-            var bodyLookRotation = Quaternion.LookRotation(bodyLookDirection);
-            
-            _startLockedPointRotationSequence?.Kill();
-            _startLockedPointRotationSequence = DOTween.Sequence();
-            _startLockedPointRotationSequence
-                .Append(_bodyRotateObject.DORotateQuaternion(bodyLookRotation, _lookSettings.LookAtStartAnimationDuration))
-                .Join(_cameraTransform.DOLookAt(_lookLockPoint, _lookSettings.LookAtStartAnimationDuration))
-                .SetLink(_linkGameObject)
-                .SetEase(_lookSettings.LookAtStartAnimationEase)
-                .OnComplete(() => { _coroutineStarter.StartCoroutine(LockAtHookPoint()); });
-        }
-
-        public void StopLookingAtPoint()
-        {
-            _startLockedPointRotationSequence?.Kill();
-            _isCameraLockedOnPoint = false;
         }
 
         private IEnumerator LockAtHookPoint()

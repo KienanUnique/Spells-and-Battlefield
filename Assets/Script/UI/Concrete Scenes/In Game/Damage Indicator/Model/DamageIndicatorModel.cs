@@ -25,10 +25,10 @@ namespace UI.Concrete_Scenes.In_Game.Damage_Indicator.Model
                     NeedIndicateAboutLocalDamage?.Invoke();
                     break;
                 case EffectSourceType.External:
-                    Vector3 directionToSource =
-                        (sourceInformation.SourceTransform.Position - _characterPosition.Position).normalized;
+                    var directionToSource = (sourceInformation.SourceTransform.Position - _characterPosition.Position)
+                        .normalized;
                     directionToSource.y = 0;
-                    float angle = Vector3.Angle(directionToSource, _characterPosition.Forward);
+                    var angle = Vector3.Angle(directionToSource, _characterPosition.Forward);
                     NeedIndicateAboutExternalDamage?.Invoke(angle);
                     break;
                 default:

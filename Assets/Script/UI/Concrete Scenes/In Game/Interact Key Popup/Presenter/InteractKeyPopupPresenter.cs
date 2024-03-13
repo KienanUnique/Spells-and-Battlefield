@@ -8,15 +8,16 @@ namespace UI.Concrete_Scenes.In_Game.Interact_Key_Popup.Presenter
     {
         private IUIElementView _view;
         private IPlayerAsPressKeyInteractor _keyInteractor;
-        protected override IUIElementView View => _view;
 
         public void Initialize(IUIElementView view, IPlayerAsPressKeyInteractor keyInteractor)
         {
             _view = view;
             _keyInteractor = keyInteractor;
-            
+
             SetInitializedStatus();
         }
+
+        protected override IUIElementView View => _view;
 
         public override void Appear()
         {

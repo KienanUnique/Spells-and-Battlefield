@@ -37,7 +37,7 @@ namespace Spells.Spell_Types_Settings
                 var resultTypesOrder = new List<ISpellType>();
                 _typesOrder.ForEach(typeScriptableObject =>
                     resultTypesOrder.Add(typeScriptableObject.GetImplementationObject()));
-                int lastChanceSpellTypeInsertIndex = _lastChanceSpellPlace switch
+                var lastChanceSpellTypeInsertIndex = _lastChanceSpellPlace switch
                 {
                     LastChanceSpellPlace.InBeginning => 0,
                     LastChanceSpellPlace.InEnd => resultTypesOrder.Count,

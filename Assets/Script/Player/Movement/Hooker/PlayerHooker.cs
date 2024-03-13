@@ -12,7 +12,7 @@ namespace Player.Movement.Hooker
     public class PlayerHooker : IPlayerHooker
     {
         private const int MaxHookColliders = 1;
-        
+
         private readonly IReadonlyTransform _rigidbody;
         private readonly IReadonlyPlayerLook _look;
         private readonly IPlayerHookerSettings _hookSettings;
@@ -20,7 +20,6 @@ namespace Player.Movement.Hooker
         private readonly Collider[] _overlapResults = new Collider[MaxHookColliders];
 
         private Coroutine _removeHookAfterTimeOutCoroutine;
-        
 
         public PlayerHooker(IReadonlyTransform rigidbody, IReadonlyPlayerLook look, IPlayerHookerSettings hookSettings,
             ICoroutineStarter coroutineStarter)
@@ -35,7 +34,7 @@ namespace Player.Movement.Hooker
 
         public Vector3 HookPushDirection { get; private set; }
         public Vector3 HookPoint { get; private set; }
-        public Vector3 AfterHookPushDirection { get;  private set; }
+        public Vector3 AfterHookPushDirection { get; private set; }
         public bool IsHooking { get; private set; }
 
         public bool TrySetHookPoint()
@@ -44,12 +43,12 @@ namespace Player.Movement.Hooker
             {
                 return false;
             }
-            
+
             var size = Physics.OverlapSphereNonAlloc(lookPoint, _hookSettings.PointSelectionRadius, _overlapResults,
                 _hookSettings.Mask, QueryTriggerInteraction.Ignore);
 
             IHookPointProvider pointProvider = null;
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 if (_overlapResults[i].TryGetComponent(out pointProvider))
                 {
@@ -74,7 +73,7 @@ namespace Player.Movement.Hooker
             _removeHookAfterTimeOutCoroutine = _coroutineStarter.StartCoroutine(RemoveHookAfterTimeOut());
             _coroutineStarter.StartCoroutine(CalculateHookDirection());
         }
-        
+
         private IEnumerator CalculateHookDirection()
         {
             while (IsHooking)
@@ -109,6 +108,7 @@ namespace Player.Movement.Hooker
             {
                 return;
             }
+
             _coroutineStarter.StopCoroutine(_removeHookAfterTimeOutCoroutine);
             _removeHookAfterTimeOutCoroutine = null;
             IsHooking = false;

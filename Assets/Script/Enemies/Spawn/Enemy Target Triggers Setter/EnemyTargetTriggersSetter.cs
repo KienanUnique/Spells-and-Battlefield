@@ -10,9 +10,8 @@ namespace Enemies.Spawn.Enemy_Target_Triggers_Setter
 
         private void Awake()
         {
-            IEnemyTargetTriggersSettable[] targetTriggersSettables =
-                GetComponentsInChildren<IEnemyTargetTriggersSettable>();
-            foreach (IEnemyTargetTriggersSettable enemyTargetTriggersSettable in targetTriggersSettables)
+            var targetTriggersSettables = GetComponentsInChildren<IEnemyTargetTriggersSettable>();
+            foreach (var enemyTargetTriggersSettable in targetTriggersSettables)
             {
                 enemyTargetTriggersSettable.SetTargetTriggers(new List<IEnemyTargetTrigger>(_triggersList));
             }

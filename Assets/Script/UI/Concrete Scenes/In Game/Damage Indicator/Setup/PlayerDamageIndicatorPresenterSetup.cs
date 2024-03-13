@@ -38,7 +38,7 @@ namespace UI.Concrete_Scenes.In_Game.Damage_Indicator.Setup
             _presenter = GetComponent<IInitializableDamageIndicatorPresenter>();
 
             var indicatorsInClockwiseOrder = new List<IDamageIndicatorElement>();
-            foreach (Image image in _indicatorImagesInClockwiseOrder)
+            foreach (var image in _indicatorImagesInClockwiseOrder)
             {
                 indicatorsInClockwiseOrder.Add(new DamageIndicatorElement(_settings, image));
             }

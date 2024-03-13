@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Common.Readonly_Transform;
 using Enemies.Loot_Dropper.Generator;
-using Pickable_Items.Data_For_Creating;
 using Pickable_Items.Factory;
 using Systems.Scenes_Controller.Game_Level_Loot_Unlocker;
 using UnityEngine;
@@ -34,10 +33,10 @@ namespace Enemies.Loot_Dropper
             var dropDirections = new List<Vector3>();
             for (var i = 0; i < count; i++)
             {
-                float x = Random.Range(-1f, 1f);
-                float y = Random.Range(-1f, 1f);
-                float z = Random.Range(-1f, 1f);
-                Vector3 direction = new Vector3(x, y, z).normalized;
+                var x = Random.Range(-1f, 1f);
+                var y = Random.Range(-1f, 1f);
+                var z = Random.Range(-1f, 1f);
+                var direction = new Vector3(x, y, z).normalized;
                 dropDirections.Add(direction);
             }
 
@@ -61,7 +60,7 @@ namespace Enemies.Loot_Dropper
 
             for (var i = 0; i < count; i++)
             {
-                Vector3 lineDirection = Quaternion.Euler(0, currentAngle, 0) * priorityDropDirection;
+                var lineDirection = Quaternion.Euler(0, currentAngle, 0) * priorityDropDirection;
                 dropDirections.Add(lineDirection.normalized);
 
                 currentAngle += angleBetweenLines;
@@ -72,8 +71,8 @@ namespace Enemies.Loot_Dropper
 
         public void DropLoot(Vector3 priorityDropDirection)
         {
-            IReadOnlyList<IPickableItemDataForCreating> lootToDrop = _generator.GetLoot(_gameLevelLootUnlocker);
-            IReadOnlyList<Vector3> directions = CalculateDropDirections(lootToDrop.Count, priorityDropDirection);
+            var lootToDrop = _generator.GetLoot(_gameLevelLootUnlocker);
+            var directions = CalculateDropDirections(lootToDrop.Count, priorityDropDirection);
 
             if (lootToDrop.Count != directions.Count)
             {
@@ -82,7 +81,7 @@ namespace Enemies.Loot_Dropper
 
             for (var i = 0; i < lootToDrop.Count; i++)
             {
-                Vector3 dropDirection = directions[i];
+                var dropDirection = directions[i];
                 _pickableItemsFactory.Create(lootToDrop[i], _itemsSpawnPoint.Position, dropDirection);
             }
         }

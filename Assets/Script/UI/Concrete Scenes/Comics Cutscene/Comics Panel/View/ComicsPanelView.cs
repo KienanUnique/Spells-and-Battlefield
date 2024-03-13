@@ -96,7 +96,7 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Panel.View
 
         public void DisappearWithoutAnimation()
         {
-            Color transparentColor = _image.color;
+            var transparentColor = _image.color;
             transparentColor.a = 0f;
             _image.color = transparentColor;
             _transform.anchoredPosition = _startAppearPosition;

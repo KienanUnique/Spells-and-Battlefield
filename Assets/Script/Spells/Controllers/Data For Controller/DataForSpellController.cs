@@ -19,7 +19,7 @@ namespace Spells.Controllers.Data_For_Controller
 
         public void Initialize(IDataForSpellImplementation data)
         {
-            foreach (ISpellImplementation spellImplementation in SpellImplementations)
+            foreach (var spellImplementation in SpellImplementations)
             {
                 spellImplementation.Initialize(data);
             }
@@ -33,7 +33,6 @@ namespace Spells.Controllers.Data_For_Controller
 
         public ILookPointCalculator LookPointCalculator { get; }
 
-        protected virtual List<ISpellImplementation> SpellImplementations =>
-            new List<ISpellImplementation>(SpellAppliers) {SpellObjectMovement};
+        protected virtual List<ISpellImplementation> SpellImplementations => new(SpellAppliers) {SpellObjectMovement};
     }
 }

@@ -33,7 +33,7 @@ namespace Puzzles.Mechanisms.Extendable_Object
             _animationDuration = animationDuration;
             _settings = settings;
             _currentState = new ValueWithReactionOnChange<ExtendableObjectState>(startState);
-            Vector3 localScale = _objectToExtend.localScale;
+            var localScale = _objectToExtend.localScale;
             switch (startState)
             {
                 case ExtendableObjectState.PulledIn:

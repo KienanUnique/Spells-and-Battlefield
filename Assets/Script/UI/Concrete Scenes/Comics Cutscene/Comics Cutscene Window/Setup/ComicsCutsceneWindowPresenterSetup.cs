@@ -2,10 +2,8 @@
 using Systems.Input_Manager.Concrete_Types.Comics_Cutscene;
 using Systems.Scenes_Controller.Concrete_Types;
 using UI.Concrete_Scenes.Comics_Cutscene.Comics_Cutscene_Window.Model;
-using UI.Concrete_Scenes.Comics_Cutscene.Comics_Data;
 using UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen;
 using UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen.Factory;
-using UI.Concrete_Scenes.Comics_Cutscene.Comics_Screen.Provider;
 using UI.Concrete_Scenes.Comics_Cutscene.Level_Statistics_Window.Presenter;
 using UI.Concrete_Scenes.Main_Menu.View.Empty;
 using UI.Window.Setup;
@@ -51,8 +49,8 @@ namespace UI.Concrete_Scenes.Comics_Cutscene.Comics_Cutscene_Window.Setup
             base.Prepare();
             _presenter = GetComponent<IInitializableComicsCutsceneWindowPresenter>();
             _screens = new List<IInitializableComicsScreen>();
-            IComicsData comicsData = _comicsToShowProvider.ComicsToShow;
-            foreach (IComicsScreenProvider comicsScreenProvider in comicsData.ScreensInOrder)
+            var comicsData = _comicsToShowProvider.ComicsToShow;
+            foreach (var comicsScreenProvider in comicsData.ScreensInOrder)
             {
                 _screens.Add(_factory.Create(comicsScreenProvider, _rootForContent));
             }

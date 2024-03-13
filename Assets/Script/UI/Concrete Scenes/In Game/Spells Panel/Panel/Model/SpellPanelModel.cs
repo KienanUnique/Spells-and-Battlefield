@@ -17,7 +17,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Panel.Model
             _managerInformation = managerInformation;
 
             _spellsTypeGroups = new Dictionary<ISpellType, ISpellSlotGroup>();
-            foreach (ISpellSlotGroup group in spellGroups)
+            foreach (var group in spellGroups)
             {
                 _spellsTypeGroups.Add(group.Type, group);
             }
@@ -44,7 +44,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Panel.Model
 
         private void SelectSpellTypeGroup(ISpellType newSelectedSpellType)
         {
-            foreach (ISpellSlotGroup group in _spellsTypeGroups.Values.Where(group => group.IsSelected))
+            foreach (var group in _spellsTypeGroups.Values.Where(group => group.IsSelected))
             {
                 group.Unselect();
             }

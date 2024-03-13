@@ -22,6 +22,7 @@ namespace UI.Concrete_Scenes.In_Game.In_Game_Windows.Concrete_Types.Dialog_Windo
             _dialogueRunner.AddCommandHandler<string>("change_avatar", _model.TryChangeAvatar);
             SetInitializedStatus();
         }
+
         protected override IUIWindowModel WindowModel => _model;
         protected override IUIWindowView WindowView => _view;
 

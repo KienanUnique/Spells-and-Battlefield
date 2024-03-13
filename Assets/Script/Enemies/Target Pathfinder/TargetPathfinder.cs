@@ -85,8 +85,8 @@ namespace Enemies.Target_Pathfinder
 
         private Vector3 CalculateNeedPosition(IReadonlyTransform target, float needDistance)
         {
-            Vector3 offsetVector = (_thisPosition.Position - target.Position).normalized * needDistance;
-            return NavMesh.SamplePosition(target.Position + offsetVector, out NavMeshHit hit,
+            var offsetVector = (_thisPosition.Position - target.Position).normalized * needDistance;
+            return NavMesh.SamplePosition(target.Position + offsetVector, out var hit,
                 _settings.MaxDistanceFromTargetToNavMesh, CanBePassedAreasNavMeshMask)
                 ? hit.position
                 : target.Position + offsetVector;

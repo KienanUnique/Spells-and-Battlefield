@@ -3,8 +3,7 @@ using UnityEngine;
 
 namespace Systems.Dialog.Avatar_Storage
 {
-    [CreateAssetMenu(
-        menuName = ScriptableObjectsMenuDirectories.DialogsDirectory + "Npc Avatar Data",
+    [CreateAssetMenu(menuName = ScriptableObjectsMenuDirectories.DialogsDirectory + "Npc Avatar Data",
         fileName = "Npc Avatar Data", order = 0)]
     public class NpcAvatarData : ScriptableObject
     {
@@ -22,7 +21,7 @@ namespace Systems.Dialog.Avatar_Storage
                 avatarSprite = avatar.Sprite;
                 return true;
             }
-            
+
             avatarSprite = null;
             return false;
         }

@@ -22,7 +22,7 @@ namespace Systems
         private void Start()
         {
             _gameSystemsFactory.Create();
-            foreach (IObjectPoolingFactory factory in _objectPoolingFactories)
+            foreach (var factory in _objectPoolingFactories)
             {
                 factory.FillPool();
             }
@@ -30,7 +30,7 @@ namespace Systems
 
         private void OnEnable()
         {
-            foreach (IObjectPoolingFactory factory in _objectPoolingFactories)
+            foreach (var factory in _objectPoolingFactories)
             {
                 factory.Enable();
             }
@@ -38,7 +38,7 @@ namespace Systems
 
         private void OnDisable()
         {
-            foreach (IObjectPoolingFactory factory in _objectPoolingFactories)
+            foreach (var factory in _objectPoolingFactories)
             {
                 factory.Disable();
             }

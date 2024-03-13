@@ -56,7 +56,7 @@ namespace Common.Abstract_Bases
 
         private void SubscribeOnEvents()
         {
-            foreach (IInitializable initializableObject in _objectsToWaitBeforeInitialization)
+            foreach (var initializableObject in _objectsToWaitBeforeInitialization)
             {
                 initializableObject.InitializationStatusChanged += OnInitializableObjectStatusChanged;
             }
@@ -64,7 +64,7 @@ namespace Common.Abstract_Bases
 
         private void UnsubscribeFromEvents()
         {
-            foreach (IInitializable initializableObject in _objectsToWaitBeforeInitialization)
+            foreach (var initializableObject in _objectsToWaitBeforeInitialization)
             {
                 initializableObject.InitializationStatusChanged -= OnInitializableObjectStatusChanged;
             }

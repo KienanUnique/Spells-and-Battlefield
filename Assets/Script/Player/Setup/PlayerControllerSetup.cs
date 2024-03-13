@@ -31,8 +31,6 @@ using Player.Visual.Hook_Trail;
 using Puzzles.Mechanisms_Triggers.Box_Collider_Trigger;
 using Spells;
 using Spells.Factory;
-using Spells.Spell;
-using Spells.Spell.Scriptable_Objects;
 using Spells.Spell_Handlers.Continuous;
 using Spells.Spell_Types_Settings;
 using Systems.Input_Manager.Concrete_Types.In_Game;
@@ -66,8 +64,8 @@ namespace Player.Setup
         [Header("Checkers")] [SerializeField] private GroundChecker _groundChecker;
         [SerializeField] private WallChecker _wallChecker;
 
-        [Header("Spells")]
-        [SerializeField] private ReadonlyTransformGetter _spellSpawnObject;
+        [Header("Spells")] [SerializeField] private ReadonlyTransformGetter _spellSpawnObject;
+
         private IReadonlyTransform _cameraTransform;
         private IIdHolder _idHolder;
         private List<IDisableable> _itemsNeedDisabling;
@@ -161,9 +159,8 @@ namespace Player.Setup
                 _spellObjectsFactory, _spellSpawnObject.ReadonlyTransform, playerLook);
 
             var startSpells = _currentLevelDataProvider.CurrentLevel.StartSpells;
-            var spellsSelector =
-                new PlayerSpellsSelectorForSpellManager(startSpells, _spellTypesSetting);
-            
+            var spellsSelector = new PlayerSpellsSelectorForSpellManager(startSpells, _spellTypesSetting);
+
             var playerSpellsManager = new PlayerSpellsManager(continuousSpellHandler, instantSpellHandler,
                 spellsSelector, _animatorStatusChecker);
             playerSpellsManager.AddSpell(_spellTypesSetting.LastChanceSpellType,

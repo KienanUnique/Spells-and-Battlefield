@@ -78,6 +78,8 @@ namespace Player
         public event Action<CharacterState> CharacterStateChanged;
         public event Action<IHitPointsCharacterChangeInformation> HitPointsCountChanged;
         public event Action<IAppliedContinuousEffectInformation> ContinuousEffectAdded;
+        public event Action CanInteractNow;
+        public event Action CanNotInteractNow;
         public event Action<float> DashCooldownRatioChanged;
         public event Action Dashed;
         public event Action DashAiming;
@@ -86,9 +88,6 @@ namespace Player
         public event Action ContinuousSpellFinished;
         public event Action<ISpellType> TryingToUseEmptySpellTypeGroup;
         public event Action<ISpellType> SelectedSpellTypeChanged;
-        public event Action CanInteractNow;
-        public event Action CanNotInteractNow;
-        public bool CanInteract => _pressKeyInteractor.CanInteract;
         public IReadonlyTransform UpperPointForSummonedEnemiesPositionCalculating { get; private set; }
         public IInformationForSummon InformationForSummon { get; private set; }
         public IToolsForSummon ToolsForSummon { get; private set; }
@@ -102,6 +101,7 @@ namespace Player
         public IReadonlyTransform PointForAiming => UpperPointForSummonedEnemiesPositionCalculating;
         public int Id => _idHolder.Id;
         public IReadonlyRigidbody MainRigidbody => _movement.MainRigidbody;
+        public bool CanInteract => _pressKeyInteractor.CanInteract;
         public float CurrentDashCooldownRatio => _movement.CurrentDashCooldownRatio;
         public IReadonlyTransform CameraTransform { get; private set; }
         public float ContinuousSpellRatioOfCompletion => _spellsManager.ContinuousSpellRatioOfCompletion;
@@ -266,10 +266,10 @@ namespace Player
             _spellsManager.SelectedSpellTypeChanged -= OnSelectedSpellTypeChanged;
             _spellsManager.ContinuousSpellFinished -= OnContinuousSpellFinished;
             _spellsManager.ContinuousSpellStarted -= OnContinuousSpellStarted;
-            
+
             _hookTrailVisual.TrailArrivedToHookPoint -= OnTrailArrivedToHookPoint;
             _animatorStatusChecker.HookKeyMomentTrigger -= OnHookKeyMomentTrigger;
-            
+
             _pressKeyInteractor.CanInteractNow -= OnCanInteractNow;
             _pressKeyInteractor.CanNotInteractNow -= OnCanNotInteractNow;
         }

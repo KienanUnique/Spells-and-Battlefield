@@ -8,16 +8,16 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
     public abstract class TriggerForInitializableObjectsBase<TRequiredObject> : ColliderTriggerBase<TRequiredObject>
         where TRequiredObject : IInitializable
     {
-        private readonly HashSet<TRequiredObject> _waitingInitializationObjects = new HashSet<TRequiredObject>();
+        private readonly HashSet<TRequiredObject> _waitingInitializationObjects = new();
 
         protected virtual void OnEnable()
         {
-            foreach (TRequiredObject requiredObject in _requiredObjectsInside)
+            foreach (var requiredObject in _requiredObjectsInside)
             {
                 requiredObject.InitializationStatusChanged += OnObjectInitializationStatusChanged;
             }
 
-            foreach (TRequiredObject waitingInitializationObject in _waitingInitializationObjects)
+            foreach (var waitingInitializationObject in _waitingInitializationObjects)
             {
                 waitingInitializationObject.InitializationStatusChanged += OnObjectInitializationStatusChanged;
             }
@@ -25,12 +25,12 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
 
         protected virtual void OnDisable()
         {
-            foreach (TRequiredObject requiredObject in _requiredObjectsInside)
+            foreach (var requiredObject in _requiredObjectsInside)
             {
                 requiredObject.InitializationStatusChanged -= OnObjectInitializationStatusChanged;
             }
 
-            foreach (TRequiredObject waitingInitializationObject in _waitingInitializationObjects)
+            foreach (var waitingInitializationObject in _waitingInitializationObjects)
             {
                 waitingInitializationObject.InitializationStatusChanged -= OnObjectInitializationStatusChanged;
             }
@@ -79,7 +79,7 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
                                InitializableMonoBehaviourStatus.Initialized;
                     }
 
-                    foreach (TRequiredObject requiredObject in _waitingInitializationObjects.Where(IsTargetInitialized))
+                    foreach (var requiredObject in _waitingInitializationObjects.Where(IsTargetInitialized))
                     {
                         UnsubscribeFromObject(requiredObject);
                         base.OnRequiredObjectEnteringDetected(requiredObject);
@@ -96,7 +96,7 @@ namespace Common.Abstract_Bases.Box_Collider_Trigger
                     }
 
                     var destroyingObjects = new List<TRequiredObject>(_requiredObjectsInside.Where(IsTargetDestroying));
-                    foreach (TRequiredObject requiredObject in destroyingObjects)
+                    foreach (var requiredObject in destroyingObjects)
                     {
                         base.OnRequiredObjectExitingDetected(requiredObject);
                     }

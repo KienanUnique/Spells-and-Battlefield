@@ -20,7 +20,7 @@ namespace Enemies.Movement.Concrete_Types.Movement_With_Gravity
         {
             get
             {
-                Vector3 velocity = _rigidbody.velocity;
+                var velocity = _rigidbody.velocity;
                 velocity.Set(velocity.x, 0f, velocity.z);
                 return velocity;
             }
@@ -28,11 +28,11 @@ namespace Enemies.Movement.Concrete_Types.Movement_With_Gravity
 
         protected override void TryLimitCurrentSpeed()
         {
-            Vector3 velocityForLimitations = VelocityForLimitations;
+            var velocityForLimitations = VelocityForLimitations;
             if (velocityForLimitations.magnitude > MovementValuesCalculator.MaximumSpeedCalculated)
             {
-                Vector3 resultVelocity = velocityForLimitations.normalized *
-                                         MovementValuesCalculator.MaximumSpeedCalculated;
+                var resultVelocity = velocityForLimitations.normalized *
+                                     MovementValuesCalculator.MaximumSpeedCalculated;
                 resultVelocity.y += _rigidbody.velocity.y;
                 _rigidbody.velocity = resultVelocity;
             }

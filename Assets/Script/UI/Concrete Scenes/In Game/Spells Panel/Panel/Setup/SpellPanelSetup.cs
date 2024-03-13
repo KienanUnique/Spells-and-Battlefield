@@ -35,7 +35,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Panel.Setup
             get
             {
                 var initializableObjects = new List<IInitializable>();
-                foreach (SpellSlotGroupPresenterBase slot in _spellGroups)
+                foreach (var slot in _spellGroups)
                 {
                     if (slot is IInitializable initializableSlot)
                     {

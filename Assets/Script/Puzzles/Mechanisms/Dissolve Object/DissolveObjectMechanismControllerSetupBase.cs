@@ -16,15 +16,15 @@ namespace Puzzles.Mechanisms.Dissolve_Object
 
         private IDissolveEffectControllerSettings _dissolveEffectControllerSettings;
 
-        protected IDissolveEffectController DissolveEffectController =>
-            new DissolveEffectController(_renderers, _dissolveEffectControllerSettings, gameObject, !_isEnabledAtStart);
-
-        protected List<IColliderWithDisabling> Colliders => new List<IColliderWithDisabling>(_colliders);
-
         [Inject]
         private void GetDependencies(IDissolveEffectControllerSettings dissolveEffectControllerSettings)
         {
             _dissolveEffectControllerSettings = dissolveEffectControllerSettings;
         }
+
+        protected IDissolveEffectController DissolveEffectController =>
+            new DissolveEffectController(_renderers, _dissolveEffectControllerSettings, gameObject, !_isEnabledAtStart);
+
+        protected List<IColliderWithDisabling> Colliders => new(_colliders);
     }
 }

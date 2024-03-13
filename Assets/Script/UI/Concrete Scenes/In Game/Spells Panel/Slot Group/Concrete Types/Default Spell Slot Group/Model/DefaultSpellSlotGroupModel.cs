@@ -8,7 +8,6 @@ using Spells.Spell;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.Model;
 using UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Information;
-using UnityEngine;
 
 namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Concrete_Types.Default_Spell_Slot_Group.Model
 {
@@ -77,10 +76,10 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Concrete_Types.Defa
                 return;
             }
 
-            ISlotInformation slotInformation = _slots.ElementAt(args.Index).StoredObject;
-            ObjectWithUsageFlag<ISpellSlot> removedSlotObjectWithUsageFlag = _slotObjects.First(slotObject =>
+            var slotInformation = _slots.ElementAt(args.Index).StoredObject;
+            var removedSlotObjectWithUsageFlag = _slotObjects.First(slotObject =>
                 slotObject.StoredObject.CurrentSlotInformation == slotInformation);
-            ISpellSlot removedSlotObject = removedSlotObjectWithUsageFlag.StoredObject;
+            var removedSlotObject = removedSlotObjectWithUsageFlag.StoredObject;
 
             if (!removedSlotObject.CurrentSpell.Equals(args.Item))
             {
@@ -96,14 +95,14 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Concrete_Types.Defa
             }
             else
             {
-                for (int slotIndex = args.Index; slotIndex < _slots.Count - 1; slotIndex++)
+                for (var slotIndex = args.Index; slotIndex < _slots.Count - 1; slotIndex++)
                 {
-                    ObjectWithUsageFlag<ISlotInformation> nextSlot = _slots.ElementAt(slotIndex + 1);
-                    ObjectWithUsageFlag<ISlotInformation> currentSlot = _slots.ElementAt(slotIndex);
+                    var nextSlot = _slots.ElementAt(slotIndex + 1);
+                    var currentSlot = _slots.ElementAt(slotIndex);
                     if (nextSlot.IsUsed)
                     {
-                        ISlotInformation nextSlotInformation = nextSlot.StoredObject;
-                        ISpellSlot nextSpellController = FindUsedSpellObjectInSlot(nextSlotInformation).StoredObject;
+                        var nextSlotInformation = nextSlot.StoredObject;
+                        var nextSpellController = FindUsedSpellObjectInSlot(nextSlotInformation).StoredObject;
                         nextSpellController.MoveToSlot(currentSlot.StoredObject);
                         currentSlot.SetAsUsed();
                         nextSlot.SetAsFree();
@@ -125,10 +124,10 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Concrete_Types.Defa
                 return;
             }
 
-            ISlotInformation slotInformation = _slots.ElementAt(args.Index).StoredObject;
-            ObjectWithUsageFlag<ISpellSlot> replacedSlotObjectWithUsageFlag = _slotObjects.First(slotObject =>
+            var slotInformation = _slots.ElementAt(args.Index).StoredObject;
+            var replacedSlotObjectWithUsageFlag = _slotObjects.First(slotObject =>
                 slotObject.StoredObject.CurrentSlotInformation == slotInformation);
-            ISpellSlot replacedSlotObject = replacedSlotObjectWithUsageFlag.StoredObject;
+            var replacedSlotObject = replacedSlotObjectWithUsageFlag.StoredObject;
             replacedSlotObject.DisappearAndForgetSpell();
             replacedSlotObject.AppearAsSlot(slotInformation, args.NewItem);
         }
@@ -137,7 +136,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Concrete_Types.Defa
         {
             TryRemoveEmptySlot();
             MoveSlotsFront(args.Index);
-            ObjectWithUsageFlag<ISlotInformation> slotInformation = _slots.ElementAt(args.Index);
+            var slotInformation = _slots.ElementAt(args.Index);
             AppearSlot(slotInformation, args.Item);
         }
 

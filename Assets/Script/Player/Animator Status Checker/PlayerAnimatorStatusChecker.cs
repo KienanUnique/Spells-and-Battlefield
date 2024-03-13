@@ -18,6 +18,17 @@ namespace Player.Animator_Status_Checker
         }
 
         public event Action HookKeyMomentTrigger;
+
+        public void HandleHookStart()
+        {
+            _currentAnimatorStatus.Value = AnimatorStatus.WaitingActionAnimationStart;
+        }
+
+        public void HandleHookEnd()
+        {
+            _currentAnimatorStatus.Value = AnimatorStatus.WaitingActionAnimationEnd;
+        }
+
         protected override void SubscribeOnEvents()
         {
             base.SubscribeOnEvents();
@@ -33,16 +44,6 @@ namespace Player.Animator_Status_Checker
         private void OnHookKeyMomentTrigger()
         {
             HookKeyMomentTrigger?.Invoke();
-        }
-
-        public void HandleHookStart()
-        {
-            _currentAnimatorStatus.Value = AnimatorStatus.WaitingActionAnimationStart;
-        }
-
-        public void HandleHookEnd()
-        {
-            _currentAnimatorStatus.Value = AnimatorStatus.WaitingActionAnimationEnd;
         }
     }
 }

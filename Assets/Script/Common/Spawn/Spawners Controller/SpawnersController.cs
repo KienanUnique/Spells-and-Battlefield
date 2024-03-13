@@ -24,7 +24,7 @@ namespace Common.Spawn.Spawners_Controller
 
         protected override void SubscribeOnEvents()
         {
-            foreach (ISpawnTrigger spawnTrigger in _spawnTriggers)
+            foreach (var spawnTrigger in _spawnTriggers)
             {
                 spawnTrigger.SpawnRequired += TrySpawn;
             }
@@ -37,7 +37,7 @@ namespace Common.Spawn.Spawners_Controller
 
         private void UnsubscribeFromTriggers()
         {
-            foreach (ISpawnTrigger spawnTrigger in _spawnTriggers)
+            foreach (var spawnTrigger in _spawnTriggers)
             {
                 spawnTrigger.SpawnRequired -= TrySpawn;
             }
@@ -51,7 +51,7 @@ namespace Common.Spawn.Spawners_Controller
             }
 
             _wasSpawned = true;
-            foreach (ISpawner spawner in _spawners)
+            foreach (var spawner in _spawners)
             {
                 spawner.Spawn();
             }

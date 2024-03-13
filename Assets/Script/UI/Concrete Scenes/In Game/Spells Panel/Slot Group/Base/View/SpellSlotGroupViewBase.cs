@@ -40,7 +40,7 @@ namespace UI.Concrete_Scenes.In_Game.Spells_Panel.Slot_Group.Base.View
         private void ChangeScaleWithAnimation(float newScaleCoefficient)
         {
             _rectTransform.DOKill();
-            Vector3 newLocalScaleValue = _defaultLocalScale * newScaleCoefficient;
+            var newLocalScaleValue = _defaultLocalScale * newScaleCoefficient;
             _rectTransform.DOScale(newLocalScaleValue, _settings.SelectionAnimationDuration)
                           .SetEase(_settings.SelectionAnimationEase)
                           .ApplyCustomSetupForUI(_gameObject);

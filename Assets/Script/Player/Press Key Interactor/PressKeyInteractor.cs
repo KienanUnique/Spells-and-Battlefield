@@ -13,7 +13,7 @@ namespace Player.Press_Key_Interactor
     {
         private readonly IReadonlyTransform _thisTransform;
         private readonly IColliderTrigger _colliderTrigger;
-        private readonly List<Collider> _colliders = new List<Collider>();
+        private readonly List<Collider> _colliders = new();
 
         public PressKeyInteractor(IReadonlyTransform thisTransform, IColliderTrigger colliderTrigger)
         {
@@ -61,7 +61,7 @@ namespace Player.Press_Key_Interactor
         private void OnTriggerEnter(Collider obj)
         {
             _colliders.Add(obj);
-            
+
             if (_colliders.Count == 1)
             {
                 CanInteractNow?.Invoke();
@@ -72,7 +72,7 @@ namespace Player.Press_Key_Interactor
         {
             var thisPosition = _thisTransform.Position;
             var closestDistance = float.PositiveInfinity;
-            
+
             IPressKeyInteractable closestInteractable = null;
             foreach (var collider in _colliders)
             {

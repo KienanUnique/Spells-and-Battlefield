@@ -100,7 +100,7 @@ namespace Enemies.State_Machine.States
             {
                 case StateEnemyAIStatus.Active:
                     _transitionManager.StartCheckingConditions();
-                    if (_transitionManager.TryTransit(out IStateEnemyAI nextState))
+                    if (_transitionManager.TryTransit(out var nextState))
                     {
                         _cachedNextState = nextState;
                         HandleExitFromState();

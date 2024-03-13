@@ -5,7 +5,6 @@ using Spells.Collision_Collider;
 using Spells.Controllers.Data_For_Controller;
 using Spells.Data_For_Spell_Implementation;
 using Spells.Factory;
-using Spells.Implementations_Interfaces.Implementations;
 using Spells.Spell_Interactable_Trigger;
 using UnityEngine;
 
@@ -31,8 +30,8 @@ namespace Spells.Controllers
                 return;
             }
 
-            float commonTimePassedFromInitialize = TimePassedFromInitialize;
-            foreach (ISpellApplier spellApplier in _spellControllerData.SpellAppliers)
+            var commonTimePassedFromInitialize = TimePassedFromInitialize;
+            foreach (var spellApplier in _spellControllerData.SpellAppliers)
             {
                 spellApplier.CheckTime(commonTimePassedFromInitialize);
             }
@@ -44,7 +43,7 @@ namespace Spells.Controllers
 
         protected virtual void HandleFinishSpell()
         {
-            foreach (ISpellApplier spellApplier in _spellControllerData.SpellAppliers)
+            foreach (var spellApplier in _spellControllerData.SpellAppliers)
             {
                 spellApplier.HandleRollbackableEffects();
             }
@@ -95,7 +94,7 @@ namespace Spells.Controllers
                 otherAsSpellInteractable.InteractAsSpellType(_spellControllerData.SpellType);
             }
 
-            foreach (ISpellApplier spellApplier in _spellControllerData.SpellAppliers)
+            foreach (var spellApplier in _spellControllerData.SpellAppliers)
             {
                 spellApplier.CheckContact(other);
             }

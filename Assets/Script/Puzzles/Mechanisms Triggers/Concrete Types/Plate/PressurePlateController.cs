@@ -78,7 +78,7 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Plate
             _plateTransform.DOScaleY(_plateSettings.PressedScaleY, _plateSettings.AnimationDuration)
                            .SetEase(_plateSettings.AnimationEase)
                            .SetLink(gameObject);
-            float scaleDeltaPositionY = (_plateSettings.UnpressedScaleY - _plateSettings.PressedScaleY) / -2;
+            var scaleDeltaPositionY = (_plateSettings.UnpressedScaleY - _plateSettings.PressedScaleY) / -2;
             _plateTransform.DOLocalMoveY(scaleDeltaPositionY, _plateSettings.AnimationDuration)
                            .SetEase(_plateSettings.AnimationEase)
                            .SetLink(gameObject);

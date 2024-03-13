@@ -33,9 +33,9 @@ namespace Spells.Concrete_Types.Target_Selectors
             public override IReadOnlyList<ISpellInteractable> SelectTargets()
             {
                 var selectedTargets = new List<ISpellInteractable>();
-                Collider[] collidersInsideSphere = Physics.OverlapSphere(_spellTransform.position, _sphereRadius,
-                    LayerMask, QueryTriggerInteraction.Ignore);
-                int casterId = -1;
+                var collidersInsideSphere = Physics.OverlapSphere(_spellTransform.position, _sphereRadius, LayerMask,
+                    QueryTriggerInteraction.Ignore);
+                var casterId = -1;
                 var casterHaveId = false;
                 if (Caster is ISpellInteractable casterSpellInteractable)
                 {
@@ -43,7 +43,7 @@ namespace Spells.Concrete_Types.Target_Selectors
                     casterHaveId = true;
                 }
 
-                foreach (Collider hitCollider in collidersInsideSphere)
+                foreach (var hitCollider in collidersInsideSphere)
                 {
                     if (hitCollider.gameObject.TryGetComponent(out ISpellInteractable target) &&
                         !(_ignoreCasterCollisions && casterHaveId && target.Id == casterId) &&

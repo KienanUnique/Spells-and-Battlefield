@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using UI.Concrete_Scenes.In_Game.Damage_Indicator.Settings;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI.Concrete_Scenes.In_Game.Damage_Indicator.View.Damage_Indicator_Element
@@ -14,7 +13,7 @@ namespace UI.Concrete_Scenes.In_Game.Damage_Indicator.View.Damage_Indicator_Elem
         {
             _settings = settings;
             _indicatorImage = indicatorImage;
-            Color needColor = indicatorImage.color;
+            var needColor = indicatorImage.color;
             needColor.a = 0f;
             indicatorImage.color = needColor;
         }
@@ -22,7 +21,7 @@ namespace UI.Concrete_Scenes.In_Game.Damage_Indicator.View.Damage_Indicator_Elem
         public void AppearTemporarily()
         {
             _indicatorImage.DOKill();
-            Sequence sequence = DOTween.Sequence();
+            var sequence = DOTween.Sequence();
             sequence.Append(_indicatorImage.DOFade(1f, _settings.AppearFadeDuration).SetEase(_settings.AppearFadeEase));
             sequence.Append(_indicatorImage.DOFade(0f, _settings.DisappearFadeDuration)
                                            .SetEase(_settings.DisappearFadeEase));

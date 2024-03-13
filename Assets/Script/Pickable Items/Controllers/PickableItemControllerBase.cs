@@ -19,7 +19,7 @@ namespace Pickable_Items.Controllers
         private const float GroundCheckOffsetY = 20f;
 
         private readonly ValueWithReactionOnChange<ControllerStates> _currentControllerState =
-            new ValueWithReactionOnChange<ControllerStates>(ControllerStates.NonInitialized);
+            new(ControllerStates.NonInitialized);
 
         private GameObject _doTweenLinkGameObject;
         private GroundChecker _groundChecker;
@@ -47,7 +47,7 @@ namespace Pickable_Items.Controllers
 
             PlayAppearAnimation();
             _visualObjectTransform.localScale = Vector3.zero;
-            if (setupData.TryGetDropDirection(out Vector3? dropDirection))
+            if (setupData.TryGetDropDirection(out var dropDirection))
             {
                 if (dropDirection == null)
                 {
@@ -135,14 +135,14 @@ namespace Pickable_Items.Controllers
             _rigidbody.useGravity = false;
             _rigidbody.velocity = Vector3.zero;
 
-            Sequence visualObjectSequence = DOTween.Sequence();
+            var visualObjectSequence = DOTween.Sequence();
             visualObjectSequence.SetLink(_doTweenLinkGameObject);
-            Transform cashedTransform = transform;
+            var cashedTransform = transform;
             if (_needFallDown)
             {
-                Vector3 startRayCheckPosition = cashedTransform.position;
+                var startRayCheckPosition = cashedTransform.position;
                 startRayCheckPosition.y += GroundCheckOffsetY;
-                if (Physics.Raycast(startRayCheckPosition, Vector3.down, out RaycastHit hitGround,
+                if (Physics.Raycast(startRayCheckPosition, Vector3.down, out var hitGround,
                         MaxGroundRayDistance + GroundCheckOffsetY, _groundLayerMaskSetting.Mask))
                 {
                     visualObjectSequence.Append(_visualObjectTransform.DOMoveY(

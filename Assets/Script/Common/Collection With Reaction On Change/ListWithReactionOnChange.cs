@@ -32,7 +32,7 @@ namespace Common.Collection_With_Reaction_On_Change
             get => _list[index];
             set
             {
-                T oldValue = _list[index];
+                var oldValue = _list[index];
                 _list[index] = value;
                 ItemReplaced?.Invoke(new ItemReplacedEventArgs<T>(value, oldValue, index));
             }
@@ -62,8 +62,8 @@ namespace Common.Collection_With_Reaction_On_Change
 
         public bool Remove(T item)
         {
-            int itemToRemoveIndex = _list.IndexOf(item);
-            bool willBeRemoved = itemToRemoveIndex != -1;
+            var itemToRemoveIndex = _list.IndexOf(item);
+            var willBeRemoved = itemToRemoveIndex != -1;
             if (willBeRemoved)
             {
                 _list.RemoveAt(itemToRemoveIndex);
@@ -91,7 +91,7 @@ namespace Common.Collection_With_Reaction_On_Change
 
         public void RemoveAt(int index)
         {
-            T removedItem = _list[index];
+            var removedItem = _list[index];
             _list.RemoveAt(index);
             ItemRemoved?.Invoke(new ItemWithIndexEventArgs<T>(removedItem, index));
         }

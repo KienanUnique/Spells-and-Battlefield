@@ -19,7 +19,7 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Model
         public override void Appear()
         {
             base.Appear();
-            foreach (IUIElement uiElement in _gameplayUIElements)
+            foreach (var uiElement in _gameplayUIElements)
             {
                 uiElement.Appear();
             }
@@ -28,7 +28,7 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Model
         public override void Disappear()
         {
             base.Disappear();
-            foreach (IUIElement uiElement in _gameplayUIElements)
+            foreach (var uiElement in _gameplayUIElements)
             {
                 uiElement.Disappear();
             }

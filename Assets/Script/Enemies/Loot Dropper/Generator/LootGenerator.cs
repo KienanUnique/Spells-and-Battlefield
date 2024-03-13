@@ -27,8 +27,7 @@ namespace Enemies.Loot_Dropper.Generator
             var loot = new List<IPickableItemDataForCreating>();
             loot.AddRange(_alwaysDroppedItems.GetUnlockedItems(unlocker));
 
-            List<LootItemWithChance> chanceDroppedItems =
-                _chanceDroppedItemsSection.GetUnlockedChanceDroppedItems(unlocker);
+            var chanceDroppedItems = _chanceDroppedItemsSection.GetUnlockedChanceDroppedItems(unlocker);
             if (chanceDroppedItems.IsEmpty() || _chanceDroppedItemsSection.MaximumInclusiveCount == 0)
             {
                 return loot;
@@ -37,14 +36,14 @@ namespace Enemies.Loot_Dropper.Generator
             var totalChance = 0f;
             chanceDroppedItems.ForEach(item => totalChance += item.ChanceCoefficient);
 
-            int countOfChanceDroppedItems = Random.Range(_chanceDroppedItemsSection.MinimumInclusiveCount,
+            var countOfChanceDroppedItems = Random.Range(_chanceDroppedItemsSection.MinimumInclusiveCount,
                 _chanceDroppedItemsSection.MaximumInclusiveCount + 1);
             for (var i = 0; i < countOfChanceDroppedItems; i++)
             {
-                float randomValue = Random.Range(0f, totalChance);
+                var randomValue = Random.Range(0f, totalChance);
                 var chanceSum = 0f;
 
-                foreach (LootItemWithChance item in chanceDroppedItems)
+                foreach (var item in chanceDroppedItems)
                 {
                     chanceSum += item.ChanceCoefficient;
 

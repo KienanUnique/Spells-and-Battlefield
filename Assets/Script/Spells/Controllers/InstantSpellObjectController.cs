@@ -38,7 +38,7 @@ namespace Spells.Controllers
 
         protected override void HandleFinishSpell()
         {
-            foreach (IInformationAboutInstantSpell spell in _spellControllerData.NextSpellsOnFinish)
+            foreach (var spell in _spellControllerData.NextSpellsOnFinish)
             {
                 var spellTransform = transform;
                 SpellObjectsFactory.Create(spell.DataForController, spell.PrefabProvider, Caster,

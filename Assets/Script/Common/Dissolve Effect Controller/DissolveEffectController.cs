@@ -20,7 +20,7 @@ namespace Common.Dissolve_Effect_Controller
             _settings = settings;
             _linkGameObject = linkGameObject;
             var materials = new List<Material>();
-            foreach (Renderer renderer in renderers)
+            foreach (var renderer in renderers)
             {
                 materials.AddRange(renderer.materials);
             }
@@ -28,7 +28,7 @@ namespace Common.Dissolve_Effect_Controller
             _materials = materials;
 
             var startDissolveValue = isDissolvedAtStart ? FullDissolveEffectValue : NoneDissolveEffectValue;
-            foreach (Material material in _materials)
+            foreach (var material in _materials)
             {
                 material.SetFloat(Dissolve, startDissolveValue);
             }
@@ -48,14 +48,14 @@ namespace Common.Dissolve_Effect_Controller
 
         private void ChangeDissolveValueSmoothly(float endValue, TweenCallback callback)
         {
-            Sequence dissolveSequence = DOTween.Sequence();
+            var dissolveSequence = DOTween.Sequence();
             dissolveSequence.SetLink(_linkGameObject);
             if (callback != null)
             {
                 dissolveSequence.OnComplete(callback);
             }
 
-            foreach (Material material in _materials)
+            foreach (var material in _materials)
             {
                 dissolveSequence.Join(material.DOFloat(endValue, Dissolve, _settings.DissolveAnimationDuration)
                                               .SetEase(_settings.DissolveAnimationEase));
@@ -64,7 +64,7 @@ namespace Common.Dissolve_Effect_Controller
 
         private void ChangeDissolveValue(float endValue)
         {
-            foreach (Material material in _materials)
+            foreach (var material in _materials)
             {
                 material.SetFloat(Dissolve, endValue);
             }

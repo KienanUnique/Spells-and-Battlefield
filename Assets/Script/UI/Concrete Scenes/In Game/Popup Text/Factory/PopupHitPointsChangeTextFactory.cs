@@ -49,7 +49,7 @@ namespace UI.Concrete_Scenes.In_Game.Popup_Text.Factory
 
         public void Create(TypeOfHitPointsChange typeOfHitPointsChange, int countOfHitPoints, Vector3 startPosition)
         {
-            IPopupTextFactory selectedFactory = typeOfHitPointsChange switch
+            var selectedFactory = typeOfHitPointsChange switch
             {
                 TypeOfHitPointsChange.Damage => _damageTextFactory,
                 TypeOfHitPointsChange.Heal => _healTextFactory,

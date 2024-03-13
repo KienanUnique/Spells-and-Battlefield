@@ -22,7 +22,7 @@ namespace Puzzles.Mechanisms.Moving_Platforms.Concrete_Types.Moving_Platform
         protected override void StartJob()
         {
             ParentObjectToMove.DOKill();
-            
+
             var path = new List<Vector3>(Waypoints);
             if (_needMoveBackward)
             {

@@ -14,8 +14,8 @@ namespace Enemies.Target_Selector_From_Triggers
     public class EnemyTargetFromTriggersSelector : BaseWithDisabling, IEnemyTargetFromTriggersSelector
     {
         private readonly IFaction _thisFaction;
-        private readonly List<IEnemyTarget> _targets = new List<IEnemyTarget>();
-        private readonly List<IEnemyTargetTrigger> _triggers = new List<IEnemyTargetTrigger>();
+        private readonly List<IEnemyTarget> _targets = new();
+        private readonly List<IEnemyTargetTrigger> _triggers = new();
         private readonly IReadonlyTransform _thisTransform;
         private readonly float _targetSelectorUpdateCooldownInSeconds;
         private readonly ICoroutineStarter _coroutineStarter;
@@ -37,7 +37,7 @@ namespace Enemies.Target_Selector_From_Triggers
         public void AddTrigger(IEnemyTargetTrigger trigger)
         {
             _triggers.Add(trigger);
-            foreach (IEnemyTarget enemyTarget in trigger.TargetsInTrigger)
+            foreach (var enemyTarget in trigger.TargetsInTrigger)
             {
                 OnTargetDetected(enemyTarget);
             }
@@ -50,7 +50,7 @@ namespace Enemies.Target_Selector_From_Triggers
 
         public void AddTriggers(IEnumerable<IEnemyTargetTrigger> triggers)
         {
-            foreach (IEnemyTargetTrigger trigger in triggers)
+            foreach (var trigger in triggers)
             {
                 AddTrigger(trigger);
             }
@@ -74,12 +74,12 @@ namespace Enemies.Target_Selector_From_Triggers
 
         protected sealed override void SubscribeOnEvents()
         {
-            foreach (IEnemyTargetTrigger trigger in _triggers)
+            foreach (var trigger in _triggers)
             {
                 SubscribeOnTriggerEvents(trigger);
             }
 
-            foreach (IEnemyTarget target in _targets)
+            foreach (var target in _targets)
             {
                 SubscribeOnInitializedTarget(target);
             }
@@ -87,12 +87,12 @@ namespace Enemies.Target_Selector_From_Triggers
 
         protected override void UnsubscribeFromEvents()
         {
-            foreach (IEnemyTargetTrigger trigger in _triggers)
+            foreach (var trigger in _triggers)
             {
                 UnsubscribeFromTriggerEvents(trigger);
             }
 
-            foreach (IEnemyTarget target in _targets)
+            foreach (var target in _targets)
             {
                 UnsubscribeFromInitializedTarget(target);
             }
@@ -143,7 +143,7 @@ namespace Enemies.Target_Selector_From_Triggers
             }
 
             var targetsToRemove = new List<IEnemyTarget>(_targets.Where(IsTargetDead));
-            foreach (IEnemyTarget enemyTarget in targetsToRemove)
+            foreach (var enemyTarget in targetsToRemove)
             {
                 RemoveTarget(enemyTarget);
             }
@@ -197,7 +197,7 @@ namespace Enemies.Target_Selector_From_Triggers
         {
             UnsubscribeFromInitializedTarget(targetToRemove);
 
-            foreach (IEnemyTargetTrigger trigger in _triggers)
+            foreach (var trigger in _triggers)
             {
                 trigger.ForgetTarget(targetToRemove);
             }
@@ -217,7 +217,7 @@ namespace Enemies.Target_Selector_From_Triggers
                 return;
             }
 
-            IEnemyTarget nextTarget = _targets.Count switch
+            var nextTarget = _targets.Count switch
             {
                 0 => null,
                 1 => _targets.First(),
@@ -229,18 +229,18 @@ namespace Enemies.Target_Selector_From_Triggers
                 return;
             }
 
-            IEnemyTarget oldTarget = CurrentTarget;
+            var oldTarget = CurrentTarget;
             CurrentTarget = nextTarget;
             CurrentTargetChanged?.Invoke(oldTarget, nextTarget);
         }
 
         private IEnemyTarget GetClosestTarget()
         {
-            IEnemyTarget closestTarget = _targets[0];
-            float closestDistance = CalculateDistanceToTarget(closestTarget);
+            var closestTarget = _targets[0];
+            var closestDistance = CalculateDistanceToTarget(closestTarget);
             for (var i = 1; i < _targets.Count; i++)
             {
-                float tmpDistance = CalculateDistanceToTarget(_targets[i]);
+                var tmpDistance = CalculateDistanceToTarget(_targets[i]);
                 if (tmpDistance < closestDistance)
                 {
                     closestDistance = tmpDistance;

@@ -8,7 +8,6 @@ namespace Puzzles.Mechanisms_Triggers
         [SerializeField] private bool _needTriggerOneTime;
         [SerializeField] private float _triggerDelayInSeconds;
 
-        protected MechanismsTriggerBaseSetupData BaseSetupData =>
-            new MechanismsTriggerBaseSetupData(_needTriggerOneTime, _triggerDelayInSeconds);
+        protected MechanismsTriggerBaseSetupData BaseSetupData => new(_needTriggerOneTime, _triggerDelayInSeconds);
     }
 }

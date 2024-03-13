@@ -2,8 +2,6 @@
 {
     public enum TriggerZoneEventType
     {
-        Enter,
-        Exit,
-        Both
+        Enter, Exit, Both
     }
 }

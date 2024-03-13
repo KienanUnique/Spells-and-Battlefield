@@ -14,8 +14,8 @@ namespace Common.Editor_Label_Text_Display
 
         private static bool IsSceneViewCameraInRange(Vector3 position, float distance)
         {
-            Camera currentCamera = Camera.current;
-            Vector3 cameraPosition = currentCamera.WorldToScreenPoint(position);
+            var currentCamera = Camera.current;
+            var cameraPosition = currentCamera.WorldToScreenPoint(position);
             return cameraPosition.x >= 0 &&
                    cameraPosition.x <= currentCamera.pixelWidth &&
                    cameraPosition.y >= 0 &&

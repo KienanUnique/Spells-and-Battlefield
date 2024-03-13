@@ -16,8 +16,7 @@ namespace UI.Concrete_Scenes.Main_Menu.Concrete_Windows.Start_Game_Window.Game_L
 {
     public class GameLevelItemPresenterSetup : UIElementPresenterSetup, IGameLevelItemPresenterSetup
     {
-        private readonly ExternalDependenciesInitializationWaiter _externalDependenciesInitializationWaiter =
-            new ExternalDependenciesInitializationWaiter(true);
+        private readonly ExternalDependenciesInitializationWaiter _externalDependenciesInitializationWaiter = new(true);
 
         [SerializeField] private Button _selectionButton;
         [SerializeField] private Transform _mainTransform;

@@ -273,8 +273,8 @@ namespace Enemies.Controller
 
         private void DropSpell()
         {
-            Transform cashedTransform = transform;
-            Vector3 dropDirection = TargetFromTriggersSelector.CurrentTarget == null
+            var cashedTransform = transform;
+            var dropDirection = TargetFromTriggersSelector.CurrentTarget == null
                 ? cashedTransform.forward
                 : (TargetFromTriggersSelector.CurrentTarget.MainRigidbody.Position - cashedTransform.position)
                 .normalized;
