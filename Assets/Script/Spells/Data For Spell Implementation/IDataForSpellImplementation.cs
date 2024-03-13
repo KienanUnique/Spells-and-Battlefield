@@ -8,6 +8,7 @@ namespace Spells.Data_For_Spell_Implementation
     public interface IDataForSpellImplementation
     {
         public Rigidbody SpellRigidbody { get; }
+        public Transform SpellTransform { get; }
         public ICaster Caster { get; }
         public ICoroutineStarter CoroutineStarter { get; }
         public IReadonlyTransform CastPoint { get; }

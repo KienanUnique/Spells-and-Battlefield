@@ -33,7 +33,7 @@ namespace Spells.Concrete_Types.Target_Selectors
             public override IReadOnlyList<ISpellInteractable> SelectTargets()
             {
                 var selectedTargets = new List<ISpellInteractable>();
-                Collider[] collidersInsideSphere = Physics.OverlapSphere(_spellRigidbody.position, _sphereRadius,
+                Collider[] collidersInsideSphere = Physics.OverlapSphere(_spellTransform.position, _sphereRadius,
                     LayerMask, QueryTriggerInteraction.Ignore);
                 int casterId = -1;
                 var casterHaveId = false;

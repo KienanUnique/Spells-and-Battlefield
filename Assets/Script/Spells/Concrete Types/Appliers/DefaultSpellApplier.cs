@@ -52,7 +52,7 @@ namespace Spells.Concrete_Types.Appliers
                 spellImplementations.ForEach(spellImplementation => spellImplementation.Initialize(data));
 
                 _effectSourceInformation = new EffectSourceInformation(EffectSourceType.External,
-                    new ReadonlyTransform(data.SpellRigidbody.transform));
+                    new ReadonlyTransform(data.SpellTransform));
             }
 
             public override SpellTriggerCheckStatusEnum CheckContact(Collider other)

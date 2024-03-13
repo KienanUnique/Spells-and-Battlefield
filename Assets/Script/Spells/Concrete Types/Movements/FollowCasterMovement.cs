@@ -40,7 +40,7 @@ namespace Spells.Concrete_Types.Movements
             {
                 while (true)
                 {
-                    _spellRigidbody.position = Caster.MainTransform.Position;
+                    _spellTransform.position = Caster.MainTransform.Position;
                     yield return null;
                 }
             }

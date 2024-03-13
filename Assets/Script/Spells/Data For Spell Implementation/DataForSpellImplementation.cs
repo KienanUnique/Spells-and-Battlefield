@@ -7,16 +7,18 @@ namespace Spells.Data_For_Spell_Implementation
 {
     public class DataForSpellImplementation : IDataForSpellImplementation
     {
-        public DataForSpellImplementation(Rigidbody spellRigidbody, ICaster caster, ICoroutineStarter coroutineStarter,
-            IReadonlyTransform castPoint, ISpellTargetsDetector targetsDetector)
+        public DataForSpellImplementation(Rigidbody spellRigidbody, Transform spellTransform, ICaster caster,
+            ICoroutineStarter coroutineStarter, IReadonlyTransform castPoint, ISpellTargetsDetector targetsDetector)
         {
             SpellRigidbody = spellRigidbody;
             Caster = caster;
             CoroutineStarter = coroutineStarter;
             CastPoint = castPoint;
             TargetsDetector = targetsDetector;
+            SpellTransform = spellTransform;
         }
 
+        public Transform SpellTransform { get; }
         public Rigidbody SpellRigidbody { get; }
         public ICaster Caster { get; }
         public ICoroutineStarter CoroutineStarter { get; }

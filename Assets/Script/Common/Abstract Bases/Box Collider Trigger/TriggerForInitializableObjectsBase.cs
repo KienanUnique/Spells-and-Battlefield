@@ -5,7 +5,7 @@ using Common.Abstract_Bases.Initializable_MonoBehaviour;
 
 namespace Common.Abstract_Bases.Box_Collider_Trigger
 {
-    public abstract class TriggerForInitializableObjectsBase<TRequiredObject> : BoxColliderTriggerBase<TRequiredObject>
+    public abstract class TriggerForInitializableObjectsBase<TRequiredObject> : ColliderTriggerBase<TRequiredObject>
         where TRequiredObject : IInitializable
     {
         private readonly HashSet<TRequiredObject> _waitingInitializationObjects = new HashSet<TRequiredObject>();

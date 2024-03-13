@@ -10,6 +10,7 @@ namespace Spells.Abstract_Types.Implementation_Bases
     public abstract class SpellImplementationBase : ISpellImplementation
     {
         protected Rigidbody _spellRigidbody;
+        protected Transform _spellTransform;
         protected ICaster Caster;
         protected ICoroutineStarter _coroutineStarter;
         protected IReadonlyTransform _castPoint;
@@ -18,6 +19,7 @@ namespace Spells.Abstract_Types.Implementation_Bases
         public virtual void Initialize(IDataForSpellImplementation data)
         {
             _spellRigidbody = data.SpellRigidbody;
+            _spellTransform = data.SpellTransform;
             Caster = data.Caster;
             _coroutineStarter = data.CoroutineStarter;
             _castPoint = data.CastPoint;

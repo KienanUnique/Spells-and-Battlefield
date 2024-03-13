@@ -3,7 +3,7 @@ using Common.Abstract_Bases.Character;
 
 namespace Common
 {
-    public class InstantKillZone : BoxColliderTriggerBase<ICharacter>
+    public class InstantKillZone : ColliderTriggerBase<ICharacter>
     {
         protected override void OnRequiredObjectEnteringDetected(ICharacter requiredObject)
         {

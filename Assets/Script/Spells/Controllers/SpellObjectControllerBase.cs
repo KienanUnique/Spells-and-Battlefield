@@ -11,18 +11,16 @@ using UnityEngine;
 
 namespace Spells.Controllers
 {
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(SpellTargetsDetector))]
     public class SpellObjectControllerBase : InitializableMonoBehaviourBase, ICoroutineStarter
     {
         [SerializeField] private SpellCollisionTriggerBase _spellCollisionTrigger;
-        
+        [SerializeField] private SpellTargetsDetector _spellTargetsDetector;
+
         private IDataForSpellController _spellControllerData;
         private float _initializeTime;
 
         protected float TimePassedFromInitialize => Time.time - _initializeTime;
         protected ICaster Caster { get; private set; }
-        protected Rigidbody SpellRigidbody { get; private set; }
         protected ISpellObjectsFactory SpellObjectsFactory { get; private set; }
         protected IReadonlyTransform CastPoint { get; private set; }
 
@@ -74,12 +72,11 @@ namespace Spells.Controllers
         protected void InitializeBase(ICaster caster, ISpellObjectsFactory spellObjectsFactory,
             IDataForSpellController spellControllerData, IReadonlyTransform castPoint)
         {
-            SpellRigidbody = GetComponent<Rigidbody>();
-            var targetsDetector = GetComponent<SpellTargetsDetector>();
+            TryGetComponent(out Rigidbody spellRigidbody);
             _spellControllerData = spellControllerData;
             CastPoint = castPoint;
-            _spellControllerData.Initialize(new DataForSpellImplementation(SpellRigidbody, caster, this, castPoint,
-                targetsDetector));
+            _spellControllerData.Initialize(new DataForSpellImplementation(spellRigidbody, transform, caster, this,
+                castPoint, _spellTargetsDetector));
             SpellObjectsFactory = spellObjectsFactory;
             Caster = caster;
             _initializeTime = Time.time;
@@ -92,7 +89,7 @@ namespace Spells.Controllers
             {
                 return;
             }
-            
+
             if (other.TryGetComponent(out ISpellInteractable otherAsSpellInteractable))
             {
                 otherAsSpellInteractable.InteractAsSpellType(_spellControllerData.SpellType);

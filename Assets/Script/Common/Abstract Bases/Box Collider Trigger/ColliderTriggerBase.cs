@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Common.Abstract_Bases.Box_Collider_Trigger
 {
-    [RequireComponent(typeof(BoxCollider))]
-    public abstract class BoxColliderTriggerBase<TRequiredObject> : MonoBehaviour
+    [RequireComponent(typeof(Collider))]
+    public abstract class ColliderTriggerBase<TRequiredObject> : MonoBehaviour
     {
         protected readonly List<TRequiredObject> _requiredObjectsInside = new List<TRequiredObject>();
         protected event Action<TRequiredObject> RequiredObjectEnteringDetected;

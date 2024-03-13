@@ -40,7 +40,7 @@ namespace Spells.Controllers
         {
             foreach (IInformationAboutInstantSpell spell in _spellControllerData.NextSpellsOnFinish)
             {
-                Transform spellTransform = SpellRigidbody.transform;
+                var spellTransform = transform;
                 SpellObjectsFactory.Create(spell.DataForController, spell.PrefabProvider, Caster,
                     spellTransform.position, spellTransform.rotation, CastPoint);
             }
