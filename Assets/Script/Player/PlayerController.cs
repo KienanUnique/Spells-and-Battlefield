@@ -133,6 +133,11 @@ namespace Player
             return _idHolder.Equals(other);
         }
 
+        public int CompareTo(IIdHolder other)
+        {
+            return _idHolder.CompareTo(other);
+        }
+
         public void HandleHeal(int countOfHitPoints, IEffectSourceInformation sourceInformation)
         {
             _character.HandleHeal(countOfHitPoints, sourceInformation);

@@ -4,6 +4,7 @@ using Common;
 using Common.Abstract_Bases.Disableable;
 using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Animator_Status_Controller;
+using DG.Tweening;
 using Enemies.Look_Point_Calculator;
 using Enemies.State_Machine.Transition_Manager;
 using UnityEngine;
@@ -12,9 +13,13 @@ namespace Enemies.State_Machine.States
 {
     public abstract class StateEnemyAI : InitializableMonoBehaviourBase, IStateEnemyAI, IInitializableStateEnemyAI
     {
+        private const float CheckTransitionsDelay = 0.2f;
+
         [SerializeField] private MainTransitionManagerEnemyAI _transitionManager;
         private IStateEnemyAI _cachedNextState;
         private ValueWithReactionOnChange<StateEnemyAIStatus> _currentStateStatus;
+        private Tween _startCheckingTransitionsTween;
+        private bool _canInstantCheck = true;
 
         public void Initialize(IEnemyStateMachineControllable stateMachineControllable,
             IReadonlyAnimatorStatusChecker animatorStatusChecker)
@@ -100,13 +105,26 @@ namespace Enemies.State_Machine.States
             {
                 case StateEnemyAIStatus.Active:
                     _transitionManager.StartCheckingConditions();
-                    if (_transitionManager.TryTransit(out var nextState))
+                    if (_canInstantCheck)
                     {
-                        _cachedNextState = nextState;
-                        HandleExitFromState();
-                        return;
+                        if (_transitionManager.TryTransit(out var nextState))
+                        {
+                            
+                            _canInstantCheck = false;
+                            _startCheckingTransitionsTween?.Kill();
+                            _startCheckingTransitionsTween = DOVirtual
+                                                             .DelayedCall(CheckTransitionsDelay, StartCheckingTransitions)
+                                                             .SetLink(gameObject);
+                            _cachedNextState = nextState;
+                            HandleExitFromState();
+                            return;
+                        }
                     }
-
+                    else
+                    {
+                        _startCheckingTransitionsTween?.OnComplete()
+                    }
+                    
                     SubscribeOnTransitionEvents();
                     break;
                 case StateEnemyAIStatus.Exiting:
@@ -118,8 +136,14 @@ namespace Enemies.State_Machine.States
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
             }
+            
+            SpecialReactionOnStateStatusChange(_currentStateStatus.Value);
+        }
 
-            SpecialReactionOnStateStatusChange(newStatus);
+        private void StartCheckingTransitions()
+        {
+            _canInstantCheck = true;
+            
         }
 
         private void SubscribeOnTransitionEvents()

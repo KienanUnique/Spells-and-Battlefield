@@ -22,6 +22,11 @@ namespace UI.Concrete_Scenes.In_Game.Gameplay_UI.Presenter
         {
             return _model.Equals(other);
         }
+        
+        public int CompareTo(IIdHolder other)
+        {
+            return _model.CompareTo(other);
+        }
 
         public void Disappear(Action callbackOnAnimationEnd)
         {

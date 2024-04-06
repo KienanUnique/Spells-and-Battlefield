@@ -32,6 +32,11 @@ namespace Puzzles.Mechanisms_Triggers.Concrete_Types.Spell_Zone.Trigger_On_Spell
         {
             return _idHolder.Equals(other);
         }
+        
+        public int CompareTo(IIdHolder other)
+        {
+            return _idHolder.CompareTo(other);
+        }
 
         public void InteractAsSpellType(ISpellType spellType)
         {

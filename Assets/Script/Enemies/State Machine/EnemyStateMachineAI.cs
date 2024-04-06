@@ -75,6 +75,7 @@ namespace Enemies.State_Machine
             {
                 UnsubscribeFromCurrentStateEvents();
                 _currentStateEnemyAI.Exit();
+                Debug.Log($"Exit: {_currentStateEnemyAI.StateID}");
             }
 
             _currentStateEnemyAI = nextStateEnemyAI;
@@ -83,6 +84,7 @@ namespace Enemies.State_Machine
             {
                 NeedChangeLookPointCalculator?.Invoke(_currentStateEnemyAI.LookPointCalculator);
                 SubscribeOnCurrentStateEvents();
+                Debug.Log($"Enter: {_currentStateEnemyAI.StateID}");
                 _currentStateEnemyAI.Enter();
             }
         }

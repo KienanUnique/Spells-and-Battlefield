@@ -20,6 +20,11 @@ namespace UI.Window.Presenter
             return WindowModel.Equals(other);
         }
 
+        public int CompareTo(IIdHolder other)
+        {
+            return WindowModel.CompareTo(other);
+        }
+
         public override void Disappear(Action callbackOnAnimationEnd)
         {
             UnsubscribeFromWindowEvents();

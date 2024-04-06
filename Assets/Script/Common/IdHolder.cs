@@ -11,6 +11,11 @@ namespace Common
         {
             return other != null && other.Id.Equals(Id);
         }
+        
+        public int CompareTo(IIdHolder other)
+        {
+            return Id.CompareTo(other.Id);
+        }
 
         private void Awake()
         {

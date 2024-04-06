@@ -22,7 +22,6 @@ namespace Common.Abstract_Bases.Character
         private readonly List<IAppliedContinuousEffect> _currentEffects;
         private readonly ValueWithReactionOnChange<CharacterState> _currentState;
         private readonly IFaction _defaultFaction;
-        private IFaction _currentFaction;
 
         protected CharacterBase(ICoroutineStarter coroutineStarter, ICharacterSettings characterSettings,
             GameObject gameObjectToLink, IFaction startFaction, ISummoner summoner = null)
@@ -35,7 +34,7 @@ namespace Common.Abstract_Bases.Character
             _gameObjectToLink = gameObjectToLink;
             _summoner = summoner;
             _defaultFaction = startFaction;
-            _currentFaction = _defaultFaction;
+            Faction = _defaultFaction;
         }
 
         public event Action<CharacterState> CharacterStateChanged;
@@ -45,7 +44,7 @@ namespace Common.Abstract_Bases.Character
 
         public CharacterState CurrentCharacterState => _currentState.Value;
         public float HitPointCountRatio => _hitPointsCalculator.HitPointCountRatio;
-        public IFaction Faction { get; }
+        public IFaction Faction { get; private set; }
 
         public IReadOnlyList<IAppliedContinuousEffectInformation> CurrentContinuousEffects =>
             new List<IAppliedContinuousEffectInformation>(_currentEffects);
@@ -91,19 +90,21 @@ namespace Common.Abstract_Bases.Character
 
         public void RevertFaction()
         {
-            _currentFaction = _currentFaction.RevertFaction;
-            FactionChanged?.Invoke(_currentFaction);
+            Faction = Faction.RevertFaction;
+            FactionChanged?.Invoke(Faction);
+            Debug.Log($"RevertFaction: {Faction.Id}");
         }
 
         public void ResetFactionToDefault()
         {
-            if (_currentFaction.Equals(_defaultFaction))
+            if (Faction.Equals(_defaultFaction))
             {
                 return;
             }
 
-            _currentFaction = _defaultFaction;
-            FactionChanged?.Invoke(_currentFaction);
+            Faction = _defaultFaction;
+            FactionChanged?.Invoke(Faction);
+            Debug.Log($"ResetFactionToDefault: {Faction.Id}");
         }
 
         protected sealed override void SubscribeOnEvents()

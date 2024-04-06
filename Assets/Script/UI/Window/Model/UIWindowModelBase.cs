@@ -19,6 +19,11 @@ namespace UI.Window.Model
         {
             return _idHolder.Equals(other);
         }
+        
+        public int CompareTo(IIdHolder other)
+        {
+            return _idHolder.CompareTo(other);
+        }
 
         public virtual void Appear()
         {

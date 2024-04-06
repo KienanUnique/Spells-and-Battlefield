@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Abstract_Bases.Character;
 using Common.Abstract_Bases.Disableable;
+using Common.Abstract_Bases.Initializable_MonoBehaviour;
 using Common.Interfaces;
 using Common.Readonly_Transform;
 using Enemies.Trigger;
@@ -14,8 +15,8 @@ namespace Enemies.Target_Selector_From_Triggers
     public class EnemyTargetFromTriggersSelector : BaseWithDisabling, IEnemyTargetFromTriggersSelector
     {
         private readonly IFactionHolder _factionHolder;
-        private readonly List<IEnemyTarget> _aggressiveTargets = new();
-        private readonly List<IEnemyTarget> _allTargets = new();
+        private readonly SortedSet<IEnemyTarget> _aggressiveTargets = new();
+        private readonly SortedSet<IEnemyTarget> _allTargets = new();
         private readonly List<IEnemyTargetTrigger> _triggers = new();
         private readonly IReadonlyTransform _thisTransform;
         private readonly float _targetSelectorUpdateCooldownInSeconds;
@@ -141,26 +142,20 @@ namespace Enemies.Target_Selector_From_Triggers
         {
             target.CharacterStateChanged += OnTargetStateChanged;
             target.FactionChanged += OnFactionChanged;
+            target.InitializationStatusChanged += OnInitializationStatusChanged;
         }
 
         private void UnsubscribeFromInitializedTarget(IEnemyTarget target)
         {
             target.CharacterStateChanged -= OnTargetStateChanged;
             target.FactionChanged -= OnFactionChanged;
+            target.InitializationStatusChanged -= OnInitializationStatusChanged;
         }
 
         private void OnFactionChanged(IFaction newFaction)
         {
-            foreach (var target in _aggressiveTargets)
-            {
-                if (!IsFriendly(target))
-                {
-                    continue;
-                }
+            _aggressiveTargets.RemoveWhere(IsFriendly);
 
-                _aggressiveTargets.Remove(target);
-            }
-            
             foreach (var target in _allTargets)
             {
                 if (IsFriendly(target))
@@ -187,6 +182,25 @@ namespace Enemies.Target_Selector_From_Triggers
             }
 
             var targetsToRemove = new List<IEnemyTarget>(_allTargets.Where(IsTargetDead));
+            foreach (var enemyTarget in targetsToRemove)
+            {
+                RemoveTarget(enemyTarget);
+            }
+        }
+        
+        private void OnInitializationStatusChanged(InitializableMonoBehaviourStatus obj)
+        {
+            if (obj != InitializableMonoBehaviourStatus.Destroying)
+            {
+                return;
+            }
+
+            bool IsTargetDestroying(IEnemyTarget target)
+            {
+                return target.CurrentInitializableMonoBehaviourStatus == InitializableMonoBehaviourStatus.Destroying;
+            }
+
+            var targetsToRemove = new List<IEnemyTarget>(_allTargets.Where(IsTargetDestroying));
             foreach (var enemyTarget in targetsToRemove)
             {
                 RemoveTarget(enemyTarget);
@@ -295,16 +309,18 @@ namespace Enemies.Target_Selector_From_Triggers
 
         private IEnemyTarget GetClosestTarget()
         {
-            var closestTarget = _aggressiveTargets[0];
-            var closestDistance = CalculateDistanceToTarget(closestTarget);
-            for (var i = 1; i < _aggressiveTargets.Count; i++)
+            IEnemyTarget closestTarget = null;
+            var closestDistance = float.PositiveInfinity;
+            foreach (var target in _aggressiveTargets)
             {
-                var tmpDistance = CalculateDistanceToTarget(_aggressiveTargets[i]);
-                if (tmpDistance < closestDistance)
+                var tmpDistance = CalculateDistanceToTarget(target);
+                if (!(tmpDistance < closestDistance))
                 {
-                    closestDistance = tmpDistance;
-                    closestTarget = _aggressiveTargets[i];
+                    continue;
                 }
+
+                closestDistance = tmpDistance;
+                closestTarget = target;
             }
 
             return closestTarget;

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Rage Touch
   m_EditorClassIdentifier: 
   _spellMechanicEffects:
-  - {fileID: 11400000, guid: d269592133fcf1b4abf78a91c298080d, type: 2}
+  - {fileID: 11400000, guid: f617385a6d9d1424b898139a98125731, type: 2}
   _targetSelector: {fileID: 11400000, guid: e08fcd812fa7ddd4ca8f52fe50a18e3b, type: 2}
   _spellTrigger: {fileID: 11400000, guid: 6e4167d6efc4a0649932a733d1797436, type: 2}
