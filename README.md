@@ -44,6 +44,9 @@
 * **LoliesAreTheBest**: геймдизайн, сюжет, концептирование и верстка уровней
     * Почта: [kravtsovvovka@gmail.com](mailto:kravtsovvovka@gmail.com) 
     * [GitHub](https://github.com/LoliesAreTheBest)
+* **MrRocks**: геймдизайн, сюжет, концептирование и верстка уровней
+    * Почта: [nicerocks166@gmail.com](mailto:nicerocks166@gmail.com) 
+    * [GitHub](https://github.com/MRR0CKS)
 * **Hamonan**: визуальный дизайн уровней, поиск ассетов, 3д моделирование, UI, 2д арты
     * Почта: [wuillish@gmail.com](mailto:wuillish@gmail.com) 
     * [GitHub](https://github.com/Kaitiro)
